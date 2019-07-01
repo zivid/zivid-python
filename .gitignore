@@ -1,0 +1,6 @@
+*~
+*.user
+*.vscode
+build
+env
+__pycache__

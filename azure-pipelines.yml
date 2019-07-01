@@ -1,0 +1,43 @@
+jobs:
+- job: Windows
+  pool:
+    vmImage: vs2017-win2016
+  strategy:
+    matrix:
+      Python35:
+        python.version: '3.5'
+      Python36:
+        python.version: '3.6'
+      Python37:
+        python.version: '3.7'
+  steps:
+  - script: pip install -r continuous-integration\requirements-build-and-test.txt"
+    displayName: 'Install python requirements'
+  - script: python continuous-integration\windows\build.py --root %CD%
+    displayName: 'Build and test'
+    env: { 'Zivid_DIR': 'C:\Program Files\Zivid\CMake\Zivid', 'CXX': 'cl.exe', 'CC': 'cl.exe'}
+- job: Linux
+  pool:
+    vmImage: ubuntu-16.04
+  strategy:
+    matrix:
+      ArchLinux:
+        os: 'archlinux/base'
+        command: './lint.sh'
+      Ubuntu1804:
+        os: 'ubuntu:18.04'
+        command: './test.sh'
+      Ubuntu1604:
+        os: 'ubuntu:16.04'
+        command: './test.sh'
+      Fedora30:
+        os: 'fedora:30'
+        command: './test.sh'
+  steps:
+  - script: docker run
+              --volume $PWD:/host
+              --workdir /host/continuous-integration/linux
+              --env "PYTHONDONTWRITEBYTECODE=1"
+              $(os)
+              bash -c "./setup.sh && $(command)"
+    displayName: 'Build and test'

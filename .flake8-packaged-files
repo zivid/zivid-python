@@ -1,0 +1,14 @@
+[flake8]
+ignore =
+### Covered better by pylint
+    E501, # Line too long
+### Covered by pylint
+    F401, # Imported but unused
+### in conflict with black
+    W503, # line break before binary operator
+    E302, # expected 2 blank lines, found 0
+    D202, # No blank lines allowed after function docstring
+### Temporarily disabled docstring errors:
+    D105, # missing docstring in magic method
+    I401, # Missing exception(s) in Raises section
+show-source = True

@@ -1,0 +1,6 @@
+[build-system]
+requires = [
+    "cmake",
+    "ninja",
+    "scikit-build",
+    ]
