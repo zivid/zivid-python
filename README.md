@@ -38,7 +38,7 @@ Installation may take some time since the `setup.py` script will download additi
 
 #### Old PIP
 
-If you are using a version of PIP older than version 19 please manually install the dependencies listed in [pyproject.toml](pyproject.toml) before installing the zivid.
+If you are using a version of PIP older than version 19 please manually install the dependencies listed in [pyproject.toml](pyproject.toml) before installing zivid.
 
     pip install scikit-build cmake ninja
     pip install zivid
@@ -85,7 +85,7 @@ The version number of the Zivid Python module consists of six numbers. The three
 
 ### PyPI
 
-When installing using pip it is possible to specify the required version. This can be useful if upgrading Zivid SDK is not desired, but you want to update Zivid Python.
+When installing using PIP it is possible to specify the required version. This can be useful if upgrading Zivid SDK is not desired, but you want to update Zivid Python.
 
 #### Install latest version of Zivid Python using latest version of Zivid SDK
 
@@ -102,7 +102,7 @@ When installing using pip it is possible to specify the required version. This c
 #### Install version 1.0.0 of Zivid Python using Zivid SDK version 1.3.0
 
     pip install zivid==1.0.0.1.3.0
-    
+
 *Support for older versions of Zivid SDK will be discontinued when they are no longer compatible with latest version of the wrapper code.*
 
 ## License
