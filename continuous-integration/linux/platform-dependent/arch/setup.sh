@@ -31,10 +31,10 @@ function aur_install {
     rm -r $TMP_DIR || exit $?
 }
 
-aur_install zivid-telicam-sdk || exit $?
-aur_install zivid || exit $?
-
 # Use so file from ncurses instead of ncurses5-compat-libs
 # as dependency for intel-opencl-runtime
 ln -s /usr/lib/libtinfo.so.{6,5} || exit $?
 aur_install intel-opencl-runtime ncurses5-compat-libs || exit $?
+
+aur_install zivid-telicam-sdk || exit $?
+aur_install zivid || exit $?
