@@ -6,7 +6,7 @@ def get_version():
 
 
 def _zivid_sdk_version():
-    return "1.3.0"
+    return "1.4.0"
 
 
 def _zivid_python_version():
@@ -57,7 +57,7 @@ def _main():
         url="https://www.zivid.com",
         author="Zivid AS",
         author_email="support@zivid.com",
-        license=open("LICENSE").read(),
+        license="BSD 3-Clause",
         packages=["zivid", "_zivid"],
         package_dir={"": "modules"},
         install_requires=["numpy"],
@@ -65,6 +65,12 @@ def _main():
             "-DZIVID_PYTHON_VERSION=" + _zivid_python_version(),
             "-DZIVID_SDK_VERSION=" + _zivid_sdk_version(),
             "-Dpybind11_DIR=src/3rd-party/pybind11-2.2.4/share/cmake/pybind11/",
+        ],
+        classifiers=[
+            "License :: OSI Approved :: BSD License",
+            "Programming Language :: Python :: 3",
+            "Programming Language :: Python :: Implementation :: CPython",
+            "Topic :: Scientific/Engineering",
         ],
     )
 
