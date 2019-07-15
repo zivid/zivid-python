@@ -25,7 +25,7 @@ Zivid Python is the official Python package for Zivid 3D cameras. Read more abou
 
 ### Using PIP
 
-The easiest way to install the package is to use PIP.
+The easiest way to install Zivid Python is to use PIP.
 
 On some systems Python 3 `pip` is called `pip3`. In this guide we assume it is called `pip`.
 
@@ -116,11 +116,11 @@ Please visit [Zivid Knowledge Base](http://help.zivid.com) for general informati
 
 | Operating System | Python version | Zivid SDK version |
 | :--------------- | :------------- | :---------------- |
-| Ubuntu 18.04     | 3.6            | 1.3.0             |
-| Ubuntu 16.04     | 3.5            | 1.3.0             |
-| Fedora 30        | 3.7            | 1.3.0             |
+| Ubuntu 18.04     | 3.6            | 1.4.0             |
+| Ubuntu 16.04     | 3.5            | 1.4.0             |
+| Fedora 30        | 3.7            | 1.4.0             |
 | Arch Linux*      | latest         | latest            |
-| Windows 10*      | 3.5, 3.6, 3.7  | 1.3.0             |
+| Windows 10*      | 3.5, 3.6, 3.7  | 1.4.0             |
 
 [*] Only build, no unit testing.
 

@@ -16,7 +16,7 @@ This document contains instruction for how to install a compatible compiler for 
 
 ## Windows 10
 
-Install Visual Studio Community Edition *2017* or similar edition. This can be done using the [Visual Studio Community 2019 installer](https://visualstudio.microsoft.com/vs/community/)
+Install Visual [Studio Community Edition *2017*](https://visualstudio.microsoft.com/vs/older-downloads) or similar edition.
 
 ## Ubuntu 16.04
 
