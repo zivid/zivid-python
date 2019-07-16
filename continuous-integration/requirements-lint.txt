@@ -2,6 +2,9 @@ black==19.3b0
 darglint==0.5.6
 flake8==3.7.7
 flake8-docstrings==1.3.0
+# Workaround fo https://gitlab.com/pycqa/flake8-docstrings/issues/36
+# This requirement can be removed when flake8-docstrings is fixed
+pydocstyle<4
 pylint==2.3.1
 pytest==4.6.4
 requests==2.22.0

@@ -1,10 +1,8 @@
 # Zivid Python
 
-
 Zivid Python is the official Python package for Zivid 3D cameras. Read more about Zivid at [zivid.com](https://www.zivid.com/).
 
-[![Build Status](https://img.shields.io/azure-devops/build/zivid-devops/376f5fda-ba80-4d6c-aaaa-cbcd5e0ad6c0/2/master.svg)](https://dev.azure.com/zivid-devops/zivid-python/_build/latest?definitionId=2&branchName=master) [![PyPI Package](https://img.shields.io/pypi/v/zivid.svg)](https://pypi.org/project/zivid/)
-
+[![Build Status][ci-badge]][ci-url] [![PyPI Package][pypi-badge]][pypi-url]
 
 <figure><p align="center"><img src="https://www.zivid.com/hs-fs/hubfs/images/www/ZividOnePlus.jpg?width=500&name=ZividOnePlus.jpg"></p></figure>
 
@@ -124,3 +122,8 @@ Please visit [Zivid Knowledge Base](http://help.zivid.com) for general informati
 | Windows 10*      | 3.5, 3.6, 3.7  | 1.4.0             |
 
 [*] Only build, no unit testing.
+
+[ci-badge]: https://img.shields.io/azure-devops/build/zivid-devops/376f5fda-ba80-4d6c-aaaa-cbcd5e0ad6c0/2/master.svg
+[ci-url]: https://dev.azure.com/zivid-devops/zivid-python/_build/latest?definitionId=2&branchName=master
+[pypi-badge]: https://img.shields.io/pypi/v/zivid.svg
+[pypi-url]: https://pypi.org/project/zivid
