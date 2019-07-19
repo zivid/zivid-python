@@ -3,7 +3,8 @@
 # Keep the two lists in sync
 requires = [
     "cmake",
-    "ninja",
-    "scikit-build",
     "conan",
+    "ninja",
+    "requests",
+    "scikit-build",
     ]

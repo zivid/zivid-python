@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [ -z "$1" ]
+then
+    echo "Usage: $0 zivid-sdk-version"
+    exit 1
+fi
+zividSDKVersion=$1
+
 export DEBIAN_FRONTEND=noninteractive
 
 function apt-yes {
@@ -45,5 +52,5 @@ function install_www_deb {
     rm -r $TMP_DIR || exit $?
 }
 
-install_www_deb https://www.zivid.com/hubfs/softwarefiles/releases/1.6.0+7a245bbe-26/u18/zivid-telicam-driver_2.0.0.1-1_amd64.deb || exit $?
-install_www_deb https://www.zivid.com/hubfs/softwarefiles/releases/1.6.0+7a245bbe-26/u18/zivid_1.6.0+7a245bbe-26_amd64.deb || exit $?
+install_www_deb https://www.zivid.com/hubfs/softwarefiles/releases/$zividSDKVersion/u18/zivid-telicam-driver_2.0.0.1-1_amd64.deb || exit $?
+install_www_deb https://www.zivid.com/hubfs/softwarefiles/releases/$zividSDKVersion/u18/zivid_${zividSDKVersion}_amd64.deb || exit $?

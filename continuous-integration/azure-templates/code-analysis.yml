@@ -1,0 +1,12 @@
+jobs:
+- job: Lint
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+  - script: docker run
+              --volume $PWD:/host
+              --workdir /host/continuous-integration/linux
+              --env "PYTHONDONTWRITEBYTECODE=1"
+              archlinux/base
+              bash -c "./setup.sh && ./lint.sh"
+    displayName: 'Lint'

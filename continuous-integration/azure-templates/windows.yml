@@ -1,0 +1,17 @@
+jobs:
+- job: Windows
+  pool:
+    vmImage: vs2017-win2016
+  strategy:
+    matrix:
+      ${{ each pythonVersion in parameters.pythonVersions }}:
+        ${{ each sdkVersion in parameters.sdkVersions }}:
+          ${{ format('Python {0} Zivid SDK {1}', pythonVersion, sdkVersion) }}:
+            python.version: ${{ pythonVersion }}
+            zividSDKVersion: ${{ sdkVersion }}
+  steps:
+  - script: pip install -r continuous-integration\requirements-build-and-test.txt"
+    displayName: 'Install python requirements'
+  - script: python continuous-integration\windows\build.py --root %CD% --zivid-sdk-version $(zividSDKVersion)
+    displayName: 'Build and test'
+    env: { 'Zivid_DIR': 'C:\Program Files\Zivid\CMake\Zivid', 'CXX': 'cl.exe', 'CC': 'cl.exe'}

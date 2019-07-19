@@ -6,45 +6,27 @@ schedules:
     - master
   always: true
 jobs:
-- job: Windows
-  pool:
-    vmImage: vs2017-win2016
-  strategy:
-    matrix:
-      Python35:
-        python.version: '3.5'
-      Python36:
-        python.version: '3.6'
-      Python37:
-        python.version: '3.7'
-  steps:
-  - script: pip install -r continuous-integration\requirements-build-and-test.txt"
-    displayName: 'Install python requirements'
-  - script: python continuous-integration\windows\build.py --root %CD%
-    displayName: 'Build and test'
-    env: { 'Zivid_DIR': 'C:\Program Files\Zivid\CMake\Zivid', 'CXX': 'cl.exe', 'CC': 'cl.exe'}
-- job: Linux
-  pool:
-    vmImage: ubuntu-16.04
-  strategy:
-    matrix:
-      ArchLinux:
-        os: 'archlinux/base'
-        command: './lint.sh'
-      Ubuntu1804:
-        os: 'ubuntu:18.04'
-        command: './test.sh'
-      Ubuntu1604:
-        os: 'ubuntu:16.04'
-        command: './test.sh'
-      Fedora30:
-        os: 'fedora:30'
-        command: './test.sh'
-  steps:
-  - script: docker run
-              --volume $PWD:/host
-              --workdir /host/continuous-integration/linux
-              --env "PYTHONDONTWRITEBYTECODE=1"
-              $(os)
-              bash -c "./setup.sh && $(command)"
-    displayName: 'Build and test'
+- template: continuous-integration/azure-templates/code-analysis.yml
+- template: continuous-integration/azure-templates/windows.yml
+  parameters:
+    pythonVersions: [
+      '3.5',
+      '3.6',
+      '3.7',
+      '3.8'
+    ]
+    sdkVersions: [
+      '1.7.0+a115eaa4-4'
+    ]
+- template: continuous-integration/azure-templates/linux.yml
+  parameters:
+    images: [
+      'ubuntu:16.04',
+      'ubuntu:18.04',
+      'ubuntu:19.10',
+      'fedora:30',
+      'fedora:31'
+    ]
+    sdkVersions: [
+      '1.7.0+a115eaa4-4'
+    ]

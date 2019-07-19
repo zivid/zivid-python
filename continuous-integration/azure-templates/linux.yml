@@ -1,0 +1,20 @@
+jobs:
+- job: Linux
+  pool:
+    vmImage: ubuntu-16.04
+  strategy:
+    matrix:
+      ${{ each image in parameters.images }}:
+        ${{ each sdkVersion in parameters.sdkVersions }}:
+          ${{ format('{0} Zivid SDK {1}', image, sdkVersion) }}:
+            image: ${{ image }}
+            zividSDKVersion: ${{ sdkVersion }}
+  steps:
+  - script: docker run
+              --volume $PWD:/host
+              --workdir /host/continuous-integration/linux
+              --env "PYTHONDONTWRITEBYTECODE=1"
+              $(image)
+              bash -c "./setup.sh $(zividSDKVersion) &&
+                       ./test.sh $(zividSDKVersion)"
+    displayName: 'Build and test'

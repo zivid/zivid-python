@@ -22,7 +22,7 @@ fi
 setupScript=$SCRIPT_DIR/platform-dependent/$osId/setup.sh
 
 if [[ -f $setupScript ]]; then
-    $setupScript || exit $?
+    $setupScript "$@" || exit $?
 else
     echo $setupScript not found
     echo Support for $PRETTY_NAME is not implemented

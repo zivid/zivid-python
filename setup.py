@@ -1,3 +1,4 @@
+import os
 from pkgutil import iter_modules
 
 # To be replaced by: from setuptools_scm import get_version
@@ -5,11 +6,16 @@ def get_version():
     return "0.9.1"
 
 
-def _zivid_sdk_version():
-    return "1.6.0"
+def _zivid_sdk_full_version():
+    try:
+        return os.environ["PYTHON_ZIVID_TARGET_ZIVID_SDK_VERSION"]
+    except KeyError:
+        import requests
+
+        return requests.get("https://zivid.com/software/latest_version").text.strip()
 
 
-def _zivid_python_version():
+def _zivid_python_version(zivid_sdk_version):
     scm_version = get_version()
 
     if "+" in scm_version:
@@ -18,7 +24,7 @@ def _zivid_python_version():
         base_version = scm_version
         scm_metadata = None
 
-    base_version = "{}.{}".format(base_version, _zivid_sdk_version())
+    base_version = "{}.{}".format(base_version, zivid_sdk_version)
 
     if scm_metadata:
         version = "{}+{}".format(base_version, scm_metadata)
@@ -42,16 +48,20 @@ def _main():
     # The purpose of these checks is to help users with PIP<19 lacking support for
     # pyproject.toml
     # Keep the two lists in sync
-    _check_dependency("skbuild", "scikit-build")
     _check_dependency("cmake")
     _check_dependency("conans", "conan")
     _check_dependency("ninja")
+    _check_dependency("requests")
+    _check_dependency("skbuild", "scikit-build")
 
     from skbuild import setup
 
+    zivid_sdk_version = _zivid_sdk_full_version().split("+")[0]
+    zivid_python_version = _zivid_python_version(zivid_sdk_version)
+
     setup(
         name="zivid",
-        version=_zivid_python_version(),
+        version=zivid_python_version,
         description="Defining the Future of 3D Machine Vision",
         long_description=open("README.md").read(),
         long_description_content_type="text/markdown",
@@ -63,8 +73,8 @@ def _main():
         package_dir={"": "modules"},
         install_requires=["numpy"],
         cmake_args=[
-            "-DZIVID_PYTHON_VERSION=" + _zivid_python_version(),
-            "-DZIVID_SDK_VERSION=" + _zivid_sdk_version(),
+            "-DZIVID_PYTHON_VERSION=" + zivid_python_version,
+            "-DZIVID_SDK_VERSION=" + zivid_sdk_version,
         ],
         classifiers=[
             "License :: OSI Approved :: BSD License",
