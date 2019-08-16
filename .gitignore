@@ -4,3 +4,5 @@
 build
 env
 __pycache__
+*.swp
+*.swo
