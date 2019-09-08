@@ -6,7 +6,7 @@ def get_version():
 
 
 def _zivid_sdk_version():
-    return "1.4.0"
+    return "1.5.0"
 
 
 def _zivid_python_version():
