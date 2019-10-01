@@ -33,9 +33,9 @@ class Settings:  # pylint: disable=too-many-instance-attributes, too-few-public-
                 return False
 
             def __str__(self):
-                return """Contrast:
-enabled: {}
-threshold: {}""".format(
+                return """
+        enabled: {}
+        threshold: {}""".format(
                     self.enabled, self.threshold
                 )
 
@@ -63,9 +63,9 @@ threshold: {}""".format(
                 return False
 
             def __str__(self):
-                return """Outlier:
-enabled: {}
-threshold: {}""".format(
+                return """
+        enabled: {}
+        threshold: {}""".format(
                     self.enabled, self.threshold
                 )
 
@@ -89,8 +89,8 @@ threshold: {}""".format(
                 return False
 
             def __str__(self):
-                return """Saturated:
-enabled: {}""".format(
+                return """
+        enabled: {}""".format(
                     self.enabled
                 )
 
@@ -114,8 +114,8 @@ enabled: {}""".format(
                 return False
 
             def __str__(self):
-                return """Reflection:
-enabled: {}""".format(
+                return """
+        enabled: {}""".format(
                     self.enabled
                 )
 
@@ -143,9 +143,9 @@ enabled: {}""".format(
                 return False
 
             def __str__(self):
-                return """Gaussian:
-enabled: {}
-sigma: {}""".format(
+                return """
+        enabled: {}
+        sigma: {}""".format(
                     self.enabled, self.sigma
                 )
 
@@ -185,12 +185,12 @@ sigma: {}""".format(
             return False
 
         def __str__(self):
-            return """Filters:
-contrast: {}
-outlier: {}
-saturated: {}
-reflection: {}
-gaussian: {}""".format(
+            return """
+    contrast: {}
+    outlier: {}
+    saturated: {}
+    reflection: {}
+    gaussian: {}""".format(
                 self.contrast,
                 self.outlier,
                 self.saturated,
@@ -247,7 +247,7 @@ gaussian: {}""".format(
         return False
 
     def __str__(self):
-        return """Settings:
+        return """--- # Settings
 bidirectional: {}
 blue_balance: {}
 brightness: {}
