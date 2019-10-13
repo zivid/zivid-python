@@ -29,5 +29,5 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS(userData)
     };
 
-    MetaData wrapClass(pybind11::class_<ReleasableCamera> pyClass);
+    void wrapClass(pybind11::class_<ReleasableCamera> pyClass);
 } // namespace ZividPython

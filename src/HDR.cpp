@@ -10,21 +10,18 @@ namespace py = pybind11;
 
 namespace ZividPython::HDR
 {
-    MetaData wrapAsSubmodule(pybind11::module &dest)
+    void wrapAsSubmodule(pybind11::module &dest)
     {
-        dest.def(
-            "combine_frames",
-            [](const std::vector<ReleasableFrame> &releasableFrames) {
-                std::vector<Zivid::Frame> frames;
-                frames.reserve(releasableFrames.size());
-                std::transform(std::begin(releasableFrames),
-                               std::end(releasableFrames),
-                               std::back_inserter(frames),
-                               [](const auto &releaseableFrame) { return releaseableFrame.impl(); });
-                return ReleasableFrame{ Zivid::HDR::combineFrames(begin(frames), end(frames)) };
-            },
-            py::arg("frame_sequence"));
-
-        return { "Zivid environment, configured through environment variables" };
+        dest.def("combine_frames",
+                 [](const std::vector<ReleasableFrame> &releasableFrames) {
+                     std::vector<Zivid::Frame> frames;
+                     frames.reserve(releasableFrames.size());
+                     std::transform(std::begin(releasableFrames),
+                                    std::end(releasableFrames),
+                                    std::back_inserter(frames),
+                                    [](const auto &releaseableFrame) { return releaseableFrame.impl(); });
+                     return ReleasableFrame{ Zivid::HDR::combineFrames(begin(frames), end(frames)) };
+                 },
+                 py::arg("frame_sequence"));
     }
 } // namespace ZividPython::HDR

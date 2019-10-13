@@ -4,5 +4,5 @@
 
 namespace ZividPython::Environment
 {
-    MetaData wrapAsSubmodule(pybind11::module &dest);
+    void wrapAsSubmodule(pybind11::module &dest);
 } // namespace ZividPython::Environment

@@ -12,7 +12,7 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
-    MetaData wrapClass(pybind11::class_<ReleasableCamera> pyClass)
+    void wrapClass(pybind11::class_<ReleasableCamera> pyClass)
     {
         pyClass.def(py::init<>())
             .def(py::self == py::self) // NOLINT
@@ -29,33 +29,25 @@ namespace ZividPython
             .def_property_readonly("user_data_max_size_bytes", &ReleasableCamera::userDataMaxSizeBytes)
             .def("write_user_data", &ReleasableCamera::writeUserData)
             .def_property_readonly("user_data", &ReleasableCamera::userData)
-            .def(
-                "capture",
-                [](ReleasableCamera &camera, const std::vector<Zivid::Settings> &settingsCollection) {
-                    // Todo: This is a workaround for a bug in Zivid SDK, it can be removed when
-                    //       Zivid::HDR::combineFrames starts to support empty ranges.
-                    if(settingsCollection.empty())
-                    {
-                        throw std::runtime_error{ "Capture called with empty settings list" };
-                    }
-                    std::vector<Zivid::Frame> frames;
-                    std::transform(std::begin(settingsCollection),
-                                   std::end(settingsCollection),
-                                   std::back_inserter(frames),
-                                   [&](const auto &settings) {
-                                       camera.setSettings(settings);
-                                       return camera.capture().impl();
-                                   });
-                    return ReleasableFrame{ Zivid::HDR::combineFrames(begin(frames), end(frames)) };
-                },
-                py::arg("settings_collection"))
+            .def("capture",
+                 [](ReleasableCamera &camera, const std::vector<Zivid::Settings> &settingsCollection) {
+                     // Todo: This is a workaround for a bug in Zivid SDK, it can be removed when
+                     //       Zivid::HDR::combineFrames starts to support empty ranges.
+                     if(settingsCollection.empty())
+                     {
+                         throw std::runtime_error{ "Capture called with empty settings list" };
+                     }
+                     std::vector<Zivid::Frame> frames;
+                     std::transform(std::begin(settingsCollection),
+                                    std::end(settingsCollection),
+                                    std::back_inserter(frames),
+                                    [&](const auto &settings) {
+                                        camera.setSettings(settings);
+                                        return camera.capture().impl();
+                                    });
+                     return ReleasableFrame{ Zivid::HDR::combineFrames(begin(frames), end(frames)) };
+                 },
+                 py::arg("settings_collection"))
             .def_property_readonly("firmware_version", &ReleasableCamera::firmwareVersion);
-
-        return { R"(Interface to one Zivid camera
-
-See :class:`Settings` for a list of settings that can be configured in the camera.
-Capture single frames by calling :func:`capture` or start continuous frame recording
-:func:`start_live`.
-)" };
     }
 } // namespace ZividPython
