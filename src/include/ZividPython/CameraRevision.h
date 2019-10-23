@@ -5,5 +5,5 @@
 
 namespace ZividPython
 {
-    MetaData wrapClass(pybind11::class_<Zivid::CameraRevision> pyClass);
+    void wrapClass(pybind11::class_<Zivid::CameraRevision> pyClass);
 } // namespace ZividPython

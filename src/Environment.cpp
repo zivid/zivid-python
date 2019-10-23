@@ -5,10 +5,8 @@
 
 namespace ZividPython::Environment
 {
-    MetaData wrapAsSubmodule(pybind11::module &dest)
+    void wrapAsSubmodule(pybind11::module &dest)
     {
         dest.def("data_path", &Zivid::Environment::dataPath);
-
-        return { "Zivid environment, configured through environment variables" };
     }
 } // namespace ZividPython::Environment

@@ -8,7 +8,7 @@ namespace py = pybind11;
 
 namespace ZividPython::Firmware
 {
-    MetaData wrapAsSubmodule(pybind11::module &dest)
+    void wrapAsSubmodule(pybind11::module &dest)
     {
         dest.def(
                 "update",
@@ -21,7 +21,5 @@ namespace ZividPython::Firmware
                 "is_up_to_date",
                 [](ReleasableCamera &camera) { return Zivid::Firmware::isUpToDate(camera.impl()); },
                 py::arg("camera"));
-
-        return { "Functions used to query the state and update the camera firmware" };
     }
 } // namespace ZividPython::Firmware

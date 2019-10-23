@@ -45,21 +45,10 @@ namespace
 
 namespace ZividPython
 {
-    MetaData wrapClass(pybind11::class_<Zivid::PointCloud> pyClass)
+    void wrapClass(pybind11::class_<Zivid::PointCloud> pyClass)
     {
         PYBIND11_NUMPY_DTYPE(DataType, x, y, z, contrast, b, g, r, a);
 
         pyClass.def(py::init<>()).def_buffer(makeBufferInfo);
-
-        return { R"(A point cloud with x,y,z, contrast and color data laid out on a 2D grid
-
-This class implements the `Buffer Protocol <docs.python.org/c-api/buffer.html>`_ and can
-be used in combinatins with modules supporting that protocol.
-
-NumPy is supported by using the `numpy.array` class like this:
-
-.. code-block:: python
-
-   np_point_cloud = numpy.array(point_cloud))" };
     }
 } // namespace ZividPython
