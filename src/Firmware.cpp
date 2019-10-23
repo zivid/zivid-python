@@ -10,14 +10,16 @@ namespace ZividPython::Firmware
 {
     void wrapAsSubmodule(pybind11::module &dest)
     {
-        dest.def("update",
-                 [](ReleasableCamera &camera, const Zivid::Firmware::ProgressCallback &callback) {
-                     Zivid::Firmware::update(camera.impl(), callback);
-                 },
-                 py::arg("camera"),
-                 py::arg("progress_callback") = Zivid::Firmware::ProgressCallback{})
-            .def("is_up_to_date",
-                 [](ReleasableCamera &camera) { return Zivid::Firmware::isUpToDate(camera.impl()); },
-                 py::arg("camera"));
+        dest.def(
+                "update",
+                [](ReleasableCamera &camera, const Zivid::Firmware::ProgressCallback &callback) {
+                    Zivid::Firmware::update(camera.impl(), callback);
+                },
+                py::arg("camera"),
+                py::arg("progress_callback") = Zivid::Firmware::ProgressCallback{})
+            .def(
+                "is_up_to_date",
+                [](ReleasableCamera &camera) { return Zivid::Firmware::isUpToDate(camera.impl()); },
+                py::arg("camera"));
     }
 } // namespace ZividPython::Firmware

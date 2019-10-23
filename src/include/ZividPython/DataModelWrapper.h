@@ -81,9 +81,10 @@ namespace ZividPython
                     std::string name{ MemberType::name };
                     std::transform(begin(name), end(name), begin(name), ::tolower);
 
-                    pyClass.def_property(name.c_str(),
-                                         [](const Target &source) { return Detail::getHelper<MemberType>(source); },
-                                         pybind11::overload_cast<const MemberType &>(&Target::set));
+                    pyClass.def_property(
+                        name.c_str(),
+                        [](const Target &source) { return Detail::getHelper<MemberType>(source); },
+                        pybind11::overload_cast<const MemberType &>(&Target::set));
                 });
             }
         }
