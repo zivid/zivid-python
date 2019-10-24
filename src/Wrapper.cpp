@@ -18,7 +18,6 @@
 
 ZIVID_PYTHON_MODULE // NOLINT
 {
-    module.doc() = "Python bindings for the Zivid camera";
     module.attr("__version__") = pybind11::str(ZIVID_PYTHON_VERSION);
 
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings);

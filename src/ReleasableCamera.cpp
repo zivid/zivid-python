@@ -12,7 +12,7 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
-    MetaData wrapClass(pybind11::class_<ReleasableCamera> pyClass)
+    void wrapClass(pybind11::class_<ReleasableCamera> pyClass)
     {
         pyClass.def(py::init<>())
             .def(py::self == py::self) // NOLINT
@@ -50,12 +50,5 @@ namespace ZividPython
                 },
                 py::arg("settings_collection"))
             .def_property_readonly("firmware_version", &ReleasableCamera::firmwareVersion);
-
-        return { R"(Interface to one Zivid camera
-
-See :class:`Settings` for a list of settings that can be configured in the camera.
-Capture single frames by calling :func:`capture` or start continuous frame recording
-:func:`start_live`.
-)" };
     }
 } // namespace ZividPython

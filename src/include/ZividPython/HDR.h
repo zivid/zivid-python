@@ -4,5 +4,5 @@
 
 namespace ZividPython::HDR
 {
-    MetaData wrapAsSubmodule(pybind11::module &dest);
+    void wrapAsSubmodule(pybind11::module &dest);
 } // namespace ZividPython::HDR

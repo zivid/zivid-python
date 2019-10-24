@@ -8,7 +8,7 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
-    MetaData wrapClass(pybind11::class_<SingletonApplication> pyClass)
+    void wrapClass(pybind11::class_<SingletonApplication> pyClass)
     {
         pyClass.def(py::init<>())
             .def("cameras", &SingletonApplication::cameras)
@@ -28,7 +28,5 @@ namespace ZividPython
                  &SingletonApplication::createFileCamera,
                  py::arg("frame_file"),
                  py::arg("settings") = Zivid::Settings{});
-
-        return { "Manager class for Zivid" };
     }
 } // namespace ZividPython

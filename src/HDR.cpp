@@ -10,7 +10,7 @@ namespace py = pybind11;
 
 namespace ZividPython::HDR
 {
-    MetaData wrapAsSubmodule(pybind11::module &dest)
+    void wrapAsSubmodule(pybind11::module &dest)
     {
         dest.def(
             "combine_frames",
@@ -24,7 +24,5 @@ namespace ZividPython::HDR
                 return ReleasableFrame{ Zivid::HDR::combineFrames(begin(frames), end(frames)) };
             },
             py::arg("frame_sequence"));
-
-        return { "Zivid environment, configured through environment variables" };
     }
 } // namespace ZividPython::HDR

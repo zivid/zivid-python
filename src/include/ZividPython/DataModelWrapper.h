@@ -29,8 +29,7 @@ namespace ZividPython
                 .def(pybind11::self != pybind11::self) // NOLINT
                 .def_readonly_static("is_container", &Target::isContainer)
                 .def_readonly_static("name", &Target::name)
-                .def_readonly_static("path", &Target::path)
-                .doc() = Target::description;
+                .def_readonly_static("path", &Target::path);
 
             if constexpr(isRoot)
             {

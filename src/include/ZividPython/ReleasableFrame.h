@@ -19,5 +19,5 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS(info)
     };
 
-    MetaData wrapClass(pybind11::class_<ReleasableFrame> pyClass);
+    void wrapClass(pybind11::class_<ReleasableFrame> pyClass);
 } // namespace ZividPython

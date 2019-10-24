@@ -29,5 +29,5 @@ namespace ZividPython
                                                 setting)
     };
 
-    MetaData wrapClass(pybind11::class_<SingletonApplication> pyClass);
+    void wrapClass(pybind11::class_<SingletonApplication> pyClass);
 } // namespace ZividPython
