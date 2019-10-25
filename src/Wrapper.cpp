@@ -9,6 +9,7 @@
 #include <ZividPython/HDR.h>
 #include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/ReleasableFrame.h>
+#include <ZividPython/ReleasableFrame2D.h>
 #include <ZividPython/ReleasablePointCloud.h>
 #include <ZividPython/SingletonApplication.h>
 #include <ZividPython/Version.h>
@@ -21,6 +22,7 @@ ZIVID_PYTHON_MODULE // NOLINT
     module.attr("__version__") = pybind11::str(ZIVID_PYTHON_VERSION);
 
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings);
+    ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings2D);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraState);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, FrameInfo);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraIntrinsics);
@@ -28,8 +30,11 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_CLASS_AS_SINGLETON(module, Application);
     ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Camera);
     ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Frame);
+    ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Frame2D);
+
     ZIVID_PYTHON_WRAP_CLASS(module, CameraRevision);
 
+    ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, Image);
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, PointCloud);
 
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Environment);

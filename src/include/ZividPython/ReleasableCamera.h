@@ -3,6 +3,7 @@
 #include <Zivid/Camera.h>
 #include <ZividPython/Releasable.h>
 #include <ZividPython/ReleasableFrame.h>
+#include <ZividPython/ReleasableFrame2D.h>
 #include <ZividPython/Wrappers.h>
 
 namespace ZividPython
@@ -17,6 +18,7 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableCamera, connect, const Zivid::Settings &, settings)
         ZIVID_PYTHON_FORWARD_0_ARGS(disconnect)
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableFrame, capture)
+        ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableFrame2D, capture2D, const Zivid::Settings2D &, settings2D)
         ZIVID_PYTHON_FORWARD_0_ARGS(settings)
         ZIVID_PYTHON_FORWARD_1_ARGS(setSettings, const Zivid::Settings &, settings)
         ZIVID_PYTHON_FORWARD_0_ARGS(state)
