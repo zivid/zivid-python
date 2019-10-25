@@ -2,16 +2,16 @@ import pytest
 from scripts.sample_data import download_and_extract
 
 
-@pytest.fixture()
-def application():
+@pytest.fixture(name="application")
+def application_fixture():
     import zivid
 
     with zivid.Application() as app:
         yield app
 
 
-@pytest.fixture(scope="session")
-def sample_data_file():
+@pytest.fixture(name="sample_data_file", scope="session")
+def sample_data_file_fixture():
     from pathlib import Path
     import tempfile
 
@@ -21,24 +21,22 @@ def sample_data_file():
         yield sample_data
 
 
-@pytest.fixture()
-def file_camera(application, sample_data_file):  # pylint: disable=redefined-outer-name
+@pytest.fixture(name="file_camera")
+def file_camera_fixture(application, sample_data_file):
     with application.create_file_camera(sample_data_file) as file_cam:
         yield file_cam
 
 
-@pytest.fixture()
-def frame(
-    application, sample_data_file
-):  # pylint: disable=redefined-outer-name, unused-argument
+@pytest.fixture(name="frame")
+def frame_fixture(application, sample_data_file):  # pylint: disable=unused-argument
     import zivid
 
     with zivid.Frame(sample_data_file) as frame:
         yield frame
 
 
-@pytest.fixture()
-def random_settings():
+@pytest.fixture(name="random_settings")
+def random_settings_fixture():
     import datetime
     from random import randint, choice, uniform
     import zivid
@@ -68,10 +66,9 @@ def random_settings():
     yield heavily_modified_settings
 
 
-@pytest.fixture()
-def three_frames(
-    application,  # pylint: disable=redefined-outer-name, unused-argument
-    sample_data_file,  # pylint: disable=redefined-outer-name
+@pytest.fixture(name="three_frames")
+def three_frames_fixture(
+    application, sample_data_file  # pylint: disable=unused-argument
 ):
     import zivid
 
