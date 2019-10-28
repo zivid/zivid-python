@@ -7,6 +7,7 @@ __version__ = zivid._version.get_version(__name__)  # pylint: disable=protected-
 
 import zivid.environment
 import zivid.firmware
+import zivid.handeye
 import zivid.hdr
 from zivid.application import Application
 from zivid.camera import Camera

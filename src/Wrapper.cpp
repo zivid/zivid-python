@@ -7,6 +7,8 @@
 #include <ZividPython/Environment.h>
 #include <ZividPython/Firmware.h>
 #include <ZividPython/HDR.h>
+#include <ZividPython/HandEye.h>
+#include <ZividPython/Pose.h>
 #include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/ReleasableFrame.h>
 #include <ZividPython/ReleasableFrame2D.h>
@@ -20,6 +22,8 @@
 ZIVID_PYTHON_MODULE // NOLINT
 {
     module.attr("__version__") = pybind11::str(ZIVID_PYTHON_VERSION);
+
+    using namespace Zivid;
 
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings2D);
@@ -41,4 +45,5 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Firmware);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, HDR);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Version);
+    ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, HandEye);
 }

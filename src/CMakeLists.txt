@@ -1,11 +1,16 @@
 project(_zivid LANGUAGES CXX C)
 
 set(SOURCES
+    Calibrate.cpp
+    CalibrationResidual.cpp
     CameraRevision.cpp
+    Detector.cpp
     Environment.cpp
     Firmware.cpp
+    HandEye.cpp
     HDR.cpp
     ReleasablePointCloud.cpp
+    Pose.cpp
     ReleasableCamera.cpp
     ReleasableFrame.cpp
     SingletonApplication.cpp
@@ -32,6 +37,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE Zivid::Core
             pybind11::module
+            Eigen3::Eigen
 )
 
 set_target_properties(${PROJECT_NAME}

@@ -14,7 +14,7 @@ namespace ZividPython
 {
     void wrapClass(pybind11::class_<ReleasableCamera> pyClass)
     {
-        pyClass.def(py::init<>())
+        pyClass.def(py::init())
             .def(py::self == py::self) // NOLINT
             .def(py::self != py::self) // NOLINT
             .def("connect", &ReleasableCamera::connect, py::arg("settings") = Zivid::Settings{})

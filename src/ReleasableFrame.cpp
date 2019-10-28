@@ -8,7 +8,7 @@ namespace ZividPython
 {
     void wrapClass(pybind11::class_<ReleasableFrame> pyClass)
     {
-        pyClass.def(py::init<>())
+        pyClass.def(py::init())
             .def(py::init<const std::string &>(), py::arg("file_name"))
             .def("save", &ReleasableFrame::save, py::arg("file_name"))
             .def("load", &ReleasableFrame::load, py::arg("file_name"))
