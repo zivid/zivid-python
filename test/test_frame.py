@@ -13,10 +13,10 @@ def test_illegal_init(application):  # pylint: disable=unused-argument
 
 
 def test_get_point_cloud(frame):
-    import numpy
+    import zivid
 
     point_cloud = frame.get_point_cloud()
-    assert isinstance(point_cloud, numpy.ndarray)
+    assert isinstance(point_cloud, zivid.PointCloud)
 
 
 def test_release(frame):

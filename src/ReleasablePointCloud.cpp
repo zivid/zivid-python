@@ -1,4 +1,4 @@
-#include <ZividPython/PointCloud.h>
+#include <ZividPython/ReleasablePointCloud.h>
 
 #include <pybind11/pybind11.h>
 
@@ -18,7 +18,7 @@ namespace
     };
 #pragma pack(pop)
 
-    py::buffer_info makeBufferInfo(Zivid::PointCloud &pointCloud)
+    py::buffer_info makeBufferInfo(ZividPython::ReleasablePointCloud &pointCloud)
     {
         const auto data = pointCloud.dataPtr();
 
@@ -45,10 +45,13 @@ namespace
 
 namespace ZividPython
 {
-    void wrapClass(pybind11::class_<Zivid::PointCloud> pyClass)
+    void wrapClass(pybind11::class_<ReleasablePointCloud> pyClass)
     {
         PYBIND11_NUMPY_DTYPE(DataType, x, y, z, contrast, b, g, r, a);
 
-        pyClass.def(py::init<>()).def_buffer(makeBufferInfo);
+        pyClass.def(py::init<>())
+            .def_buffer(makeBufferInfo)
+            .def("width", &ReleasablePointCloud::width)
+            .def("height", &ReleasablePointCloud::height);
     }
 } // namespace ZividPython

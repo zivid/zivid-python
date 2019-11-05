@@ -1,11 +1,11 @@
 """Contains the Frame class."""
 from pathlib import Path
-import numpy
 import _zivid
 
 import zivid._settings_converter as _settings_converter
 import zivid._camera_state_converter as _camera_state_converter
 import zivid._frame_info_converter as _frame_info_converter
+from zivid.point_cloud import PointCloud
 
 
 class Frame:  # pylint: disable=too-few-public-methods
@@ -36,10 +36,10 @@ class Frame:  # pylint: disable=too-few-public-methods
         """Copy the point cloud to the CPU and returns it.
 
         Returns:
-            A numpy array
+            a point cloud instance
 
         """
-        return numpy.array(self.__impl.get_point_cloud())
+        return PointCloud(self.__impl.get_point_cloud())
 
     def save(self, file_path):
         """Save the frame to file. The file type is determined from the file extension.

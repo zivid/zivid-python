@@ -93,6 +93,13 @@ namespace ZividPython
             m_impl.reset();
         }
 
+        // This function is required to verify that the buffer has not already
+        // released in certain situations. Ideally it should not exist.
+        void assertNotReleased()
+        {
+            std::ignore = impl();
+        }
+
     private:
         std::optional<T> m_impl{ std::make_optional<T>() };
     };

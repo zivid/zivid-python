@@ -7,9 +7,9 @@
 #include <ZividPython/Environment.h>
 #include <ZividPython/Firmware.h>
 #include <ZividPython/HDR.h>
-#include <ZividPython/PointCloud.h>
 #include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/ReleasableFrame.h>
+#include <ZividPython/ReleasablePointCloud.h>
 #include <ZividPython/SingletonApplication.h>
 #include <ZividPython/Version.h>
 #include <ZividPython/Wrapper.h>
@@ -30,7 +30,7 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Frame);
     ZIVID_PYTHON_WRAP_CLASS(module, CameraRevision);
 
-    ZIVID_PYTHON_WRAP_CLASS_BUFFER(module, PointCloud);
+    ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, PointCloud);
 
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Environment);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Firmware);

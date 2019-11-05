@@ -11,4 +11,5 @@ ignore =
 ### Temporarily disabled docstring errors:
     D105, # missing docstring in magic method
     I401, # Missing exception(s) in Raises section
+    D402, # First line should not be the function’s “signature”
 show-source = True

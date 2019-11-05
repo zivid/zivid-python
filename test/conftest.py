@@ -35,6 +35,12 @@ def frame_fixture(application, sample_data_file):  # pylint: disable=unused-argu
         yield frame
 
 
+@pytest.fixture(name="point_cloud")
+def point_cloud_fixture(frame):
+    with frame.get_point_cloud() as point_cloud:
+        yield point_cloud
+
+
 @pytest.fixture(name="random_settings")
 def random_settings_fixture():
     import datetime
