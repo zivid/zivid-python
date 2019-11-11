@@ -114,11 +114,11 @@ Please visit [Zivid Knowledge Base](http://help.zivid.com) for general informati
 
 | Operating System | Python version | Zivid SDK version |
 | :--------------- | :------------- | :---------------- |
-| Ubuntu 18.04     | 3.6            | 1.5.0             |
-| Ubuntu 16.04     | 3.5            | 1.5.0             |
-| Fedora 30        | 3.7            | 1.5.0             |
+| Ubuntu 18.04     | 3.6            | 1.6.0             |
+| Ubuntu 16.04     | 3.5            | 1.6.0             |
+| Fedora 30        | 3.7            | 1.6.0             |
 | Arch Linux*      | latest         | latest            |
-| Windows 10*      | 3.5, 3.6, 3.7  | 1.5.0             |
+| Windows 10*      | 3.5, 3.6, 3.7  | 1.6.0             |
 
 [*] Only build, no unit testing.
 
