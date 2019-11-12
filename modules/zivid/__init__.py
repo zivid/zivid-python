@@ -14,6 +14,7 @@ from zivid.camera_state import (
 )
 import zivid.environment
 import zivid.firmware
+from zivid.point_cloud import PointCloud
 from zivid.frame import Frame  # noqa: F401 'zivid.frame.Frame' imported but unused
 from zivid.frame_info import (
     FrameInfo,  # noqa: F401 'zivid.frame_info.FrameInfo' imported but unused

@@ -30,7 +30,7 @@ namespace ZividPython
 
         if constexpr(WrapType::releasable == wrapType)
         {
-            pyClass.def("release", &Source::release);
+            pyClass.def("release", &Source::release).def("assert_not_released", &Source::assertNotReleased);
         }
         else if constexpr(WrapType::singleton == wrapType)
         {
@@ -63,10 +63,10 @@ namespace ZividPython
     ZividPython::wrapClass<ZividPython::Singleton##name, ZividPython::WrapType::singleton>(                            \
         dest, static_cast<void (*)(pybind11::class_<ZividPython::Singleton##name>)>(ZividPython::wrapClass), #name);
 
-#define ZIVID_PYTHON_WRAP_CLASS_BUFFER(dest, name)                                                                     \
-    ZividPython::wrapClass<Zivid::name, ZividPython::WrapType::normal>(                                                \
+#define ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(dest, name)                                                       \
+    ZividPython::wrapClass<ZividPython::Releasable##name, ZividPython::WrapType::releasable>(                          \
         dest,                                                                                                          \
-        static_cast<void (*)(pybind11::class_<Zivid::name>)>(ZividPython::wrapClass),                                  \
+        static_cast<void (*)(pybind11::class_<ZividPython::Releasable##name>)>(ZividPython::wrapClass),                \
         #name,                                                                                                         \
         pybind11::buffer_protocol())
 

@@ -5,7 +5,7 @@ set(SOURCES
     Environment.cpp
     Firmware.cpp
     HDR.cpp
-    PointCloud.cpp
+    ReleasablePointCloud.cpp
     ReleasableCamera.cpp
     ReleasableFrame.cpp
     SingletonApplication.cpp
