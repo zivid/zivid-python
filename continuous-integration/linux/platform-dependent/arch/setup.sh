@@ -10,7 +10,6 @@ pacman -Syu --noconfirm --needed \
        ncurses \
        ninja \
        numactl \
-       pybind11 \
        python-pip \
        shellcheck \
        sudo \
