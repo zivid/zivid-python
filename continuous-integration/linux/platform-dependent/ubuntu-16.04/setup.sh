@@ -43,6 +43,7 @@ install_opencl_cpu_runtime || exit $?
 
 function install_www_deb {
     TMP_DIR=$(mktemp --tmpdir --directory zivid-python-install-www-deb-XXXX) || exit $?
+    chmod o+x "$TMP_DIR" || exit $?
     pushd $TMP_DIR || exit $?
     wget --progress=bar:force:noscroll "$@" || exit $?
     apt-yes install --fix-broken ./*deb || exit $?
