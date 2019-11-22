@@ -44,6 +44,7 @@ def _main():
     # Keep the two lists in sync
     _check_dependency("skbuild", "scikit-build")
     _check_dependency("cmake")
+    _check_dependency("conans", "conan")
     _check_dependency("ninja")
 
     from skbuild import setup
