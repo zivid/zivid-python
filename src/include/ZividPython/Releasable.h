@@ -8,49 +8,49 @@
         return impl().functionName();                                                                                  \
     }
 
-#define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReturnType, functionName)                                              \
+#define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(returnType, functionName)                                              \
     auto functionName()                                                                                                \
     {                                                                                                                  \
-        return ReturnType{ impl().functionName() };                                                                    \
+        return returnType{ impl().functionName() };                                                                    \
     }
 
-#define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_CONTAINER_RETURN(Container, ReturnType, functionName)                         \
+#define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_CONTAINER_RETURN(container, returnType, functionName)                         \
     auto functionName()                                                                                                \
     {                                                                                                                  \
         auto nativeContainer = impl().functionName();                                                                  \
-        Container<ReturnType> returnContainer;                                                                         \
+        container<returnType> returnContainer;                                                                         \
         returnContainer.reserve(nativeContainer.size());                                                               \
         std::transform(std::make_move_iterator(begin(nativeContainer)),                                                \
                        std::make_move_iterator(end(nativeContainer)),                                                  \
                        std::back_inserter(returnContainer),                                                            \
                        [](auto &&nativeValue) {                                                                        \
-                           return ReturnType{ std::forward<decltype(nativeValue)>(nativeValue) };                      \
+                           return returnType{ std::forward<decltype(nativeValue)>(nativeValue) };                      \
                        });                                                                                             \
         return returnContainer;                                                                                        \
     }
 
-#define ZIVID_PYTHON_FORWARD_1_ARGS(functionName, arg1type, arg1name)                                                  \
-    decltype(auto) functionName(arg1type arg1name)                                                                     \
+#define ZIVID_PYTHON_FORWARD_1_ARGS(functionName, arg1Type, arg1Name)                                                  \
+    decltype(auto) functionName(arg1Type arg1Name)                                                                     \
     {                                                                                                                  \
-        return impl().functionName(arg1name);                                                                          \
+        return impl().functionName(arg1Name);                                                                          \
     }
 
-#define ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReturnType, functionName, arg1type, arg1name)                          \
-    auto functionName(arg1type arg1name)                                                                               \
+#define ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(returnType, functionName, arg1Type, arg1Name)                          \
+    auto functionName(arg1Type arg1Name)                                                                               \
     {                                                                                                                  \
-        return ReturnType{ impl().functionName(arg1name) };                                                            \
+        return returnType{ impl().functionName(arg1Name) };                                                            \
     }
 
-#define ZIVID_PYTHON_FORWARD_2_ARGS(functionName, arg1type, arg1name, arg2type, arg2name)                              \
-    decltype(auto) functionName(arg1type arg1name, arg2type arg2name)                                                  \
+#define ZIVID_PYTHON_FORWARD_2_ARGS(functionName, arg1Type, arg1Name, arg2Type, arg2Name)                              \
+    decltype(auto) functionName(arg1Type arg1Name, arg2Type arg2Name)                                                  \
     {                                                                                                                  \
-        return impl().functionName(arg1name, arg2name);                                                                \
+        return impl().functionName(arg1Name, arg2Name);                                                                \
     }
 
-#define ZIVID_PYTHON_FORWARD_2_ARGS_WRAP_RETURN(ReturnType, functionName, arg1type, arg1name, arg2type, arg2name)      \
-    auto functionName(arg1type arg1name, arg2type arg2name)                                                            \
+#define ZIVID_PYTHON_FORWARD_2_ARGS_WRAP_RETURN(returnType, functionName, arg1Type, arg1Name, arg2Type, arg2Name)      \
+    auto functionName(arg1Type arg1Name, arg2Type arg2Name)                                                            \
     {                                                                                                                  \
-        return ReturnType{ impl().functionName(arg1name, arg2name) };                                                  \
+        return returnType{ impl().functionName(arg1Name, arg2Name) };                                                  \
     }
 
 #define ZIVID_PYTHON_ADD_COMPARE(op)                                                                                   \
