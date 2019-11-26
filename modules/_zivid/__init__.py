@@ -13,6 +13,9 @@ try:
         PointCloud,
         Settings,
         version,
+        Settings2D,
+        Frame2D,
+        Image,
     )
 except ImportError as ex:
     import platform

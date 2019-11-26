@@ -119,3 +119,14 @@ def test_update_settings_one_setting(file_camera):
         updater.settings.iris = iris
 
     assert file_camera.settings.iris == iris
+
+
+@pytest.mark.physical_camera
+def test_capture_2d(physical_camera):
+    import zivid
+
+    settings_2d = zivid.Settings2D()
+
+    frame_2d = physical_camera.capture_2d(settings_2d)
+    assert frame_2d is not None
+    assert isinstance(frame_2d, zivid.Frame2D)

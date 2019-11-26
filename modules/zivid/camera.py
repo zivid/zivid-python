@@ -1,6 +1,8 @@
 """Contains Camera class."""
 from zivid.frame import Frame
+from zivid.frame_2d import Frame2D
 import zivid._settings_converter as _settings_converter
+import zivid._settings_2d_converter as _settings_2d_converter
 import zivid._camera_state_converter as _camera_state_converter
 import _zivid
 
@@ -110,6 +112,24 @@ class Camera:
                 )
             )
         return Frame(self.__impl.capture())
+
+    def capture_2d(self, settings_2d):
+        """Capture a single 2D frame.
+
+        Note that the provided settings will only apply to this current 2D capture, and not future 3D captures.
+
+        Args:
+            settings_2d: Settings to use for the capture
+
+        Returns:
+            A frame containing a 2D image and metadata.
+
+        """
+        return Frame2D(
+            self.__impl.capture_2d(
+                _settings_2d_converter.to_internal_settings_2d(settings_2d)
+            )
+        )
 
     @property
     def state(self):

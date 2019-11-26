@@ -20,6 +20,7 @@ namespace ZividPython
             .def("connect", &ReleasableCamera::connect, py::arg("settings") = Zivid::Settings{})
             .def("disconnect", &ReleasableCamera::disconnect)
             .def("capture", py::overload_cast<>(&ReleasableCamera::capture))
+            .def("capture_2d", &ReleasableCamera::capture2D, py::arg("settings_2d") = Zivid::Settings2D{})
             .def_property("settings", &ReleasableCamera::settings, &ReleasableCamera::setSettings)
             .def_property_readonly("state", &ReleasableCamera::state)
             .def_property_readonly("model_name", &ReleasableCamera::modelName)

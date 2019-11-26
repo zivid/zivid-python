@@ -11,6 +11,8 @@ set(SOURCES
     SingletonApplication.cpp
     Version.cpp
     Wrapper.cpp
+    ReleasableFrame2D.cpp
+    ReleasableImage.cpp
 )
 
 configure_file("Wrapper.h.in" "${CMAKE_CURRENT_BINARY_DIR}/include/ZividPython/Wrapper.h" @ONLY)

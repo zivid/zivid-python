@@ -27,12 +27,33 @@ def file_camera_fixture(application, sample_data_file):
         yield file_cam
 
 
+@pytest.fixture(name="physical_camera")
+def physical_camera_fixture(application):
+    with application.connect_camera() as cam:
+        yield cam
+
+
 @pytest.fixture(name="frame")
 def frame_fixture(application, sample_data_file):  # pylint: disable=unused-argument
     import zivid
 
     with zivid.Frame(sample_data_file) as frame:
         yield frame
+
+
+@pytest.fixture(name="physical_camera_frame_2d")
+def physical_camera_frame_2d_fixture(physical_camera):
+    import zivid
+
+    settings_2d = zivid.Settings2D()
+    with physical_camera.capture_2d(settings_2d) as frame_2d:
+        yield frame_2d
+
+
+@pytest.fixture(name="physical_camera_image_2d")
+def physical_camera_image_2d_fixture(physical_camera_frame_2d):
+    with physical_camera_frame_2d.image() as image_2d:
+        yield image_2d
 
 
 @pytest.fixture(name="point_cloud")

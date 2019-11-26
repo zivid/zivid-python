@@ -2,6 +2,12 @@
 
 #include <optional>
 
+#define ZIVID_PYTHON_FORWARD_0_ARGS_TEMPLATE_1_ARG_WRAP_RETURN(returnType, functionName, returnTypeTypename)           \
+    auto functionName()                                                                                                \
+    {                                                                                                                  \
+        return returnType{ impl().functionName<returnTypeTypename>() };                                                \
+    }
+
 #define ZIVID_PYTHON_FORWARD_0_ARGS(functionName)                                                                      \
     decltype(auto) functionName()                                                                                      \
     {                                                                                                                  \
