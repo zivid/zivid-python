@@ -10,7 +10,7 @@ namespace ZividPython
 {
     void wrapClass(pybind11::class_<SingletonApplication> pyClass)
     {
-        pyClass.def(py::init<>())
+        pyClass.def(py::init())
             .def("cameras", &SingletonApplication::cameras)
             .def("connect_camera",
                  py::overload_cast<const Zivid::Settings &>(&SingletonApplication::connectCamera),

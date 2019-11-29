@@ -7,6 +7,7 @@ try:
         CameraState,
         environment,
         firmware,
+        handeye,
         Frame,
         FrameInfo,
         hdr,

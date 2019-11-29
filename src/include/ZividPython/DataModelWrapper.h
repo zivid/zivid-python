@@ -21,7 +21,7 @@ namespace ZividPython
         {
             pybind11::class_<Target> pyClass{ dest, Target::name, pybind11::dynamic_attr() };
 
-            pyClass.def(pybind11::init<>())
+            pyClass.def(pybind11::init())
                 .def("__repr__", &Target::toString)
                 .def("to_string", &Target::toString)
                 .def("set_from_string", &Target::setFromString, pybind11::arg("string_value"))

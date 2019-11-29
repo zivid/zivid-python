@@ -8,7 +8,7 @@ namespace ZividPython
 {
     void wrapClass(pybind11::class_<Zivid::CameraRevision> pyClass)
     {
-        pyClass.def(py::init<>())
+        pyClass.def(py::init())
             .def(py::init<int, int>(), py::arg("major"), py::arg("minor"))
             .def(py::self == py::self) // NOLINT
             .def_property_readonly("major", &Zivid::CameraRevision::majorRevision)
