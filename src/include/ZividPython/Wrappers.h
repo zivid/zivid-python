@@ -43,10 +43,7 @@ namespace ZividPython
     }
 
     template<typename Source, WrapType wrapType, typename WrapFunction>
-    void wrapEnum(const pybind11::module &dest,
-                  const WrapFunction &wrapFunction,
-                  const char *exposedName
-                  )
+    void wrapEnum(const pybind11::module &dest, const WrapFunction &wrapFunction, const char *exposedName)
     {
         auto pyEnum = pybind11::enum_<Source>{ dest, exposedName, pybind11::dynamic_attr() };
         wrapFunction(pyEnum);
@@ -71,8 +68,10 @@ namespace ZividPython
                                                                 #name)
 
 #define ZIVID_PYTHON_WRAP_ENUM_CLASS(dest, name)                                                                       \
-    ZividPython::wrapEnum<name, ZividPython::WrapType::enum_class>(                                                    \
-        dest, static_cast<void (*)(pybind11::enum_<name>)>(ZividPython::wrapEnum), #name)
+    ZividPython::wrapEnum<name, ZividPython::WrapType::enum_class>(dest,                                               \
+                                                                   static_cast<void (*)(pybind11::enum_<name>)>(       \
+                                                                       ZividPython::wrapEnum),                         \
+                                                                   #name)
 
 #define ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(dest, name)                                                              \
     ZividPython::wrapClass<ZividPython::Releasable##name, ZividPython::WrapType::releasable>(                          \
