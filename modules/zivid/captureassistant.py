@@ -8,7 +8,7 @@ import zivid._settings_converter as _settings_converter
 
 
 class AmbientLightFrequency(Enum):  # pylint: disable=too-few-public-methods
-    AmbientLightFrequencyImpl = namedtuple('AmbientLightFrequency', ['value', 'to_string'] )
+    AmbientLightFrequencyImpl = namedtuple('AmbientLightFrequency', ['value', 'to_string'])
 
     hz50 = AmbientLightFrequencyImpl(_zivid.captureassistant.AmbientLightFrequency.hz50, \
                                      _zivid.captureassistant.AmbientLightFrequency.hz50.name)
@@ -17,7 +17,7 @@ class AmbientLightFrequency(Enum):  # pylint: disable=too-few-public-methods
     none = AmbientLightFrequencyImpl(_zivid.captureassistant.AmbientLightFrequency.none, \
                                      _zivid.captureassistant.AmbientLightFrequency.none.name)
     def __str__(self):
-        return self.value.to_string
+        return str(self.value.to_string)
 
 
 def to_internal_ambient_light_frequency(ambient_light_frequency):
