@@ -10,11 +10,10 @@ def test_suggest_settings_parameters():
     import datetime
     from zivid.captureassistant import AmbientLightFrequency, SuggestSettingsParameters
 
-    suggest_settings_parameters = \
-        SuggestSettingsParameters( \
-            datetime.timedelta(milliseconds=1200), \
-            AmbientLightFrequency.hz50
-        )
+    suggest_settings_parameters = SuggestSettingsParameters(
+                                    datetime.timedelta(milliseconds=1200),
+                                    AmbientLightFrequency.hz50
+                                  )
     assert isinstance(suggest_settings_parameters.max_capture_time, datetime.timedelta)
     assert suggest_settings_parameters.max_capture_time == datetime.timedelta(seconds=1.2)
     assert isinstance(suggest_settings_parameters.ambient_light_frequency, AmbientLightFrequency)
@@ -26,11 +25,10 @@ def test_suggest_settings(file_camera):
     import zivid
     from zivid.captureassistant import AmbientLightFrequency, SuggestSettingsParameters
 
-    suggest_settings_parameters = \
-        SuggestSettingsParameters( \
-            datetime.timedelta(milliseconds=1200), \
-            AmbientLightFrequency.hz50
-        )
+    suggest_settings_parameters = SuggestSettingsParameters(
+                                    datetime.timedelta(milliseconds=1200),
+                                    AmbientLightFrequency.hz50
+                                  )
     suggested_settings = zivid.captureassistant.suggest_settings(file_camera, suggest_settings_parameters)
     assert suggested_settings
     assert isinstance(suggested_settings, list)
