@@ -26,6 +26,13 @@ class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
     """
 
     def __init__(self, budget, frequency=None):
+            """Initialize SuggestSettingsParameters.
+
+            Args:
+                budget: max capture time
+                frequency: ambient light frequency
+
+            """
         if frequency is None:
             self.__impl = _zivid.captureassistant.SuggestSettingsParameters(budget)
         else:
