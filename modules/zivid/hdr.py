@@ -35,5 +35,12 @@ def capture(camera, settings_list):
         a single frame (when single setting given) or high dynamic range frame (when multiple settings given)
 
     """
-    return Frame(_zivid.hdr.capture(camera._Camera__impl,   # pylint: disable=protected-access
-                                    [_settings_converter.to_internal_settings(settings) for settings in settings_list]))
+    return Frame(
+        _zivid.hdr.capture(
+            camera._Camera__impl,  # pylint: disable=protected-access
+            [
+                _settings_converter.to_internal_settings(settings)
+                for settings in settings_list
+            ],
+        )
+    )
