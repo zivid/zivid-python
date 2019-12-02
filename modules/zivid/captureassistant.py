@@ -1,9 +1,7 @@
 """Contains capture assistant functions and classes."""
 from enum import Enum
-from collections import namedtuple
 
 import _zivid
-from zivid.settings import Settings
 import zivid._settings_converter as _settings_converter
 
 
@@ -72,5 +70,5 @@ def suggest_settings(camera, suggest_settings_parameters):
 
     """
     internal_settings = _zivid.captureassistant.suggest_settings(camera._Camera__impl, \
-                                                    suggest_settings_parameters._SuggestSettingsParameters__impl)
+                                                    suggest_settings_parameters._SuggestSettingsParameters__impl)   # pylint: disable=protected-access
     return [_settings_converter.to_settings(internal) for internal in internal_settings]

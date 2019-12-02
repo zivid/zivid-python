@@ -36,4 +36,4 @@ def capture(camera, settings_list):
 
     """
     return Frame(_zivid.hdr.capture(camera._Camera__impl, \
-                                    [_settings_converter.to_internal_settings(settings) for settings in settings_list]))
+                                    [_settings_converter.to_internal_settings(settings) for settings in settings_list]))  # pylint: disable=protected-access
