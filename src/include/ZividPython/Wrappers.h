@@ -17,7 +17,7 @@ namespace ZividPython
     {
         normal,
         releasable,
-        singleton
+        singleton,
     };
 
     template<typename Source, WrapType wrapType, typename WrapFunction, typename... Tags>
@@ -41,6 +41,13 @@ namespace ZividPython
         wrapFunction(pyClass);
     }
 
+    template<typename Source, typename WrapFunction>
+    void wrapEnum(const pybind11::module &dest, const WrapFunction &wrapFunction, const char *exposedName)
+    {
+        auto pyEnum = pybind11::enum_<Source>{ dest, exposedName, pybind11::dynamic_attr() };
+        wrapFunction(pyEnum);
+    }
+
     template<typename WrapFunction>
     void wrapNamespaceAsSubmodule(pybind11::module &dest,
                                   const WrapFunction &wrapFunction,
@@ -58,6 +65,9 @@ namespace ZividPython
                                                                 static_cast<void (*)(pybind11::class_<name>)>(         \
                                                                     ZividPython::wrapClass),                           \
                                                                 #name)
+
+#define ZIVID_PYTHON_WRAP_ENUM_CLASS(dest, name)                                                                       \
+    ZividPython::wrapEnum<name>(dest, static_cast<void (*)(pybind11::enum_<name>)>(ZividPython::wrapEnum), #name)
 
 #define ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(dest, name)                                                              \
     ZividPython::wrapClass<ZividPython::Releasable##name, ZividPython::WrapType::releasable>(                          \
