@@ -2,7 +2,7 @@ from pkgutil import iter_modules
 
 # To be replaced by: from setuptools_scm import get_version
 def get_version():
-    return "0.9.1"
+    return "0.9.2"
 
 
 def _zivid_sdk_version():
