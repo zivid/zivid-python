@@ -6,9 +6,8 @@ import zivid._settings_converter as _settings_converter
 
 
 class AmbientLightFrequency(Enum):  # pylint: disable=too-few-public-methods
-    """Ensure compatibility with the frequency of the ambient light in the scene.
+    """Ensure compatibility with the frequency of the ambient light in the scene."""
 
-    """
     hz50 = _zivid.captureassistant.AmbientLightFrequency.hz50
     hz60 = _zivid.captureassistant.AmbientLightFrequency.hz60
     none = _zivid.captureassistant.AmbientLightFrequency.none
@@ -25,6 +24,7 @@ class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
     The capture time constraint assumes a computer meeting Zivid's recommended minimum compute power.
 
     """
+
     def __init__(self, budget, frequency=None):
         if frequency is None:
             self.__impl = _zivid.captureassistant.SuggestSettingsParameters(budget)
@@ -56,7 +56,7 @@ class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
 
 
 def suggest_settings(camera, suggest_settings_parameters):
-    """Finds suggested settings for the current scene based on the suggest_settings_parameters.
+    """Find settings for the current scene based on the suggest_settings_parameters.
 
     The suggested settings returned from this function should be passed into hdr.capture to perform the actual capture.
 
