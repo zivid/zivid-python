@@ -6,6 +6,9 @@ import zivid._settings_converter as _settings_converter
 
 
 class AmbientLightFrequency(Enum):  # pylint: disable=too-few-public-methods
+    """Ensure compatibility with the frequency of the ambient light in the scene.
+
+    """
     hz50 = _zivid.captureassistant.AmbientLightFrequency.hz50
     hz60 = _zivid.captureassistant.AmbientLightFrequency.hz60
     none = _zivid.captureassistant.AmbientLightFrequency.none

@@ -25,7 +25,7 @@ def combine_frames(frames):
 
 
 def capture(camera, settings_list):
-    """A convenience function to capture and merge frames.
+    """Capture and merge frames.
 
     Args:
         camera: a reference to camera instance
