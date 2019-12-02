@@ -1,6 +1,3 @@
-import pytest
-
-
 def test_ambient_light_frequency():
     from zivid.captureassistant import AmbientLightFrequency
 
@@ -10,6 +7,7 @@ def test_ambient_light_frequency():
 
 
 def test_suggest_settings_parameters():
+    import datetime
     from zivid.captureassistant import AmbientLightFrequency, SuggestSettingsParameters
 
     suggest_settings_parameters = \
@@ -24,6 +22,7 @@ def test_suggest_settings_parameters():
 
 
 def test_suggest_settings(file_camera):
+    import datetime
     import zivid
     from zivid.captureassistant import AmbientLightFrequency, SuggestSettingsParameters
 
