@@ -8,34 +8,12 @@ import zivid._settings_converter as _settings_converter
 
 
 class AmbientLightFrequency(Enum):  # pylint: disable=too-few-public-methods
-    AmbientLightFrequencyImpl = namedtuple('AmbientLightFrequency', ['value', 'to_string'])
+    hz50 = _zivid.captureassistant.AmbientLightFrequency.hz50
+    hz60 = _zivid.captureassistant.AmbientLightFrequency.hz60
+    none = _zivid.captureassistant.AmbientLightFrequency.none
 
-    hz50 = AmbientLightFrequencyImpl(_zivid.captureassistant.AmbientLightFrequency.hz50, \
-                                     _zivid.captureassistant.AmbientLightFrequency.hz50.name)
-    hz60 = AmbientLightFrequencyImpl(_zivid.captureassistant.AmbientLightFrequency.hz60, \
-                                     _zivid.captureassistant.AmbientLightFrequency.hz60.name)
-    none = AmbientLightFrequencyImpl(_zivid.captureassistant.AmbientLightFrequency.none, \
-                                     _zivid.captureassistant.AmbientLightFrequency.none.name)
     def __str__(self):
-        return str(self.value.to_string)
-
-
-def to_internal_ambient_light_frequency(ambient_light_frequency):
-    to_internal_map = {
-        AmbientLightFrequency.hz50 : _zivid.captureassistant.AmbientLightFrequency.hz50,
-        AmbientLightFrequency.hz60 : _zivid.captureassistant.AmbientLightFrequency.hz60,
-        AmbientLightFrequency.none : _zivid.captureassistant.AmbientLightFrequency.none,
-    }
-    return to_internal_map.get(ambient_light_frequency, "Invalid frequency.")
-
-
-def to_ambient_light_frequency(internal_ambient_light_frequency):
-    from_internal_map = {
-        _zivid.captureassistant.AmbientLightFrequency.hz50 : AmbientLightFrequency.hz50,
-        _zivid.captureassistant.AmbientLightFrequency.hz60 : AmbientLightFrequency.hz60,
-        _zivid.captureassistant.AmbientLightFrequency.none : AmbientLightFrequency.none,
-    }
-    return from_internal_map.get(internal_ambient_light_frequency, "Invalid frequency.")
+        return str(self.name)
 
 
 class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
@@ -50,8 +28,7 @@ class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
         if frequency is None:
             self.__impl = _zivid.captureassistant.SuggestSettingsParameters(budget)
         else:
-            self.__impl = _zivid.captureassistant.SuggestSettingsParameters(budget, \
-                                                    to_internal_ambient_light_frequency(frequency))
+            self.__impl = _zivid.captureassistant.SuggestSettingsParameters(budget, frequency.value)
 
 
     @property
@@ -73,7 +50,7 @@ class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
             Instance of AmbientLightFrequency
 
         """
-        return to_ambient_light_frequency(self.__impl.ambientLightFrequency())
+        return AmbientLightFrequency(self.__impl.ambientLightFrequency())
 
 
     def __str__(self):
