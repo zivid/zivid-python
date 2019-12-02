@@ -28,7 +28,6 @@ class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
         else:
             self.__impl = _zivid.captureassistant.SuggestSettingsParameters(budget, frequency.value)
 
-
     @property
     def max_capture_time(self):
         """Get capture-time budget.
@@ -39,7 +38,6 @@ class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
         """
         return self.__impl.maxCaptureTime()
 
-
     @property
     def ambient_light_frequency(self):
         """Get ambient light frequency.
@@ -49,7 +47,6 @@ class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
 
         """
         return AmbientLightFrequency(self.__impl.ambientLightFrequency())
-
 
     def __str__(self):
         return self.__impl.to_string()
@@ -69,6 +66,6 @@ def suggest_settings(camera, suggest_settings_parameters):
         List of Settings.
 
     """
-    internal_settings = _zivid.captureassistant.suggest_settings(camera._Camera__impl,   # pylint: disable=protected-access
-                                                    suggest_settings_parameters._SuggestSettingsParameters__impl)   # pylint: disable=protected-access
+    internal_settings = _zivid.captureassistant.suggest_settings(camera._Camera__impl,    # pylint: disable=protected-access
+                                                                 suggest_settings_parameters._SuggestSettingsParameters__impl)   # pylint: disable=protected-access
     return [_settings_converter.to_settings(internal) for internal in internal_settings]
