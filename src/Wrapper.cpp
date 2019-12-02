@@ -8,6 +8,9 @@
 #include <ZividPython/Firmware.h>
 #include <ZividPython/HDR.h>
 #include <ZividPython/HandEye.h>
+#include <ZividPython/CaptureAssistant.h>
+#include <ZividPython/SuggestSettingsParameters.h>
+#include <ZividPython/AmbientLightFrequency.h>
 #include <ZividPython/Pose.h>
 #include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/ReleasableFrame.h>
@@ -46,4 +49,5 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, HDR);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Version);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, HandEye);
+    ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, CaptureAssistant);
 }
