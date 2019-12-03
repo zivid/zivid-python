@@ -1,5 +1,5 @@
-import pytest
 import datetime
+import pytest
 
 
 def test_ambient_light_frequency():
