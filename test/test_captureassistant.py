@@ -46,7 +46,7 @@ def test_suggest_settings_throws_if_budget_outside_range(file_camera):
 
     # too big
     suggest_settings_parameters = SuggestSettingsParameters(
-        datetime.timedelta(milliseconds=60000),
+        budget=datetime.timedelta(milliseconds=60000)
     )
     with pytest.raises(RuntimeError):
         zivid.captureassistant.suggest_settings(
