@@ -27,22 +27,26 @@ def test_suggest_settings_parameters():
     )
 
 
-def test_suggest_settings(file_camera):
+def test_suggest_settings_throws_if_budget_outside_range(file_camera):
     import datetime
     import zivid
     from zivid.captureassistant import AmbientLightFrequency, SuggestSettingsParameters
 
+    # too small
     suggest_settings_parameters = SuggestSettingsParameters(
-        budget=datetime.timedelta(milliseconds=1200),
+        budget=datetime.timedelta(milliseconds=100),
         frequency=AmbientLightFrequency.hz50,
     )
-    suggested_settings = zivid.captureassistant.suggest_settings(
-        file_camera, suggest_settings_parameters
-    )
-    assert suggested_settings
-    assert isinstance(suggested_settings, list)
-    isinstance(suggested_settings[0], zivid.settings.Settings)
+    with pytest.raises(RuntimeError):
+        zivid.captureassistant.suggest_settings(
+            file_camera, suggest_settings_parameters
+        )
 
-    hdr_frame = zivid.hdr.capture(file_camera, suggested_settings)
-    assert hdr_frame
-    assert isinstance(hdr_frame, zivid.frame.Frame)
+    # too big
+    suggest_settings_parameters = SuggestSettingsParameters(
+        datetime.timedelta(milliseconds=60000),
+    )
+    with pytest.raises(RuntimeError):
+        zivid.captureassistant.suggest_settings(
+            file_camera, suggest_settings_parameters
+        )
