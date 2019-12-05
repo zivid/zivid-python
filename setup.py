@@ -29,6 +29,8 @@ def _zivid_python_version():
 
 
 def _check_dependency(module_name, package_hint=None):
+    if package_hint is None:
+        package_hint = module_name
     if module_name not in [module[1] for module in iter_modules()]:
         raise ImportError(
             "Missing module '{}'. Please install '{}' manually or use PIP>=19 to handle build dependencies automatically (PEP 517).".format(
@@ -45,6 +47,7 @@ def _main():
     _check_dependency("skbuild", "scikit-build")
     _check_dependency("cmake")
     _check_dependency("ninja")
+    _check_dependency("conans", "conan")
 
     from skbuild import setup
 
