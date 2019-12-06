@@ -37,7 +37,7 @@ Installation may take some time since the `setup.py` script will download additi
 
 If you are using a version of PIP older than version 19 please manually install the dependencies listed in [pyproject.toml](pyproject.toml) before installing zivid.
 
-    pip install scikit-build cmake ninja
+    pip install <packages listed in pyproject.toml>
     pip install zivid
 
 ## Quick Start
