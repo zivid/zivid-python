@@ -28,15 +28,77 @@ def _zivid_python_version():
     return version
 
 
+def _make_message_box(*message):
+    width = max([len(e) for e in message])
+
+    box_bar = "+-" + "-" * width + "-+"
+    empty_line = "\n| " + " " * width + " |\n"
+    message_lines = ["| " + line + " " * (width - len(line)) + " |" for line in message]
+
+    return (
+        "\n\n" + box_bar + "\n" + empty_line.join(message_lines) + "\n" + box_bar + "\n"
+    )
+
+
 def _check_dependency(module_name, package_hint=None):
     if package_hint is None:
         package_hint = module_name
     if module_name not in [module[1] for module in iter_modules()]:
         raise ImportError(
-            "Missing module '{}'. Please install '{}' manually or use PIP>=19 to handle build dependencies automatically (PEP 517).".format(
-                module_name, package_hint
+            _make_message_box(
+                "!! Missing module '{}' !!".format(module_name),
+                "Please install '{}' manually or use PIP>=19 to handle build dependencies automatically (PEP 517)".format(
+                    package_hint
+                ),
             )
         )
+
+
+def _check_cpp17_compiler():
+    import tempfile
+    import platform
+    from pathlib import Path
+
+    def run_process(args, **kwargs):
+        import subprocess
+
+        try:
+            process = subprocess.Popen(args, **kwargs)
+            exit_code = process.wait()
+            if exit_code != 0:
+                raise RuntimeError("Wait failed with exit code {}".format(exit_code))
+        except Exception as ex:
+            raise type(ex)("Process failed: '{}'.".format(" ".join(args))) from ex
+
+    try:
+        run_process(("cmake", "--version"))
+    except Exception as ex:
+        raise RuntimeError(_make_message_box("!! CMake not found !!")) from ex
+    with tempfile.TemporaryDirectory(prefix="zivid-python-build-") as temp_dir:
+        with (Path(temp_dir) / "lib.cpp").open("w") as lib_cpp:
+            # MSVC does not report itself as C++17, on Windoes we have to rely on the CMAKE_CXX_STANDARD test below
+            if platform.system() == "Linux":
+                lib_cpp.write("static_assert(__cplusplus >= 201703L);")
+        with (Path(temp_dir) / "CMakeLists.txt").open("w") as cmake_lists_txt:
+            cmake_lists_txt.write(
+                "project(zivid-python-compiler-detection LANGUAGES CXX)\n"
+                "set(CMAKE_CXX_STANDARD 17)\n"
+                "add_library(lib lib.cpp)\n"
+            )
+        try:
+            if platform.system() == "Linux":
+                run_process(("cmake", "-GNinja", "."), cwd=temp_dir)
+            else:
+                run_process(("cmake", "."), cwd=temp_dir)
+            run_process(("cmake", "--build", "."), cwd=temp_dir)
+        except Exception as ex:
+            raise RuntimeError(
+                _make_message_box(
+                    "!! Module setup failed !!",
+                    "Make sure you have a working C++17 compiler installed",
+                    "Refer to Readme.md for detailed installation instructions",
+                )
+            ) from ex
 
 
 def _main():
@@ -44,10 +106,12 @@ def _main():
     # The purpose of these checks is to help users with PIP<19 lacking support for
     # pyproject.toml
     # Keep the two lists in sync
-    _check_dependency("skbuild", "scikit-build")
     _check_dependency("cmake")
-    _check_dependency("ninja")
     _check_dependency("conans", "conan")
+    _check_dependency("ninja")
+    _check_dependency("skbuild", "scikit-build")
+
+    _check_cpp17_compiler()
 
     from skbuild import setup
 
