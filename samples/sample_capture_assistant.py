@@ -1,7 +1,7 @@
 """Capture Assistant sample."""
 import datetime
 import zivid
-from zivid.captureassistant import AmbientLightFrequency, SuggestSettingsParameters
+from zivid.capture_assistant import AmbientLightFrequency, SuggestSettingsParameters
 
 
 def _main():
@@ -13,7 +13,7 @@ def _main():
         ambient_light_frequency=AmbientLightFrequency.hz50,
     )
 
-    suggested_settings = zivid.captureassistant.suggest_settings(
+    suggested_settings = zivid.capture_assistant.suggest_settings(
         camera, suggest_settings_parameters
     )
 

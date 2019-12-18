@@ -5,7 +5,7 @@ from zivid._make_enum_wrapper import _make_enum_wrapper
 
 
 AmbientLightFrequency = _make_enum_wrapper(
-    _zivid.captureassistant.AmbientLightFrequency,
+    _zivid.capture_assistant.AmbientLightFrequency,
     "Ensure compatibility with the frequency of the ambient light in the scene.",
 )
 
@@ -24,15 +24,15 @@ class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
 
         Args:
             max_capture_time: an instance of datetime.timedelta
-            ambient_light_frequency: a member of the enum zivid.captureassistant.AmbientLightFrequency
+            ambient_light_frequency: a member of the enum zivid.capture_assistant.AmbientLightFrequency
 
         """
         if ambient_light_frequency is None:
-            self.__impl = _zivid.captureassistant.SuggestSettingsParameters(
+            self.__impl = _zivid.capture_assistant.SuggestSettingsParameters(
                 max_capture_time
             )
         else:
-            self.__impl = _zivid.captureassistant.SuggestSettingsParameters(
+            self.__impl = _zivid.capture_assistant.SuggestSettingsParameters(
                 max_capture_time,
                 ambient_light_frequency._to_internal(),  # pylint: disable=protected-access
             )
@@ -68,14 +68,14 @@ def suggest_settings(camera, suggest_settings_parameters):
 
     Args:
         camera: an instance of zivid.Camera
-        suggest_settings_parameters: an instance of zivid.captureassistant.SuggestSettingsParameters which provides
+        suggest_settings_parameters: an instance of zivid.capture_assistant.SuggestSettingsParameters which provides
                                      parameters (e.g., max capture time constraint) to the suggest_settings algorithm.
 
     Returns:
         List of Settings.
 
     """
-    internal_settings = _zivid.captureassistant.suggest_settings(
+    internal_settings = _zivid.capture_assistant.suggest_settings(
         camera._Camera__impl,  # pylint: disable=protected-access
         suggest_settings_parameters._SuggestSettingsParameters__impl,  # pylint: disable=protected-access
     )

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <sstream>
+#include <string>
+
 #include <pybind11/chrono.h>
 #include <pybind11/functional.h>
 #include <pybind11/numpy.h>
@@ -13,6 +16,51 @@
 
 namespace ZividPython
 {
+    namespace
+    {
+        std::string toSnakeCase(const std::string upperCamelCase)
+        {
+            if(upperCamelCase.empty())
+            {
+                throw std::invalid_argument{ "String is empty." };
+            }
+
+            if(!isupper(upperCamelCase[0]))
+            {
+                throw std::runtime_error{ "First character of string: '" + upperCamelCase + "' is not capitalized" };
+            }
+            std::stringstream ss;
+            ss << char(tolower(upperCamelCase[0]));
+
+            for(auto i = 1; i < upperCamelCase.size(); ++i)
+            {
+                if(isupper(upperCamelCase[i]))
+                {
+                    auto previous = i - 1;
+                    auto next = i + 1;
+
+                    // if surrounded by capital case (looking at the B character): ABC -> abc
+                    if(isupper(upperCamelCase[previous])
+                       && ((next < upperCamelCase.size() && isupper(upperCamelCase[next]))
+                           || (next >= upperCamelCase.size())))
+                    {
+                        ss << char(tolower(upperCamelCase[i]));
+                    }
+                    // all other cases results in adding an underscore first
+                    else
+                    {
+                        ss << "_" << char(tolower(upperCamelCase[i]));
+                    }
+                }
+                // already lower case stays lower case: a -> a
+                else
+                {
+                    ss << char(upperCamelCase[i]);
+                }
+            }
+            return ss.str();
+        }
+    } // namespace
     enum class WrapType
     {
         normal,
@@ -54,8 +102,7 @@ namespace ZividPython
                                   const char *nonLowercaseName)
     {
         std::string name{ nonLowercaseName };
-        std::transform(begin(name), end(name), begin(name), ::tolower);
-        auto submodule = dest.def_submodule(name.c_str());
+        auto submodule = dest.def_submodule(toSnakeCase(name).c_str());
         wrapFunction(submodule);
     }
 } // namespace ZividPython

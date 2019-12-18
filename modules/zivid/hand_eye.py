@@ -16,7 +16,7 @@ def detect_feature_points(point_cloud):
 
     """
     return DetectionResult(
-        _zivid.handeye.detect_feature_points(
+        _zivid.hand_eye.detect_feature_points(
             point_cloud._PointCloud__impl  # pylint: disable=protected-access
         )
     )
@@ -38,7 +38,7 @@ def calibrate_eye_in_hand(calibration_inputs):
 
     """
     return CalibrationOutput(
-        _zivid.handeye.calibrate_eye_in_hand(
+        _zivid.hand_eye.calibrate_eye_in_hand(
             [
                 calib._CalibrationInput__impl  # pylint: disable=protected-access
                 for calib in calibration_inputs
@@ -63,7 +63,7 @@ def calibrate_eye_to_hand(calibration_inputs):
 
     """
     return CalibrationOutput(
-        _zivid.handeye.calibrate_eye_to_hand(
+        _zivid.hand_eye.calibrate_eye_to_hand(
             [
                 calib._CalibrationInput__impl  # pylint: disable=protected-access
                 for calib in calibration_inputs
@@ -84,7 +84,7 @@ class Pose:  # pylint: disable=too-few-public-methods
             matrix: a 4x4 numpy array
 
         """
-        self.__impl = _zivid.handeye.Pose(matrix)
+        self.__impl = _zivid.hand_eye.Pose(matrix)
 
     def __str__(self):
         return self.__impl.to_string()
@@ -120,7 +120,7 @@ class CalibrationInput:  # pylint: disable=too-few-public-methods
             detected_features: a DetectionResult instance
 
         """
-        self.__impl = _zivid.handeye.CalibrationInput(
+        self.__impl = _zivid.hand_eye.CalibrationInput(
             pose._Pose__impl,  # pylint: disable=protected-access
             detected_features._DetectionResult__impl,  # pylint: disable=protected-access
         )

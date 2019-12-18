@@ -3,7 +3,7 @@ import pytest
 
 
 def test_ambient_light_frequency():
-    from zivid.captureassistant import AmbientLightFrequency
+    from zivid.capture_assistant import AmbientLightFrequency
 
     assert str(AmbientLightFrequency.hz50) == "hz50"
     assert str(AmbientLightFrequency.hz60) == "hz60"
@@ -11,7 +11,7 @@ def test_ambient_light_frequency():
 
 
 def test_suggest_settings_parameters():
-    from zivid.captureassistant import AmbientLightFrequency, SuggestSettingsParameters
+    from zivid.capture_assistant import AmbientLightFrequency, SuggestSettingsParameters
 
     suggest_settings_parameters = SuggestSettingsParameters(
         max_capture_time=datetime.timedelta(milliseconds=1200),
@@ -32,7 +32,7 @@ def test_suggest_settings_parameters():
 
 def test_suggest_settings_throws_if_budget_outside_range(file_camera):
     import zivid
-    from zivid.captureassistant import AmbientLightFrequency, SuggestSettingsParameters
+    from zivid.capture_assistant import AmbientLightFrequency, SuggestSettingsParameters
 
     # too small
     suggest_settings_parameters = SuggestSettingsParameters(
@@ -40,7 +40,7 @@ def test_suggest_settings_throws_if_budget_outside_range(file_camera):
         ambient_light_frequency=AmbientLightFrequency.hz50,
     )
     with pytest.raises(RuntimeError):
-        zivid.captureassistant.suggest_settings(
+        zivid.capture_assistant.suggest_settings(
             file_camera, suggest_settings_parameters
         )
 
@@ -49,6 +49,6 @@ def test_suggest_settings_throws_if_budget_outside_range(file_camera):
         max_capture_time=datetime.timedelta(milliseconds=60000)
     )
     with pytest.raises(RuntimeError):
-        zivid.captureassistant.suggest_settings(
+        zivid.capture_assistant.suggest_settings(
             file_camera, suggest_settings_parameters
         )
