@@ -52,3 +52,27 @@ def test_suggest_settings_throws_if_budget_outside_range(file_camera):
         zivid.capture_assistant.suggest_settings(
             file_camera, suggest_settings_parameters
         )
+
+
+def test_init_max_capture_time(application):  # pylint: disable=unused-argument
+    from zivid.capture_assistant import SuggestSettingsParameters
+
+    suggested_settings = SuggestSettingsParameters(datetime.timedelta(milliseconds=100))
+    max_capture_time = suggested_settings.max_capture_time
+
+    assert max_capture_time is not None
+    assert isinstance(max_capture_time, datetime.timedelta)
+    assert max_capture_time == datetime.timedelta(milliseconds=100)
+
+
+def test_default_ambient_light_frequency(
+    application  # pylint: disable=unused-argument
+):
+    from zivid.capture_assistant import SuggestSettingsParameters, AmbientLightFrequency
+
+    suggested_settings = SuggestSettingsParameters(datetime.timedelta(milliseconds=100))
+    ambient_light_frequency = suggested_settings.ambient_light_frequency
+
+    assert ambient_light_frequency is not None
+    assert isinstance(ambient_light_frequency, AmbientLightFrequency)
+    assert ambient_light_frequency == AmbientLightFrequency.none
