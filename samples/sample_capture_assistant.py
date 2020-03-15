@@ -10,7 +10,7 @@ def _main():
 
     suggest_settings_parameters = SuggestSettingsParameters(
         max_capture_time=datetime.timedelta(milliseconds=1200),
-        ambient_light_frequency=AmbientLightFrequency.hz50,
+        ambient_light_frequency=AmbientLightFrequency.none,
     )
 
     settings_list = zivid.capture_assistant.suggest_settings(
