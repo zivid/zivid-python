@@ -4,8 +4,10 @@ import requests
 
 
 def _download_sample(source_folder: str, sample_path: Path):
-    url = f"https://raw.githubusercontent.com/zivid/python-samples/master/source/{source_folder}/{sample_path.name}"
-    print(f"Download {source_folder}/{sample_path.name} from {url}")
+    url = "https://raw.githubusercontent.com/zivid/python-samples/master/source/{}/{}".format(
+        source_folder, sample_path.name
+    )
+    print("Download {}/{} from {}".format(source_folder, sample_path.name, url))
     response = requests.get(url)
     sample_path.write_bytes(response.content)
 
