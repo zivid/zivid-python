@@ -10,11 +10,14 @@ export PYTHONPATH="$ROOT_DIR" || exit $?
 echo "Downloading MiscObjects.zdf"
 python "$ROOT_DIR/scripts/sample_data.py" --destination "$SAMPLE_DIR/MiscObjects.zdf" || exit $?
 
-for sample in sample_print_version_info \
-              sample_capture_from_file
+echo "Downloading samples from python-samples repository"
+python "$ROOT_DIR/scripts/get_samples.py" --destination "$SAMPLE_DIR" || exit $?
+
+for sample in print_version_info \
+              capture_from_file
 do
     echo Running $sample.py
-    python "$ROOT_DIR/samples/$sample.py" || exit $?
+    python "$sample.py" || exit $?
 done
 
 cd - || exit $?
