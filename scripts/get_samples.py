@@ -19,7 +19,9 @@ def _args():
 def _main():
     args = _args()
     _download_sample("camera/basic", Path(args.destination) / "capture_from_file.py")
-    _download_sample("camera/info_util_other", Path(args.destination) / "print_version_info.py")
+    _download_sample(
+        "camera/info_util_other", Path(args.destination) / "print_version_info.py"
+    )
 
 
 if __name__ == "__main__":
