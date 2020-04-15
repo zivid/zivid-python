@@ -3,55 +3,86 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=$(realpath "$SCRIPT_DIR/../..")
 
-pythonFiles=$(find "$ROOT_DIR" -name '*.py' -not -path '*doc/scratchpad*')
-publicPythonFiles=$(find "$ROOT_DIR/modules" "$ROOT_DIR/samples" -name '*.py')
-nonPublicPythonFiles=$(comm -23 <(echo $pythonFiles| tr " " "\n" |sort) \
-                                <(echo $publicPythonFiles| tr " " "\n" |sort))
-
-bashFiles=$(find "$ROOT_DIR" -name '*.sh')
-
 pip install \
     --requirement "$SCRIPT_DIR/../python-requirements/lint.txt" \
     --requirement "$SCRIPT_DIR/../python-requirements/test.txt" ||
     exit $?
 
-echo Running non public pylint on:
-echo "$nonPublicPythonFiles"
-pylint \
-    --rcfile "$ROOT_DIR/.pylintrc" \
-    --extension-pkg-whitelist=_zivid \
-    --generated-members=_zivid.* \
-    $nonPublicPythonFiles \
-    || exit $?
 
-echo Running public pylint on:
-echo "$publicPythonFiles"
-pylint \
-    --rcfile "$ROOT_DIR/.pylintrc-packaged-files" \
-    $publicPythonFiles \
-    || exit $?
+runPylint() {
+    local fileList="$1"
+    local rcfile=$ROOT_DIR/"$2"
+    echo ""
+    echo "Running pylint with ${rcfile} on:"
+    echo "${fileList}"
+    pylint --rcfile "$rcfile" $fileList || exit $?
+}
 
-echo Running non public flake8 on:
-echo "$nonPublicPythonFiles"
-flake8 --config="$ROOT_DIR/.flake8" $nonPublicPythonFiles || exit $?
+runFlake8() {
+    local fileList="$1"
+    local rcfile=$ROOT_DIR/"$2"
+    echo ""
+    echo "Running flake8 with ${rcfile} on:"
+    echo "${fileList}"
+    flake8 --config="$rcfile" $fileList || exit $?
+}
 
-echo Running public flake8 on:
-echo "$publicPythonFiles"
-flake8 --config="$ROOT_DIR/.flake8-packaged-files" $publicPythonFiles || exit $?
+runDarglint() {
+    local fileList="$1"
+    echo ""
+    echo "Running darglint on:"
+    echo "${fileList}"
+    darglint $fileList || exit $?
+}
 
-echo Running darglint on:
-echo "$publicPythonFiles"
-darglint $publicPythonFiles || exit $?
+runBlackCheck() {
+    local fileList="$1"
+    echo ""
+    echo "Running black on:"
+    echo "${fileList}"
+    black --check --diff $fileList || exit $?
+}
 
-echo Running black on:
-echo "$pythonFiles"
-black --check --diff $pythonFiles || exit $?
+runShellcheck() {
+    local fileList="$1"
+    echo ""
+    echo "Running shellcheck on:"
+    echo "${fileList}"
+    shellcheck -x -e SC1090,SC2086,SC2046 $fileList || exit $?
+}
 
-echo Running shellcheck on:
-echo "$bashFiles"
-shellcheck -x -e SC1090,SC2086,SC2046 $bashFiles || exit $?
+# Get list of all bash files
+bashFiles=$(find "$ROOT_DIR" -name '*.sh')
 
-echo Running code analysis on C++ code:
+# Get list of all Python files considered public (in certain directories, without leading underscore)
+publicPythonFiles=$(find "$ROOT_DIR/modules" "$ROOT_DIR/samples" -regex '.*\/[^_]\w+\.py$')
+# Divide all Python files into public and non-public
+allPythonFiles=$(find "$ROOT_DIR" -name '*.py' -not -path '*doc/scratchpad*')
+nonPublicPythonFiles=$(comm -23 <(echo $allPythonFiles| tr " " "\n" |sort) \
+                                <(echo $publicPythonFiles| tr " " "\n" |sort))
+# Separate out test-related files. Any remaining Python files are then counted as "internal"
+testsPythonFiles=$(find "$ROOT_DIR/test" -name '*.py')
+internalPythonFiles=$(comm -23 <(echo $nonPublicPythonFiles| tr " " "\n" |sort) \
+                               <(echo $testsPythonFiles| tr " " "\n" |sort))
+
+# Python linting
+runPylint "$publicPythonFiles" ".pylintrc" || exit $?
+runPylint "$internalPythonFiles" ".pylintrc-internal" || exit $?
+runPylint "$testsPythonFiles" ".pylintrc-tests" || exit $?
+
+runFlake8 "$publicPythonFiles" ".flake8" || exit $?
+runFlake8 "$internalPythonFiles" ".flake8-internal" || exit $?
+runFlake8 "$testsPythonFiles" ".flake8-tests" || exit $?
+
+runDarglint "$publicPythonFiles" || exit $?
+
+runBlackCheck "$allPythonFiles" || exit $?
+
+# Shell script linting
+runShellcheck "$bashFiles"
+
+# C++ linting
+echo "Running code analysis on C++ code:"
 CPP_LINT_DIR=$(mktemp --tmpdir --directory zivid-python-cpp-lint-XXXX) || exit $?
 $SCRIPT_DIR/lint-cpp.sh $CPP_LINT_DIR || exit $?
 rm -r $CPP_LINT_DIR || exit $?

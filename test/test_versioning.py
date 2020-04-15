@@ -1,6 +1,3 @@
-# pylint: disable=import-outside-toplevel
-
-
 def _is_version(sut):
     return isinstance(sut, str) and len(sut) > 0
 

@@ -7,11 +7,11 @@ from skbuild import setup
 
 # To be replaced by: from setuptools_scm import get_version
 def get_version():
-    return "1.0.0"
+    return "2.0.0"
 
 
 def _zivid_sdk_version():
-    return "1.8.1"
+    return "2.1.0"
 
 
 def _zivid_python_version():
@@ -120,9 +120,9 @@ def _main():
         long_description_content_type="text/markdown",
         url="https://www.zivid.com",
         author="Zivid AS",
-        author_email="support@zivid.com",
+        author_email="customersuccess@zivid.com",
         license="BSD 3-Clause",
-        packages=["zivid", "_zivid"],
+        packages=["zivid", "zivid._calibration", "_zivid"],
         package_dir={"": "modules"},
         install_requires=["numpy"],
         cmake_args=[

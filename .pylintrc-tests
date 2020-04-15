@@ -1,0 +1,8 @@
+[MESSAGES CONTROL]
+disable=missing-docstring,import-outside-toplevel,duplicate-code,unused-argument,pointless-statement
+
+[FORMAT]
+max-line-length=120
+
+[TYPECHECK]
+ignored-classes=pytest # E1101: Module 'pytest' has no 'helpers' member (no-member)

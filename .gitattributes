@@ -1,0 +1,2 @@
+*.zdf filter=lfs diff=lfs merge=lfs -text
+*.zfc filter=lfs diff=lfs merge=lfs -text

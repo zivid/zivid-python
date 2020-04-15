@@ -1,4 +1,3 @@
-# pylint: disable=import-outside-toplevel
 import pytest
 
 
@@ -6,7 +5,7 @@ import pytest
 def test_image_context_manager(physical_camera_frame_2d):
     import zivid
 
-    with physical_camera_frame_2d.image() as image:
+    with physical_camera_frame_2d.image_rgba() as image:
         assert image is not None
         assert isinstance(image, zivid.Image)
 
@@ -15,7 +14,7 @@ def test_image_context_manager(physical_camera_frame_2d):
 def test_image(physical_camera_frame_2d):
     import zivid
 
-    image = physical_camera_frame_2d.image()
+    image = physical_camera_frame_2d.image_rgba()
     assert image is not None
     assert isinstance(image, zivid.Image)
 
@@ -49,18 +48,18 @@ def test_settings(physical_camera_frame_2d):
 
 @pytest.mark.physical_camera
 def test_release(physical_camera_frame_2d):
-    physical_camera_frame_2d.image()
+    physical_camera_frame_2d.image_rgba()
     physical_camera_frame_2d.release()
     with pytest.raises(RuntimeError):
-        physical_camera_frame_2d.image()
+        physical_camera_frame_2d.image_rgba()
 
 
 @pytest.mark.physical_camera
-def test_context_manager(physical_camera):  # pylint: disable=unused-argument
+def test_context_manager(physical_camera):
     import zivid
 
-    settings_2d = zivid.Settings2D()
-    with physical_camera.capture_2d(settings_2d) as frame_2d:
-        frame_2d.image()
+    settings_2d = zivid.Settings2D(acquisitions=[zivid.Settings2D.Acquisition()])
+    with physical_camera.capture(settings_2d) as frame_2d:
+        frame_2d.image_rgba()
     with pytest.raises(RuntimeError):
-        frame_2d.image()
+        frame_2d.image_rgba()

@@ -1,8 +1,7 @@
-# pylint: disable=import-outside-toplevel
 import pytest
 
 
-def test_illegal_init(application):  # pylint: disable=unused-argument
+def test_illegal_init(application):
     import zivid
 
     with pytest.raises(RuntimeError):
@@ -13,41 +12,31 @@ def test_illegal_init(application):  # pylint: disable=unused-argument
         zivid.frame.Frame(12345)
 
 
-def test_get_point_cloud(frame):
+def test_point_cloud(frame):
     import zivid
 
-    point_cloud = frame.get_point_cloud()
+    point_cloud = frame.point_cloud()
     assert isinstance(point_cloud, zivid.PointCloud)
 
 
-def test_release(frame):
-    frame.get_point_cloud()
-    frame.release()
-    with pytest.raises(RuntimeError):
-        frame.get_point_cloud()
-
-
-def test_path_init(application, sample_data_file):  # pylint: disable=unused-argument
+def test_path_init(application, frame_file):
     from pathlib import Path
     import zivid
 
-    frame = zivid.frame.Frame(sample_data_file)
-    assert isinstance(sample_data_file, Path)
+    frame = zivid.frame.Frame(frame_file)
+    assert isinstance(frame_file, Path)
     assert frame is not None
     assert isinstance(frame, zivid.frame.Frame)
 
 
-def test_str_as_path_init(
-    application, sample_data_file  # pylint: disable=unused-argument
-):
+def test_str_as_path_init(application, frame_file):
     import zivid
 
-    frame = zivid.frame.Frame(str(sample_data_file))
+    frame = zivid.frame.Frame(str(frame_file))
     assert frame is not None
     assert isinstance(frame, zivid.frame.Frame)
 
 
-@pytest.mark.skip(reason="https://github.com/zivid/zivid-python/issues/54")
 def test_save(frame):
     import tempfile
     from pathlib import Path
@@ -58,15 +47,13 @@ def test_save(frame):
         assert save_path.exists()
 
 
-def test_context_manager(
-    application, sample_data_file  # pylint: disable=unused-argument
-):
+def test_context_manager(application, frame_file):
     import zivid
 
-    with zivid.frame.Frame(sample_data_file) as frame:
-        frame.get_point_cloud()
+    with zivid.frame.Frame(frame_file) as frame:
+        frame.point_cloud()
     with pytest.raises(RuntimeError):
-        frame.get_point_cloud()
+        frame.point_cloud()
 
 
 def test_to_string(frame):
@@ -75,16 +62,16 @@ def test_to_string(frame):
     assert isinstance(string, str)
 
 
-def test_load(frame, sample_data_file):
-    assert frame.load(sample_data_file) is None
+def test_load(frame, frame_file):
+    assert frame.load(frame_file) is None
 
 
 def test_settings(frame):
-    import zivid
+    from zivid import Settings
 
     settings = frame.settings
     assert settings
-    assert isinstance(settings, zivid.Settings)
+    assert isinstance(settings, Settings)
 
 
 def test_state(frame):
@@ -101,3 +88,18 @@ def test_info(frame):
     info = frame.info
     assert info
     assert isinstance(info, FrameInfo)
+
+
+def test_camera_info(frame):
+    from zivid.camera_info import CameraInfo
+
+    camera_info = frame.camera_info
+    assert camera_info
+    assert isinstance(camera_info, CameraInfo)
+
+
+def test_release(frame):
+    frame.point_cloud()
+    frame.release()
+    with pytest.raises(RuntimeError):
+        frame.point_cloud()
