@@ -74,7 +74,7 @@ namespace ZividPython
                    const char *exposedName,
                    Tags... tags)
     {
-        auto pyClass = pybind11::class_<Source>{ dest, exposedName, pybind11::dynamic_attr(), tags... }
+        auto pyClass = pybind11::class_<Source>{ dest, exposedName, tags... }
                            .def("to_string", &Source::toString)
                            .def("__repr__", &Source::toString);
 
@@ -89,10 +89,10 @@ namespace ZividPython
         wrapFunction(pyClass);
     }
 
-    template<typename Source, typename WrapFunction>
-    void wrapEnum(const pybind11::module &dest, const WrapFunction &wrapFunction, const char *exposedName)
+    template<typename Source, typename WrapFunction, typename Destination>
+    void wrapEnum(const Destination &dest, const char *exposedName, const WrapFunction &wrapFunction)
     {
-        auto pyEnum = pybind11::enum_<Source>{ dest, exposedName, pybind11::dynamic_attr() };
+        auto pyEnum = pybind11::enum_<Source>{ dest, exposedName };
         wrapFunction(pyEnum);
     }
 
@@ -113,8 +113,14 @@ namespace ZividPython
                                                                     ZividPython::wrapClass),                           \
                                                                 #name)
 
+#define ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(dest, name, source, callback)                                           \
+    ZividPython::wrapEnum<source>(dest, name, callback)
+
 #define ZIVID_PYTHON_WRAP_ENUM_CLASS(dest, name)                                                                       \
-    ZividPython::wrapEnum<name>(dest, static_cast<void (*)(pybind11::enum_<name>)>(ZividPython::wrapEnum), #name)
+    ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(dest,                                                                       \
+                                           #name,                                                                      \
+                                           name,                                                                       \
+                                           static_cast<void (*)(pybind11::enum_<name>)>(ZividPython::wrapEnum))
 
 #define ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(dest, name)                                                              \
     ZividPython::wrapClass<ZividPython::Releasable##name, ZividPython::WrapType::releasable>(                          \
@@ -129,6 +135,13 @@ namespace ZividPython
         dest,                                                                                                          \
         static_cast<void (*)(pybind11::class_<ZividPython::Releasable##name>)>(ZividPython::wrapClass),                \
         #name,                                                                                                         \
+        pybind11::buffer_protocol())
+
+#define ZIVID_PYTHON_WRAP_ARRAY2D_BUFFER_AS_RELEASABLE(dest, nativetype)                                               \
+    ZividPython::wrapClass<ZividPython::ReleasableArray2D<nativetype>, ZividPython::WrapType::releasable>(             \
+        dest,                                                                                                          \
+        static_cast<void (*)(pybind11::class_<ZividPython::ReleasableArray2D<nativetype>>)>(ZividPython::wrapClass),   \
+        "Array2D" #nativetype,                                                                                         \
         pybind11::buffer_protocol())
 
 #define ZIVID_PYTHON_WRAP_DATA_MODEL(dest, name) ZividPython::wrapDataModel(dest, name{})

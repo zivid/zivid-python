@@ -5,11 +5,10 @@ import zivid._version
 
 __version__ = zivid._version.get_version(__name__)  # pylint: disable=protected-access
 
-import zivid.environment
 import zivid.firmware
-import zivid.hand_eye
 import zivid.capture_assistant
-import zivid.hdr
+import zivid.calibration
+
 from zivid.application import Application
 from zivid.camera import Camera
 from zivid.camera_state import CameraState
@@ -21,3 +20,8 @@ from zivid.point_cloud import PointCloud
 from zivid.sdk_version import SDKVersion
 from zivid.settings import Settings
 from zivid.settings_2d import Settings2D
+from zivid.camera_info import CameraInfo
+
+# from _zivid.generate_files import generate
+
+# generate()

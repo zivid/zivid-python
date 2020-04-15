@@ -1,19 +1,18 @@
 project(_zivid LANGUAGES CXX C)
 
 set(SOURCES
-    Calibrate.cpp
-    CalibrationResidual.cpp
-    CameraRevision.cpp
-    Detector.cpp
-    Environment.cpp
+    Calibration/Calibrate.cpp
+    Calibration/CalibrationResidual.cpp
+    DataModel.cpp
+    Calibration/Detector.cpp
     Firmware.cpp
-    HandEye.cpp
+    Calibration/Calibration.cpp
+    Calibration/MultiCamera.cpp
     CaptureAssistant.cpp
-    SuggestSettingsParameters.cpp
-    AmbientLightFrequency.cpp
-    HDR.cpp
+    NodeType.cpp
+    ReleasableArray2D.cpp
     ReleasablePointCloud.cpp
-    Pose.cpp
+    Calibration/Pose.cpp
     ReleasableCamera.cpp
     ReleasableFrame.cpp
     SingletonApplication.cpp

@@ -1,7 +1,7 @@
 """Contains the Frame class."""
 import _zivid
 
-import zivid._settings_2d_converter as _settings_converter
+import zivid._settings2_d_converter as _settings_converter
 import zivid._camera_state_converter as _camera_state_converter
 import zivid._frame_info_converter as _frame_info_converter
 from zivid.image import Image
@@ -35,24 +35,24 @@ class Frame2D:
     def __str__(self):
         return str(self.__impl)
 
-    def image(self):
-        """Return the underlying 2D image.
+    def image_rgba(self):
+        """Get color (RGBA) image from the frame.
 
         Returns:
             an image instance
 
         """
-        return Image(self.__impl.image())
+        return Image(self.__impl.image_rgba())
 
     @property
     def settings(self):
-        """Get the settings 2d for the API at the time of the 2d frame capture.
+        """Get the settings used to capture this frame.
 
         Returns:
             a settings 2d instance
 
         """
-        return _settings_converter.to_settings_2d(  # pylint: disable=protected-access
+        return _settings_converter.to_settings2_d(  # pylint: disable=protected-access
             self.__impl.settings
         )
 
@@ -70,13 +70,13 @@ class Frame2D:
 
     @property
     def info(self):
-        """Get information collected at the time of the frame capture.
+        """Get information collected at the time of the capture.
 
         Returns:
             a camera info instance
 
         """
-        return _frame_info_converter.to_info(  # pylint: disable=protected-access
+        return _frame_info_converter.to_frame_info(  # pylint: disable=protected-access
             self.__impl.info
         )
 

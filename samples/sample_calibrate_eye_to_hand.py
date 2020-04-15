@@ -3,18 +3,33 @@ import datetime
 import code
 
 import numpy as np
-import zivid.hand_eye
+import zivid.calibration
+from zivid import Application, Settings
 
 
 def _acquire_checkerboard_frame(camera):
     print("Capturing checkerboard image... ")
-    with camera.update_settings() as updater:
-        updater.settings.iris = 17
-        updater.settings.gain = 1.0
-        updater.settings.exposure_time = datetime.timedelta(microseconds=20000)
-        updater.settings.filters.gaussian.enabled = True
+    settings = Settings(
+        acquisitions=[
+            Settings.Acquisition(
+                aperture=17,
+                exposure_time=datetime.timedelta(microseconds=20000),
+                gain=1.0,
+            )
+        ],
+        filters=Settings.Processing.Filters(
+            outlier=Settings.Processing.Filters.Outlier(
+                removal=Settings.Processing.Filters.Outlier.Removal(
+                    enabled=True, threshold=5
+                )
+            ),
+            smoothing=Settings.Processing.Filters.Smoothing(
+                gaussian=Settings.Processing.Filters.Smoothing.Gaussian(enabled=True)
+            ),
+        ),
+    )
     print("OK")
-    return camera.capture()
+    return camera.capture(settings)
 
 
 def _enter_robot_pose(index):
@@ -25,7 +40,7 @@ def _enter_robot_pose(index):
     )
     elements = inputted.split(maxsplit=15)
     data = np.array(elements, dtype=np.float64).reshape((4, 4))
-    robot_pose = zivid.hand_eye.Pose(data)
+    robot_pose = zivid.calibration.Pose(data)
     print("The following pose was entered:\n{}".format(robot_pose))
     return robot_pose
 
@@ -49,11 +64,11 @@ def _main():
                 frame = _acquire_checkerboard_frame(camera)
 
                 print("Detecting checkerboard square centers... ")
-                result = zivid.hand_eye.detect_feature_points(frame.get_point_cloud())
+                result = zivid.hand_eye.detect_feature_points(frame.point_cloud())
 
                 if result:
                     print("OK")
-                    res = zivid.hand_eye.CalibrationInput(robot_pose, result)
+                    res = zivid.calibration.HandEyeInput(robot_pose, result)
                     calibration_inputs.append(res)
                     current_pose_id += 1
                 else:
@@ -66,7 +81,7 @@ def _main():
             print("Unknown command '{}'".format(command))
 
     print("Performing hand-eye calibration...")
-    calibration_result = zivid.hand_eye.calibrate_eye_to_hand(calibration_inputs)
+    calibration_result = zivid.calibration.calibrate_eye_to_hand(calibration_inputs)
     code.interact(local=locals())
     if calibration_result:
         print("OK")

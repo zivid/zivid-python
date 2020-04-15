@@ -9,7 +9,9 @@ from zivid.point_cloud import PointCloud
 
 
 class Frame:  # pylint: disable=too-few-public-methods
-    """A frame captured by a Zivid camera."""
+    """Contains the point cloud (stored on compute device memory) as well as
+    calibration data, settings and state used by the API at time of the frame
+    capture. Use point_cloud to access point cloud data."""
 
     def __init__(self, file_name):
         """Create a frame by loading data from a file.
@@ -35,14 +37,14 @@ class Frame:  # pylint: disable=too-few-public-methods
     def __str__(self):
         return str(self.__impl)
 
-    def get_point_cloud(self):
-        """Copy the point cloud to the CPU and returns it.
+    def point_cloud(self):
+        """Get the point cloud.
 
         Returns:
             a point cloud instance
 
         """
-        return PointCloud(self.__impl.get_point_cloud())
+        return PointCloud(self.__impl.point_cloud())
 
     def save(self, file_path):
         """Save the frame to file. The file type is determined from the file extension.
@@ -64,7 +66,7 @@ class Frame:  # pylint: disable=too-few-public-methods
 
     @property
     def settings(self):
-        """Get the settings for the API at the time of the frame capture.
+        """Get the settings used to capture this frame.
 
         Returns:
             a settings instance
@@ -94,7 +96,7 @@ class Frame:  # pylint: disable=too-few-public-methods
             a camera info instance
 
         """
-        return _frame_info_converter.to_info(  # pylint: disable=protected-access
+        return _frame_info_converter.to_frame_info(  # pylint: disable=protected-access
             self.__impl.info
         )
 

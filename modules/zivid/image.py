@@ -47,26 +47,6 @@ class Image:
         self.__impl.assert_not_released()
         return numpy.array(self.__impl)
 
-    @property
-    def height(self):
-        """Return height (number of rows) of image.
-
-        Returns:
-            an integer
-
-        """
-        return self.__impl.height()
-
-    @property
-    def width(self):
-        """Return width (number of columns) of image.
-
-        Returns:
-            an integer
-
-        """
-        return self.__impl.width()
-
     def release(self):
         """Release the underlying resources."""
         self.__impl.release()

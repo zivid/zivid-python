@@ -1,34 +1,17 @@
 """Contains Camera class."""
 from zivid.frame import Frame
 from zivid.frame_2d import Frame2D
+import zivid
+from zivid.settings_2d import Settings2D
 import zivid._settings_converter as _settings_converter
-import zivid._settings_2d_converter as _settings_2d_converter
+import zivid._settings2_d_converter as _settings_2d_converter
 import zivid._camera_state_converter as _camera_state_converter
+import zivid._camera_info_converter as _camera_info_converter
 import _zivid
 
 
 class Camera:
     """Interface to one Zivid camera."""
-
-    class Revision:
-        """Camera revision."""
-
-        def __init__(self, major, minor):
-            """Initialize camera revision with major and minor vision.
-
-            Args:
-                major: Major hardware revision
-                minor: Minor hardware revision
-
-            """
-            self.major = major
-            self.minor = minor
-
-        def __eq__(self, other):
-            return self.major == other.major and self.minor == other.minor
-
-        def __str__(self):
-            return "{}.{}".format(self.major, self.minor)
 
     def __init__(self, internal_camera):
         """Initialize camera with an internal camera.
@@ -54,85 +37,38 @@ class Camera:
     def __eq__(self, other):
         return self.__impl == other._Camera__impl  # pylint: disable=protected-access
 
-    @property
-    def model_name(self):
-        """Get the model name.
-
-        Returns:
-            A string
-
-        """
-        return self.__impl.model_name
-
-    @property
-    def revision(self):
-        """Get the camera revision.
-
-        Returns:
-            A Revision instance
-
-        """
-        return Camera.Revision(self.__impl.revision.major, self.__impl.revision.minor)
-
-    @property
-    def serial_number(self):
-        """Get the serial number of the Zivid camera.
-
-        Returns:
-            A string
-
-        """
-        return self.__impl.serial_number
-
-    @property
-    def firmware_version(self):
-        """Get the camera's firmware version.
-
-        Returns:
-            A string
-
-        """
-        return self.__impl.firmware_version
-
-    def capture(self, settings_collection=None):
-        """Capture a single frame.
+    def capture(self, settings):
+        """Capture a single frame or a single 2D frame.
 
         Args:
-            settings_collection: A collection of settings to be captured and merged into a HDR frame.
-                If None, then current settings will be used instead
+            settings: settings to be used to capture. Can be either Settings or Settings2D instances
 
         Returns:
-            A frame containing a 3D image and metadata
+            A frame containing a 3D image and metadata or a frame containing a 2D image and metadata.
 
         """
-        if settings_collection is not None:
+        if isinstance(settings, zivid.Settings):
             return Frame(
+                self.__impl.capture(_settings_converter.to_internal_settings(settings))
+            )
+        elif isinstance(settings, Settings2D):
+            return Frame2D(
                 self.__impl.capture(
-                    [
-                        _settings_converter.to_internal_settings(settings)
-                        for settings in settings_collection
-                    ]
+                    _settings_2d_converter.to_internal_settings2_d(settings)
                 )
             )
-        return Frame(self.__impl.capture())
+        else:
+            raise TypeError("Unsupported settings type: {}".format(type(settings)))
 
-    def capture_2d(self, settings_2d):
-        """Capture a single 2D frame.
-
-        Note that the provided settings will only apply to this current 2D capture, and not future 3D captures.
-
-        Args:
-            settings_2d: Settings to use for the capture
+    @property
+    def info(self):
+        """Get information about camera model, serial number etc.
 
         Returns:
-            A frame containing a 2D image and metadata.
+            The current camera info
 
         """
-        return Frame2D(
-            self.__impl.capture_2d(
-                _settings_2d_converter.to_internal_settings_2d(settings_2d)
-            )
-        )
+        return _camera_info_converter.to_camera_info(self.__impl.info)
 
     @property
     def state(self):
@@ -144,57 +80,13 @@ class Camera:
         """
         return _camera_state_converter.to_camera_state(self.__impl.state)
 
-    @property
-    def settings(self):
-        """Get the current camera settings.
-
-        Returns:
-            Current settings
-
-        """
-        return _settings_converter.to_settings(self.__impl.settings)
-
-    @settings.setter
-    def settings(self, settings):
-        """Update the camera settings.
-
-        Args:
-            settings: New settings for the camera
-
-        """
-        self.__impl.settings = _settings_converter.to_internal_settings(  # pylint: disable=protected-access
-            settings
-        )
-
-    def connect(self, settings=None):
-        """Connect to the camera.
-
-        Args:
-            settings: New settings for the camera
-
-        """
-        if settings is None:
-            self.__impl.connect()
-        else:
-            self.__impl.connect(
-                _settings_converter.to_internal_settings(  # pylint: disable=protected-access
-                    settings
-                )
-            )
+    def connect(self):
+        """Connect to the camera."""
+        self.__impl.connect()
 
     def disconnect(self):
         """Disconnect from the camera and free all resources associated with it."""
         self.__impl.disconnect()
-
-    @property
-    def user_data_max_size_bytes(self):
-        """Return the ammount of data that can be stored in the camera.
-
-        Returns:
-            An int
-
-        """
-        return self.__impl.user_data_max_size_bytes
 
     def write_user_data(self, user_data):
         """Write user data to camera. The total number of writes supported depends on camera model and size of data.
@@ -223,29 +115,6 @@ class Camera:
 
         """
         return bytes(self.__impl.user_data)
-
-    def update_settings(self):
-        """Return settings updater.
-
-        Use the returned object as a context manager to set settings.
-
-        Returns:
-            a settings updater object
-
-        """
-
-        class SettingsUpdater:
-            def __init__(self, camera, settings):
-                self.__camera = camera
-                self.settings = settings
-
-            def __enter__(self):
-                return self
-
-            def __exit__(self, exception_type, exception_value, traceback):
-                self.__camera.settings = self.settings
-
-        return SettingsUpdater(self, self.settings)
 
     def release(self):
         """Release the underlying resources."""

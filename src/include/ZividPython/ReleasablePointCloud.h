@@ -13,7 +13,6 @@ namespace ZividPython
 
         ZIVID_PYTHON_FORWARD_0_ARGS(width)
         ZIVID_PYTHON_FORWARD_0_ARGS(height)
-        ZIVID_PYTHON_FORWARD_0_ARGS(dataPtr)
     };
 
     void wrapClass(pybind11::class_<ReleasablePointCloud> pyClass);

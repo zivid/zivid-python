@@ -34,5 +34,5 @@ function install_www_deb {
     rm -r $TMP_DIR || exit $?
 }
 
-install_www_deb https://www.zivid.com/hubfs/softwarefiles/releases/1.8.1+6967bc1b-1/u18/zivid-telicam-driver_3.0.1.1-1_amd64.deb || exit $?
-install_www_deb https://www.zivid.com/hubfs/softwarefiles/releases/1.8.1+6967bc1b-1/u18/zivid_1.8.1+6967bc1b-1_amd64.deb || exit $?
+install_www_deb https://www.zivid.com/hubfs/softwarefiles/releases/2.0.0+7c4918cf-14/u18/zivid-telicam-driver_3.0.1.1-3_amd64.deb || exit $?
+install_www_deb https://www.zivid.com/hubfs/softwarefiles/releases/2.0.0+7c4918cf-14/u18/zivid_2.0.0+7c4918cf-14_amd64.deb || exit $?
