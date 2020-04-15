@@ -1,3 +1,6 @@
+# pylint: disable=import-outside-toplevel
+
+
 def test_timestamp():
     import datetime
     import zivid

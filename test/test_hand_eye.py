@@ -1,3 +1,6 @@
+# pylint: disable=import-outside-toplevel
+
+
 def test_init_pose():
     import numpy as np
     import zivid.hand_eye

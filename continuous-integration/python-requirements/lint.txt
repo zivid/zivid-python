@@ -1,0 +1,8 @@
+black
+darglint
+flake8
+flake8-docstrings
+pylint
+pytest
+requests
+scikit-build

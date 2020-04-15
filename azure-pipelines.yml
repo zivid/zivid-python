@@ -18,7 +18,7 @@ jobs:
       Python37:
         python.version: '3.7'
   steps:
-  - script: pip install -r continuous-integration\requirements-build-and-test.txt"
+  - script: pip install -r continuous-integration\python-requirements\build.txt
     displayName: 'Install python requirements'
   - script: python continuous-integration\windows\build.py --root %CD%
     displayName: 'Build and test'

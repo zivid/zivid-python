@@ -9,9 +9,9 @@ source $VENV/bin/activate || exit $?
 
 pip install --upgrade pip || exit $?
 pip install "$ROOT_DIR" || exit $?
-pip install -r "$SCRIPT_DIR/../requirements-build-and-test.txt" || exit $?
+pip install -r "$SCRIPT_DIR/../python-requirements/test.txt" || exit $?
 
-python -m pytest "$ROOT_DIR" -c "$ROOT_DIR/pytest.ini" --unmarked || exit $?
+python -m pytest "$ROOT_DIR" -c "$ROOT_DIR/pytest.ini" || exit $?
 
 "$SCRIPT_DIR/run_samples.sh" || exit $?
 

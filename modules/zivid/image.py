@@ -13,9 +13,12 @@ class Image:
         Args:
             internal_image: an internal image
 
+        Raises:
+            TypeError: unsupported type provided for internal image
+
         """
         if not isinstance(internal_image, _zivid.Image):
-            raise ValueError(
+            raise TypeError(
                 "Unsupported type for argument internal_image. Got {}, expected {}".format(
                     type(internal_image), type(_zivid.Image)
                 )
