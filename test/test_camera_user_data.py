@@ -1,12 +1,5 @@
+# pylint: disable=import-outside-toplevel
 import pytest
-
-
-def test_max_user_data_size(file_camera):
-    import numbers
-
-    max_size = file_camera.user_data_max_size_bytes
-    assert max_size is not None
-    assert isinstance(max_size, numbers.Real)
 
 
 @pytest.mark.physical_camera

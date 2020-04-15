@@ -24,6 +24,7 @@ if(MSVC)
     add_compile_options(/bigobj)
 endif()
 
+
 find_package(Zivid ${ZIVID_SDK_VERSION} EXACT COMPONENTS Core REQUIRED)
 find_package(pybind11 2.3.0 REQUIRED)
 find_package(Eigen3 3.3 REQUIRED)

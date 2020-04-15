@@ -1,3 +1,4 @@
+# pylint: disable=import-outside-toplevel
 import pytest
 
 
@@ -12,36 +13,36 @@ def test_illegal_init(application):  # pylint: disable=unused-argument
         zivid.frame.Frame(12345)
 
 
-def test_get_point_cloud(frame):
+def test_point_cloud(frame):
     import zivid
 
-    point_cloud = frame.get_point_cloud()
+    point_cloud = frame.point_cloud()
     assert isinstance(point_cloud, zivid.PointCloud)
 
 
 def test_release(frame):
-    frame.get_point_cloud()
+    frame.point_cloud()
     frame.release()
     with pytest.raises(RuntimeError):
-        frame.get_point_cloud()
+        frame.point_cloud()
 
 
-def test_path_init(application, sample_data_file):  # pylint: disable=unused-argument
+def test_path_init(application, sample_point_cloud):  # pylint: disable=unused-argument
     from pathlib import Path
     import zivid
 
-    frame = zivid.frame.Frame(sample_data_file)
-    assert isinstance(sample_data_file, Path)
+    frame = zivid.frame.Frame(sample_point_cloud)
+    assert isinstance(sample_point_cloud, Path)
     assert frame is not None
     assert isinstance(frame, zivid.frame.Frame)
 
 
 def test_str_as_path_init(
-    application, sample_data_file  # pylint: disable=unused-argument
+    application, sample_point_cloud  # pylint: disable=unused-argument
 ):
     import zivid
 
-    frame = zivid.frame.Frame(str(sample_data_file))
+    frame = zivid.frame.Frame(str(sample_point_cloud))
     assert frame is not None
     assert isinstance(frame, zivid.frame.Frame)
 
@@ -58,14 +59,14 @@ def test_save(frame):
 
 
 def test_context_manager(
-    application, sample_data_file  # pylint: disable=unused-argument
+    application, sample_point_cloud  # pylint: disable=unused-argument
 ):
     import zivid
 
-    with zivid.frame.Frame(sample_data_file) as frame:
-        frame.get_point_cloud()
+    with zivid.frame.Frame(sample_point_cloud) as frame:
+        frame.point_cloud()
     with pytest.raises(RuntimeError):
-        frame.get_point_cloud()
+        frame.point_cloud()
 
 
 def test_to_string(frame):
@@ -74,16 +75,13 @@ def test_to_string(frame):
     assert isinstance(string, str)
 
 
-def test_load(frame, sample_data_file):
-    assert frame.load(sample_data_file) is None
+def test_load(frame, sample_point_cloud):
+    assert frame.load(sample_point_cloud) is None
 
 
 def test_settings(frame):
-    import zivid
-
-    settings = frame.settings
-    assert settings
-    assert isinstance(settings, zivid.Settings)
+    with pytest.raises(RuntimeError):
+        _ = frame.settings
 
 
 def test_state(frame):

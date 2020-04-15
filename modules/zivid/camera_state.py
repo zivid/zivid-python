@@ -1,71 +1,168 @@
-"""Contains CameraState class."""
 import _zivid
+import zivid
 
 
-class CameraState:  # pylint: disable=too-many-instance-attributes, too-few-public-methods
-    """Information about camera connection state, live mode, temperatures, etc."""
-
-    class Temperature:  # pylint: disable=too-few-public-methods
-        """Current temperature(s)."""
-
-        def __init__(  # pylint: disable=too-many-arguments
+class CameraState:
+    class Temperature:
+        def __init__(
             self,
-            dmd=_zivid.CameraState.Temperature.DMD().value,
-            general=_zivid.CameraState.Temperature.General().value,
-            led=_zivid.CameraState.Temperature.LED().value,
-            lens=_zivid.CameraState.Temperature.Lens().value,
-            pcb=_zivid.CameraState.Temperature.PCB().value,
+            dmd=_zivid.CameraState().Temperature().DMD().value,
+            general=_zivid.CameraState().Temperature().General().value,
+            led=_zivid.CameraState().Temperature().LED().value,
+            lens=_zivid.CameraState().Temperature().Lens().value,
+            pcb=_zivid.CameraState().Temperature().PCB().value,
         ):
-            """Initialize temperature.
 
-            Args:
-                dmd: a real number
-                general: a real number
-                led: a real number
-                lens: a real number
-                pcb: a real number
+            if dmd is not None:
+                self._dmd = _zivid.CameraState.Temperature.DMD(dmd)
+            else:
+                self._dmd = _zivid.CameraState.Temperature.DMD()
+            if general is not None:
+                self._general = _zivid.CameraState.Temperature.General(general)
+            else:
+                self._general = _zivid.CameraState.Temperature.General()
+            if led is not None:
+                self._led = _zivid.CameraState.Temperature.LED(led)
+            else:
+                self._led = _zivid.CameraState.Temperature.LED()
+            if lens is not None:
+                self._lens = _zivid.CameraState.Temperature.Lens(lens)
+            else:
+                self._lens = _zivid.CameraState.Temperature.Lens()
+            if pcb is not None:
+                self._pcb = _zivid.CameraState.Temperature.PCB(pcb)
+            else:
+                self._pcb = _zivid.CameraState.Temperature.PCB()
 
-            """
-            self.dmd = dmd
-            self.general = general
-            self.led = led
-            self.lens = lens
-            self.pcb = pcb
+        @property
+        def dmd(self):
+            return self._dmd.value
+
+        @property
+        def general(self):
+            return self._general.value
+
+        @property
+        def led(self):
+            return self._led.value
+
+        @property
+        def lens(self):
+            return self._lens.value
+
+        @property
+        def pcb(self):
+            return self._pcb.value
+
+        @dmd.setter
+        def dmd(self, value):
+            self._dmd = _zivid.CameraState.Temperature.DMD(value)
+
+        @general.setter
+        def general(self, value):
+            self._general = _zivid.CameraState.Temperature.General(value)
+
+        @led.setter
+        def led(self, value):
+            self._led = _zivid.CameraState.Temperature.LED(value)
+
+        @lens.setter
+        def lens(self, value):
+            self._lens = _zivid.CameraState.Temperature.Lens(value)
+
+        @pcb.setter
+        def pcb(self, value):
+            self._pcb = _zivid.CameraState.Temperature.PCB(value)
 
         def __eq__(self, other):
-            return (
-                self.dmd == other.dmd
-                and self.general == other.general
-                and self.led == other.led
-                and self.lens == other.lens
-                and self.pcb == other.pcb
+            if (
+                self._dmd == other._dmd
+                and self._general == other._general
+                and self._led == other._led
+                and self._lens == other._lens
+                and self._pcb == other._pcb
+            ):
+                return True
+            return False
+
+        def __str__(self):
+            return """Temperature:
+        dmd: {dmd}
+        general: {general}
+        led: {led}
+        lens: {lens}
+        pcb: {pcb}
+        """.format(
+                dmd=self.dmd,
+                general=self.general,
+                led=self.led,
+                lens=self.lens,
+                pcb=self.pcb,
             )
 
     def __init__(
         self,
-        available=_zivid.CameraState.Available().value,
-        connected=_zivid.CameraState.Connected().value,
-        live=_zivid.CameraState.Live().value,
-        temperature=Temperature(),
+        available=_zivid.CameraState().Available().value,
+        connected=_zivid.CameraState().Connected().value,
+        temperature=None,
     ):
-        """Initialize camera state.
 
-        Args:
-            available: a bool
-            connected: a bool
-            live: a bool
-            temperature: a temperature instance
+        if available is not None:
+            self._available = _zivid.CameraState.Available(available)
+        else:
+            self._available = _zivid.CameraState.Available()
+        if connected is not None:
+            self._connected = _zivid.CameraState.Connected(connected)
+        else:
+            self._connected = _zivid.CameraState.Connected()
+        if temperature is None:
+            temperature = zivid.CameraState.Temperature()
+        if not isinstance(temperature, zivid.CameraState.Temperature):
+            raise TypeError("Unsupported type: {value}".format(value=type(temperature)))
+        self._temperature = temperature
 
-        """
-        self.available = available
-        self.connected = connected
-        self.live = live
-        self.temperature = temperature
+    @property
+    def available(self):
+        return self._available.value
+
+    @property
+    def connected(self):
+        return self._connected.value
+
+    @property
+    def temperature(self):
+        return self._temperature
+
+    @available.setter
+    def available(self, value):
+        self._available = _zivid.CameraState.Available(value)
+
+    @connected.setter
+    def connected(self, value):
+        self._connected = _zivid.CameraState.Connected(value)
+
+    @temperature.setter
+    def temperature(self, value):
+        if not isinstance(value, zivid.CameraState.Temperature):
+            raise TypeError("Unsupported type {value}".format(value=type(value)))
+        self._temperature = value
 
     def __eq__(self, other):
-        return (
-            self.available == other.available
-            and self.connected == other.connected
-            and self.live == other.live
-            and self.temperature == other.temperature
+        if (
+            self._available == other._available
+            and self._connected == other._connected
+            and self._temperature == other._temperature
+        ):
+            return True
+        return False
+
+    def __str__(self):
+        return """CameraState:
+    available: {available}
+    connected: {connected}
+    temperature: {temperature}
+    """.format(
+            available=self.available,
+            connected=self.connected,
+            temperature=self.temperature,
         )

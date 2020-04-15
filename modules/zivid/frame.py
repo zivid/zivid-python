@@ -17,6 +17,9 @@ class Frame:  # pylint: disable=too-few-public-methods
         Args:
             file_name: a pathlib.Path instance or a string
 
+        Raises:
+            TypeError: unsupported type provided for file name
+
         """
         if isinstance(file_name, (str, Path)):
             self.__impl = _zivid.Frame(str(file_name))
@@ -32,14 +35,14 @@ class Frame:  # pylint: disable=too-few-public-methods
     def __str__(self):
         return str(self.__impl)
 
-    def get_point_cloud(self):
+    def point_cloud(self):
         """Copy the point cloud to the CPU and returns it.
 
         Returns:
             a point cloud instance
 
         """
-        return PointCloud(self.__impl.get_point_cloud())
+        return PointCloud(self.__impl.point_cloud())
 
     def save(self, file_path):
         """Save the frame to file. The file type is determined from the file extension.
@@ -91,7 +94,7 @@ class Frame:  # pylint: disable=too-few-public-methods
             a camera info instance
 
         """
-        return _frame_info_converter.to_info(  # pylint: disable=protected-access
+        return _frame_info_converter.to_frame_info(  # pylint: disable=protected-access
             self.__impl.info
         )
 

@@ -7,8 +7,11 @@ SAMPLE_DIR=$(mktemp --tmpdir --directory zivid-python-test-file-camera-XXXX) || 
 cd "$SAMPLE_DIR" || exit $?
 export PYTHONPATH="$ROOT_DIR" || exit $?
 
-echo "Downloading MiscObjects.zdf"
-python "$ROOT_DIR/scripts/sample_data.py" --destination "$SAMPLE_DIR/MiscObjects.zdf" || exit $?
+echo "Downloading file camera and sample point cloud"
+python "$ROOT_DIR/scripts/sample_data.py" \
+    --destination-point-cloud "$SAMPLE_DIR/Zivid3D.zdf" \
+    --destination-file-camera "$SAMPLE_DIR/FileCameraZividOne.zfc" \
+    || exit $?
 
 for sample in sample_print_version_info \
               sample_capture_from_file

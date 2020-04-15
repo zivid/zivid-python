@@ -1,23 +1,24 @@
 """This file imports used classes, modules and packages."""
+
+
 try:
     from _zivid._zivid import (  # pylint: disable=import-error,no-name-in-module
         __version__,
         Application,
         Camera,
         CameraState,
-        environment,
         firmware,
-        hand_eye,
+        calibration,
         capture_assistant,
         Frame,
         FrameInfo,
-        hdr,
         PointCloud,
         Settings,
         version,
         Settings2D,
         Frame2D,
         Image,
+        CameraInfo,
     )
 except ImportError as ex:
     import platform

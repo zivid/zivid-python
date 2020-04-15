@@ -38,7 +38,7 @@ def _run_process(args):
 
 def _setup():
     with tempfile.TemporaryDirectory() as temp_dir:
-        zivid_installer_url = "https://www.zivid.com/hubfs/softwarefiles/releases/1.8.1+6967bc1b-1/windows/ZividSetup_1.8.1+6967bc1b-1.exe"
+        zivid_installer_url = "https://www.zivid.com/hubfs/softwarefiles/releases/2.0.0-beta-1+6b13d5ad-356/windows/ZividSetup_2.0.0-beta-1+6b13d5ad-356.exe"
         print("Downloading {}".format(zivid_installer_url), flush=True)
         zivid_installer = Path(temp_dir) / "ZividSetup.exe"
         response = requests.get(zivid_installer_url)

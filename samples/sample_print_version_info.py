@@ -4,9 +4,9 @@ import zivid
 
 
 def _main():
-    print("Python:       " + platform.python_version())
-    print("zivid-python: " + zivid.__version__)
-    print("Zivid SDK:    " + zivid.SDKVersion.full)
+    print("Python: {}".format(platform.python_version()))
+    print("zivid-python: {}".format(zivid.__version__))
+    print("Zivid SDK: {}".format(zivid.SDKVersion.full))
 
 
 if __name__ == "__main__":

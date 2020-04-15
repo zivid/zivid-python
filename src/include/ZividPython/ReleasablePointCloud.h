@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Zivid/PointCloud.h>
+#include <Zivid/PointXYZColorRGBA.h>
 #include <ZividPython/Releasable.h>
 #include <ZividPython/Wrappers.h>
 
@@ -13,7 +14,7 @@ namespace ZividPython
 
         ZIVID_PYTHON_FORWARD_0_ARGS(width)
         ZIVID_PYTHON_FORWARD_0_ARGS(height)
-        ZIVID_PYTHON_FORWARD_0_ARGS(dataPtr)
+        ZIVID_PYTHON_FORWARD_0_ARGS_TEMPLATE_1_ARG(copyData, Zivid::PointXYZColorRGBA)//TODO: this does not work
     };
 
     void wrapClass(pybind11::class_<ReleasablePointCloud> pyClass);

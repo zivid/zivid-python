@@ -1,3 +1,6 @@
+# pylint: disable=import-outside-toplevel
+
+
 def test_point_cloud_to_array(point_cloud):
     import numpy as np
 
@@ -33,7 +36,7 @@ def test_width(point_cloud):
 def test_height_context_manager(frame):
     import pytest
 
-    with frame.get_point_cloud() as point_cloud:
+    with frame.point_cloud() as point_cloud:
         point_cloud.height  # pylint: disable=pointless-statement
     with pytest.raises(RuntimeError):
         point_cloud.height  # pylint: disable=pointless-statement
@@ -42,7 +45,7 @@ def test_height_context_manager(frame):
 def test_width_context_manager(frame):
     import pytest
 
-    with frame.get_point_cloud() as point_cloud:
+    with frame.point_cloud() as point_cloud:
         point_cloud.width  # pylint: disable=pointless-statement
     with pytest.raises(RuntimeError):
         point_cloud.width  # pylint: disable=pointless-statement
@@ -51,7 +54,7 @@ def test_width_context_manager(frame):
 def test_to_array_context_manager(frame):
     import pytest
 
-    with frame.get_point_cloud() as point_cloud:
+    with frame.point_cloud() as point_cloud:
         point_cloud.to_array()
     with pytest.raises(RuntimeError):
         point_cloud.to_array()
@@ -64,8 +67,8 @@ def test_illegal_init(application):  # pylint: disable=unused-argument
     with pytest.raises(TypeError):
         zivid.PointCloud()  # pylint: disable=no-value-for-parameter
 
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         zivid.PointCloud("Should fail.")
 
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         zivid.PointCloud(123)

@@ -1,16 +1,16 @@
-"""Contains functions to convert between frame info and internal frame info."""
-from zivid.frame_info import FrameInfo
+import zivid
 
 
-def to_info(internal_frame_info):
-    """Convert internal frame info to frame info.
+def to_frame_info(internal_frame_info):
+    def _to_software_version(internal_software_version):
 
-    Args:
-        internal_frame_info: a internal frame info object
+        return zivid.FrameInfo.SoftwareVersion(
+            core=internal_software_version.core.value,
+        )
 
-    Returns:
-        a frame info object
-
-    """
-    frame_info = FrameInfo(timestamp=internal_frame_info.timestamp.value)
-    return frame_info
+    global to_software_version
+    to_software_version = _to_software_version
+    return zivid.FrameInfo(
+        software_version=_to_software_version(internal_frame_info.software_version),
+        time_stamp=internal_frame_info.time_stamp.value,
+    )
