@@ -19,6 +19,8 @@ jobs:
         python.version: '3.7'
       Python38:
         python.version: '3.8'
+      Python39:
+        python.version: '3.9'
   steps:
   - script: pip install -r continuous-integration\requirements-build-and-test.txt"
     displayName: 'Install python requirements'
