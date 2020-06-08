@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function install_opencl_cpu_runtime {
     TMP_DIR=$(mktemp --tmpdir --directory zivid-setup-opencl-cpu-XXXX) || exit $?
     pushd $TMP_DIR || exit $?
