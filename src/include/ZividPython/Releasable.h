@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <stdexcept>
 
 #define ZIVID_PYTHON_FORWARD_0_ARGS_TEMPLATE_1_ARG_WRAP_RETURN(returnType, functionName, returnTypeTypename)           \
     auto functionName()                                                                                                \
