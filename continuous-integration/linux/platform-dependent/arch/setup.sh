@@ -2,6 +2,7 @@
 
 pacman -Syu --noconfirm --needed \
        clang \
+       clinfo \
        cmake \
        diffutils \
        fakeroot \

@@ -29,6 +29,9 @@ else
     exit 1
 fi
 
+echo "clinfo:"
+clinfo || exit $?
+
 install -D "$ROOT_DIR"/ZividAPIConfig.yml "$HOME"/.config/Zivid/API/Config.yml || exit $?
 
 echo Success! [$0]
