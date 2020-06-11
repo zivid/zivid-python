@@ -1,7 +1,10 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(realpath $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd) )"
+
 dnf --assumeyes install \
     bsdtar \
+    clinfo \
     g++ \
     libatomic \
     python3-devel \
@@ -12,16 +15,12 @@ dnf --assumeyes install \
 alternatives --install /usr/bin/python python /usr/bin/python3 0 || exit $?
 alternatives --install /usr/bin/pip pip /usr/bin/pip3 0 || exit $?
 
-function install_opencl_cpu_runtime {
-    TMP_DIR=$(mktemp --tmpdir --directory zivid-setup-opencl-cpu-XXXX) || exit $?
-    pushd $TMP_DIR || exit $?
-    wget -nv https://www.dropbox.com/s/0cvg8fypylgal2m/opencl_runtime_16.1.1_x64_ubuntu_6.4.0.25.tgz || exit $?
-    tar -xf opencl_runtime_16.1.1_x64_ubuntu_6.4.0.25.tgz || exit $?
-    dnf install --assumeyes opencl_runtime_*/rpm/*.rpm || exit $?
-    popd || exit $?
-    rm -r $TMP_DIR || exit $?
-}
-
+source "$SCRIPT_DIR/../common.sh" || exit $?
+# Install OpenCL CPU runtime driver prerequisites
+dnf --assumeyes install \
+    numactl-libs \
+    redhat-lsb-core \
+    || exit $?
 install_opencl_cpu_runtime || exit $?
 
 function install_www_deb {
