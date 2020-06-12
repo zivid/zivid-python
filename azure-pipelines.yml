@@ -35,6 +35,9 @@ jobs:
       ArchLinux:
         os: 'archlinux/base'
         command: './lint.sh'
+      Ubuntu2004:
+        os: 'ubuntu:20.04'
+        command: './test.sh'  
       Ubuntu1804:
         os: 'ubuntu:18.04'
         command: './test.sh'
