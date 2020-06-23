@@ -3,11 +3,11 @@
 #include <ZividPython/DataModelWrapper.h>
 #include <ZividPython/Wrappers.h>
 
+#include <ZividPython/Calibration/Calibration.h>
+#include <ZividPython/Calibration/Pose.h>
 #include <ZividPython/CaptureAssistant.h>
 #include <ZividPython/DataModel.h>
 #include <ZividPython/Firmware.h>
-#include <ZividPython/Calibration/Calibration.h>
-#include <ZividPython/Calibration/Pose.h>
 #include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/ReleasableFrame.h>
 #include <ZividPython/ReleasableFrame2D.h>
@@ -44,5 +44,5 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Firmware);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Version);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Calibration);
-    ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, CaptureAssistant); 
+    ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, CaptureAssistant);
 }

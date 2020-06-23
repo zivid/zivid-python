@@ -12,19 +12,13 @@ namespace ZividPython
     {
         pyClass.def(py::init())
             .def("cameras", &SingletonApplication::cameras)
-            .def("connect_camera", [](SingletonApplication &application) {
-                    return application.connectCamera();
-                }
-            )
+            .def("connect_camera", [](SingletonApplication &application) { return application.connectCamera(); })
             .def(
                 "connect_camera",
-                [](SingletonApplication &application,
-                   const std::string &serialNumber) {
+                [](SingletonApplication &application, const std::string &serialNumber) {
                     return application.connectCamera(Zivid::CameraInfo::SerialNumber{ serialNumber });
                 },
                 py::arg("serial_number"))
-            .def("create_file_camera",
-                 &SingletonApplication::createFileCamera,
-                 py::arg("frame_file"));
+            .def("create_file_camera", &SingletonApplication::createFileCamera, py::arg("frame_file"));
     }
 } // namespace ZividPython

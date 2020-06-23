@@ -1,8 +1,8 @@
 #include <Zivid/CaptureAssistant.h>
 
 #include <ZividPython/CaptureAssistant.h>
-#include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/DataModelWrapper.h>
+#include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/Wrappers.h>
 
 #include <pybind11/pybind11.h>
@@ -22,6 +22,5 @@ namespace ZividPython::CaptureAssistant
                     const Zivid::CaptureAssistant::SuggestSettingsParameters &suggestSettingsParameters) {
                      return Zivid::CaptureAssistant::suggestSettings(camera.impl(), suggestSettingsParameters);
                  });
-        
     }
 } // namespace ZividPython::CaptureAssistant

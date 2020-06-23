@@ -7,4 +7,4 @@ namespace ZividPython
     template<typename T>
     struct DependentFalse : std::false_type
     {};
-}
+} // namespace ZividPython

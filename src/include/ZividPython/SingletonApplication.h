@@ -19,10 +19,7 @@ namespace ZividPython
                                                 const Zivid::CameraInfo::SerialNumber &,
                                                 serialNumber)
 
-        ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableCamera,
-                                                createFileCamera,
-                                                const std::string &,
-                                                fileName)
+        ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableCamera, createFileCamera, const std::string &, fileName)
     };
 
     void wrapClass(pybind11::class_<SingletonApplication> pyClass);

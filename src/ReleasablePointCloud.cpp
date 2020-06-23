@@ -21,9 +21,11 @@ namespace
 
     py::buffer_info makeBufferInfo(ZividPython::ReleasablePointCloud &pointCloud)
     {
-        auto dataArray = pointCloud.impl().copyData<Zivid::PointXYZColorRGBA>(); // TODO: double copy, both here and when returning buffer_info
+        auto dataArray =
+            pointCloud.impl()
+                .copyData<Zivid::PointXYZColorRGBA>(); // TODO: double copy, both here and when returning buffer_info
         // try to use latest pybind11 to get around const data pointers https://github.com/pybind/pybind11/issues/1993
-        auto * data = const_cast<Zivid::PointXYZColorRGBA*>(dataArray.data()); 
+        auto *data = const_cast<Zivid::PointXYZColorRGBA *>(dataArray.data());
 
         using NativeDataType = std::remove_pointer_t<decltype(data)>;
 

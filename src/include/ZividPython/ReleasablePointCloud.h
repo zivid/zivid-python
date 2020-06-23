@@ -14,7 +14,7 @@ namespace ZividPython
 
         ZIVID_PYTHON_FORWARD_0_ARGS(width)
         ZIVID_PYTHON_FORWARD_0_ARGS(height)
-        ZIVID_PYTHON_FORWARD_0_ARGS_TEMPLATE_1_ARG(copyData, Zivid::PointXYZColorRGBA)//TODO: this does not work
+        ZIVID_PYTHON_FORWARD_0_ARGS_TEMPLATE_1_ARG(copyData, Zivid::PointXYZColorRGBA) //TODO: this does not work
     };
 
     void wrapClass(pybind11::class_<ReleasablePointCloud> pyClass);

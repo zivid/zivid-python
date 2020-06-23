@@ -113,12 +113,15 @@ namespace ZividPython
                                                                     ZividPython::wrapClass),                           \
                                                                 #name)
 
-#define ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(dest, name, source, callback)                                                   \
+#define ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(dest, name, source, callback)                                           \
     ZividPython::wrapEnum<source>(dest, name, callback)
 
 #define ZIVID_PYTHON_WRAP_ENUM_CLASS(dest, name)                                                                       \
-    ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(dest, #name, name, static_cast<void (*)(pybind11::enum_<name>)>(ZividPython::wrapEnum))
-    
+    ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(dest,                                                                       \
+                                           #name,                                                                      \
+                                           name,                                                                       \
+                                           static_cast<void (*)(pybind11::enum_<name>)>(ZividPython::wrapEnum))
+
 #define ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(dest, name)                                                              \
     ZividPython::wrapClass<ZividPython::Releasable##name, ZividPython::WrapType::releasable>(                          \
         dest, static_cast<void (*)(pybind11::class_<ZividPython::Releasable##name>)>(ZividPython::wrapClass), #name)

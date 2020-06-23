@@ -1,16 +1,15 @@
 #pragma once
 
+#include "DepdendentFalse.h"
 #include <pybind11/operators.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include "DepdendentFalse.h"
 
 #include "ZividPython/Wrappers.h"
 
 #include <algorithm>
 
 namespace py = pybind11;
-
 
 namespace ZividPython
 {
@@ -52,8 +51,8 @@ namespace ZividPython
                 //pyClass.def(py::init<const std::string &>(), py::arg("file_name"))
                 //    .def("save", &Target::save, py::arg("file_name"))
                 //    .def("load", &Target::load, py::arg("file_name")); //TODO: fix når save/load bare tar et argument
-                //pyClass.def("set_from_string", 
-                //py::overload_cast<const std::string &, const std::string &>(&Target::setFromString), 
+                //pyClass.def("set_from_string",
+                //py::overload_cast<const std::string &, const std::string &>(&Target::setFromString),
                 //py::arg("path"),py::arg("string_value"));
             }
 
@@ -65,8 +64,8 @@ namespace ZividPython
             }
             else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafValue)
             {
-                //pyClass.def("set_from_string", 
-                //    py::overload_cast<const std::string &>(&Target::setFromString), 
+                //pyClass.def("set_from_string",
+                //    py::overload_cast<const std::string &>(&Target::setFromString),
                 //    py::arg("string_value"));
                 pyClass.def("__bool__", [](const Target &value) {
                     return Target{ typename Target::ValueType{} } != value; // NOLINT
@@ -82,7 +81,7 @@ namespace ZividPython
             {
                 static_assert(DependentFalse<Target>::value, "Target NodeType is unsupported");
             }
-            
+
             if constexpr(Target::nodeType == Zivid::DataModel::NodeType::group)
             {
                 // TODO: Workaround for no API to access uninstansiated nodes.
@@ -104,38 +103,40 @@ namespace ZividPython
                     pyClass.def_property(
                         name.c_str(),
                         [](const Target &source) { return Detail::getHelper<MemberType>(source); },
-                        [](Target &dest, const MemberType &value) { return dest.set(value);});
+                        [](Target &dest, const MemberType &value) { return dest.set(value); });
                 });
             }
             else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafValue)
             {
                 using ValueType = typename Target::ValueType;
-                
-                
+
                 if constexpr(std::is_enum_v<ValueType>)
                 {
-                    enum class foo{};
-                    ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(pyClass, "enum", ValueType, [](auto &pyEnum){
-                    for(const auto &value: Target::validValues())
+                    enum class foo
                     {
-                        pyEnum.value(Target{value}.toString().c_str(), value);
-                    }
-                    pyEnum.export_values();
-                    }
-                    );
+                    };
+                    ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(pyClass, "enum", ValueType, [](auto &pyEnum) {
+                        for(const auto &value : Target::validValues())
+                        {
+                            pyEnum.value(Target{ value }.toString().c_str(), value);
+                        }
+                        pyEnum.export_values();
+                    });
                 }
-                pyClass.def(py::init<const ValueType &>(), py::arg("value"))
+                pyClass
+                    .def(py::init<const ValueType &>(), py::arg("value"))
 
-                    .def_property_readonly("value", [](const Target &target) -> std::optional<typename Target::ValueType> {
- if (hasValue(target))
- {
- return target.value();
- }
- else
- {
- return {};
- }
- });
+                    .def_property_readonly("value",
+                                           [](const Target &target) -> std::optional<typename Target::ValueType> {
+                                               if(hasValue(target))
+                                               {
+                                                   return target.value();
+                                               }
+                                               else
+                                               {
+                                                   return {};
+                                               }
+                                           });
 
                 if constexpr(!std::is_same_v<ValueType, bool>)
                 {
@@ -146,7 +147,7 @@ namespace ZividPython
                 if constexpr(Zivid::DataModel::HasValidRange<Target>::value)
                 {
                     pyClass.def_property_readonly("valid_range", [](const Target &target) {
-                        const auto range =  Target::validRange();
+                        const auto range = Target::validRange();
                         return std::make_pair(range.min(), range.max());
                     });
                 }
@@ -161,7 +162,7 @@ namespace ZividPython
                         //return std::vector<typename Target::Constraints>();
                     });
                 }
-                
+
                 if constexpr(Zivid::DataModel::HasValidSize<Target>::value)
                 {
                     pyClass.def_property_readonly("valid_size", [](const Target &target) {
@@ -175,13 +176,11 @@ namespace ZividPython
                 using ValueType = typename Target::ValueType::value_type;
 
                 //wrapDataModel<false>(pyClass, ValueType{});
-                
+
                 pyClass.def_property_readonly("value", &Target::value)
-                .def("append", [](Target &dest, ValueType value){
-                    dest.emplaceBack(std::move(value));
-                })
-                .def("size", &Target::size)
-                .def("is_empty", &Target::isEmpty);
+                    .def("append", [](Target &dest, ValueType value) { dest.emplaceBack(std::move(value)); })
+                    .def("size", &Target::size)
+                    .def("is_empty", &Target::isEmpty);
                 // detail::list_accessor operator[](size_t index) const {return {*this, index};}
                 // ???
                 // Missing Settings::frames

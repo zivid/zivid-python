@@ -5,4 +5,4 @@
 namespace ZividPython::DataModel
 {
     void wrapAsSubmodule(pybind11::module &dest);
-} // namespace ZividPython::Environment
+} // namespace ZividPython::DataModel

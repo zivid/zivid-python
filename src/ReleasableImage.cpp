@@ -13,7 +13,7 @@ namespace
         using NativeDataType = std::remove_pointer_t<decltype(data)>;
 
         return py::buffer_info{
-            const_cast<std::remove_const_t<std::remove_pointer_t<decltype(data)>>*>(
+            const_cast<std::remove_const_t<std::remove_pointer_t<decltype(data)>> *>(
                 data), // TODO: Const casting this until pybind11 has newer version than 2.4.3 has been released
             sizeof(Zivid::ColorRGBA),
             py::format_descriptor<Zivid::ColorRGBA>::format(),

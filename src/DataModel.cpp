@@ -1,8 +1,8 @@
 #include <Zivid/DataModel/NodeType.h>
 
 #include <ZividPython/DataModel.h>
-#include <ZividPython/Wrappers.h>
 #include <ZividPython/NodeType.h>
+#include <ZividPython/Wrappers.h>
 
 #include <pybind11/pybind11.h>
 
