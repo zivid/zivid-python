@@ -84,13 +84,6 @@ class SuggestSettingsParameters:
         raise ValueError(
             "Unsupported value {value}".format(value=self._ambient_light_frequency)
         )
-        # return list(
-        #     SuggestSettingsParameters.AmbientLightFrequency._valid_values.keys()
-        # )[
-        #     list(
-        #         SuggestSettingsParameters.AmbientLightFrequency._valid_values.values()
-        #     ).index(self._ambient_light_frequency)
-        # ]
 
     @max_capture_time.setter
     def max_capture_time(self, value):

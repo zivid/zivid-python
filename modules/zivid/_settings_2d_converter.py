@@ -104,7 +104,7 @@ def to_internal_settings_2d(settings2_d):
     internal_settings2_d.processing = _to_internal_processing(settings2_d.processing)
 
     if settings2_d.acquisitions is None:
-        internal_settings2_d.acquisitions = _zivid.Settings().Acquisitions()  # TODO
+        internal_settings2_d.acquisitions = _zivid.Settings().Acquisitions()
     else:
         temp = _zivid.Settings2D().Acquisitions()
         for acq in settings2_d.acquisitions:
@@ -152,14 +152,6 @@ def to_settings_2d(internal_settings2_d):
     global to_processing
     to_processing = _to_processing
 
-    # print("printing aquis before converting from internal:")
-    # for e in [element for element in internal_settings2_d.acquisitions.value]:
-    #     print(e)
-    # print("printing acuqis after internally converted")
-    # for e in [
-    #     _to_acquisition(element) for element in internal_settings2_d.acquisitions.value
-    # ]:
-    #     print(e)
     return zivid.Settings2D(
         processing=_to_processing(internal_settings2_d.processing),
         acquisitions=[

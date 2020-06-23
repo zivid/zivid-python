@@ -5,9 +5,6 @@ import zivid
 def _to_internal_suggest_settings_parameters_ambient_light_frequency(
     ambient_light_frequency,
 ):
-    print("this is value:")
-    print(ambient_light_frequency)
-    print(type(ambient_light_frequency))
     try:
         if ambient_light_frequency is None:
             return (
@@ -19,7 +16,7 @@ def _to_internal_suggest_settings_parameters_ambient_light_frequency(
     except Exception as ex:
         raise RuntimeError(
             "Unsupported value: {value}".format(value=ambient_light_frequency)
-        ) from ex  # TODO
+        ) from ex
 
 
 def to_internal_suggest_settings_parameters(suggest_settings_parameters):
