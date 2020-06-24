@@ -22,10 +22,12 @@ jobs:
       Python39:
         python.version: '3.9'
   steps:
-  - script: pip install --requirement continuous-integration\python-requirements\build.txt
-    displayName: 'Install python requirements'
+  - script: python continuous-integration\windows\setup.py
+    displayName: 'Setup'
   - script: python continuous-integration\windows\build.py --root %CD%
     displayName: 'Build'
+  - script: python continuous-integration\windows\test.py --root %CD%
+    displayName: 'Test'
     env: { 'Zivid_DIR': 'C:\Program Files\Zivid\CMake\Zivid', 'CXX': 'cl.exe', 'CC': 'cl.exe'}
 - job: Linux
   pool:
