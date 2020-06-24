@@ -5,6 +5,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
+#include <Zivid/Settings2D.h>
+
 #include "ZividPython/Wrappers.h"
 
 #include <algorithm>
