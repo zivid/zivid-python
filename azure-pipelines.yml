@@ -26,9 +26,9 @@ jobs:
     displayName: 'Setup'
   - script: python continuous-integration\windows\build.py --root %CD%
     displayName: 'Build'
+    env: { 'Zivid_DIR': 'C:\Program Files\Zivid\CMake\Zivid', 'CXX': 'cl.exe', 'CC': 'cl.exe'}
   - script: python continuous-integration\windows\test.py --root %CD%
     displayName: 'Test'
-    env: { 'Zivid_DIR': 'C:\Program Files\Zivid\CMake\Zivid', 'CXX': 'cl.exe', 'CC': 'cl.exe'}
 - job: Linux
   pool:
     vmImage: ubuntu-16.04
