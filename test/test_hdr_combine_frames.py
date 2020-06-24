@@ -1,3 +1,6 @@
+# pylint: disable=import-outside-toplevel
+
+
 def test_list_one_element(frame):
     import zivid
     from zivid.hdr import combine_frames

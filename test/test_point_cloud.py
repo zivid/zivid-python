@@ -1,3 +1,6 @@
+# pylint: disable=import-outside-toplevel
+
+
 def test_point_cloud_to_array(point_cloud):
     import numpy as np
 
@@ -64,8 +67,8 @@ def test_illegal_init(application):  # pylint: disable=unused-argument
     with pytest.raises(TypeError):
         zivid.PointCloud()  # pylint: disable=no-value-for-parameter
 
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         zivid.PointCloud("Should fail.")
 
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         zivid.PointCloud(123)

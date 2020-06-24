@@ -1,16 +1,17 @@
+# pylint: disable=import-outside-toplevel
 import pytest
 
 
 def test_illegal_init(application):  # pylint: disable=unused-argument
     import zivid
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(TypeError):
         zivid.camera.Camera("this should fail")
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(TypeError):
         zivid.camera.Camera(None)
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(TypeError):
         zivid.camera.Camera(12345)
 
 

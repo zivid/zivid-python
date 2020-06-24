@@ -36,9 +36,12 @@ class Camera:
         Args:
             internal_camera: An internal Zivid camera instance
 
+        Raises:
+            TypeError: unsupported type provided for internal camera
+
         """
         if not isinstance(internal_camera, _zivid.Camera):
-            raise RuntimeError(
+            raise TypeError(
                 "Unsupported type for argument internal camera: {}, type: {}.".format(
                     internal_camera, type(internal_camera)
                 )
@@ -198,6 +201,9 @@ class Camera:
 
         Args:
             user_data: bytes
+
+        Raises:
+            TypeError: unsupported type provided for user data
 
         """
         if not isinstance(user_data, bytes):

@@ -1,4 +1,9 @@
+import tempfile
+import platform
+import subprocess
+from pathlib import Path
 from pkgutil import iter_modules
+from skbuild import setup
 
 # To be replaced by: from setuptools_scm import get_version
 def get_version():
@@ -55,13 +60,7 @@ def _check_dependency(module_name, package_hint=None):
 
 
 def _check_cpp17_compiler():
-    import tempfile
-    import platform
-    from pathlib import Path
-
     def run_process(args, **kwargs):
-        import subprocess
-
         try:
             process = subprocess.Popen(args, **kwargs)
             exit_code = process.wait()
@@ -112,8 +111,6 @@ def _main():
     _check_dependency("skbuild", "scikit-build")
 
     _check_cpp17_compiler()
-
-    from skbuild import setup
 
     setup(
         name="zivid",

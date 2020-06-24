@@ -1,3 +1,6 @@
+# pylint: disable=import-outside-toplevel
+
+
 def test_default_init_settings(application):  # pylint: disable=unused-argument
     import numbers
     import datetime

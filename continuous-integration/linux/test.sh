@@ -5,7 +5,7 @@ ROOT_DIR=$(realpath "$SCRIPT_DIR/../..")
 
 pip install --requirement "$SCRIPT_DIR/../python-requirements/test.txt" || exit $?
 
-python -m pytest "$ROOT_DIR" -c "$ROOT_DIR/pytest.ini" --unmarked || exit $?
+python -m pytest "$ROOT_DIR" -c "$ROOT_DIR/pytest.ini" || exit $?
 
 "$SCRIPT_DIR/run_samples.sh" || exit $?
 
