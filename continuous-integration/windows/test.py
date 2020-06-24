@@ -6,9 +6,7 @@ from pathlib import Path
 
 def _options():
     parser = argparse.ArgumentParser()
-
     parser.add_argument("--root", required=True, help="The repository root", type=Path)
-
     return parser.parse_args()
 
 
@@ -25,14 +23,25 @@ def _run_process(args):
         sys.stdout.flush()
 
 
-def _build(root):
-    _run_process(("pip", "install", str(root)))
+def _test(root):
+    _run_process(
+        (
+            "echo",
+            "TODO: ",
+            "python",
+            "-m",
+            "pytest",
+            str(root),
+            "-c",
+            str(root / "pytest.ini"),
+        )
+    )
 
 
 def _main():
     options = _options()
 
-    _build(options.root)
+    _test(options.root)
 
 
 if __name__ == "__main__":
