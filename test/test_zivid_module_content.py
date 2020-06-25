@@ -1,3 +1,6 @@
+# pylint: disable=import-outside-toplevel
+
+
 def test_import_zivid_globals_changes():
     before = sorted(globals().keys())
     import zivid  # pylint: disable=unused-import

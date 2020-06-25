@@ -1,3 +1,6 @@
+# pylint: disable=import-outside-toplevel
+
+
 def test_data_path(application):  # pylint: disable=unused-argument
     import zivid
     import pathlib

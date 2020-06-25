@@ -1,3 +1,4 @@
+# pylint: disable=import-outside-toplevel
 import datetime
 import pytest
 
@@ -66,7 +67,7 @@ def test_init_max_capture_time(application):  # pylint: disable=unused-argument
 
 
 def test_default_ambient_light_frequency(
-    application  # pylint: disable=unused-argument
+    application,  # pylint: disable=unused-argument
 ):
     from zivid.capture_assistant import SuggestSettingsParameters, AmbientLightFrequency
 

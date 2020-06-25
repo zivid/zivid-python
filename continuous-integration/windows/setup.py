@@ -30,7 +30,7 @@ def _install_pip_dependencies():
 
 
 def _install_zivid_sdk():
-    import requests
+    import requests  # pylint: disable=import-outside-toplevel
 
     with tempfile.TemporaryDirectory() as temp_dir:
         zivid_installer_url = "https://www.zivid.com/hubfs/softwarefiles/releases/1.8.1+6967bc1b-1/windows/ZividSetup_1.8.1+6967bc1b-1.exe"

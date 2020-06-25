@@ -13,9 +13,12 @@ class PointCloud:
         Args:
             internal_point_cloud: a internal point cloud
 
+        Raises:
+            TypeError: unsupported type provided for internal point cloud
+
         """
         if not isinstance(internal_point_cloud, _zivid.PointCloud):
-            raise ValueError(
+            raise TypeError(
                 "Unsupported type for argument internal_point_cloud. Got {}, expected {}".format(
                     type(internal_point_cloud), type(_zivid.PointCloud)
                 )

@@ -17,6 +17,9 @@ class Frame:  # pylint: disable=too-few-public-methods
         Args:
             file_name: a pathlib.Path instance or a string
 
+        Raises:
+            TypeError: unsupported type provided for file name
+
         """
         if isinstance(file_name, (str, Path)):
             self.__impl = _zivid.Frame(str(file_name))

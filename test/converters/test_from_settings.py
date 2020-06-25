@@ -1,3 +1,6 @@
+# pylint: disable=import-outside-toplevel
+
+
 def test_to_internal_settings_to_settings_modified(random_settings):
     from zivid import Settings
     from zivid._settings_converter import to_settings, to_internal_settings

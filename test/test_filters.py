@@ -1,3 +1,6 @@
+# pylint: disable=import-outside-toplevel
+
+
 def test_default_init_filters(application):  # pylint: disable=unused-argument
     import zivid
 

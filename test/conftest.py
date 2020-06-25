@@ -1,20 +1,22 @@
+import tempfile
+import datetime
+from random import randint, choice, uniform
+from pathlib import Path
+
 import pytest
+import zivid
+
 from scripts.sample_data import download_and_extract
 
 
 @pytest.fixture(name="application")
 def application_fixture():
-    import zivid
-
     with zivid.Application() as app:
         yield app
 
 
 @pytest.fixture(name="sample_data_file", scope="session")
 def sample_data_file_fixture():
-    from pathlib import Path
-    import tempfile
-
     with tempfile.TemporaryDirectory() as temp_dir:
         sample_data = Path(temp_dir) / "MiscObjects.zdf"
         download_and_extract(sample_data)
@@ -35,16 +37,12 @@ def physical_camera_fixture(application):
 
 @pytest.fixture(name="frame")
 def frame_fixture(application, sample_data_file):  # pylint: disable=unused-argument
-    import zivid
-
     with zivid.Frame(sample_data_file) as frame:
         yield frame
 
 
 @pytest.fixture(name="physical_camera_frame_2d")
 def physical_camera_frame_2d_fixture(physical_camera):
-    import zivid
-
     settings_2d = zivid.Settings2D()
     with physical_camera.capture_2d(settings_2d) as frame_2d:
         yield frame_2d
@@ -64,10 +62,6 @@ def point_cloud_fixture(frame):
 
 @pytest.fixture(name="random_settings")
 def random_settings_fixture():
-    import datetime
-    from random import randint, choice, uniform
-    import zivid
-
     heavily_modified_settings = zivid.Settings(
         bidirectional=choice([True, False]),
         blue_balance=uniform(1, 8),
@@ -97,8 +91,6 @@ def random_settings_fixture():
 def three_frames_fixture(
     application, sample_data_file  # pylint: disable=unused-argument
 ):
-    import zivid
-
     frames = [zivid.Frame(sample_data_file)] * 3
     yield frames
     for fram in frames:
