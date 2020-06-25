@@ -8,3 +8,6 @@ max-line-length=120
 
 # Allow long lines if they contains long strings
 ignore-long-lines="[^"]{80,}"
+
+[TYPECHECK]
+ignored-classes=pytest # E1101: Module 'pytest' has no 'helpers' member (no-member)
