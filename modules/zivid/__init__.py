@@ -6,9 +6,7 @@ import zivid._version
 __version__ = zivid._version.get_version(__name__)  # pylint: disable=protected-access
 
 import zivid.firmware
-import zivid.hand_eye
 import zivid.capture_assistant
-import zivid.hdr
 import zivid.calibration
 
 from zivid.application import Application
