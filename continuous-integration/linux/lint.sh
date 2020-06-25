@@ -10,9 +10,7 @@ nonPublicPythonFiles=$(comm -23 <(echo $pythonFiles| tr " " "\n" |sort) \
 
 bashFiles=$(find "$ROOT_DIR" -name '*.sh')
 
-pip install pip --upgrade || exit $?
-pip install "$ROOT_DIR" || exit $?
-pip install -r "$SCRIPT_DIR/../requirements-lint.txt" || exit $?
+pip install --requirement "$SCRIPT_DIR/../python-requirements/lint.txt" || exit $?
 
 echo Running non public pylint on:
 echo "$nonPublicPythonFiles"
