@@ -1,5 +1,7 @@
 import tempfile
 import datetime
+import os
+import subprocess
 from random import randint, choice, uniform
 from pathlib import Path
 
@@ -95,3 +97,34 @@ def three_frames_fixture(
     yield frames
     for fram in frames:
         fram.release()
+
+
+class Cd:
+    def __init__(self, new_path):
+        self.new_path = new_path
+        self.saved_path = None
+
+    def __enter__(self):
+        self.saved_path = os.getcwd()
+        os.chdir(str(self.new_path))
+
+    def __exit__(self, etype, value, traceback):
+        os.chdir(str(self.saved_path))
+
+
+@pytest.helpers.register
+def run_sample(name, working_directory=None):
+    current_working_directory = Path(os.getcwd()).resolve()
+    sample = (
+        current_working_directory
+        / ".."
+        / ".."
+        / "samples"
+        / "sample_{name}.py".format(name=name)
+    ).resolve()
+
+    if working_directory is not None:
+        with Cd(working_directory):
+            subprocess.check_output(args=("python", str(sample),))
+    else:
+        subprocess.check_output(args=("python", str(sample),))
