@@ -14,11 +14,11 @@ def _extract_sample_zip(
         with zipfile.ZipFile(str(sample_data_zip), "r") as zip_ref:
             zip_ref.extractall(str(sample_data_dir))
         file_camera = (
-            sample_data_dir / "ZividSampleData" / "FileCameraZividOne.zfc"
+            sample_data_dir / "ZividSampleData2" / "FileCameraZividOne.zfc"
         ).resolve()
         shutil.move(str(file_camera), str(file_camera_destination))
         sample_data_file = (
-            sample_data_dir / "ZividSampleData" / "Zivid3D.zdf"
+            sample_data_dir / "ZividSampleData2" / "Zivid3D.zdf"
         ).resolve()
         shutil.move(str(sample_data_file), str(point_cloud_destination))
 

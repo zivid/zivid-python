@@ -3,23 +3,7 @@ import zivid
 
 def to_settings(internal_settings):
     def _to_acquisition(internal_acquisition):
-        def _to_patterns(internal_patterns):
-            def _to_sine(internal_sine):
-
-                return zivid.Settings.Acquisition.Patterns.Sine(
-                    bidirectional=internal_sine.bidirectional.value,
-                )
-
-            global to_acquisition_patterns_sine
-            to_acquisition_patterns_sine = _to_sine
-            return zivid.Settings.Acquisition.Patterns(
-                sine=_to_sine(internal_patterns.sine),
-            )
-
-        global to_acquisition_patterns
-        to_acquisition_patterns = _to_patterns
         return zivid.Settings.Acquisition(
-            patterns=_to_patterns(internal_acquisition.patterns),
             aperture=internal_acquisition.aperture.value,
             brightness=internal_acquisition.brightness.value,
             exposure_time=internal_acquisition.exposure_time.value,
@@ -197,33 +181,6 @@ def to_internal_settings(settings):
     def _to_internal_acquisition(acquisition):
         internal_acquisition = _zivid.Settings.Acquisition()
 
-        def _to_internal_patterns(patterns):
-            internal_patterns = _zivid.Settings.Acquisition.Patterns()
-
-            def _to_internal_sine(sine):
-                internal_sine = _zivid.Settings.Acquisition.Patterns.Sine()
-
-                if sine.bidirectional is not None:
-
-                    internal_sine.bidirectional = _zivid.Settings.Acquisition.Patterns.Sine.Bidirectional(
-                        sine.bidirectional
-                    )
-                else:
-                    internal_sine.bidirectional = (
-                        _zivid.Settings.Acquisition.Patterns.Sine.Bidirectional()
-                    )
-
-                return internal_sine
-
-            global to_internal_acquisition_patterns_sine
-            to_internal_acquisition_patterns_sine = _to_internal_sine
-
-            internal_patterns.sine = _to_internal_sine(patterns.sine)
-            return internal_patterns
-
-        global to_internal_acquisition_patterns
-        to_internal_acquisition_patterns = _to_internal_patterns
-
         if acquisition.aperture is not None:
 
             internal_acquisition.aperture = _zivid.Settings.Acquisition.Aperture(
@@ -255,7 +212,6 @@ def to_internal_settings(settings):
         else:
             internal_acquisition.gain = _zivid.Settings.Acquisition.Gain()
 
-        internal_acquisition.patterns = _to_internal_patterns(acquisition.patterns)
         return internal_acquisition
 
     def _to_internal_processing(processing):

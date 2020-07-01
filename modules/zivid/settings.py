@@ -4,90 +4,12 @@ import zivid
 
 class Settings:
     class Acquisition:
-        class Patterns:
-            class Sine:
-                def __init__(
-                    self,
-                    bidirectional=_zivid.Settings()
-                    .Acquisition.Patterns.Sine()
-                    .Bidirectional()
-                    .value,
-                ):
-
-                    if bidirectional is not None:
-                        self._bidirectional = _zivid.Settings.Acquisition.Patterns.Sine.Bidirectional(
-                            bidirectional
-                        )
-                    else:
-                        self._bidirectional = (
-                            _zivid.Settings.Acquisition.Patterns.Sine.Bidirectional()
-                        )
-
-                @property
-                def bidirectional(self):
-                    return self._bidirectional.value
-
-                @bidirectional.setter
-                def bidirectional(self, value):
-                    self._bidirectional = _zivid.Settings.Acquisition.Patterns.Sine.Bidirectional(
-                        value
-                    )
-
-                def __eq__(self, other):
-                    if self._bidirectional == other._bidirectional:
-                        return True
-                    return False
-
-                def __str__(self):
-                    return """Sine:
-                bidirectional: {bidirectional}
-                """.format(
-                        bidirectional=self.bidirectional,
-                    )
-
-            def __init__(
-                self, sine=None,
-            ):
-
-                if sine is None:
-                    sine = zivid.Settings.Acquisition.Patterns.Sine()
-                if not isinstance(sine, zivid.Settings.Acquisition.Patterns.Sine):
-                    raise TypeError(
-                        "Unsupported type: {value}".format(value=type(sine))
-                    )
-                self._sine = sine
-
-            @property
-            def sine(self):
-                return self._sine
-
-            @sine.setter
-            def sine(self, value):
-                if not isinstance(value, zivid.Settings.Acquisition.Patterns.Sine):
-                    raise TypeError(
-                        "Unsupported type {value}".format(value=type(value))
-                    )
-                self._sine = value
-
-            def __eq__(self, other):
-                if self._sine == other._sine:
-                    return True
-                return False
-
-            def __str__(self):
-                return """Patterns:
-            sine: {sine}
-            """.format(
-                    sine=self.sine,
-                )
-
         def __init__(
             self,
             aperture=_zivid.Settings().Acquisition().Aperture().value,
             brightness=_zivid.Settings().Acquisition().Brightness().value,
             exposure_time=_zivid.Settings().Acquisition().ExposureTime().value,
             gain=_zivid.Settings().Acquisition().Gain().value,
-            patterns=None,
         ):
 
             if aperture is not None:
@@ -108,13 +30,6 @@ class Settings:
                 self._gain = _zivid.Settings.Acquisition.Gain(gain)
             else:
                 self._gain = _zivid.Settings.Acquisition.Gain()
-            if patterns is None:
-                patterns = zivid.Settings.Acquisition.Patterns()
-            if not isinstance(patterns, zivid.Settings.Acquisition.Patterns):
-                raise TypeError(
-                    "Unsupported type: {value}".format(value=type(patterns))
-                )
-            self._patterns = patterns
 
         @property
         def aperture(self):
@@ -132,10 +47,6 @@ class Settings:
         def gain(self):
             return self._gain.value
 
-        @property
-        def patterns(self):
-            return self._patterns
-
         @aperture.setter
         def aperture(self, value):
             self._aperture = _zivid.Settings.Acquisition.Aperture(value)
@@ -152,19 +63,12 @@ class Settings:
         def gain(self, value):
             self._gain = _zivid.Settings.Acquisition.Gain(value)
 
-        @patterns.setter
-        def patterns(self, value):
-            if not isinstance(value, zivid.Settings.Acquisition.Patterns):
-                raise TypeError("Unsupported type {value}".format(value=type(value)))
-            self._patterns = value
-
         def __eq__(self, other):
             if (
                 self._aperture == other._aperture
                 and self._brightness == other._brightness
                 and self._exposure_time == other._exposure_time
                 and self._gain == other._gain
-                and self._patterns == other._patterns
             ):
                 return True
             return False
@@ -175,13 +79,11 @@ class Settings:
         brightness: {brightness}
         exposure_time: {exposure_time}
         gain: {gain}
-        patterns: {patterns}
         """.format(
                 aperture=self.aperture,
                 brightness=self.brightness,
                 exposure_time=self.exposure_time,
                 gain=self.gain,
-                patterns=self.patterns,
             )
 
     class Processing:

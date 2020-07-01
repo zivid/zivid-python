@@ -1,6 +1,6 @@
 #include <ZividPython/ReleasablePointCloud.h>
 
-#include <Zivid/PointXYZColorRGBA.h>
+#include <Zivid/PointCloud.h>
 
 #include <pybind11/pybind11.h>
 

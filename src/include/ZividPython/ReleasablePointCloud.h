@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Zivid/PointCloud.h>
-#include <Zivid/PointXYZColorRGBA.h>
 #include <ZividPython/Releasable.h>
 #include <ZividPython/Wrappers.h>
 

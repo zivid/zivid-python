@@ -137,74 +137,10 @@ def test_default_acquisition(application):  # pylint: disable=unused-argument
     assert acquisition.brightness is None
     assert acquisition.gain is None
     assert acquisition.exposure_time is None
-    assert isinstance(acquisition.patterns, zivid.Settings.Acquisition.Patterns)
-    assert isinstance(
-        acquisition.patterns.sine, zivid.Settings.Acquisition.Patterns.Sine
-    )
-    assert acquisition.patterns.sine.bidirectional is None
     pytest.helpers.equality_tester(
         zivid.Settings.Acquisition,
-        [
-            5,
-            0.5,
-            datetime.timedelta(microseconds=11000),
-            15,
-            zivid.Settings.Acquisition.Patterns(
-                zivid.Settings.Acquisition.Patterns.Sine(bidirectional=True)
-            ),
-        ],
-        [
-            5,
-            0.5,
-            datetime.timedelta(microseconds=11001),
-            15,
-            zivid.Settings.Acquisition.Patterns(
-                zivid.Settings.Acquisition.Patterns.Sine(bidirectional=True)
-            ),
-        ],
-    )
-
-
-def test_acquisition_patterns_sine_bidirectional(
-    application,  # pylint: disable=unused-argument
-):
-    import zivid
-
-    pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings.Acquisition.Patterns.Sine(),
-        member="bidirectional",
-        value=False,
-        expected_data_type=bool,
-    )
-
-
-def test_acquisition_patterns_sine(application,):  # pylint: disable=unused-argument
-    import zivid
-
-    pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings.Acquisition.Patterns(),
-        member="sine",
-        value=zivid.Settings.Acquisition.Patterns.Sine(),
-        expected_data_type=zivid.Settings.Acquisition.Patterns.Sine,
-    )
-    pytest.helpers.equality_tester(
-        zivid.Settings.Acquisition.Patterns.Sine, [True], [False],
-    )
-
-
-def test_acquisition_patterns(application,):  # pylint: disable=unused-argument
-    import zivid
-
-    pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings.Acquisition(),
-        member="patterns",
-        value=zivid.Settings.Acquisition.Patterns(),
-        expected_data_type=zivid.Settings.Acquisition.Patterns,
-    )
-    pytest.helpers.equality_tester(
-        zivid.Settings.Acquisition.Patterns,
-        [zivid.Settings.Acquisition.Patterns.Sine(bidirectional=False)],
-        [zivid.Settings.Acquisition.Patterns.Sine(bidirectional=True)],
+        [5, 0.5, datetime.timedelta(microseconds=11000), 15,],
+        [5, 0.5, datetime.timedelta(microseconds=11001), 15,],
     )
 
 
