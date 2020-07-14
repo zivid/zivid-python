@@ -27,8 +27,8 @@ function aur_install {
     fi
     pushd $TMP_DIR || exit $?
     for dep in $IGNORE_DEPS; do
-        sed -i s/\'$dep\'//g PKGBUILD
-    done
+        sed -i s/\'$dep\'//g PKGBUILD || exit $?
+    done || exit $?
     PKGEXT=.pkg.tar sudo -E -u nobody makepkg || exit $?
     pacman -U --noconfirm ./*$PACKAGE*.tar || exit $?
     popd || exit $?
