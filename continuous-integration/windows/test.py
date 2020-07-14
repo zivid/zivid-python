@@ -48,6 +48,8 @@ def _install_pip_dependencies():
     print("Installing python test requirements", flush=True)
     _run_process(
         (
+            "python",
+            "-m",
             "pip",
             "install",
             "--requirement",
