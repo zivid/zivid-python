@@ -114,13 +114,8 @@ class Cd:
 
 @pytest.helpers.register
 def run_sample(name, working_directory=None):
-    current_working_directory = Path(os.getcwd()).resolve()
     sample = (
-        current_working_directory
-        / ".."
-        / ".."
-        / "samples"
-        / "sample_{name}.py".format(name=name)
+        Path(__file__) / ".." / ".." / "samples" / "sample_{name}.py".format(name=name)
     ).resolve()
 
     if working_directory is not None:
