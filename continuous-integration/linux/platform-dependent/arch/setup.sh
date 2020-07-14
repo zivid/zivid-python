@@ -27,8 +27,8 @@ function aur_install {
     fi
     pushd $TMP_DIR || exit $?
     for dep in $IGNORE_DEPS; do
-        sed -i s/\'$dep\'//g PKGBUILD
-    done
+        sed -i s/\'$dep\'//g PKGBUILD || exit $?
+    done || exit $?
     PKGEXT=.pkg.tar sudo -E -u nobody makepkg || exit $?
     pacman -U --noconfirm ./*$PACKAGE*.tar || exit $?
     popd || exit $?
@@ -38,7 +38,7 @@ function aur_install {
 # Use so file from ncurses instead of ncurses5-compat-libs
 # as dependency for intel-opencl-runtime
 ln -s /usr/lib/libtinfo.so.{6,5} || exit $?
-aur_install intel-opencl-runtime "" ncurses5-compat-libs || exit $?
+aur_install intel-opencl-runtime a7db4fe8cfa872078034f7966bb2def788bf8e5d ncurses5-compat-libs || exit $?
 
 aur_install zivid-telicam-driver 48da46ee95cb679fd25149c251872a64817ff9ad || exit $?
 aur_install zivid f9c38eab6467f0d98f4602f0a5af0f90be07a37d || exit $?
