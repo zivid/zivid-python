@@ -1,6 +1,5 @@
 """Contains Application class."""
 import _zivid
-import zivid._settings_converter as _settings_converter
 from zivid.camera import Camera
 
 
