@@ -23,7 +23,7 @@ try:
         version,
         Settings2D,
         Frame2D,
-        Image,
+        ImageRGBA,
         CameraInfo,
     )
 except ImportError as ex:

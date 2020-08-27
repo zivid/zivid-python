@@ -8,9 +8,11 @@ def _main():
     camera = app.connect_camera()
 
     settings_2d = Settings2D(
-        acquisitions=Settings2D.Acquisition(
-            aperture=2.83, exposure_time=datetime.timedelta(microseconds=10000),
-        )
+        acquisitions=[
+            Settings2D.Acquisition(
+                aperture=2.83, exposure_time=datetime.timedelta(microseconds=10000),
+            )
+        ]
     )
 
     with camera.capture(settings_2d) as frame_2d:

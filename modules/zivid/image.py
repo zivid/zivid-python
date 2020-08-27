@@ -17,13 +17,33 @@ class Image:
             TypeError: unsupported type provided for internal image
 
         """
-        if not isinstance(internal_image, _zivid.Image):
+        if not isinstance(internal_image, _zivid.ImageRGBA):
             raise TypeError(
                 "Unsupported type for argument internal_image. Got {}, expected {}".format(
-                    type(internal_image), type(_zivid.Image)
+                    type(internal_image), type(_zivid.ImageRGBA)
                 )
             )
         self.__impl = internal_image
+
+    @property
+    def height(self):
+        """Get the height of the image (number of rows).
+
+        Returns:
+            a positive integer
+
+        """
+        return self.__impl.height()
+
+    @property
+    def width(self):
+        """Get the width of the image (number of columns).
+
+        Returns:
+            a positive integer
+
+        """
+        return self.__impl.width()
 
     def save(self, file_path):
         """Save the image to a file.
@@ -37,8 +57,8 @@ class Image:
         """
         self.__impl.save(str(file_path))
 
-    def to_array(self):
-        """Convert the image into a numpy array.
+    def copy_data(self):
+        """Copy image data to numpy array.
 
         Returns:
             a numpy array
