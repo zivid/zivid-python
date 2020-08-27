@@ -208,8 +208,6 @@ namespace ZividPython
                                 }),
                                 py::arg("value"));
                 }
-                //pyClass
-                //    .def(py::init<const ValueType &>(), py::arg("value"))
 
                 pyClass.def_property_readonly(
                     "value", [](const Target &target) -> std::optional<typename Target::ValueType> {
@@ -225,8 +223,6 @@ namespace ZividPython
 
                 if constexpr(!std::is_same_v<ValueType, bool>)
                 {
-                    //pyClass.def(py::self > py::self); // NOLINT //TODO brightness feilet
-                    //pyClass.def(py::self < py::self); // NOLINT
                 }
 
                 if constexpr(Zivid::DataModel::HasValidRange<Target>::value)
@@ -235,16 +231,14 @@ namespace ZividPython
                         const auto range = Target::validRange();
                         return std::make_pair(range.min(), range.max());
                     });
+                    // pyClass.def(py::self > py::self); // NOLINT //TODO brightness feilet
+                    // pyClass.def(py::self < py::self); // NOLINT
                 }
 
                 if constexpr(Zivid::DataModel::HasValidValues<Target>::value)
                 {
                     pyClass.def_property_readonly("valid_values", [](const Target &target) {
                         return Target::validValues();
-                        //return ValueType{};
-                        //return std::vectorvalues;
-                        //return std::vector<typename Target::Constraints>(values.at(0));
-                        //return std::vector<typename Target::Constraints>();
                     });
                 }
 
@@ -261,19 +255,14 @@ namespace ZividPython
                 using ValueType = typename Target::ValueType::value_type;
                 pyClass.def("value_type", [] {
                     return TypeName<ValueType>::value;
-                    //return typeid(ValueType);
                 });
                 pyClass.def("is_optional", [] { return Zivid::DataModel::IsOptional<Target>::value; });
-                //wrapDataModel<false>(pyClass, ValueType{});
 
                 pyClass.def_property_readonly("value", &Target::value)
                     .def("append", [](Target &dest, ValueType value) { dest.emplaceBack(std::move(value)); })
                     .def("size", &Target::size)
-                    .def("is_empty", &Target::isEmpty);
-                // detail::list_accessor operator[](size_t index) const {return {*this, index};}
-                // ???
-                // Missing Settings::frames
-                // access only wrap .at() (Frames.at(1234))
+                    .def("is_empty", &Target::isEmpty)
+                    .def("at", [](Target &dest, const size_t index){ return dest.at(index); });
             }
 
             else
