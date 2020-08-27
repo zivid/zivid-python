@@ -57,8 +57,7 @@ class Camera:
                     _settings_2d_converter.to_internal_settings2_d(settings)
                 )
             )
-        else:
-            raise TypeError("Unsupported settings type: {}".format(type(settings)))
+        raise TypeError("Unsupported settings type: {}".format(type(settings)))
 
     @property
     def info(self):
