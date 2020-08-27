@@ -128,9 +128,6 @@ namespace ZividPython
             }
             else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafValue)
             {
-                //pyClass.def("set_from_string",
-                //    py::overload_cast<const std::string &>(&Target::setFromString),
-                //    py::arg("string_value"));
                 pyClass.def("__bool__", [](const Target &value) {
                     return Target{ typename Target::ValueType{} } != value; // NOLINT
                 });
@@ -161,7 +158,6 @@ namespace ZividPython
                     using MemberType = std::remove_const_t<std::remove_reference_t<decltype(member)>>;
 
                     std::string name{ MemberType::name };
-                    //std::transform(begin(name), end(name), begin(name), ::tolower);
                     name = toSnakeCase(name);
 
                     pyClass.def_property(
@@ -176,7 +172,6 @@ namespace ZividPython
 
                 pyClass.def("value_type", [] {
                     return TypeName<ValueType>::value;
-                    //return typeid(ValueType);
                 });
                 pyClass.def("is_optional", [] { return Zivid::DataModel::IsOptional<Target>::value; });
 
@@ -231,7 +226,7 @@ namespace ZividPython
                         const auto range = Target::validRange();
                         return std::make_pair(range.min(), range.max());
                     });
-                    // pyClass.def(py::self > py::self); // NOLINT //TODO brightness feilet
+                    // pyClass.def(py::self > py::self); // NOLINT //TODO: Add this when optional exposes < and > operators
                     // pyClass.def(py::self < py::self); // NOLINT
                 }
 
