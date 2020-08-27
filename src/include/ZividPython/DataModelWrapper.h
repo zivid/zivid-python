@@ -112,12 +112,9 @@ namespace ZividPython
 
             if constexpr(isRoot)
             {
-                //pyClass.def(py::init<const std::string &>(), py::arg("file_name"))
-                //    .def("save", &Target::save, py::arg("file_name"))
-                //    .def("load", &Target::load, py::arg("file_name")); //TODO: fix når save/load bare tar et argument
-                //pyClass.def("set_from_string",
-                //py::overload_cast<const std::string &, const std::string &>(&Target::setFromString),
-                //py::arg("path"),py::arg("string_value"));
+                pyClass.def(py::init<const std::string &>(), py::arg("file_name"))
+                    .def("save", &Target::save, py::arg("file_name"))
+                    .def("load", &Target::load, py::arg("file_name"));
             }
 
             // This is inside out because of bug in MSVC,
