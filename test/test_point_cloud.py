@@ -93,6 +93,25 @@ def test_width(point_cloud):
     assert isinstance(width, int)
 
 
+def test_transform(point_cloud, transform):
+    import numpy as np
+
+    # Get points before and after transform
+    xyzw_before = point_cloud.copy_data("xyzw")
+    point_cloud.transform(transform)
+    xyzw_after = point_cloud.copy_data("xyzw")
+
+    # Pick an arbitary point to test
+    i = point_cloud.height // 3
+    j = point_cloud.width // 3
+    point_before = xyzw_before[i, j, :]
+    point_after = xyzw_after[i, j, :]
+    assert np.all(~np.isnan(point_after))
+    assert np.all(~np.isnan(point_before))
+    point_after_expected = np.dot(transform, point_before)
+    np.testing.assert_array_almost_equal(point_after, point_after_expected)
+
+
 def test_height_context_manager(frame):
     import pytest
 

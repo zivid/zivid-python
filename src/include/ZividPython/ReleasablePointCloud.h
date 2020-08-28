@@ -13,6 +13,7 @@ namespace ZividPython
 
         ZIVID_PYTHON_FORWARD_0_ARGS(width)
         ZIVID_PYTHON_FORWARD_0_ARGS(height)
+        ZIVID_PYTHON_FORWARD_1_ARGS(transform, const Zivid::Matrix4x4 &, matrix)
     };
 
     void wrapClass(pybind11::class_<ReleasablePointCloud> pyClass);

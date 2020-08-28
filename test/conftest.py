@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 import zivid
+import numpy as np
 
 from scripts.sample_data import download_and_extract
 
@@ -73,6 +74,19 @@ def physical_camera_image_2d_fixture(physical_camera_frame_2d):
 def point_cloud_fixture(frame):
     with frame.point_cloud() as point_cloud:
         yield point_cloud
+
+
+@pytest.fixture(name="transform")
+def transform_fixture():
+
+    return np.array(
+        [
+            [1.0, 0.0, 0.0, 10.0],
+            [0.0, 0.0, -1.0, 20.0],
+            [0.0, 1.0, 0.0, 30.0],
+            [0.0, 0.0, 0.0, 1.0],
+        ]
+    )
 
 
 @pytest.fixture(name="three_frames")

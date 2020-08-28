@@ -69,6 +69,16 @@ class PointCloud:
             ) from ex
         return numpy.array(data_format_class(self.__impl))
 
+    def transform(self, matrix):
+        """Transform the point cloud in-place by a 4x4 transformation matrix
+
+        The transform matrix must be affine, i.e., the last row of the matrix should be [0, 0, 0, 1].
+
+        Args:
+            a 4x4 numpy arrays of floats
+        """
+        self.__impl.transform(matrix)
+
     @property
     def height(self):
         """Get the height of the point cloud (number of rows).
