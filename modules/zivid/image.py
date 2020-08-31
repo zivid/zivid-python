@@ -69,7 +69,12 @@ class Image:
 
     def release(self):
         """Release the underlying resources."""
-        self.__impl.release()
+        try:
+            impl = self.__impl
+        except AttributeError:
+            pass
+        else:
+            impl.release()
 
     def __enter__(self):
         return self
