@@ -1,17 +1,16 @@
 # pylint: disable=import-outside-toplevel
 
 
-def test_init_pose():
+def test_pose(transform):
     import numpy as np
     import zivid.calibration
 
-    elements = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
-    data = np.array(elements, dtype=np.float64).reshape((4, 4))
-
-    pose = zivid.calibration.Pose(data)
+    pose = zivid.calibration.Pose(transform)
 
     assert pose is not None
     assert isinstance(pose, zivid.calibration.Pose)
+    assert str(pose)
+    np.testing.assert_array_equal(transform, pose.to_matrix())
 
 
 def test_detect_feature_points(point_cloud):
