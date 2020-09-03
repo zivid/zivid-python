@@ -8,7 +8,7 @@ import pytest
 import zivid
 import numpy as np
 
-from scripts.sample_data import download_and_extract
+from scripts.sample_data import download_and_extract, get_test_data_dir
 
 
 @pytest.fixture(name="application")
@@ -55,6 +55,16 @@ def physical_camera_fixture(application):
 def frame_fixture(application, sample_point_cloud):  # pylint: disable=unused-argument
     with zivid.Frame(sample_point_cloud) as frame:
         yield frame
+
+
+@pytest.fixture(name="checkerboard_frames")  # pylint: disable=unused-argument
+def checkerboard_frames_fixture(application):
+
+    frames = [
+        zivid.Frame(file_path)
+        for file_path in sorted(get_test_data_dir().glob("*.zdf"))
+    ]
+    yield frames
 
 
 @pytest.fixture(name="physical_camera_frame_2d")

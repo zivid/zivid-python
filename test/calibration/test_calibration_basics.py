@@ -13,10 +13,13 @@ def test_pose(transform):
     np.testing.assert_array_equal(transform, pose.to_matrix())
 
 
-def test_detect_feature_points(point_cloud):
+def test_detect_feature_points(checkerboard_frames):
     import zivid
 
-    feature_points = zivid.calibration.detect_feature_points(point_cloud)
-
-    assert feature_points is not None
-    assert isinstance(feature_points, zivid.calibration.DetectionResult)
+    frame = checkerboard_frames[0]
+    detection_result = zivid.calibration.detect_feature_points(frame.point_cloud())
+    assert detection_result is not None
+    assert isinstance(detection_result, zivid.calibration.DetectionResult)
+    assert bool(detection_result)
+    assert detection_result.valid()
+    assert str(detection_result)
