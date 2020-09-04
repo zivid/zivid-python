@@ -23,7 +23,7 @@ namespace
         static_assert(depth > 0, "Depth of array must be one or higher");
         static_assert(sizeof(WrapperType) * depth == sizeof(NativeType), "Unexpected data format");
 
-        constexpr size_t dim = (depth == 1) ? 2 : 3;
+        constexpr py::ssize_t dim = (depth == 1) ? 2 : 3;
         const auto shape = { arrayWrapper.impl().height(), arrayWrapper.impl().width(), depth };
         const auto strides = { sizeof(WrapperType) * arrayWrapper.impl().width() * depth,
                                sizeof(WrapperType) * depth,
@@ -33,8 +33,8 @@ namespace
                                sizeof(WrapperType),
                                py::format_descriptor<WrapperType>::format(),
                                dim,
-                               std::vector<size_t>(shape.begin(), shape.begin() + dim),
-                               std::vector<size_t>(strides.begin(), strides.begin() + dim));
+                               std::vector<py::ssize_t>(shape.begin(), shape.begin() + dim),
+                               std::vector<py::ssize_t>(strides.begin(), strides.begin() + dim));
     }
 
     template<typename NativeType>
