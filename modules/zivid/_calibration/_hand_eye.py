@@ -19,10 +19,10 @@ class HandEyeInput:
         )
 
     def pose(self):
-        return Pose(self.__impl.pose)
+        return Pose(self.__impl.pose())
 
     def detection_result(self):
-        return DetectionResult(self.__impl.detection_result)
+        return DetectionResult(self.__impl.detection_result())
 
     def __str__(self):
         return str(self.__impl)
