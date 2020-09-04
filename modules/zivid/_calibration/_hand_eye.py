@@ -5,6 +5,14 @@ from zivid._calibration._detector import DetectionResult
 
 class HandEyeInput:
     def __init__(self, robot_pose, detection_result):
+
+        if not isinstance(robot_pose, Pose):
+            raise TypeError(
+                "Unsupported type for argument robot_pose. Expected zivid.calibration.Pose but got {}".format(
+                    type(robot_pose)
+                )
+            )
+
         self.__impl = _zivid.calibration.HandEyeInput(
             robot_pose._Pose__impl,  # pylint: disable=protected-access
             detection_result._DetectionResult__impl,  # pylint: disable=protected-access

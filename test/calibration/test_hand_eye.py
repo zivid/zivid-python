@@ -1,17 +1,17 @@
 # pylint: disable=import-outside-toplevel
 
 
-def test_calibration_input_init_failure(point_cloud):
-    import numpy as np
+def test_calibration_input_init_failure(point_cloud, transform):
     import pytest
     import zivid.calibration
 
     feature_points = zivid.calibration.detect_feature_points(point_cloud)
 
-    elements = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
+    with pytest.raises(TypeError):
+        # Should fail because pose should come as a Pose, not ndarray
+        zivid.calibration.HandEyeInput(transform, feature_points)
 
-    data = np.array(elements, dtype=np.float64).reshape((4, 4))
-    pose = zivid.calibration.Pose(data)
-
+    pose = zivid.calibration.Pose(transform)
     with pytest.raises(RuntimeError):
+        # Should fail because point cloud did not include checkerboard
         zivid.calibration.HandEyeInput(pose, feature_points)
