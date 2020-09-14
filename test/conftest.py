@@ -73,7 +73,29 @@ def multicamera_transforms_fixture():
         np.loadtxt(str(path), delimiter=",")
         for path in sorted(get_test_data_dir().glob("multicamera_transform_*.csv"))
     ]
-    yield transforms
+    return transforms
+
+
+@pytest.fixture(name="handeye_eth_frames")  # pylint: disable=unused-argument
+def handeye_eth_frames_fixture(application):
+    path = get_test_data_dir() / "handeye" / "eth"
+    frames = [zivid.Frame(file_path) for file_path in sorted(path.glob("*.zdf"))]
+    yield frames
+
+
+@pytest.fixture(name="handeye_eth_poses")
+def handeye_eth_poses_fixture():
+    path = get_test_data_dir() / "handeye" / "eth"
+    transforms = [
+        np.loadtxt(str(path), delimiter=",") for path in sorted(path.glob("pos*.csv"))
+    ]
+    return transforms
+
+
+@pytest.fixture(name="handeye_eth_transform")
+def handeye_eth_transform_fixture():
+    path = get_test_data_dir() / "handeye" / "eth" / "eth_transform.csv"
+    return np.loadtxt(str(path), delimiter=",")
 
 
 @pytest.fixture(name="physical_camera_frame_2d")

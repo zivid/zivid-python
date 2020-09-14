@@ -1,12 +1,11 @@
 project(_zivid LANGUAGES CXX C)
 
 set(SOURCES
-    Calibration/Calibrate.cpp
-    Calibration/CalibrationResidual.cpp
     DataModel.cpp
     Calibration/Detector.cpp
     Firmware.cpp
     Calibration/Calibration.cpp
+    Calibration/HandEye.cpp
     Calibration/MultiCamera.cpp
     CaptureAssistant.cpp
     NodeType.cpp
