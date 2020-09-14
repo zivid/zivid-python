@@ -42,7 +42,10 @@ class MultiCameraOutput:
         return self.__impl.transforms()
 
     def residuals(self):
-        return self.__impl.residuals()
+        return [
+            MultiCameraResidual(internal_residual)
+            for internal_residual in self.__impl.residuals()
+        ]
 
     def __str__(self):
         return str(self.__impl)

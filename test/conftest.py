@@ -67,6 +67,15 @@ def checkerboard_frames_fixture(application):
     yield frames
 
 
+@pytest.fixture(name="multicamera_transforms")
+def multicamera_transforms_fixture():
+    transforms = [
+        np.loadtxt(str(path), delimiter=",")
+        for path in sorted(get_test_data_dir().glob("multicamera_transform_*.csv"))
+    ]
+    yield transforms
+
+
 @pytest.fixture(name="physical_camera_frame_2d")
 def physical_camera_frame_2d_fixture(physical_camera):
     settings_2d = zivid.Settings2D(acquisitions=[zivid.Settings2D.Acquisition()])
