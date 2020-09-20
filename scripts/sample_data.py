@@ -39,7 +39,7 @@ def download_and_extract(file_camera_destination, point_cloud_destination):
         )
 
 
-def get_test_data_dir():
+def test_data_dir():
     return (Path(__file__).parent / ".." / "test" / "test_data").resolve()
 
 

@@ -8,7 +8,7 @@ import pytest
 import zivid
 import numpy as np
 
-from scripts.sample_data import download_and_extract, get_test_data_dir
+from scripts.sample_data import download_and_extract, test_data_dir
 
 
 @pytest.fixture(name="application")
@@ -61,8 +61,7 @@ def frame_fixture(application, sample_point_cloud):  # pylint: disable=unused-ar
 def checkerboard_frames_fixture(application):
 
     frames = [
-        zivid.Frame(file_path)
-        for file_path in sorted(get_test_data_dir().glob("*.zdf"))
+        zivid.Frame(file_path) for file_path in sorted(test_data_dir().glob("*.zdf"))
     ]
     yield frames
 
@@ -71,21 +70,21 @@ def checkerboard_frames_fixture(application):
 def multicamera_transforms_fixture():
     transforms = [
         np.loadtxt(str(path), delimiter=",")
-        for path in sorted(get_test_data_dir().glob("multicamera_transform_*.csv"))
+        for path in sorted(test_data_dir().glob("multicamera_transform_*.csv"))
     ]
     return transforms
 
 
 @pytest.fixture(name="handeye_eth_frames")  # pylint: disable=unused-argument
 def handeye_eth_frames_fixture(application):
-    path = get_test_data_dir() / "handeye" / "eth"
+    path = test_data_dir() / "handeye" / "eth"
     frames = [zivid.Frame(file_path) for file_path in sorted(path.glob("*.zdf"))]
     yield frames
 
 
 @pytest.fixture(name="handeye_eth_poses")
 def handeye_eth_poses_fixture():
-    path = get_test_data_dir() / "handeye" / "eth"
+    path = test_data_dir() / "handeye" / "eth"
     transforms = [
         np.loadtxt(str(path), delimiter=",") for path in sorted(path.glob("pos*.csv"))
     ]
@@ -94,7 +93,7 @@ def handeye_eth_poses_fixture():
 
 @pytest.fixture(name="handeye_eth_transform")
 def handeye_eth_transform_fixture():
-    path = get_test_data_dir() / "handeye" / "eth" / "eth_transform.csv"
+    path = test_data_dir() / "handeye" / "eth" / "eth_transform.csv"
     return np.loadtxt(str(path), delimiter=",")
 
 
