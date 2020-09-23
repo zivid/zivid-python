@@ -39,6 +39,10 @@ def download_and_extract(file_camera_destination, point_cloud_destination):
         )
 
 
+def test_data_dir():
+    return (Path(__file__).parent.parent / "test" / "test_data").resolve()
+
+
 def _args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--destination-file-camera", required=True, type=Path)

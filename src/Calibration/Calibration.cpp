@@ -1,14 +1,13 @@
-#include <Zivid/Calibration/HandEye.h>
 #include <Zivid/Calibration/Detector.h>
+#include <Zivid/Calibration/HandEye.h>
+#include <Zivid/Calibration/MultiCamera.h>
 #include <Zivid/Calibration/Pose.h>
 #include <Zivid/PointCloud.h>
-#include <Zivid/Calibration/MultiCamera.h>
 
-#include <ZividPython/Calibration/Calibrate.h>
-#include <ZividPython/Calibration/CalibrationResidual.h>
 #include <ZividPython/Calibration/Detector.h>
-#include <ZividPython/Calibration/Pose.h>
+#include <ZividPython/Calibration/HandEye.h>
 #include <ZividPython/Calibration/MultiCamera.h>
+#include <ZividPython/Calibration/Pose.h>
 #include <ZividPython/ReleasablePointCloud.h>
 #include <ZividPython/Wrappers.h>
 
