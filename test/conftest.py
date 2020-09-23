@@ -57,8 +57,8 @@ def frame_fixture(application, sample_point_cloud):  # pylint: disable=unused-ar
         yield frame
 
 
-@pytest.fixture(name="checkerboard_frames")  # pylint: disable=unused-argument
-def checkerboard_frames_fixture(application):
+@pytest.fixture(name="checkerboard_frames")
+def checkerboard_frames_fixture(application):  # pylint: disable=unused-argument
 
     frames = [
         zivid.Frame(file_path) for file_path in sorted(test_data_dir().glob("*.zdf"))
@@ -75,8 +75,8 @@ def multicamera_transforms_fixture():
     return transforms
 
 
-@pytest.fixture(name="handeye_eth_frames")  # pylint: disable=unused-argument
-def handeye_eth_frames_fixture(application):
+@pytest.fixture(name="handeye_eth_frames")
+def handeye_eth_frames_fixture(application):  # pylint: disable=unused-argument
     path = test_data_dir() / "handeye" / "eth"
     frames = [zivid.Frame(file_path) for file_path in sorted(path.glob("*.zdf"))]
     yield frames
