@@ -174,9 +174,6 @@ namespace ZividPython
 
                 if constexpr(std::is_enum_v<ValueType>)
                 {
-                    enum class foo
-                    {
-                    };
                     ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(pyClass, "enum", ValueType, [](auto &pyEnum) {
                         for(const auto &value : Target::validValues())
                         {
