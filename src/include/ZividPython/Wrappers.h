@@ -18,6 +18,8 @@ namespace ZividPython
 {
     namespace
     {
+        /// Inserts underscore on positive case flank and before negative case flank:
+        /// ZividSDKVersion -> zivid_sdk_version
         std::string toSnakeCase(const std::string upperCamelCase)
         {
             if(upperCamelCase.empty())
@@ -39,20 +41,13 @@ namespace ZividPython
                     auto previous = i - 1;
                     auto next = i + 1;
 
-                    // if surrounded by capital case (looking at the B character): ABC -> abc
-                    if(isupper(upperCamelCase[previous])
-                       && ((next < upperCamelCase.size() && isupper(upperCamelCase[next]))
-                           || (next >= upperCamelCase.size())))
+                    if(!isupper(upperCamelCase[previous])
+                       || (next < upperCamelCase.size() && !isupper(upperCamelCase[next])))
                     {
-                        ss << char(tolower(upperCamelCase[i]));
+                        ss << "_";
                     }
-                    // all other cases results in adding an underscore first
-                    else
-                    {
-                        ss << "_" << char(tolower(upperCamelCase[i]));
-                    }
+                    ss << char(tolower(upperCamelCase[i]));
                 }
-                // already lower case stays lower case: a -> a
                 else
                 {
                     ss << char(upperCamelCase[i]);
