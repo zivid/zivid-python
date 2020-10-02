@@ -74,7 +74,7 @@ def test_eyetohand_calibration(
     assert isinstance(transform_returned, np.ndarray)
     assert transform_returned.shape == (4, 4)
     np.testing.assert_array_almost_equal(
-        transform_returned, handeye_eth_transform, decimal=4
+        transform_returned, handeye_eth_transform, decimal=3
     )
 
     # Check returned residuals
