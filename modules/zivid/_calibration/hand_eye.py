@@ -1,6 +1,6 @@
 import _zivid
-from zivid._calibration._pose import Pose
-from zivid._calibration._detector import DetectionResult
+from zivid._calibration.pose import Pose
+from zivid._calibration.detector import DetectionResult
 
 
 class HandEyeInput:
