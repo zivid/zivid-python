@@ -1,34 +1,21 @@
 """Hand-eye calibration sample."""
 import datetime
-import code
 
 import numpy as np
-import zivid.calibration
-from zivid import Application, Settings
+import zivid
 
 
 def _acquire_checkerboard_frame(camera):
     print("Capturing checkerboard image... ")
-    settings = Settings(
-        acquisitions=[
-            Settings.Acquisition(
-                aperture=17,
-                exposure_time=datetime.timedelta(microseconds=20000),
-                gain=1.0,
-            )
-        ],
-        filters=Settings.Processing.Filters(
-            outlier=Settings.Processing.Filters.Outlier(
-                removal=Settings.Processing.Filters.Outlier.Removal(
-                    enabled=True, threshold=5
-                )
-            ),
-            smoothing=Settings.Processing.Filters.Smoothing(
-                gaussian=Settings.Processing.Filters.Smoothing.Gaussian(enabled=True)
-            ),
-        ),
+
+    suggest_settings_parameters = zivid.capture_assistant.SuggestSettingsParameters(
+        max_capture_time=datetime.timedelta(milliseconds=1200),
+        ambient_light_frequency=zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.none,
     )
-    print("OK")
+
+    settings = zivid.capture_assistant.suggest_settings(
+        camera, suggest_settings_parameters
+    )
     return camera.capture(settings)
 
 
@@ -64,7 +51,7 @@ def _main():
                 frame = _acquire_checkerboard_frame(camera)
 
                 print("Detecting checkerboard square centers... ")
-                result = zivid.hand_eye.detect_feature_points(frame.point_cloud())
+                result = zivid.calibration.detect_feature_points(frame.point_cloud())
 
                 if result:
                     print("OK")
@@ -82,7 +69,6 @@ def _main():
 
     print("Performing hand-eye calibration...")
     calibration_result = zivid.calibration.calibrate_eye_to_hand(calibration_inputs)
-    code.interact(local=locals())
     if calibration_result:
         print("OK")
         print("Result:\n{}".format(calibration_result))

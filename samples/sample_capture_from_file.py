@@ -9,7 +9,7 @@ def _main():
     settings = Settings(acquisitions=[Settings.Acquisition(aperture=5.66,)])
 
     with camera.capture(settings) as frame:
-        frame.save("results.zdf")
+        frame.save("result.zdf")
 
 
 if __name__ == "__main__":
