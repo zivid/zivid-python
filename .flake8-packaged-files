@@ -13,3 +13,15 @@ ignore =
     I401, # Missing exception(s) in Raises section
     D402, # First line should not be the function’s “signature”
 show-source = True
+
+### Ignore docstring complaints in data models
+### D101: Missing docstring in public class
+### D102: Missing docstring in public method
+### D106: Missing docstring in public nested class
+### D107: Missing docstring in __init__
+per-file-ignores =
+    settings.py:D101,D102,D106,D107
+    settings_2d.py:D101,D102,D106,D107
+    camera_state.py:D101,D102,D106,D107
+    camera_info.py:D101,D102,D106,D107
+    frame_info.py:D101,D102,D106,D107
