@@ -8,10 +8,13 @@ import zivid._frame_info_converter as _frame_info_converter
 from zivid.point_cloud import PointCloud
 
 
-class Frame:  # pylint: disable=too-few-public-methods
-    """Contains the point cloud (stored on compute device memory) as well as
+class Frame:
+    """A frame captured by a Zivid camera.
+
+    Contains the point cloud (stored on compute device memory) as well as
     calibration data, settings and state used by the API at time of the frame
-    capture. Use point_cloud to access point cloud data."""
+    capture. Use point_cloud to access point cloud data.
+    """
 
     def __init__(self, file_name):
         """Create a frame by loading data from a file.

@@ -13,23 +13,15 @@ import _zivid
 class Camera:
     """Interface to one Zivid camera."""
 
-    def __init__(self, internal_camera):
-        """Initialize camera with an internal camera.
-
-        Args:
-            internal_camera: An internal Zivid camera instance
-
-        Raises:
-            TypeError: unsupported type provided for internal camera
-
-        """
-        if not isinstance(internal_camera, _zivid.Camera):
+    def __init__(self, impl):  # noqa: D107
+        if not isinstance(impl, _zivid.Camera):
             raise TypeError(
-                "Unsupported type for argument internal camera: {}, type: {}.".format(
-                    internal_camera, type(internal_camera)
+                "Unsupported type for argument internal camera. Got {}, expected {}".format(
+                    type(impl), type(_zivid.Camera)
                 )
             )
-        self.__impl = internal_camera
+
+        self.__impl = impl
 
     def __str__(self):
         return str(self.__impl)
@@ -46,6 +38,8 @@ class Camera:
         Returns:
             A frame containing a 3D image and metadata or a frame containing a 2D image and metadata.
 
+        Raises:
+            TypeError: if argument is neither a Settings or a Settings2D
         """
         if isinstance(settings, zivid.Settings):
             return Frame(

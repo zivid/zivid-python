@@ -7,23 +7,14 @@ import _zivid
 class Image:
     """A 2-dimensional image stored on the host."""
 
-    def __init__(self, internal_image):
-        """Can only be initialized with an zivid internal image.
-
-        Args:
-            internal_image: an internal image
-
-        Raises:
-            TypeError: unsupported type provided for internal image
-
-        """
-        if not isinstance(internal_image, _zivid.ImageRGBA):
+    def __init__(self, impl):  # noqa: D107
+        if not isinstance(impl, _zivid.ImageRGBA):
             raise TypeError(
-                "Unsupported type for argument internal_image. Got {}, expected {}".format(
-                    type(internal_image), type(_zivid.ImageRGBA)
+                "Unsupported type for argument internal image. Got {}, expected {}".format(
+                    type(impl), type(_zivid.ImageRGBA)
                 )
             )
-        self.__impl = internal_image
+        self.__impl = impl
 
     @property
     def height(self):

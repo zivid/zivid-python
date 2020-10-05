@@ -1,4 +1,5 @@
-"""Auto generated, do not edit"""
+"""Auto generated, do not edit."""
+# pylint: disable=too-many-arguments,missing-class-docstring,missing-function-docstring
 import _zivid
 import zivid
 import zivid._camera_state_converter

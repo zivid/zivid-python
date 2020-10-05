@@ -1,4 +1,5 @@
-"""Auto generated, do not edit"""
+"""Auto generated, do not edit."""
+# pylint: disable=missing-class-docstring,missing-function-docstring
 import datetime
 import _zivid
 import zivid

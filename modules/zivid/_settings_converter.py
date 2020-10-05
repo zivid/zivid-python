@@ -1,8 +1,7 @@
-"""Auto generated, do not edit"""
-import datetime
-import types
-import collections.abc
+"""Auto generated, do not edit."""
+# pylint: disable=line-too-long
 import zivid
+import _zivid
 
 
 def to_settings_acquisition(internal_acquisition):
@@ -152,13 +151,6 @@ def to_settings(internal_settings):
             for element in internal_settings.acquisitions.value
         ],
     )
-
-
-"""Auto generated, do not edit"""
-import datetime
-import types
-import collections.abc
-import _zivid
 
 
 def to_internal_settings_acquisition(acquisition):

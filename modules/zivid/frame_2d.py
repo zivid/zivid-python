@@ -13,22 +13,13 @@ class Frame2D:
     Contains a 2D image as well as metadata, settings and state of the API at the time of capture.
     """
 
-    def __init__(self, internal_frame_2d):
-        """Can only be initialized by an internal Zivid 2D frame.
-
-        Args:
-            internal_frame_2d: internal 2D frame
-
-        Raises:
-            TypeError: unsupported type provided for internal 2d frame
-
-        """
-        if isinstance(internal_frame_2d, _zivid.Frame2D):
-            self.__impl = internal_frame_2d
+    def __init__(self, impl):  # noqa: D107
+        if isinstance(impl, _zivid.Frame2D):
+            self.__impl = impl
         else:
             raise TypeError(
-                "Unsupported type for argument internal_frame_2d. Got {}, expected {}.".format(
-                    type(internal_frame_2d).__name__, _zivid.Frame2D
+                "Unsupported type for argument internal frame_2d. Got {}, expected {}.".format(
+                    type(impl).__name__, _zivid.Frame2D
                 )
             )
 

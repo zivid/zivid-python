@@ -1,16 +1,25 @@
+# pylint: disable=missing-module-docstring
 import _zivid
-import numpy as np
 
 
 class Pose:
+    """Class representing a robot pose."""
+
     def __init__(self, transformation_matrix):
-        # if isinstance(transformation_matrix, np.array):
-        #     print("this is array")
-        # if isinstance(transformation_matrix, np.ndarray):
-        #     print("this is ndarray")
+        """Construct a Pose object.
+
+        Args:
+            transformation_matrix:  A 4x4 array representing the pose
+        """
+
         self.__impl = _zivid.calibration.Pose(transformation_matrix)
 
     def to_matrix(self):
+        """Get the matrix representation of the pose.
+
+        Returns:
+            A 4x4 transformation matrix
+        """
         return self.__impl.to_matrix()
 
     def __str__(self):
