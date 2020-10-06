@@ -33,13 +33,13 @@ class Camera:
         """Capture a single frame or a single 2D frame.
 
         Args:
-            settings: settings to be used to capture. Can be either Settings or Settings2D instances
+            settings: Settings to be used to capture. Can be either a Settings or Settings2D instance
 
         Returns:
             A frame containing a 3D image and metadata or a frame containing a 2D image and metadata.
 
         Raises:
-            TypeError: if argument is neither a Settings or a Settings2D
+            TypeError: If argument is neither a Settings or a Settings2D
         """
         if isinstance(settings, zivid.Settings):
             return Frame(
@@ -58,8 +58,7 @@ class Camera:
         """Get information about camera model, serial number etc.
 
         Returns:
-            The current camera info
-
+            A CameraInfo instance
         """
         return _camera_info_converter.to_camera_info(self.__impl.info)
 
@@ -68,8 +67,7 @@ class Camera:
         """Get the current camera state.
 
         Returns:
-            The current camera state
-
+            A CameraState instance
         """
         return _camera_state_converter.to_camera_state(self.__impl.state)
 
@@ -85,11 +83,10 @@ class Camera:
         """Write user data to camera. The total number of writes supported depends on camera model and size of data.
 
         Args:
-            user_data: bytes
+            user_data: User data as 'bytes' object
 
         Raises:
-            TypeError: unsupported type provided for user data
-
+            TypeError: Unsupported type provided for user data
         """
         if not isinstance(user_data, bytes):
             raise TypeError(
@@ -104,8 +101,7 @@ class Camera:
         """Read user data from camera.
 
         Returns:
-            bytes
-
+            User data as 'bytes' object
         """
         return bytes(self.__impl.user_data)
 

@@ -36,7 +36,7 @@ class Application:
             frame_file: Data file in ZDF format containing Zivid data
 
         Returns:
-            Zivid virtual camera instance
+            Zivid virtual Camera instance
 
         """
         return Camera(self.__impl.create_file_camera(str(frame_file)))
@@ -48,7 +48,7 @@ class Application:
             serial_number: Connect to the camera with this serial number
 
         Returns:
-            Zivid camera instance
+            Zivid Camera instance
 
         """
         if serial_number is not None:
@@ -59,7 +59,7 @@ class Application:
         """Get a list of all cameras.
 
         Returns:
-            A list of cameras including all physical cameras as well as virtual ones
+            A list of Camera including all physical cameras as well as virtual ones
                 (e.g. cameras created by create_file_camera())
 
         """

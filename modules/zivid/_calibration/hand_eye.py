@@ -15,7 +15,7 @@ class HandEyeInput:
             detection_result: The DetectionResult captured when in the above pose
 
         Raises:
-            TypeError: if one of the input arguments are of the wrong type
+            TypeError: If one of the input arguments are of the wrong type
         """
         if not isinstance(robot_pose, Pose):
             raise TypeError(
@@ -38,7 +38,7 @@ class HandEyeInput:
         """Get the contained robot pose.
 
         Returns:
-            A Pose object
+            A Pose instance
         """
         return Pose(self.__impl.robot_pose())
 
@@ -46,7 +46,7 @@ class HandEyeInput:
         """Get the contained detection result.
 
         Returns:
-            A DetectionResult object
+            A DetectionResult instance
         """
         return DetectionResult(self.__impl.detection_result())
 
@@ -135,7 +135,7 @@ def calibrate_eye_in_hand(calibration_inputs):
         calibration_inputs: List of HandEyeInput
 
     Returns:
-        A HandEyeOutput object containing the eye-in-hand transform
+        A HandEyeOutput instance containing the eye-in-hand transform
     """
     return HandEyeOutput(
         _zivid.calibration.calibrate_eye_in_hand(
@@ -154,7 +154,7 @@ def calibrate_eye_to_hand(calibration_inputs):
         calibration_inputs: List of HandEyeInput
 
     Returns:
-        A HandEyeOutput object containing the eye-to-hand transform
+        A HandEyeOutput instance containing the eye-to-hand transform
     """
     return HandEyeOutput(
         _zivid.calibration.calibrate_eye_to_hand(

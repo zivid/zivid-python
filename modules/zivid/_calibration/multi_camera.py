@@ -57,7 +57,7 @@ class MultiCameraOutput:
         """Get multi-camera calibration residuals.
 
         Returns:
-            List of MultiCameraResidual objects, one for each camera
+            List of MultiCameraResidual instances, one for each camera
         """
         return [
             MultiCameraResidual(internal_residual)
@@ -75,7 +75,7 @@ def calibrate_multi_camera(detection_results):
         detection_results: List of DetectionResult, one for each camera
 
     Returns:
-        A MultiCameraOutput object
+        A MultiCameraOutput instance
     """
     return MultiCameraOutput(
         _zivid.calibration.calibrate_multi_camera(

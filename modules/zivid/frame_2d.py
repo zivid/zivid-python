@@ -30,8 +30,7 @@ class Frame2D:
         """Get color (RGBA) image from the frame.
 
         Returns:
-            an image instance
-
+            An image instance containing RGBA data
         """
         return Image(self.__impl.image_rgba())
 
@@ -40,8 +39,7 @@ class Frame2D:
         """Get the settings used to capture this frame.
 
         Returns:
-            a settings 2d instance
-
+            A Settings2D instance
         """
         return _settings_converter.to_settings2_d(  # pylint: disable=protected-access
             self.__impl.settings
@@ -52,8 +50,7 @@ class Frame2D:
         """Get the camera state data at the time of the frame capture.
 
         Returns:
-            a camera state instance
-
+            A CameraState instance
         """
         return _camera_state_converter.to_camera_state(  # pylint: disable=protected-access
             self.__impl.state
@@ -64,8 +61,7 @@ class Frame2D:
         """Get information collected at the time of the capture.
 
         Returns:
-            a camera info instance
-
+            A CameraInfo instance
         """
         return _frame_info_converter.to_frame_info(  # pylint: disable=protected-access
             self.__impl.info
