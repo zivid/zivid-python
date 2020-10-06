@@ -6,8 +6,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include <Zivid/Settings2D.h>
 #include <Zivid/Settings.h>
+#include <Zivid/Settings2D.h>
 
 #include "ZividPython/Wrappers.h"
 
@@ -167,9 +167,7 @@ namespace ZividPython
             {
                 using ValueType = typename Target::ValueType;
 
-                pyClass.def("value_type", [] {
-                    return TypeName<ValueType>::value;
-                });
+                pyClass.def("value_type", [] { return TypeName<ValueType>::value; });
                 pyClass.def("is_optional", [] { return Zivid::DataModel::IsOptional<Target>::value; });
 
                 if constexpr(std::is_enum_v<ValueType>)
@@ -198,17 +196,17 @@ namespace ZividPython
                                 py::arg("value"));
                 }
 
-                pyClass.def_property_readonly(
-                    "value", [](const Target &target) -> std::optional<typename Target::ValueType> {
-                        if(hasValue(target))
-                        {
-                            return target.value();
-                        }
-                        else
-                        {
-                            return {};
-                        }
-                    });
+                pyClass.def_property_readonly("value",
+                                              [](const Target &target) -> std::optional<typename Target::ValueType> {
+                                                  if(hasValue(target))
+                                                  {
+                                                      return target.value();
+                                                  }
+                                                  else
+                                                  {
+                                                      return {};
+                                                  }
+                                              });
 
                 if constexpr(!std::is_same_v<ValueType, bool>)
                 {
@@ -226,9 +224,8 @@ namespace ZividPython
 
                 if constexpr(Zivid::DataModel::HasValidValues<Target>::value)
                 {
-                    pyClass.def_property_readonly("valid_values", [](const Target &target) {
-                        return Target::validValues();
-                    });
+                    pyClass.def_property_readonly("valid_values",
+                                                  [](const Target &target) { return Target::validValues(); });
                 }
 
                 if constexpr(Zivid::DataModel::HasValidSize<Target>::value)
@@ -242,16 +239,14 @@ namespace ZividPython
             else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafDataModelList)
             {
                 using ValueType = typename Target::ValueType::value_type;
-                pyClass.def("value_type", [] {
-                    return TypeName<ValueType>::value;
-                });
+                pyClass.def("value_type", [] { return TypeName<ValueType>::value; });
                 pyClass.def("is_optional", [] { return Zivid::DataModel::IsOptional<Target>::value; });
 
                 pyClass.def_property_readonly("value", &Target::value)
                     .def("append", [](Target &dest, ValueType value) { dest.emplaceBack(std::move(value)); })
                     .def("size", &Target::size)
                     .def("is_empty", &Target::isEmpty)
-                    .def("at", [](Target &dest, const size_t index){ return dest.at(index); });
+                    .def("at", [](Target &dest, const size_t index) { return dest.at(index); });
             }
 
             else

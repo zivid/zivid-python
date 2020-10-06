@@ -16,7 +16,7 @@ def _main():
     )
 
     with camera.capture(settings_2d) as frame_2d:
-        image = frame_2d.image_rgba()
+        image = frame_2d.image_rgba()  # pylint: disable=no-member
         image.save("result.png")
 
 

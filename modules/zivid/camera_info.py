@@ -1,7 +1,5 @@
-"""Auto generated, do not edit"""
-import datetime
-import types
-import collections.abc
+"""Auto generated, do not edit."""
+# pylint: disable=too-many-arguments,missing-class-docstring,missing-function-docstring
 import _zivid
 import zivid
 import zivid._camera_info_converter

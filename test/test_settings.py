@@ -139,8 +139,8 @@ def test_default_acquisition(application):  # pylint: disable=unused-argument
     assert acquisition.exposure_time is None
     pytest.helpers.equality_tester(
         zivid.Settings.Acquisition,
-        [5, 0.5, datetime.timedelta(microseconds=11000), 15,],
-        [5, 0.5, datetime.timedelta(microseconds=11001), 15,],
+        [5, 0.5, datetime.timedelta(microseconds=11000), 15],
+        [5, 0.5, datetime.timedelta(microseconds=11001), 15],
     )
 
 

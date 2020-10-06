@@ -1,6 +1,5 @@
 [MESSAGES CONTROL]
-disable=missing-docstring,
-        duplicate-code, ### Temporarily disabled until sample files begin to look different
+disable=duplicate-code, ### Temporarily disabled until sample files begin to look different
         bad-continuation, ### Disabled because in conflict with black
 
 [FORMAT]

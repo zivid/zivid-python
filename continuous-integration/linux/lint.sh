@@ -4,7 +4,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=$(realpath "$SCRIPT_DIR/../..")
 
 pythonFiles=$(find "$ROOT_DIR" -name '*.py' -not -path '*doc/scratchpad*')
-publicPythonFiles=$(find "$ROOT_DIR/modules" "$ROOT_DIR/samples" -name '*.py')
+publicPythonFiles=$(find "$ROOT_DIR/modules" "$ROOT_DIR/samples" -regex '.*\/[^_]\w+\.py$')
 nonPublicPythonFiles=$(comm -23 <(echo $pythonFiles| tr " " "\n" |sort) \
                                 <(echo $publicPythonFiles| tr " " "\n" |sort))
 

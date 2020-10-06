@@ -1,19 +1,23 @@
-"""Auto generated, do not edit"""
-import _zivid
-import zivid._settings_converter as _settings_converter
-import zivid
-
+"""Auto generated, do not edit."""
 import datetime
 import collections.abc
 
-import zivid._capture_assistant_suggest_settings_parameters_converter
+import _zivid
+import zivid._settings_converter as _settings_converter
 from zivid._capture_assistant_suggest_settings_parameters_converter import (
     to_internal_capture_assistant_suggest_settings_parameters,
 )
 
 
 class SuggestSettingsParameters:
-    class AmbientLightFrequency:
+    """Class representing parameters to the Capture Assistant."""
+
+    class AmbientLightFrequency:  # pylint: disable=too-few-public-methods
+        """Optional choice for adapting to ambient light frequency.
+
+        May help remove ripple artifacts caused by strong ambient light.
+        """
+
         hz50 = "hz50"
         hz60 = "hz60"
         none = "none"
@@ -26,6 +30,11 @@ class SuggestSettingsParameters:
 
         @classmethod
         def valid_values(cls):
+            """Get list of allowed values.
+
+            Returns:
+                List of strings
+            """
             return [
                 cls.hz50,
                 cls.hz60,
@@ -41,6 +50,17 @@ class SuggestSettingsParameters:
         .MaxCaptureTime()
         .value,
     ):
+        """Initialize a SuggestSettingsParameters.
+
+        Pass this object to zivid.capture_assistant.suggest_settings() to run the Capture Assistant.
+
+        Args:
+            ambient_light_frequency: Optional ambient light adaptation ("none", "hz50" or "hz60")
+            max_capture_time: A datetime.timedelta specifying maximum allowed HDR capture time
+
+        Raises:
+            TypeError: If one of the arguments is of the wrong type
+        """
         if isinstance(
             ambient_light_frequency,
             _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum,
@@ -52,7 +72,7 @@ class SuggestSettingsParameters:
             )
         else:
             raise TypeError(
-                "Unsupported type, expected: (str,), got {value_type}".format(
+                "Unsupported type, expected: str, got {value_type}".format(
                     value_type=type(ambient_light_frequency)
                 )
             )
@@ -69,10 +89,20 @@ class SuggestSettingsParameters:
 
     @property
     def ambient_light_frequency(self):
+        """Get the contained ambient light adaptation setting.
+
+        Returns:
+            A string, among the valid values of AmbientLightFrequency
+
+        Raises:
+            ValueError: If the object contains an invalid ambient light frequency setting
+        """
         for (
             key,
             value,
-        ) in SuggestSettingsParameters.AmbientLightFrequency._valid_values.items():
+        ) in (
+            SuggestSettingsParameters.AmbientLightFrequency._valid_values.items()  # pylint: disable=protected-access
+        ):
             if value == self._ambient_light_frequency:
                 return key
         raise ValueError(
@@ -81,6 +111,11 @@ class SuggestSettingsParameters:
 
     @property
     def max_capture_time(self):
+        """Get the contained max capture time setting.
+
+        Returns:
+            A datetime.timedelta object
+        """
         return self._max_capture_time.value
 
     @ambient_light_frequency.setter
@@ -116,23 +151,19 @@ class SuggestSettingsParameters:
         return False
 
     def __str__(self):
-        return str(
-            zivid._capture_assistant_suggest_settings_parameters_converter.to_internal_capture_assistant_suggest_settings_parameters(
-                self
-            )
-        )
+        return str(to_internal_capture_assistant_suggest_settings_parameters(self))
 
 
 def _convert_to_internal(ambient_light_frequency):
     if isinstance(ambient_light_frequency, str):
         if (
             ambient_light_frequency
-            not in SuggestSettingsParameters.AmbientLightFrequency._valid_values
+            not in SuggestSettingsParameters.AmbientLightFrequency._valid_values  # pylint: disable=protected-access
         ):
             raise TypeError(
                 "Unsupported value {value}".format(value=ambient_light_frequency)
             )
-        ambient_light_frequency = SuggestSettingsParameters.AmbientLightFrequency._valid_values[
+        ambient_light_frequency = SuggestSettingsParameters.AmbientLightFrequency._valid_values[  # pylint: disable=protected-access
             ambient_light_frequency
         ]
         if not isinstance(
@@ -149,17 +180,17 @@ def _convert_to_internal(ambient_light_frequency):
 
 
 def suggest_settings(camera, suggest_settings_parameters):
-    """Find settings for the current scene based on the suggest_settings_parameters.
+    """Find settings for the current scene based on given parameters.
 
-    The suggested settings returned from this function should be passed into \ref Camera::capture to perform the actual capture.
+    The suggested settings returned from this function should be passed into
+    camera.capture() to perform the actual capture.
 
     Args:
-        camera: an instance of zivid.Camera
-        suggest_settings_parameters: Provides parameters (e.g., max capture time constraint) to the suggestSettings algorithm.
+        camera: A Camera object
+        suggest_settings_parameters: A SuggestSettingsParameters object
 
     Returns:
-        Settings instance
-
+        Settings instance optimized for the current scene
     """
     internal_settings = _zivid.capture_assistant.suggest_settings(
         camera._Camera__impl,  # pylint: disable=protected-access

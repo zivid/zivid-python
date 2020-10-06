@@ -1,6 +1,6 @@
-"""Auto generated, do not edit"""
+"""Auto generated, do not edit."""
+# pylint: disable=line-too-long,too-many-lines,too-many-arguments,missing-class-docstring,missing-function-docstring
 import datetime
-import types
 import collections.abc
 import _zivid
 import zivid

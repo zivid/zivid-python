@@ -1,4 +1,4 @@
-"""Auto generated, do not edit"""
+"""Auto generated, do not edit."""
 import zivid
 import _zivid
 

@@ -9,25 +9,17 @@ class PointCloud:
 
     An instance of this class is a handle to a point cloud stored on the compute device memory.
     This class provides several methods to copy point cloud data from the compute device
-    memory to host (CPU) system memory (RAM)."""
+    memory to host (CPU) system memory (RAM).
+    """
 
-    def __init__(self, internal_point_cloud):
-        """Create a point cloud from an internal point cloud.
-
-        Args:
-            internal_point_cloud: a internal point cloud
-
-        Raises:
-            TypeError: unsupported type provided for internal point cloud
-
-        """
-        if not isinstance(internal_point_cloud, _zivid.PointCloud):
+    def __init__(self, impl):  # noqa: D107
+        if not isinstance(impl, _zivid.PointCloud):
             raise TypeError(
                 "Unsupported type for argument internal_point_cloud. Got {}, expected {}".format(
-                    type(internal_point_cloud), type(_zivid.PointCloud)
+                    type(impl), type(_zivid.PointCloud)
                 )
             )
-        self.__impl = internal_point_cloud
+        self.__impl = impl
 
     def copy_data(self, data_format):
         """Copy point cloud data from GPU to numpy array.
@@ -70,12 +62,12 @@ class PointCloud:
         return numpy.array(data_format_class(self.__impl))
 
     def transform(self, matrix):
-        """Transform the point cloud in-place by a 4x4 transformation matrix
+        """Transform the point cloud in-place by a 4x4 transformation matrix.
 
         The transform matrix must be affine, i.e., the last row of the matrix should be [0, 0, 0, 1].
 
         Args:
-            a 4x4 numpy arrays of floats
+            matrix: a 4x4 numpy arrays of floats
         """
         self.__impl.transform(matrix)
 
