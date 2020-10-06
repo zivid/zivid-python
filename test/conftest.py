@@ -60,8 +60,10 @@ def frame_file_fixture(application, frame):  # pylint: disable=unused-argument
 def checkerboard_frames_fixture(application):  # pylint: disable=unused-argument
 
     frames = [
-        zivid.Frame(file_path) for file_path in sorted(test_data_dir().glob("*.zdf"))
+        zivid.Frame(file_path)
+        for file_path in sorted(test_data_dir().glob("checkerboard_*.zdf"))
     ]
+    assert len(frames) == 3
     yield frames
 
 
