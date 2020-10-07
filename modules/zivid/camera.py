@@ -27,7 +27,7 @@ class Camera:
         return str(self.__impl)
 
     def __eq__(self, other):
-        return self.__impl == other._Camera__impl  # pylint: disable=protected-access
+        return self.__impl == other._Camera__impl
 
     def capture(self, settings):
         """Capture a single frame or a single 2D frame.

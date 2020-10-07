@@ -75,9 +75,7 @@ class Frame:
         Returns:
             A Settings instance
         """
-        return _settings_converter.to_settings(  # pylint: disable=protected-access
-            self.__impl.settings
-        )
+        return _settings_converter.to_settings(self.__impl.settings)
 
     @property
     def state(self):
@@ -86,9 +84,7 @@ class Frame:
         Returns:
             A CameraState instance
         """
-        return _camera_state_converter.to_camera_state(  # pylint: disable=protected-access
-            self.__impl.state
-        )
+        return _camera_state_converter.to_camera_state(self.__impl.state)
 
     @property
     def info(self):
@@ -97,9 +93,7 @@ class Frame:
         Returns:
             A FrameInfo instance
         """
-        return _frame_info_converter.to_frame_info(  # pylint: disable=protected-access
-            self.__impl.info
-        )
+        return _frame_info_converter.to_frame_info(self.__impl.info)
 
     @property
     def camera_info(self):
