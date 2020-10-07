@@ -186,11 +186,11 @@ def suggest_settings(camera, suggest_settings_parameters):
     camera.capture() to perform the actual capture.
 
     Args:
-        camera: A Camera object
-        suggest_settings_parameters: A SuggestSettingsParameters object
+        camera: A Camera instance
+        suggest_settings_parameters: A SuggestSettingsParameters instance
 
     Returns:
-        Settings instance optimized for the current scene
+        A Settings instance optimized for the current scene
     """
     internal_settings = _zivid.capture_assistant.suggest_settings(
         camera._Camera__impl,  # pylint: disable=protected-access

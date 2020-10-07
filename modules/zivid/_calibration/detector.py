@@ -30,7 +30,7 @@ def detect_feature_points(point_cloud):
         point_cloud: PointCloud containing a calibration object
 
     Returns:
-        A DetectionResult object
+        A DetectionResult instance
     """
 
     return DetectionResult(

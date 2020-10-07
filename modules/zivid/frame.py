@@ -20,11 +20,10 @@ class Frame:
         """Create a frame by loading data from a file.
 
         Args:
-            file_name: a pathlib.Path instance or a string
+            file_name: A pathlib.Path instance or a string
 
         Raises:
-            TypeError: unsupported type provided for file name
-
+            TypeError: Unsupported type provided for file name
         """
         if isinstance(file_name, (str, Path)):
             self.__impl = _zivid.Frame(str(file_name))
@@ -43,9 +42,11 @@ class Frame:
     def point_cloud(self):
         """Get the point cloud.
 
-        Returns:
-            a point cloud instance
+        See documentation/functions of zivid.PointCloud for instructions on how to
+        retrieve point cloud data.
 
+        Returns:
+            A PointCloud instance
         """
         return PointCloud(self.__impl.point_cloud())
 
@@ -53,7 +54,7 @@ class Frame:
         """Save the frame to file. The file type is determined from the file extension.
 
         Args:
-            file_path: destination path
+            file_path: A pathlib.Path instance or a string specifying destination
 
         """
         self.__impl.save(str(file_path))
@@ -62,8 +63,7 @@ class Frame:
         """Load a frame from a Zivid data file.
 
         Args:
-            file_path: path to zdf file
-
+            file_path: A pathlib.Path instance or a string specifying a zdf file to load
         """
         self.__impl.load(str(file_path))
 
@@ -72,8 +72,7 @@ class Frame:
         """Get the settings used to capture this frame.
 
         Returns:
-            a settings instance
-
+            A Settings instance
         """
         return _settings_converter.to_settings(  # pylint: disable=protected-access
             self.__impl.settings
@@ -84,8 +83,7 @@ class Frame:
         """Get the camera state data at the time of the frame capture.
 
         Returns:
-            a camera state instance
-
+            A CameraState instance
         """
         return _camera_state_converter.to_camera_state(  # pylint: disable=protected-access
             self.__impl.state
@@ -96,8 +94,7 @@ class Frame:
         """Get information collected at the time of the frame capture.
 
         Returns:
-            a camera info instance
-
+            A CameraInfo instance
         """
         return _frame_info_converter.to_frame_info(  # pylint: disable=protected-access
             self.__impl.info

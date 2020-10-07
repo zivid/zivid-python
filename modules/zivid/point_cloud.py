@@ -33,10 +33,10 @@ class PointCloud:
         xyzrgba:    ndarray(H,W)   of composite dtype (accessed with e.g. arr["x"])
 
         Args:
-            data_format: a string specifying the data to be copied
+            data_format: A string specifying the data to be copied
 
         Returns:
-            a numpy array with the requested data
+            A numpy array with the requested data
 
         Raises:
             ValueError: if the requested data format does not exist
@@ -67,7 +67,7 @@ class PointCloud:
         The transform matrix must be affine, i.e., the last row of the matrix should be [0, 0, 0, 1].
 
         Args:
-            matrix: a 4x4 numpy arrays of floats
+            matrix: A 4x4 numpy arrays of floats
         """
         self.__impl.transform(matrix)
 
@@ -76,8 +76,7 @@ class PointCloud:
         """Get the height of the point cloud (number of rows).
 
         Returns:
-            a positive integer
-
+            A positive integer
         """
         return self.__impl.height()
 
@@ -86,8 +85,7 @@ class PointCloud:
         """Get the width of the point cloud (number of columns).
 
         Returns:
-            a positive integer
-
+            A positive integer
         """
         return self.__impl.width()
 

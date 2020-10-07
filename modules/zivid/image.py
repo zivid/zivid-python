@@ -21,8 +21,7 @@ class Image:
         """Get the height of the image (number of rows).
 
         Returns:
-            a positive integer
-
+            A positive integer
         """
         return self.__impl.height()
 
@@ -31,8 +30,7 @@ class Image:
         """Get the width of the image (number of columns).
 
         Returns:
-            a positive integer
-
+            A positive integer
         """
         return self.__impl.width()
 
@@ -43,8 +41,7 @@ class Image:
         This method will throw an exception if failing to save to the provided file_path.
 
         Args:
-            file_path: destination path
-
+            file_path: A pathlib.Path instance or a string specifying destination
         """
         self.__impl.save(str(file_path))
 
@@ -52,8 +49,7 @@ class Image:
         """Copy image data to numpy array.
 
         Returns:
-            a numpy array
-
+            A numpy array containing color pixel data
         """
         self.__impl.assert_not_released()
         return numpy.array(self.__impl)
