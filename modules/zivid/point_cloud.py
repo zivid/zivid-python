@@ -12,6 +12,28 @@ class PointCloud:
     memory to host (CPU) system memory (RAM).
     """
 
+    class Downsampling:  # pylint: disable=too-few-public-methods
+        """Collection of valid options to PointCloud.downsample()."""
+
+        by2x2 = "by2x2"
+        by3x3 = "by3x3"
+        by4x4 = "by4x4"
+
+        _valid_values = {
+            "by2x2": _zivid.PointCloud.Downsampling.by2x2,
+            "by3x3": _zivid.PointCloud.Downsampling.by3x3,
+            "by4x4": _zivid.PointCloud.Downsampling.by4x4,
+        }
+
+        @classmethod
+        def valid_values(cls):
+            """Get list of allowed values.
+
+            Returns:
+                List of strings
+            """
+            return list(cls._valid_values.keys())
+
     def __init__(self, impl):  # noqa: D107
         if not isinstance(impl, _zivid.PointCloud):
             raise TypeError(
@@ -70,6 +92,35 @@ class PointCloud:
             matrix: A 4x4 numpy arrays of floats
         """
         self.__impl.transform(matrix)
+
+    def downsample(self, downsampling):
+        """Downsample the point cloud in-place.
+
+        Args:
+            downsampling: One of the strings in PointCloud.Downsample.valid_values()
+
+        Returns:
+            Reference to the same PointCloud instance (for chaining calls)
+        """
+        internal_downsampling = PointCloud.Downsampling._valid_values[  # pylint: disable=protected-access
+            downsampling
+        ]
+        self.__impl.downsample(internal_downsampling)
+        return self
+
+    def downsampled(self, downsampling):
+        """Get a downsampled copy of the point cloud.
+
+        Args:
+            downsampling: One of the strings in PointCloud.Downsample.valid_values()
+
+        Returns:
+            A new PointCloud instance
+        """
+        internal_downsampling = PointCloud.Downsampling._valid_values[  # pylint: disable=protected-access
+            downsampling
+        ]
+        return PointCloud(self.__impl.downsampled(internal_downsampling))
 
     @property
     def height(self):
