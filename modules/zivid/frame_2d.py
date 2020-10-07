@@ -61,7 +61,7 @@ class Frame2D:
         """Get information collected at the time of the capture.
 
         Returns:
-            A CameraInfo instance
+            A FrameInfo instance
         """
         return _frame_info_converter.to_frame_info(  # pylint: disable=protected-access
             self.__impl.info
