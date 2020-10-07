@@ -93,23 +93,51 @@ def test_width(point_cloud):
     assert isinstance(width, int)
 
 
-def test_transform(point_cloud, transform):
+def _validate_transformation(xyzw_before, xyzw_after, transform):
     import numpy as np
 
-    # Get points before and after transform
-    xyzw_before = point_cloud.copy_data("xyzw")
-    point_cloud.transform(transform)
-    xyzw_after = point_cloud.copy_data("xyzw")
-
     # Pick an arbitary point to test
-    i = point_cloud.height // 3
-    j = point_cloud.width // 3
+    i = xyzw_before.shape[0] // 3
+    j = xyzw_before.shape[1] // 3
     point_before = xyzw_before[i, j, :]
     point_after = xyzw_after[i, j, :]
     assert np.all(~np.isnan(point_after))
     assert np.all(~np.isnan(point_before))
     point_after_expected = np.dot(transform, point_before)
     np.testing.assert_array_almost_equal(point_after, point_after_expected)
+
+
+def test_transform(point_cloud, transform):
+    import zivid
+
+    # Get points before and after transform
+    xyzw_before = point_cloud.copy_data("xyzw")
+    point_cloud_returned = point_cloud.transform(transform)
+    xyzw_after = point_cloud.copy_data("xyzw")
+
+    # Check that return value is just a reference to the original object
+    assert isinstance(point_cloud_returned, zivid.PointCloud)
+    assert point_cloud_returned is point_cloud
+
+    # Check that the transformation was actually applied
+    _validate_transformation(xyzw_before, xyzw_after, transform)
+
+
+def test_transform_chaining(point_cloud, transform):
+    import zivid
+    import numpy as np
+
+    # Get points before and after transform
+    xyzw_before = point_cloud.copy_data("xyzw")
+    point_cloud_returned = point_cloud.transform(transform).transform(transform)
+    xyzw_after = point_cloud.copy_data("xyzw")
+
+    # Check that return value is just a reference to the original object
+    assert isinstance(point_cloud_returned, zivid.PointCloud)
+    assert point_cloud_returned is point_cloud
+
+    # Check that the transformation was actually applied
+    _validate_transformation(xyzw_before, xyzw_after, np.dot(transform, transform))
 
 
 def test_downsampling_enum():

@@ -90,8 +90,12 @@ class PointCloud:
 
         Args:
             matrix: A 4x4 numpy arrays of floats
+
+        Returns:
+            Reference to the same PointCloud instance (for chaining calls)
         """
         self.__impl.transform(matrix)
+        return self
 
     def downsample(self, downsampling):
         """Downsample the point cloud in-place.
