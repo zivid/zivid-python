@@ -96,3 +96,11 @@ def test_info(frame):
     info = frame.info
     assert info
     assert isinstance(info, FrameInfo)
+
+
+def test_camera_info(frame):
+    from zivid.camera_info import CameraInfo
+
+    camera_info = frame.camera_info
+    assert camera_info
+    assert isinstance(camera_info, CameraInfo)

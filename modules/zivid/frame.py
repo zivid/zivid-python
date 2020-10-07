@@ -4,6 +4,7 @@ import _zivid
 
 import zivid._settings_converter as _settings_converter
 import zivid._camera_state_converter as _camera_state_converter
+import zivid._camera_info_converter as _camera_info_converter
 import zivid._frame_info_converter as _frame_info_converter
 from zivid.point_cloud import PointCloud
 
@@ -99,6 +100,15 @@ class Frame:
         return _frame_info_converter.to_frame_info(  # pylint: disable=protected-access
             self.__impl.info
         )
+
+    @property
+    def camera_info(self):
+        """Get information about the camera used to capture the frame.
+
+        Returns:
+            A CameraInfo instance
+        """
+        return _camera_info_converter.to_camera_info(self.__impl.camera_info)
 
     def release(self):
         """Release the underlying resources."""
