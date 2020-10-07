@@ -7,11 +7,11 @@ from skbuild import setup
 
 # To be replaced by: from setuptools_scm import get_version
 def get_version():
-    return "2.0.0"
+    return "2.1.0"
 
 
 def _zivid_sdk_version():
-    return "2.0.0"
+    return "2.1.0"
 
 
 def _zivid_python_version():
