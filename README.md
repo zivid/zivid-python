@@ -42,25 +42,39 @@ If you are using a version of PIP older than version 19 please manually install 
 
 ## Quick Start
 
-Launch a Python interpreter and run the following code.
+Launch a Python interpreter and run the following code:
 
     import zivid
     app = zivid.Application()
     camera = app.connect_camera()
-    frame = camera.capture()
-    frame.save("my-frame.zdf")
+    settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
+    frame = camera.capture(settings)
+    frame.save("result.zdf")
+
+Data can easily be accessed in the form of Numpy arrays:
+
+    import zivid
+    app = zivid.Application()
+    camera = app.connect_camera()
+    settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
+    frame = camera.capture(settings)
+    # Get point coordinates as HxWx3 float array
+    xyz = frame.point_cloud().copy_data("xyz")
+    # Get point colors as HxWx4 uint8 array
+    rgba = frame.point_cloud().copy_data("rgba")
 
 For more advanced usage see the [Examples](#examples) section.
 
 ### Using camera emulation
 
-If you do not have a camera, you can use the `MiscObjects.zdf` file in [ZividSampleData.zip](http://www.zivid.com/software/ZividSampleData.zip) to emulate a camera.
+If you do not have a camera, you can use the `FileCameraZividOne.zfc` file in [ZividSampleData2.zip](http://www.zivid.com/software/ZividSampleData2.zip) to emulate a camera.
 
     import zivid
     app = zivid.Application()
-    camera = app.create_file_camera("path/to/MiscObjects.zdf")
-    frame = camera.capture()
-    frame.save("my-frame.zdf")
+    camera = app.create_file_camera("path/to/FileCameraZividOne.zfc")
+    settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
+    frame = camera.capture(settings)
+    frame.save("result.zdf")
 
 ## Examples
 
