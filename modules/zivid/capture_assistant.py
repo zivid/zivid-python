@@ -35,11 +35,7 @@ class SuggestSettingsParameters:
             Returns:
                 List of strings
             """
-            return [
-                cls.hz50,
-                cls.hz60,
-                cls.none,
-            ]
+            return list(cls._valid_values.keys())
 
     def __init__(
         self,
