@@ -8,8 +8,8 @@ class PointCloud:
     """Point cloud with x, y, z, RGB and color laid out on a 2D grid.
 
     An instance of this class is a handle to a point cloud stored on the compute device memory.
-    This class provides several methods to copy point cloud data from the compute device
-    memory to host (CPU) system memory (RAM).
+    Use the method copy_data to copy point cloud data from the compute device to a numpy
+    array in host memory. Several formats are available.
     """
 
     class Downsampling:  # pylint: disable=too-few-public-methods
@@ -58,7 +58,7 @@ class PointCloud:
             data_format: A string specifying the data to be copied
 
         Returns:
-            A numpy array with the requested data
+            A numpy array with the requested data.
 
         Raises:
             ValueError: if the requested data format does not exist

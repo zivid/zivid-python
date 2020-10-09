@@ -1,4 +1,4 @@
-"""Contains funtions for checking and updating camera firmware."""
+"""Contains functions for checking and updating camera firmware."""
 import _zivid
 
 
@@ -6,7 +6,7 @@ def update(camera, progress_callback=None):
     """Update camera firmware.
 
     If the current API requires a different firmware than what is present on the camera,
-        the firmare will be updated to this version.
+        the firmware will be updated to this version.
     The function throws if the camera is connected, or if the camera is already up to date.
     Call is_up_to_date() first to check if the camera is up to date.
 

@@ -19,7 +19,6 @@ class Application:
     This class can be used as a context manager to guarantee that resources are
     released deterministically. Note that this will also invalidate all other
     instances of this class.
-
     """
 
     def __init__(self):
@@ -29,27 +28,27 @@ class Application:
     def __str__(self):
         return str(self.__impl)
 
-    def create_file_camera(self, frame_file):
+    def create_file_camera(self, camera_file):
         """Create a virtual camera to simulate Zivid measurements by reading data from a file.
 
+        An example file camera may be found among the Sample Data at zivid.com/downloads
+
         Args:
-            frame_file: Data file in ZDF format containing Zivid data
+            camera_file: A pathlib.Path instance or a string specifying a Zivid File Camera (ZFC) file
 
         Returns:
             Zivid virtual Camera instance
-
         """
-        return Camera(self.__impl.create_file_camera(str(frame_file)))
+        return Camera(self.__impl.create_file_camera(str(camera_file)))
 
     def connect_camera(self, serial_number=None):
         """Connect to the next available Zivid camera.
 
         Args:
-            serial_number: Connect to the camera with this serial number
+            serial_number: Optional serial number string for connecting to a specific camera
 
         Returns:
             Zivid Camera instance
-
         """
         if serial_number is not None:
             return Camera(self.__impl.connect_camera(serial_number))
@@ -61,7 +60,6 @@ class Application:
         Returns:
             A list of Camera including all physical cameras as well as virtual ones
                 (e.g. cameras created by create_file_camera())
-
         """
         return [Camera(internal_camera) for internal_camera in self.__impl.cameras()]
 

@@ -5,7 +5,7 @@ import _zivid
 
 
 class Image:
-    """A 2-dimensional image stored on the host."""
+    """A two-dimensional image stored on the host."""
 
     def __init__(self, impl):  # noqa: D107
         if not isinstance(impl, _zivid.ImageRGBA):
