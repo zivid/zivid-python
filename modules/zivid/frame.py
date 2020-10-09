@@ -14,14 +14,14 @@ class Frame:
 
     Contains the point cloud (stored on compute device memory) as well as
     calibration data, settings and state used by the API at time of the frame
-    capture. Use point_cloud to access point cloud data.
+    capture. Use the point_cloud() method to access point cloud data.
     """
 
     def __init__(self, file_name):
         """Create a frame by loading data from a file.
 
         Args:
-            file_name: A pathlib.Path instance or a string
+            file_name: A pathlib.Path instance or a string specifying a Zivid Data File (ZDF)
 
         Raises:
             TypeError: Unsupported type provided for file name
@@ -44,7 +44,7 @@ class Frame:
         """Get the point cloud.
 
         See documentation/functions of zivid.PointCloud for instructions on how to
-        retrieve point cloud data.
+        retrieve point cloud data on various formats.
 
         Returns:
             A PointCloud instance
@@ -64,7 +64,7 @@ class Frame:
         """Load a frame from a Zivid data file.
 
         Args:
-            file_path: A pathlib.Path instance or a string specifying a zdf file to load
+            file_path: A pathlib.Path instance or a string specifying a ZDF file to load
         """
         self.__impl.load(str(file_path))
 

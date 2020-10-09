@@ -10,7 +10,11 @@ from zivid._capture_assistant_suggest_settings_parameters_converter import (
 
 
 class SuggestSettingsParameters:
-    """Class representing parameters to the Capture Assistant."""
+    """Class representing parameters to the Capture Assistant.
+
+    An instance of this class is used as an argument to suggest_settings() in order
+    to specify parameters and constraints to the capture assistant.
+    """
 
     class AmbientLightFrequency:  # pylint: disable=too-few-public-methods
         """Optional choice for adapting to ambient light frequency.
@@ -179,7 +183,7 @@ def suggest_settings(camera, suggest_settings_parameters):
     """Find settings for the current scene based on given parameters.
 
     The suggested settings returned from this function should be passed into
-    camera.capture() to perform the actual capture.
+    camera.capture() to capture and retrieve the Frame containing a point cloud.
 
     Args:
         camera: A Camera instance

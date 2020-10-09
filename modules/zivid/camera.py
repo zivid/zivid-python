@@ -36,7 +36,7 @@ class Camera:
             settings: Settings to be used to capture. Can be either a Settings or Settings2D instance
 
         Returns:
-            A frame containing a 3D image and metadata or a frame containing a 2D image and metadata.
+            A Frame containing a 3D image plus metadata or a Frame2D containing a 2D image plus metadata.
 
         Raises:
             TypeError: If argument is neither a Settings or a Settings2D
