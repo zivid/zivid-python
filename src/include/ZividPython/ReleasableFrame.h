@@ -14,10 +14,11 @@ namespace ZividPython
 
         ZIVID_PYTHON_FORWARD_1_ARGS(save, const std::string &, fileName)
         ZIVID_PYTHON_FORWARD_1_ARGS(load, const std::string &, fileName)
-        ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasablePointCloud, getPointCloud)
+        ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasablePointCloud, pointCloud)
         ZIVID_PYTHON_FORWARD_0_ARGS(settings)
         ZIVID_PYTHON_FORWARD_0_ARGS(state)
         ZIVID_PYTHON_FORWARD_0_ARGS(info)
+        ZIVID_PYTHON_FORWARD_0_ARGS(cameraInfo)
     };
 
     void wrapClass(pybind11::class_<ReleasableFrame> pyClass);

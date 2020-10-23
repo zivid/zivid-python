@@ -1,13 +1,15 @@
 """File camera capture sample."""
-import zivid
+from zivid import Application, Settings
 
 
 def _main():
-    app = zivid.Application()
-    camera = app.create_file_camera("MiscObjects.zdf")
+    app = Application()
+    camera = app.create_file_camera("FileCameraZividOne.zfc")
 
-    with camera.capture() as frame:
-        frame.save("results.zdf")
+    settings = Settings(acquisitions=[Settings.Acquisition()])
+
+    with camera.capture(settings) as frame:
+        frame.save("result.zdf")
 
 
 if __name__ == "__main__":

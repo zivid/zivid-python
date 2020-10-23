@@ -14,7 +14,7 @@ namespace ZividPython
     public:
         using Releasable<Zivid::Frame2D>::Releasable;
 
-        ZIVID_PYTHON_FORWARD_0_ARGS_TEMPLATE_1_ARG_WRAP_RETURN(ReleasableImage, image, Zivid::RGBA8)
+        ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageRGBA, imageRGBA)
         ZIVID_PYTHON_FORWARD_0_ARGS(settings)
         ZIVID_PYTHON_FORWARD_0_ARGS(state)
         ZIVID_PYTHON_FORWARD_0_ARGS(info)

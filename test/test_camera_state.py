@@ -1,4 +1,3 @@
-# pylint: disable=import-outside-toplevel
 import pytest
 
 
@@ -12,13 +11,6 @@ def test_connected(file_camera):
     connected = file_camera.state.connected
     assert connected is not None
     assert isinstance(connected, bool)
-
-
-def test_live(file_camera):
-
-    live = file_camera.state.live
-    assert live is not None
-    assert isinstance(live, bool)
 
 
 def test_temperature(file_camera):

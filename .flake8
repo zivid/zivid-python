@@ -8,13 +8,18 @@ ignore =
     W503, # line break before binary operator
     E302, # expected 2 blank lines, found 0
     D202, # No blank lines allowed after function docstring
-### Permanently disabled for global linting:
-    D100, # Missing docstring in public module
-    D101, # missing docstring in public class
-    D103, # missing docstring in public function
-    D104, # missing docstring in public package
+### We do not currently require docstrings in "magic methods"
     D105, # missing docstring in magic method
-    D106, # missing docstring in public nested class
-    D107, # missing docstring in __init__
-    I401, # Missing exception(s) in Raises section
 show-source = True
+
+### Ignore docstring complaints in data models
+### D101: Missing docstring in public class
+### D102: Missing docstring in public method
+### D106: Missing docstring in public nested class
+### D107: Missing docstring in __init__
+per-file-ignores =
+    settings.py:D101,D102,D106,D107
+    settings_2d.py:D101,D102,D106,D107
+    camera_state.py:D101,D102,D106,D107
+    camera_info.py:D101,D102,D106,D107
+    frame_info.py:D101,D102,D106,D107

@@ -1,215 +1,116 @@
 """Contains Camera class."""
 from zivid.frame import Frame
 from zivid.frame_2d import Frame2D
+import zivid
+from zivid.settings_2d import Settings2D
 import zivid._settings_converter as _settings_converter
-import zivid._settings_2d_converter as _settings_2d_converter
+import zivid._settings2_d_converter as _settings_2d_converter
 import zivid._camera_state_converter as _camera_state_converter
+import zivid._camera_info_converter as _camera_info_converter
 import _zivid
 
 
 class Camera:
-    """Interface to one Zivid camera."""
+    """Interface to one Zivid camera.
 
-    class Revision:
-        """Camera revision."""
+    This class cannot be initialized directly by the end-user. Use methods on the Application
+    class to obtain a Camera instance.
+    """
 
-        def __init__(self, major, minor):
-            """Initialize camera revision with major and minor vision.
+    def __init__(self, impl):
+        """Initialize Camera wrapper.
 
-            Args:
-                major: Major hardware revision
-                minor: Minor hardware revision
-
-            """
-            self.major = major
-            self.minor = minor
-
-        def __eq__(self, other):
-            return self.major == other.major and self.minor == other.minor
-
-        def __str__(self):
-            return "{}.{}".format(self.major, self.minor)
-
-    def __init__(self, internal_camera):
-        """Initialize camera with an internal camera.
+        This constructor is only used internally, and should not be called by the end-user.
 
         Args:
-            internal_camera: An internal Zivid camera instance
+            impl:   Reference to internal/back-end instance.
 
         Raises:
-            TypeError: unsupported type provided for internal camera
-
+            TypeError: If argument does not match the expected internal class.
         """
-        if not isinstance(internal_camera, _zivid.Camera):
+        if not isinstance(impl, _zivid.Camera):
             raise TypeError(
-                "Unsupported type for argument internal camera: {}, type: {}.".format(
-                    internal_camera, type(internal_camera)
+                "Unsupported type for argument impl. Got {}, expected {}".format(
+                    type(impl), type(_zivid.Camera)
                 )
             )
-        self.__impl = internal_camera
+
+        self.__impl = impl
 
     def __str__(self):
         return str(self.__impl)
 
     def __eq__(self, other):
-        return self.__impl == other._Camera__impl  # pylint: disable=protected-access
+        return self.__impl == other._Camera__impl
 
-    @property
-    def model_name(self):
-        """Get the model name.
-
-        Returns:
-            A string
-
-        """
-        return self.__impl.model_name
-
-    @property
-    def revision(self):
-        """Get the camera revision.
-
-        Returns:
-            A Revision instance
-
-        """
-        return Camera.Revision(self.__impl.revision.major, self.__impl.revision.minor)
-
-    @property
-    def serial_number(self):
-        """Get the serial number of the Zivid camera.
-
-        Returns:
-            A string
-
-        """
-        return self.__impl.serial_number
-
-    @property
-    def firmware_version(self):
-        """Get the camera's firmware version.
-
-        Returns:
-            A string
-
-        """
-        return self.__impl.firmware_version
-
-    def capture(self, settings_collection=None):
-        """Capture a single frame.
+    def capture(self, settings):
+        """Capture a single frame or a single 2D frame.
 
         Args:
-            settings_collection: A collection of settings to be captured and merged into a HDR frame.
-                If None, then current settings will be used instead
+            settings: Settings to be used to capture. Can be either a Settings or Settings2D instance
 
         Returns:
-            A frame containing a 3D image and metadata
+            A Frame containing a 3D image plus metadata or a Frame2D containing a 2D image plus metadata.
 
+        Raises:
+            TypeError: If argument is neither a Settings or a Settings2D
         """
-        if settings_collection is not None:
+        if isinstance(settings, zivid.Settings):
             return Frame(
+                self.__impl.capture(_settings_converter.to_internal_settings(settings))
+            )
+        if isinstance(settings, Settings2D):
+            return Frame2D(
                 self.__impl.capture(
-                    [
-                        _settings_converter.to_internal_settings(settings)
-                        for settings in settings_collection
-                    ]
+                    _settings_2d_converter.to_internal_settings2_d(settings)
                 )
             )
-        return Frame(self.__impl.capture())
+        raise TypeError("Unsupported settings type: {}".format(type(settings)))
 
-    def capture_2d(self, settings_2d):
-        """Capture a single 2D frame.
-
-        Note that the provided settings will only apply to this current 2D capture, and not future 3D captures.
-
-        Args:
-            settings_2d: Settings to use for the capture
+    @property
+    def info(self):
+        """Get information about camera model, serial number etc.
 
         Returns:
-            A frame containing a 2D image and metadata.
-
+            A CameraInfo instance
         """
-        return Frame2D(
-            self.__impl.capture_2d(
-                _settings_2d_converter.to_internal_settings_2d(settings_2d)
-            )
-        )
+        return _camera_info_converter.to_camera_info(self.__impl.info)
 
     @property
     def state(self):
         """Get the current camera state.
 
         Returns:
-            The current camera state
-
+            A CameraState instance
         """
         return _camera_state_converter.to_camera_state(self.__impl.state)
 
-    @property
-    def settings(self):
-        """Get the current camera settings.
-
-        Returns:
-            Current settings
-
-        """
-        return _settings_converter.to_settings(self.__impl.settings)
-
-    @settings.setter
-    def settings(self, settings):
-        """Update the camera settings.
-
-        Args:
-            settings: New settings for the camera
-
-        """
-        self.__impl.settings = _settings_converter.to_internal_settings(  # pylint: disable=protected-access
-            settings
-        )
-
-    def connect(self, settings=None):
+    def connect(self):
         """Connect to the camera.
 
-        Args:
-            settings: New settings for the camera
-
+        Returns:
+            Reference to the same Camera instance (for chaining)
         """
-        if settings is None:
-            self.__impl.connect()
-        else:
-            self.__impl.connect(
-                _settings_converter.to_internal_settings(  # pylint: disable=protected-access
-                    settings
-                )
-            )
+        self.__impl.connect()
+        return self
 
     def disconnect(self):
         """Disconnect from the camera and free all resources associated with it."""
         self.__impl.disconnect()
 
-    @property
-    def user_data_max_size_bytes(self):
-        """Return the ammount of data that can be stored in the camera.
-
-        Returns:
-            An int
-
-        """
-        return self.__impl.user_data_max_size_bytes
-
     def write_user_data(self, user_data):
         """Write user data to camera. The total number of writes supported depends on camera model and size of data.
 
         Args:
-            user_data: bytes
+            user_data: User data as 'bytes' object
 
         Raises:
-            TypeError: unsupported type provided for user data
-
+            TypeError: Unsupported type provided for user data
         """
         if not isinstance(user_data, bytes):
             raise TypeError(
                 "Unsupported type for argument user_data. Got {}, expected {}.".format(
-                    type(user_data).__name__, bytes.__name__
+                    type(user_data), bytes.__name__
                 )
             )
         self.__impl.write_user_data(list(user_data))
@@ -219,37 +120,18 @@ class Camera:
         """Read user data from camera.
 
         Returns:
-            bytes
-
+            User data as 'bytes' object
         """
         return bytes(self.__impl.user_data)
 
-    def update_settings(self):
-        """Return settings updater.
-
-        Use the returned object as a context manager to set settings.
-
-        Returns:
-            a settings updater object
-
-        """
-
-        class SettingsUpdater:
-            def __init__(self, camera, settings):
-                self.__camera = camera
-                self.settings = settings
-
-            def __enter__(self):
-                return self
-
-            def __exit__(self, exception_type, exception_value, traceback):
-                self.__camera.settings = self.settings
-
-        return SettingsUpdater(self, self.settings)
-
     def release(self):
         """Release the underlying resources."""
-        self.__impl.release()
+        try:
+            impl = self.__impl
+        except AttributeError:
+            pass
+        else:
+            impl.release()
 
     def __enter__(self):
         return self

@@ -16,22 +16,21 @@ Zivid Python is the official Python package for Zivid 3D cameras. Read more abou
 ### Dependencies
 
 * [Python](https://www.python.org/) version 3.5 or higher
-* [Zivid SDK](https://zivid.atlassian.net/wiki/spaces/ZividKB/pages/59080712/Zivid+Software+Installation) version 1.8.0 or higher
+* [Zivid SDK](https://www.zivid.com/downloads) version 2.1.0 or higher (see [here](https://zivid.atlassian.net/wiki/spaces/ZividKB/pages/59080712/Zivid+Software+Installation) for help)
 * [Compiler](doc/CompilerInstallation.md) with C++17 support
 
 *Windows users also needs to make sure that the Zivid SDK installation folder is in system `PATH` before using the package, not only the terminal PATH variable. The default install location that should be added to system `PATH` is `C:\Program Files\Zivid\bin`.*
 
-### Using PIP
+### Installing official version from PyPI using PIP
 
-The easiest way to install Zivid Python is to use PIP.
+After having installed the latest Zivid SDK, the easiest way to install Zivid Python is to use PIP to fetch the latest official version from PyPI:
 
-On some systems Python 3 `pip` is called `pip3`. In this guide we assume it is called `pip`.
-
-When using PIP version 19 or higher build dependencies are handled automatically.
+    pip install zivid
 
 Installation may take some time since the `setup.py` script will download additional dependencies and compile C++ source code in the background.
 
-    pip install zivid
+On some systems Python 3 `pip` is called `pip3`. In this guide we assume it is called `pip`. When using PIP version 19 or higher build dependencies are handled automatically.
+
 
 #### Old PIP
 
@@ -40,31 +39,64 @@ If you are using a version of PIP older than version 19 please manually install 
     pip install <packages listed in pyproject.toml>
     pip install zivid
 
+### Installing from source
+
+    git clone <zivid-python clone URL>
+    cd zivid-python
+    pip install .
+
+You may want to build Zivid Python against a different (but compatible) version of Zivid SDK. An example would be if Zivid SDK 2.1 was released but the official
+Zivid Python still formally only supports SDK 2.0. Since all the features of the 2.0 API exist in the 2.1 API, Zivid Python can still be built with the new SDK
+(but without wrapping the latest features). In order to achieve this, edit `setup.py` to target the new SDK version before doing `pip install .`. Note that
+this option is considered experimental/unofficial.
+
 ## Quick Start
 
-Launch a Python interpreter and run the following code.
+To quickly capture a point cloud using default settings, run the following code:
 
     import zivid
     app = zivid.Application()
     camera = app.connect_camera()
-    frame = camera.capture()
-    frame.save("my-frame.zdf")
+    settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
+    frame = camera.capture(settings)
+    frame.save("result.zdf")
 
-For more advanced usage see the [Examples](#examples) section.
-
-### Using camera emulation
-
-If you do not have a camera, you can use the `MiscObjects.zdf` file in [ZividSampleData.zip](http://www.zivid.com/software/ZividSampleData.zip) to emulate a camera.
+### Point cloud data access
+Data can easily be accessed in the form of Numpy arrays:
 
     import zivid
     app = zivid.Application()
-    camera = app.create_file_camera("path/to/MiscObjects.zdf")
-    frame = camera.capture()
-    frame.save("my-frame.zdf")
+    camera = app.connect_camera()
+    settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
+    frame = camera.capture(settings)
+    xyz = frame.point_cloud().copy_data("xyz") # Get point coordinates as [Height,Width,3] float array
+    rgba = frame.point_cloud().copy_data("rgba") # Get point colors as [Height,Width,4] uint8 array
+
+### Capture Assistant
+Instead of manually adjusting settings, the Capture Assistant may be used to find the optimal settings for your scene:
+
+    import zivid
+    app = zivid.Application()
+    camera = app.connect_camera()
+    capture_assistant_params = zivid.capture_assistant.SuggestSettingsParameters()
+    settings = zivid.capture_assistant.suggest_settings(camera, capture_assistant_params)
+    frame = camera.capture(settings)
+    frame.save("result.zdf")
+
+### Using camera emulation
+
+If you do not have a camera, you can use the `FileCameraZividOne.zfc` file in [ZividSampleData2.zip](http://www.zivid.com/software/ZividSampleData2.zip) to emulate a camera.
+
+    import zivid
+    app = zivid.Application()
+    camera = app.create_file_camera("path/to/FileCameraZividOne.zfc")
+    settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
+    frame = camera.capture(settings)
+    frame.save("result.zdf")
 
 ## Examples
 
-Standalone example programs can be found in the [samples](samples) directory.
+More advanced example programs can be found in the [samples](samples) directory.
 
 ## Versioning
 
@@ -112,13 +144,14 @@ Please visit [Zivid Knowledge Base](http://help.zivid.com) for general informati
 
 ## Test matrix
 
-| Operating System | Python version | Zivid SDK version |
-| :--------------- | :------------- | :---------------- |
-| Ubuntu 18.04     | 3.6            | 1.8.1             |
-| Ubuntu 16.04     | 3.5            | 1.8.1             |
-| Fedora 30        | 3.7            | 1.8.1             |
-| Arch Linux*      | latest         | latest            |
-| Windows 10*      | 3.5, 3.6, 3.7  | 1.8.1             |
+| Operating System | Python version           | Zivid SDK version |
+| :--------------- | :----------------------- | :---------------- |
+| Ubuntu 20.04     | 3.8                      | 2.1.0             |
+| Ubuntu 18.04     | 3.6                      | 2.1.0             |
+| Ubuntu 16.04     | 3.5                      | 2.1.0             |
+| Fedora 30        | 3.7                      | 2.1.0             |
+| Windows 10       | 3.5, 3.6, 3.7, 3.8, 3.9  | 2.1.0             |
+| Arch Linux*      | latest                   | 2.1.0             |
 
 [*] Only build, no unit testing.
 

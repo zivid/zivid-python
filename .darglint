@@ -1,3 +1,0 @@
-[darglint]
-ignore=
-    I401, # -r TypeError
