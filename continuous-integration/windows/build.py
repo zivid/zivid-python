@@ -26,7 +26,7 @@ def _run_process(args):
 
 
 def _build(root):
-    _run_process(("pip", "install", str(root)))
+    _run_process(("pip", "install", "--verbose", str(root)))
 
 
 def _main():
