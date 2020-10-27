@@ -144,14 +144,14 @@ Please visit [Zivid Knowledge Base](http://help.zivid.com) for general informati
 
 ## Test matrix
 
-| Operating System | Python version           | Zivid SDK version |
-| :--------------- | :----------------------- | :---------------- |
-| Ubuntu 20.04     | 3.8                      | 2.1.0             |
-| Ubuntu 18.04     | 3.6                      | 2.1.0             |
-| Ubuntu 16.04     | 3.5                      | 2.1.0             |
-| Fedora 30        | 3.7                      | 2.1.0             |
-| Windows 10       | 3.5, 3.6, 3.7, 3.8, 3.9  | 2.1.0             |
-| Arch Linux*      | latest                   | 2.1.0             |
+| Operating System | Python version     | Zivid SDK version |
+| :--------------- | :------------------| :---------------- |
+| Ubuntu 20.04     | 3.8                | 2.1.0             |
+| Ubuntu 18.04     | 3.6                | 2.1.0             |
+| Ubuntu 16.04     | 3.5                | 2.1.0             |
+| Fedora 30        | 3.7                | 2.1.0             |
+| Windows 10       | 3.6, 3.7, 3.8, 3.9 | 2.1.0             |
+| Arch Linux*      | latest             | 2.1.0             |
 
 [*] Only build, no unit testing.
 
