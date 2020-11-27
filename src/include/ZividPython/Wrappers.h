@@ -37,7 +37,7 @@ namespace ZividPython
             {
                 std::stringstream msg;
                 msg << "First character of string: '" << upperCamelCase << "' is not capitalized";
-                throw std::runtime_error{ msg.str() };
+                throw std::invalid_argument{ msg.str() };
             }
             std::stringstream ss;
             ss << char(tolower(upperCamelCase[0]));
