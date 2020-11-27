@@ -42,7 +42,7 @@ namespace ZividPython
             std::stringstream ss;
             ss << char(tolower(upperCamelCase[0]));
 
-            for(auto i = 1; i < upperCamelCase.size(); ++i)
+            for(size_t i = 1; i < upperCamelCase.size(); ++i)
             {
                 if(isupper(upperCamelCase[i]))
                 {
@@ -54,12 +54,8 @@ namespace ZividPython
                     {
                         ss << "_";
                     }
-                    ss << char(tolower(upperCamelCase[i]));
                 }
-                else
-                {
-                    ss << char(upperCamelCase[i]);
-                }
+                ss << char(tolower(upperCamelCase[i]));
             }
             return ss.str();
         }
