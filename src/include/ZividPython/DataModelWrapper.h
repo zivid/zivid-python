@@ -156,8 +156,7 @@ namespace ZividPython
 
                     using MemberType = std::remove_const_t<std::remove_reference_t<decltype(member)>>;
 
-                    std::string name{ MemberType::name };
-                    name = toSnakeCase(name);
+                    const std::string name = toSnakeCase(MemberType::name);
 
                     pyClass.def_property(
                         name.c_str(),
