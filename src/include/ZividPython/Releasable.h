@@ -80,7 +80,7 @@ namespace ZividPython
     {
     public:
         template<typename... Args>
-        explicit Releasable(Args &&... args)
+        explicit Releasable(Args &&...args)
             : m_impl{ std::make_optional<T>(std::forward<Args>(args)...) }
         {}
 
