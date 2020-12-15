@@ -13,6 +13,7 @@ def test_init_default_settings(application):
     assert isinstance(
         settings_2d.processing.color.balance, zivid.Settings2D.Processing.Color.Balance
     )
+    assert settings_2d.processing.color.gamma is None
     assert settings_2d.processing.color.balance.red is None
     assert settings_2d.processing.color.balance.green is None
     assert settings_2d.processing.color.balance.blue is None
@@ -100,12 +101,12 @@ def test_settings_processing(application):
         zivid.Settings2D.Processing,
         [
             zivid.Settings2D.Processing.Color(
-                zivid.Settings2D.Processing.Color.Balance(blue=1.1)
+                0.9, zivid.Settings2D.Processing.Color.Balance(blue=1.1)
             )
         ],
         [
             zivid.Settings2D.Processing.Color(
-                zivid.Settings2D.Processing.Color.Balance(blue=1.2)
+                1.1, zivid.Settings2D.Processing.Color.Balance(blue=1.2)
             )
         ],
     )
@@ -122,8 +123,20 @@ def test_settings_processing_color(application):
     )
     pytest.helpers.equality_tester(
         zivid.Settings2D.Processing.Color,
-        [zivid.Settings2D.Processing.Color.Balance(red=1.1)],
-        [zivid.Settings2D.Processing.Color.Balance(red=1.2)],
+        [0.9, zivid.Settings2D.Processing.Color.Balance(red=1.1)],
+        [1.1, zivid.Settings2D.Processing.Color.Balance(red=1.2)],
+    )
+
+
+def test_settings_processing_color_gamma(application,):
+    import zivid
+    import numbers
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings2D.Processing.Color(),
+        member="gamma",
+        value=0.85,
+        expected_data_type=numbers.Real,
     )
 
 

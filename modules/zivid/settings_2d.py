@@ -237,9 +237,19 @@ class Settings2D:
                     )
 
             def __init__(
-                self, balance=None,
+                self,
+                gamma=_zivid.Settings2D().Processing.Color().Gamma().value,
+                balance=None,
             ):
 
+                if isinstance(gamma, (float, int,)) or gamma is None:
+                    self._gamma = _zivid.Settings2D.Processing.Color.Gamma(gamma)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                            value_type=type(gamma)
+                        )
+                    )
                 if balance is None:
                     balance = zivid.Settings2D.Processing.Color.Balance()
                 if not isinstance(balance, zivid.Settings2D.Processing.Color.Balance):
@@ -249,8 +259,23 @@ class Settings2D:
                 self._balance = balance
 
             @property
+            def gamma(self):
+                return self._gamma.value
+
+            @property
             def balance(self):
                 return self._balance
+
+            @gamma.setter
+            def gamma(self, value):
+                if isinstance(value, (float, int,)) or value is None:
+                    self._gamma = _zivid.Settings2D.Processing.Color.Gamma(value)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                            value_type=type(value)
+                        )
+                    )
 
             @balance.setter
             def balance(self, value):
@@ -261,7 +286,7 @@ class Settings2D:
                 self._balance = value
 
             def __eq__(self, other):
-                if self._balance == other._balance:
+                if self._gamma == other._gamma and self._balance == other._balance:
                     return True
                 return False
 

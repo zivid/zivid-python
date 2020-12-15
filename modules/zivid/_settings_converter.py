@@ -23,6 +23,7 @@ def to_settings_processing_color_balance(internal_balance):
 def to_settings_processing_color(internal_color):
     return zivid.Settings.Processing.Color(
         balance=to_settings_processing_color_balance(internal_color.balance),
+        gamma=internal_color.gamma.value,
     )
 
 
@@ -184,6 +185,7 @@ def to_internal_settings_processing_color_balance(balance):
 def to_internal_settings_processing_color(color):
     internal_color = _zivid.Settings.Processing.Color()
 
+    internal_color.gamma = _zivid.Settings.Processing.Color.Gamma(color.gamma)
     internal_color.balance = to_internal_settings_processing_color_balance(
         color.balance
     )
