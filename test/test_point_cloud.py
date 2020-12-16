@@ -103,7 +103,7 @@ def _validate_transformation(xyzw_before, xyzw_after, transform):
     assert np.all(~np.isnan(point_after))
     assert np.all(~np.isnan(point_before))
     point_after_expected = np.dot(transform, point_before)
-    np.testing.assert_array_almost_equal(point_after, point_after_expected)
+    np.testing.assert_allclose(point_after, point_after_expected, rtol=1e-6)
 
 
 def test_transform(point_cloud, transform):

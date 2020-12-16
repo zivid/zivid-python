@@ -41,7 +41,7 @@ def test_multicamera_calibration(checkerboard_frames, multicamera_transforms):
         assert isinstance(transform, np.ndarray)
         assert transform.shape == (4, 4)
         np.testing.assert_array_equal(transform[-1, :], [0.0, 0.0, 0.0, 1.0])
-        np.testing.assert_array_almost_equal(transform, reference, decimal=5)
+        np.testing.assert_allclose(transform, reference, rtol=1e-4)
 
     # Extract and check residuals
     residuals = multicamera_output.residuals()
