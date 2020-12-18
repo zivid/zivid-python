@@ -1,0 +1,68 @@
+name: Main CI workflow
+# Note: If the workflow name is changed, the CI badge URL in the README must also be updated
+
+on:
+  push:       # Push trigger runs on any pushed branch.
+  schedule:   # Scheduled trigger runs on the latest commit on the default branch.
+    - cron:  '0 22 * * *'
+
+jobs:
+  Linux-build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: ["ubuntu:16.04", "ubuntu:18.04", "ubuntu:20.04", "fedora:30", "archlinux/base"]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Build and test on ${{matrix.os}}
+        run: | 
+          docker run \
+              --volume $PWD:/host \
+              --workdir /host/continuous-integration/linux \
+              --env "PYTHONDONTWRITEBYTECODE=1" \
+              ${{matrix.os}} \
+              bash -c "./setup.sh && ./build.sh && ./test.sh"
+
+  Windows-build-and-test:
+    runs-on: windows-2016
+    strategy:
+      matrix:
+        python-version: ["3.6", "3.7", "3.8", "3.9"]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Set up Python ${{matrix.python-version}}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{matrix.python-version}}
+      - name: Setup
+        run: python continuous-integration\windows\setup.py
+      - name: Build
+        env:
+          Zivid_DIR: 'C:\Program Files\Zivid\CMake\Zivid'
+          CXX: 'cl.exe'
+          CC: 'cl.exe'
+        run: python continuous-integration\windows\build.py
+      - name: Test
+        run: python continuous-integration\windows\test.py
+
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          lfs: false
+      - name: Build and lint on Archlinux
+        run: | 
+          docker run \
+              --volume $PWD:/host \
+              --workdir /host/continuous-integration/linux \
+              --env "PYTHONDONTWRITEBYTECODE=1" \
+              archlinux/base \
+              bash -c "./setup.sh && ./build.sh && ./lint.sh"

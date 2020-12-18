@@ -151,12 +151,10 @@ Please visit [Zivid Knowledge Base](http://help.zivid.com) for general informati
 | Ubuntu 16.04     | 3.5                | 2.2.0             |
 | Fedora 30        | 3.7                | 2.2.0             |
 | Windows 10       | 3.6, 3.7, 3.8, 3.9 | 2.2.0             |
-| Arch Linux*      | latest             | 2.2.0             |
-
-[*] Only build, no unit testing.
+| Arch Linux       | latest             | 2.2.0             |
 
 [header-image]: https://www.zivid.com/hubfs/softwarefiles/images/zivid-one-plus-3x-1200x400.png
-[ci-badge]: https://img.shields.io/azure-devops/build/zivid-devops/376f5fda-ba80-4d6c-aaaa-cbcd5e0ad6c0/2/master.svg
-[ci-url]: https://dev.azure.com/zivid-devops/zivid-python/_build/latest?definitionId=2&branchName=master
+[ci-badge]: https://img.shields.io/github/workflow/status/zivid/zivid-python/Main%20CI%20workflow/master
+[ci-url]: https://github.com/zivid/zivid-python/actions?query=workflow%3A%22Main+CI+workflow%22+branch%3Amaster
 [pypi-badge]: https://img.shields.io/pypi/v/zivid.svg
 [pypi-url]: https://pypi.org/project/zivid
