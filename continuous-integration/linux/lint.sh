@@ -3,7 +3,7 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=$(realpath "$SCRIPT_DIR/../..")
 
-pip install \
+python3 -m pip install \
     --requirement "$SCRIPT_DIR/../python-requirements/lint.txt" \
     --requirement "$SCRIPT_DIR/../python-requirements/test.txt" ||
     exit $?
