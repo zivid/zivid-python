@@ -1,3 +1,4 @@
+import os
 import tempfile
 import sys
 import subprocess
@@ -58,9 +59,10 @@ def _install_intel_opencl_runtime():
 
 def _write_zivid_cpu_configuration_file():
     api_config = Path() / "ZividAPIConfig.yml"
-    target_location = Path(
-        r"C:\Users\VssAdministrator\AppData\Local\Zivid\API\Config.yml"
-    )
+
+    appdata_dir = Path(os.getenv("LOCALAPPDATA"))
+    target_location = appdata_dir / "Zivid" / "API" / "Config.yml"
+    print("Target location for config: " + str(target_location))
     target_location.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy(str(api_config), str(target_location))
 

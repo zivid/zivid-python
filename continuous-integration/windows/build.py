@@ -1,15 +1,6 @@
-import argparse
 import sys
 import subprocess
 from pathlib import Path
-
-
-def _options():
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument("--root", required=True, help="The repository root", type=Path)
-
-    return parser.parse_args()
 
 
 def _run_process(args):
@@ -30,9 +21,8 @@ def _build(root):
 
 
 def _main():
-    options = _options()
-
-    _build(options.root)
+    root = Path(__file__).resolve().parents[2]
+    _build(root)
 
 
 if __name__ == "__main__":

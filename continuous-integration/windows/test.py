@@ -1,15 +1,8 @@
-import argparse
 import sys
 import subprocess
 import winreg  # pylint: disable=import-error
 from os import environ
 from pathlib import Path
-
-
-def _options():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--root", required=True, help="The repository root", type=Path)
-    return parser.parse_args()
 
 
 def _run_process(args, env=None):
@@ -59,10 +52,9 @@ def _install_pip_dependencies():
 
 
 def _main():
-    options = _options()
-
     _install_pip_dependencies()
-    _test(options.root)
+    root = Path(__file__).resolve().parents[2]
+    _test(root)
 
 
 if __name__ == "__main__":
