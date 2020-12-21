@@ -1,34 +1,8 @@
 import os
 import tempfile
-import sys
-import subprocess
 import shutil
 from pathlib import Path
-
-
-def _run_process(args):
-    sys.stdout.flush()
-    try:
-        process = subprocess.Popen(args)
-        exit_code = process.wait()
-        if exit_code != 0:
-            raise RuntimeError("Wait failed with exit code {}".format(exit_code))
-    except Exception as ex:
-        raise type(ex)("Process failed: '{}'.".format(" ".join(args))) from ex
-    finally:
-        sys.stdout.flush()
-
-
-def _install_pip_dependencies():
-    print("Installing python build requirements", flush=True)
-    _run_process(
-        (
-            "pip",
-            "install",
-            "--requirement",
-            "continuous-integration/python-requirements/setup.txt",
-        )
-    )
+from common import repo_root, run_process, install_pip_dependencies
 
 
 def _install_zivid_sdk():
@@ -41,7 +15,7 @@ def _install_zivid_sdk():
         response = requests.get(zivid_installer_url)
         zivid_installer.write_bytes(response.content)
         print("Installing {}".format(zivid_installer), flush=True)
-        _run_process((str(zivid_installer), "/S"))
+        run_process((str(zivid_installer), "/S"))
 
 
 def _install_intel_opencl_runtime():
@@ -54,7 +28,7 @@ def _install_intel_opencl_runtime():
         response = requests.get(intel_opencl_runtime_url)
         opencl_runtime.write_bytes(response.content)
         print("Installing {}".format(opencl_runtime), flush=True)
-        _run_process(("msiexec", "/i", str(opencl_runtime), "/passive"))
+        run_process(("msiexec", "/i", str(opencl_runtime), "/passive"))
 
 
 def _write_zivid_cpu_configuration_file():
@@ -68,7 +42,10 @@ def _write_zivid_cpu_configuration_file():
 
 
 def _main():
-    _install_pip_dependencies()
+    root = repo_root()
+    install_pip_dependencies(
+        root / "continuous-integration" / "python-requirements" / "setup.txt"
+    )
     _install_intel_opencl_runtime()
     _install_zivid_sdk()
     _write_zivid_cpu_configuration_file()
