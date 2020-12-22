@@ -11,7 +11,6 @@ apt-yes update || exit $?
 apt-yes dist-upgrade || exit $?
 
 apt-yes install \
-    alien \
     clinfo \
     g++ \
     python3-dev \
