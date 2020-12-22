@@ -15,7 +15,6 @@ add-apt-repository -y ppa:ubuntu-toolchain-r/test || exit $?
 apt-yes update || exit $?
 
 apt-yes install \
-    alien \
     clinfo \
     g++-9 \
     python3-dev \
