@@ -9,7 +9,6 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-#Todo: buildDir=$1
 
 cppFiles=$(find "$ROOT_DIR" -name '*.cpp' |grep -v src/3rd-party)
 hFiles=$(find "$ROOT_DIR" -name '*.h' |grep -v src/3rd-party)
@@ -28,21 +27,26 @@ for fileName in $cppFiles $hFiles; do
         || exit $?
 done
 
-#Todo: echo Building with warnings as errors
-#Todo: for compiler in clang gcc; do
-#Todo:     source $SCRIPT_DIR/lint-cpp-$compiler-setup.sh || exit $?
-#Todo:     echo "Compiler config:"
-#Todo:     echo "    CXX:      ${CXX:?} "
-#Todo:     echo "    CXXFLAGS: ${CXXFLAGS:?}"
-#Todo:     cmake \
-#Todo:         -S $ROOT_DIR \
-#Todo:         -B $buildDir/$compiler \
-#Todo:         -G Ninja \
-#Todo:         -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-#Todo:         || exit $?
-#Todo:     
-#Todo:     cmake --build $buildDir/$compiler || exit $?
-#Todo: done
+buildDir=$1
+SDK_VERSION = $(echo -e "from setup import zivid_sdk_version\nprint(zivid_sdk_version())" | python)
+
+echo Building with warnings as errors
+for compiler in clang, gcc; do
+    source $SCRIPT_DIR/lint-cpp-$compiler-setup.sh || exit $?
+    echo "Compiler config:"
+    echo "    CXX:      ${CXX:?} "
+    echo "    CXXFLAGS: ${CXXFLAGS:?}"
+    cmake \
+        -S $ROOT_DIR \
+        -B $buildDir/$compiler \
+        -G Ninja \
+        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+        -DCMAKE_BUILD_TYPE=Debug \
+        -DZIVID_SDK_VERSION=$SDK_VERSION \
+        || exit $?
+    
+    cmake --build $buildDir/$compiler || exit $?
+done
 #Todo: 
 #Todo: echo Running clang-tidy on C++ files
 #Todo: clang-tidy --version || exit $?

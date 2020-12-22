@@ -10,7 +10,7 @@ def get_version():
     return "2.1.0"
 
 
-def _zivid_sdk_version():
+def zivid_sdk_version():
     return "2.2.0"
 
 
@@ -23,7 +23,7 @@ def _zivid_python_version():
         base_version = scm_version
         scm_metadata = None
 
-    base_version = "{}.{}".format(base_version, _zivid_sdk_version())
+    base_version = "{}.{}".format(base_version, zivid_sdk_version())
 
     if scm_metadata:
         version = "{}+{}".format(base_version, scm_metadata)
@@ -127,7 +127,7 @@ def _main():
         install_requires=["numpy"],
         cmake_args=[
             "-DZIVID_PYTHON_VERSION=" + _zivid_python_version(),
-            "-DZIVID_SDK_VERSION=" + _zivid_sdk_version(),
+            "-DZIVID_SDK_VERSION=" + zivid_sdk_version(),
         ],
         classifiers=[
             "License :: OSI Approved :: BSD License",

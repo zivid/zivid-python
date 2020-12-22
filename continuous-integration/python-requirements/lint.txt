@@ -4,3 +4,4 @@ flake8==3.8.3
 flake8-docstrings==1.5.0
 pylint==2.6.0
 scikit-build==0.11.1
+conan
