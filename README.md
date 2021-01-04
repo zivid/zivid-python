@@ -140,7 +140,7 @@ This project is licensed, see the [LICENSE](LICENSE) file for details.
 
 ## Support
 
-Please visit [Zivid Knowledge Base](http://help.zivid.com) for general information on using Zivid 3D cameras. If you cannot find a solution to your issue, please contact support@zivid.com.
+Please visit [Zivid Knowledge Base](http://help.zivid.com) for general information on using Zivid 3D cameras. If you cannot find a solution to your issue, please contact customersuccess@zivid.com.
 
 ## Test matrix
 
