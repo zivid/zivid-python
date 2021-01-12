@@ -153,7 +153,7 @@ Please visit [Zivid Knowledge Base](http://help.zivid.com) for general informati
 | Windows 10       | 3.6, 3.7, 3.8, 3.9 | 2.2.0             |
 | Arch Linux       | latest             | 2.2.0             |
 
-[header-image]: https://www.zivid.com/hubfs/Zivid%20Two%20and%20Zivid%20One%20Plus.png
+[header-image]: https://www.zivid.com/hubfs/softwarefiles/images/zivid-generic-github-header.png
 [ci-badge]: https://img.shields.io/github/workflow/status/zivid/zivid-python/Main%20CI%20workflow/master
 [ci-url]: https://github.com/zivid/zivid-python/actions?query=workflow%3A%22Main+CI+workflow%22+branch%3Amaster
 [pypi-badge]: https://img.shields.io/pypi/v/zivid.svg
