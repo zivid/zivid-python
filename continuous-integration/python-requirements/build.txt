@@ -1,0 +1,4 @@
+scikit-build==0.11.1
+cmake==3.18.4.post1
+ninja==1.10.0.post2
+conan==1.32.1

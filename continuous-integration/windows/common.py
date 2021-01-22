@@ -7,10 +7,10 @@ def repo_root():
     return Path(__file__).resolve().parents[2]
 
 
-def run_process(args, env=None):
+def run_process(args, env=None, workdir=None):
     sys.stdout.flush()
     try:
-        process = subprocess.Popen(args, env=env)
+        process = subprocess.Popen(args, env=env, cwd=workdir)
         exit_code = process.wait()
         if exit_code != 0:
             raise RuntimeError("Wait failed with exit code {}".format(exit_code))
