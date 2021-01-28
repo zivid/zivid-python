@@ -1,4 +1,4 @@
-project(_zivid LANGUAGES CXX C)
+project(_zividtest LANGUAGES CXX C)
 
 set(SOURCES
     Calibration/Calibration.cpp
@@ -9,6 +9,7 @@ set(SOURCES
     CaptureAssistant.cpp
     DataModel.cpp
     Firmware.cpp
+    InfieldCorrection/InfieldCorrection.cpp
     NodeType.cpp
     ReleasableArray2D.cpp
     ReleasableCamera.cpp
