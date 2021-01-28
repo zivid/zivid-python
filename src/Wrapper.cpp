@@ -8,6 +8,7 @@
 #include <ZividPython/CaptureAssistant.h>
 #include <ZividPython/DataModel.h>
 #include <ZividPython/Firmware.h>
+#include <ZividPython/InfieldCorrection/InfieldCorrection.h>
 #include <ZividPython/ReleasableArray2D.h>
 #include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/ReleasableFrame.h>
@@ -53,4 +54,6 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Version);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Calibration);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, CaptureAssistant);
+
+    ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, InfieldCorrection);
 }

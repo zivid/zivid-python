@@ -127,7 +127,7 @@ def _main():
         author="Zivid AS",
         author_email="customersuccess@zivid.com",
         license="BSD 3-Clause",
-        packages=["zivid", "zivid._calibration", "_zivid"],
+        packages=["zivid", "zivid._calibration", "zivid.experimental", "_zivid"],
         package_dir={"": "modules"},
         install_requires=["numpy"],
         cmake_args=[

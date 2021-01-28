@@ -9,6 +9,7 @@ set(SOURCES
     CaptureAssistant.cpp
     DataModel.cpp
     Firmware.cpp
+    InfieldCorrection/InfieldCorrection.cpp
     NodeType.cpp
     ReleasableArray2D.cpp
     ReleasableCamera.cpp
