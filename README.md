@@ -15,7 +15,7 @@ Zivid Python is the official Python package for Zivid 3D cameras. Read more abou
 
 ### Dependencies
 
-* [Python](https://www.python.org/) version 3.5 or higher
+* [Python](https://www.python.org/) version 3.6 or higher
 * [Zivid SDK](https://www.zivid.com/downloads) version 2.2.0 (see [here](https://zivid.atlassian.net/wiki/spaces/ZividKB/pages/59080712/Zivid+Software+Installation) for help)
 * [Compiler](doc/CompilerInstallation.md) with C++17 support
 
@@ -148,7 +148,6 @@ Please visit [Zivid Knowledge Base](http://help.zivid.com) for general informati
 | :--------------- | :------------------| :---------------- |
 | Ubuntu 20.04     | 3.8                | 2.2.0             |
 | Ubuntu 18.04     | 3.6                | 2.2.0             |
-| Ubuntu 16.04     | 3.5                | 2.2.0             |
 | Fedora 30        | 3.7                | 2.2.0             |
 | Windows 10       | 3.6, 3.7, 3.8, 3.9 | 2.2.0             |
 | Arch Linux       | latest             | 2.2.0             |
