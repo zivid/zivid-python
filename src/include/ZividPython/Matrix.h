@@ -2,6 +2,7 @@
 
 #include "pybind11/eigen.h"
 #include <Zivid/Matrix.h>
+#include <Zivid/Point.h>
 
 namespace ZividPython::Conversion
 {
@@ -15,5 +16,10 @@ namespace ZividPython::Conversion
     auto toPy(const Zivid::Matrix<T, rows, cols> &source)
     {
         return Eigen::Matrix<T, rows, cols, Eigen::RowMajor>{ &(source(0, 0)) };
+    }
+
+    inline auto toPyVector(const Zivid::PointXYZ &source)
+    {
+        return Eigen::Vector3f{ source.x, source.y, source.z };
     }
 } // namespace ZividPython::Conversion

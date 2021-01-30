@@ -37,6 +37,16 @@ class DetectionResult:
         """
         return self.__impl.valid()
 
+    def centroid(self):
+        """Get the centroid of the detected feature points.
+
+        Will throw an exception if the DetectionResult is not valid.
+
+        Returns:
+            A 1D array containing the X, Y and Z coordinates of the centroid
+        """
+        return self.__impl.centroid()
+
     def __bool__(self):
         return bool(self.__impl)
 
