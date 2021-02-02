@@ -1,6 +1,7 @@
 import tempfile
 import platform
 import subprocess
+from sys import version_info
 from pathlib import Path
 from pkgutil import iter_modules
 from skbuild import setup
@@ -31,6 +32,10 @@ def _zivid_python_version():
         version = base_version
 
     return version
+
+
+def _python_version():
+    return "{}.{}.{}".format(*version_info)
 
 
 def _make_message_box(*message):
@@ -128,6 +133,7 @@ def _main():
         cmake_args=[
             "-DZIVID_PYTHON_VERSION=" + _zivid_python_version(),
             "-DZIVID_SDK_VERSION=" + _zivid_sdk_version(),
+            "-DPYTHON_INTERPRETER_VERSION=" + _python_version(),
         ],
         classifiers=[
             "License :: OSI Approved :: BSD License",
