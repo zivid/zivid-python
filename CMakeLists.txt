@@ -1,12 +1,6 @@
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 project(zivid LANGUAGES CXX)
 
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-   message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-   file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake"
-                  "${CMAKE_BINARY_DIR}/conan.cmake")
-endif()
-
 find_package(Python3 "${PYTHON_INTERPRETER_VERSION}" EXACT REQUIRED COMPONENTS Interpreter Development.Module)
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
