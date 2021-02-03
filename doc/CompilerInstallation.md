@@ -6,7 +6,7 @@ This document contains instruction for how to install a compatible compiler for 
 
     apt install g++
 
-## Fedora 30
+## Fedora 30 and Fedora 33
 
     dnf install g++
 
