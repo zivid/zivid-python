@@ -7,12 +7,15 @@ if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
                   "${CMAKE_BINARY_DIR}/conan.cmake")
 endif()
 
+find_package(Python3 "${PYTHON_INTERPRETER_VERSION}" EXACT REQUIRED COMPONENTS Interpreter Development.Module)
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
-conan_cmake_run(REQUIRES 
-                    eigen/3.3.7@conan/stable
-                    pybind11/2.3.0@conan/stable
-                BASIC_SETUP)
+conan_cmake_run(
+    REQUIRES
+        eigen/3.3.7@conan/stable
+        pybind11/2.6.1
+    CMAKE_TARGETS
+    BASIC_SETUP)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -25,7 +28,5 @@ if(MSVC)
 endif()
 
 find_package(Zivid ${ZIVID_SDK_VERSION} EXACT COMPONENTS Core REQUIRED)
-find_package(pybind11 2.3.0 REQUIRED)
-find_package(Eigen3 3.3 REQUIRED)
 
 add_subdirectory(src)
