@@ -149,6 +149,7 @@ Please visit [Zivid Knowledge Base](http://help.zivid.com) for general informati
 | Ubuntu 20.04     | 3.8                | 2.2.0             |
 | Ubuntu 18.04     | 3.6                | 2.2.0             |
 | Fedora 30        | 3.7                | 2.2.0             |
+| Fedora 33        | 3.9                | 2.2.0             |
 | Windows 10       | 3.6, 3.7, 3.8, 3.9 | 2.2.0             |
 | Arch Linux       | latest             | 2.2.0             |
 
