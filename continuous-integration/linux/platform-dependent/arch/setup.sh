@@ -14,6 +14,7 @@ pacman -Syu --noconfirm --needed \
        python-pip \
        shellcheck \
        sudo \
+       wget \
     || exit $?
 
 function aur_install {
@@ -34,6 +35,11 @@ function aur_install {
     popd || exit $?
     rm -r $TMP_DIR || exit $?
 }
+
+# https://bugs.archlinux.org/task/69563 (core/glibc 2.33 prevents Archlinux runing under systemd-nspawn)
+wget --quiet https://archive.archlinux.org/packages/g/glibc/glibc-2.32-5-x86_64.pkg.tar.zst -O /tmp/glib.pkg.tar.zst || exit $?
+wget --quiet https://archive.archlinux.org/packages/g/gcc-libs/gcc-libs-10.2.0-4-x86_64.pkg.tar.zst -O /tmp/gcc-libs.pkg.tar.zst || exit $?
+pacman --noconfirm -U /tmp/glib.pkg.tar.zst /tmp/gcc-libs.pkg.tar.zst || exit $?
 
 # Use so file from ncurses instead of ncurses5-compat-libs
 # as dependency for intel-opencl-runtime
