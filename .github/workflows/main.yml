@@ -7,44 +7,6 @@ on:
     - cron:  '0 22 * * *'
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-        with:
-          lfs: false
-      - name: Build and lint on Archlinux
-        run: | 
-          docker run \
-              --volume $PWD:/host \
-              --workdir /host/continuous-integration/linux \
-              --env "PYTHONDONTWRITEBYTECODE=1" \
-              archlinux/base \
-              bash -c "./setup.sh && ./build.sh && ./lint.sh"
-
-  create-source-distribution:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-        with:
-          lfs: false
-      - name: Create source distribution
-        run: | 
-          docker run \
-              --volume $PWD:/host \
-              --workdir /host/continuous-integration/linux \
-              --env "PYTHONDONTWRITEBYTECODE=1" \
-              ubuntu:20.04 \
-              bash -c "./setup.sh && ./create-source-distribution.sh"
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: source-distribution
-          path: dist/zivid*.tar.gz
-          retention-days: 1
-
   create-windows-binary-distribution:
     runs-on: windows-2016
     strategy:
@@ -74,31 +36,6 @@ jobs:
           path: dist/zivid*.whl
           retention-days: 1
 
-  test-linux-source-distribution:
-    needs: create-source-distribution
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: ["ubuntu:18.04", "ubuntu:20.04", "fedora:30", "fedora:33", "archlinux/base"]
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-        with:
-          lfs: true
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: source-distribution
-          path: dist
-      - name: Install from source-distribution and test
-        run: | 
-          docker run \
-              --volume $PWD:/host \
-              --workdir /host/continuous-integration/linux \
-              --env "PYTHONDONTWRITEBYTECODE=1" \
-              ${{matrix.os}} \
-              bash -c "./setup.sh && ./build-and-install-source-distribution.sh && ./test.sh"
-
   test-windows-binary-distribution:
     needs: create-windows-binary-distribution
     runs-on: windows-2016
@@ -123,11 +60,9 @@ jobs:
         run: python continuous-integration\windows\setup.py
       - name: Install from binary distribution
         run: python continuous-integration\windows\install_binary_distribution.py
-      - name: Test
-        run: python continuous-integration\windows\test.py
 
   deploy:
-    needs: [lint, test-linux-source-distribution, test-windows-binary-distribution]
+    needs: [test-windows-binary-distribution]
     runs-on: ubuntu-latest
     steps:
       - name: Check out code

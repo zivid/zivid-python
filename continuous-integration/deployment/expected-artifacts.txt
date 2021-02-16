@@ -2,4 +2,3 @@ zivid-{version}-cp36-cp36m-win_amd64.whl
 zivid-{version}-cp37-cp37m-win_amd64.whl
 zivid-{version}-cp38-cp38-win_amd64.whl
 zivid-{version}-cp39-cp39-win_amd64.whl
-zivid-{version}.tar.gz
