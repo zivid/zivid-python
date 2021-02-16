@@ -9,7 +9,7 @@ def _install_zivid_sdk():
     import requests  # pylint: disable=import-outside-toplevel
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        zivid_installer_url = "https://www.zivid.com/hubfs/softwarefiles/releases/2.2.0+f0867d62-1/windows/ZividSetup_2.2.0+f0867d62-1.exe"
+        zivid_installer_url = "https://www.zivid.com/hubfs/softwarefiles/preview/carbon/2.2.0-carbon-preview-2/windows/ZividSetup_2.2.0-carbon-preview-2+92fbddc7-1.exe"
         print("Downloading {}".format(zivid_installer_url), flush=True)
         zivid_installer = Path(temp_dir) / "ZividSetup.exe"
         response = requests.get(zivid_installer_url)
