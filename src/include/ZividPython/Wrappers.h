@@ -10,6 +10,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
+#include <ZividPython/Traits.h>
 #include <ZividPython/Wrapper.h>
 
 #include <pybind11/pybind11.h>
@@ -18,6 +19,9 @@ namespace ZividPython
 {
     namespace
     {
+        template<typename T>
+        using bool_t = decltype(static_cast<bool>(std::declval<T>()));
+
         /// Inserts underscore on positive case flank and before negative case flank:
         /// ZividSDKVersion -> zivid_sdk_version
         std::string toSnakeCase(const std::string upperCamelCase)
@@ -72,6 +76,11 @@ namespace ZividPython
         auto pyClass = pybind11::class_<Source>{ dest, exposedName, tags... }
                            .def("to_string", &Source::toString)
                            .def("__repr__", &Source::toString);
+
+        if constexpr(is_detected<bool_t, Source>::value)
+        {
+            pyClass.def("__bool__", &Source::operator bool);
+        }
 
         if constexpr(WrapType::releasable == wrapType)
         {
