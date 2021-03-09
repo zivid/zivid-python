@@ -14,20 +14,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           lfs: false
-      # TODO(#122): Remove step when issue #122 is solved
-      - name: update runc # https://github.com/actions/virtual-environments/issues/2698#issuecomment-779262068
-        run: |
-          sudo apt-get install --assume-yes libseccomp-dev
-          git clone https://github.com/opencontainers/runc
-          cd runc && git checkout v1.0.0-rc93 && make -j`nproc` && sudo make install
-          cd .. && rm --recursive runc
       - name: Build and lint on Archlinux
         run: |
           docker run \
               --volume $PWD:/host \
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
-              archlinux/archlinux:base-devel \
+              archlinux/archlinux:base  \
               bash -c "./setup.sh && ./build.sh && ./lint.sh"
 
   create-source-distribution:
@@ -86,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: ["ubuntu:18.04", "ubuntu:20.04", "fedora:30", "fedora:33", "archlinux/archlinux:base-devel"]
+        os: ["ubuntu:18.04", "ubuntu:20.04", "fedora:30", "fedora:33", "archlinux/archlinux:base"]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -97,14 +90,6 @@ jobs:
         with:
           name: source-distribution
           path: dist
-      # TODO(#122): Remove step when issue #122 is solved
-      - name: update runc # https://github.com/actions/virtual-environments/issues/2698#issuecomment-779262068
-        if: startsWith(matrix.os, 'archlinux')
-        run: |
-          sudo apt-get install --assume-yes libseccomp-dev
-          git clone https://github.com/opencontainers/runc
-          cd runc && git checkout v1.0.0-rc93 && make -j`nproc` && sudo make install
-          cd .. && rm --recursive runc
       - name: Install from source-distribution and test
         run: |
           docker run \
