@@ -16,7 +16,7 @@ Zivid Python is the official Python package for Zivid 3D cameras. Read more abou
 ### Dependencies
 
 * [Python](https://www.python.org/) version 3.6 or higher
-* [Zivid SDK](https://www.zivid.com/downloads) version 2.2.0 (see [here](https://zivid.atlassian.net/wiki/spaces/ZividKB/pages/59080712/Zivid+Software+Installation) for help)
+* [Zivid SDK](https://www.zivid.com/downloads) version 2.3.0 (see [here](https://zivid.atlassian.net/wiki/spaces/ZividKB/pages/59080712/Zivid+Software+Installation) for help)
 * [Compiler](doc/CompilerInstallation.md) with C++17 support
 
 *Windows users also needs to make sure that the Zivid SDK installation folder is in system `PATH` before using the package, not only the terminal PATH variable. The default install location that should be added to system `PATH` is `C:\Program Files\Zivid\bin`.*
@@ -146,12 +146,12 @@ Please visit [Zivid Knowledge Base](http://help.zivid.com) for general informati
 
 | Operating System | Python version     | Zivid SDK version |
 | :--------------- | :------------------| :---------------- |
-| Ubuntu 20.04     | 3.8                | 2.2.0             |
-| Ubuntu 18.04     | 3.6                | 2.2.0             |
-| Fedora 30        | 3.7                | 2.2.0             |
-| Fedora 33        | 3.9                | 2.2.0             |
-| Windows 10       | 3.6, 3.7, 3.8, 3.9 | 2.2.0             |
-| Arch Linux       | latest             | 2.2.0             |
+| Ubuntu 20.04     | 3.8                | 2.3.0             |
+| Ubuntu 18.04     | 3.6                | 2.3.0             |
+| Fedora 30        | 3.7                | 2.3.0             |
+| Fedora 33        | 3.9                | 2.3.0             |
+| Windows 10       | 3.6, 3.7, 3.8, 3.9 | 2.3.0             |
+| Arch Linux       | latest             | 2.3.0             |
 
 [header-image]: https://www.zivid.com/hubfs/softwarefiles/images/zivid-generic-github-header.png
 [ci-badge]: https://img.shields.io/github/workflow/status/zivid/zivid-python/Main%20CI%20workflow/master
