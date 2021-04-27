@@ -28,7 +28,12 @@ file(GLOB_RECURSE HEADERS
     "${CMAKE_CURRENT_BINARY_DIR}/include/*h"
 )
 
-add_library(${PROJECT_NAME} MODULE ${SOURCES} ${HEADERS})
+python3_add_library(
+        ${PROJECT_NAME}
+        MODULE
+        WITH_SOABI
+        ${SOURCES}
+    )
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE include
@@ -40,12 +45,6 @@ target_link_libraries(${PROJECT_NAME}
             Python3::Module
             CONAN_PKG::pybind11
             CONAN_PKG::Eigen3
-)
-
-set_target_properties(${PROJECT_NAME}
-    PROPERTIES	
-        PREFIX "${PYTHON_MODULE_PREFIX}"	
-        SUFFIX "${PYTHON_MODULE_EXTENSION}"	
 )
 
 install(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION modules/${PROJECT_NAME})

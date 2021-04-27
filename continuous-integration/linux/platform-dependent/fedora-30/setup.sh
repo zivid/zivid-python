@@ -15,7 +15,7 @@ dnf --assumeyes install \
 alternatives --install /usr/bin/python python /usr/bin/python3 0 || exit $?
 alternatives --install /usr/bin/pip pip /usr/bin/pip3 0 || exit $?
 
-source "$SCRIPT_DIR/../common.sh" || exit $?
+source $(realpath $SCRIPT_DIR/../common.sh) || exit $?
 # Install OpenCL CPU runtime driver prerequisites
 dnf --assumeyes install \
     numactl-libs \
