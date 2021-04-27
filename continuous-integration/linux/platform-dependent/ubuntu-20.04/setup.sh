@@ -22,7 +22,7 @@ apt-yes install \
 update-alternatives --install /usr/bin/python python /usr/bin/python3 0 || exit $?
 update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 0 || exit $?
 
-source "$SCRIPT_DIR/../common.sh" || exit $?
+source $(realpath $SCRIPT_DIR/../common.sh) || exit $?
 # Install OpenCL CPU runtime driver prerequisites
 apt-yes install libnuma-dev lsb-core || exit $?
 install_opencl_cpu_runtime || exit $?
