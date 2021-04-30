@@ -1,4 +1,7 @@
-"""This is a test-PR to ensure that we do not get duplicated CI-jobs due to the recent change."""
+"""This is a test-PR to ensure that we do not get duplicated CI-jobs due to the recent change.
+
+More content here.
+"""
 import tempfile
 import platform
 import subprocess
