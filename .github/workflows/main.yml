@@ -1,12 +1,7 @@
 name: Main CI workflow
 # Note: If the workflow name is changed, the CI badge URL in the README must also be updated
 
-on:
-  push:         # Push trigger runs on any pushed branch.
-  pull_request: # External pull requests will trigger the Github Actions.
-  schedule:     # Scheduled trigger runs on the latest commit on the default branch.
-    - cron:  '0 22 * * *'
-
+on: [push, pull_request]
 jobs:
   lint:
     runs-on: ubuntu-latest
