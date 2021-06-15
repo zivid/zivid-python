@@ -15,6 +15,8 @@
 
 #include <pybind11/pybind11.h>
 
+#include <string_view>
+
 namespace ZividPython
 {
     namespace
@@ -24,7 +26,7 @@ namespace ZividPython
 
         /// Inserts underscore on positive case flank and before negative case flank:
         /// ZividSDKVersion -> zivid_sdk_version
-        std::string toSnakeCase(const std::string upperCamelCase)
+        std::string toSnakeCase(std::string_view upperCamelCase)
         {
             if(upperCamelCase.empty())
             {
@@ -33,12 +35,14 @@ namespace ZividPython
 
             if(!isupper(upperCamelCase[0]))
             {
-                throw std::runtime_error{ "First character of string: '" + upperCamelCase + "' is not capitalized" };
+                std::stringstream msg;
+                msg << "First character of string: '" << upperCamelCase << "' is not capitalized";
+                throw std::invalid_argument{ msg.str() };
             }
             std::stringstream ss;
             ss << char(tolower(upperCamelCase[0]));
 
-            for(auto i = 1; i < upperCamelCase.size(); ++i)
+            for(size_t i = 1; i < upperCamelCase.size(); ++i)
             {
                 if(isupper(upperCamelCase[i]))
                 {
@@ -50,12 +54,8 @@ namespace ZividPython
                     {
                         ss << "_";
                     }
-                    ss << char(tolower(upperCamelCase[i]));
                 }
-                else
-                {
-                    ss << char(upperCamelCase[i]);
-                }
+                ss << char(tolower(upperCamelCase[i]));
             }
             return ss.str();
         }
@@ -105,8 +105,8 @@ namespace ZividPython
                                   const WrapFunction &wrapFunction,
                                   const char *nonLowercaseName)
     {
-        std::string name{ nonLowercaseName };
-        auto submodule = dest.def_submodule(toSnakeCase(name).c_str());
+        const std::string name = toSnakeCase(nonLowercaseName);
+        auto submodule = dest.def_submodule(name.c_str());
         wrapFunction(submodule);
     }
 } // namespace ZividPython
