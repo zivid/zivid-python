@@ -16,7 +16,7 @@ Zivid Python is the official Python package for Zivid 3D cameras. Read more abou
 ### Dependencies
 
 * [Python](https://www.python.org/) version 3.6 or higher
-* [Zivid SDK](https://www.zivid.com/downloads) version 2.3.0 (see [here](https://zivid.atlassian.net/wiki/spaces/ZividKB/pages/59080712/Zivid+Software+Installation) for help)
+* [Zivid SDK][zivid-download-software-url] version 2.3.0 (see [here][zivid-software-installation-url] for help)
 * [Compiler](doc/CompilerInstallation.md) with C++17 support
 
 *Windows users also needs to make sure that the Zivid SDK installation folder is in system `PATH` before using the package, not only the terminal PATH variable. The default install location that should be added to system `PATH` is `C:\Program Files\Zivid\bin`.*
@@ -100,7 +100,7 @@ More advanced example programs can be found in the [samples](samples) directory.
 
 ## Versioning
 
-This python module is using [PEP 440](https://www.python.org/dev/peps/pep-0440) for versioning. The features available in the module depends on the Zivid SDK version used when building the module. When updating this Python package it is *recommended* to also update to the latest [Zivid SDK](http://www.zivid.com/software). Refer to the [Test Matrix](#test-matrix) for supported version.
+This python module is using [PEP 440](https://www.python.org/dev/peps/pep-0440) for versioning. The features available in the module depends on the Zivid SDK version used when building the module. When updating this Python package it is *recommended* to also update to the latest [Zivid SDK][zivid-software-url]. Refer to the [Test Matrix](#test-matrix) for supported version.
 
 The version number of the Zivid Python module consists of six numbers. The three first numbers of the version is the [semantic version](https://semver.org/) of the code in this repository. The last three numbers is the version of the underlying Zivid SDK library used by the Python module.
 
@@ -140,7 +140,7 @@ This project is licensed, see the [LICENSE](LICENSE) file for details.
 
 ## Support
 
-Please visit [Zivid Knowledge Base](http://help.zivid.com) for general information on using Zivid 3D cameras. If you cannot find a solution to your issue, please contact customersuccess@zivid.com.
+Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general information on using Zivid 3D cameras. If you cannot find a solution to your issue, please contact customersuccess@zivid.com.
 
 ## Test matrix
 
@@ -158,3 +158,8 @@ Please visit [Zivid Knowledge Base](http://help.zivid.com) for general informati
 [ci-url]: https://github.com/zivid/zivid-python/actions?query=workflow%3A%22Main+CI+workflow%22+branch%3Amaster
 [pypi-badge]: https://img.shields.io/pypi/v/zivid.svg
 [pypi-url]: https://pypi.org/project/zivid
+
+[zivid-knowledge-base-url]: http://support.zivid.com
+[zivid-software-installation-url]: https://support.zivid.com/latest/rst/academy/getting-started/zivid-software-installation.html
+[zivid-download-software-url]: https://www.zivid.com/downloads
+[zivid-software-url]: http://www.zivid.com/software
