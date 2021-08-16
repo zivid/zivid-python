@@ -22,6 +22,11 @@ jobs:
               --env "PYTHONDONTWRITEBYTECODE=1" \
               archlinux/archlinux:base  \
               bash -c "./setup.sh && ./build.sh && ./lint.sh"
+      - name: Notify Teams
+        if: ${{ failure() && github.ref == 'refs/heads/master' }}
+        env:
+          CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
+        run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
 
   create-source-distribution:
     runs-on: ubuntu-latest
@@ -44,6 +49,11 @@ jobs:
           name: source-distribution
           path: dist/zivid*.tar.gz
           retention-days: 1
+      - name: Notify Teams
+        if: ${{ failure() && github.ref == 'refs/heads/master' }}
+        env:
+          CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
+        run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
 
   create-windows-binary-distribution:
     runs-on: windows-2016
@@ -73,6 +83,11 @@ jobs:
           name: bdist-win-python${{matrix.python-version}}
           path: dist/zivid*.whl
           retention-days: 1
+      - name: Notify Teams
+        if: ${{ failure() && github.ref == 'refs/heads/master' }}
+        env:
+          CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
+        run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
 
   test-linux-source-distribution:
     needs: create-source-distribution
@@ -98,6 +113,11 @@ jobs:
               --env "PYTHONDONTWRITEBYTECODE=1" \
               ${{matrix.os}} \
               bash -c "./setup.sh && ./build-and-install-source-distribution.sh && ./test.sh"
+      - name: Notify Teams
+        if: ${{ failure() && github.ref == 'refs/heads/master' }}
+        env:
+          CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
+        run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
 
   test-windows-binary-distribution:
     needs: create-windows-binary-distribution
@@ -125,6 +145,11 @@ jobs:
         run: python continuous-integration\windows\install_binary_distribution.py
       - name: Test
         run: python continuous-integration\windows\test.py
+      - name: Notify Teams
+        if: ${{ failure() && github.ref == 'refs/heads/master' }}
+        env:
+          CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
+        run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
 
   deploy:
     needs: [lint, test-linux-source-distribution, test-windows-binary-distribution]
@@ -151,3 +176,8 @@ jobs:
         with:
           name: distributions_all
           path: distribution/
+      - name: Notify Teams
+        if: ${{ failure() && github.ref == 'refs/heads/master' }}
+        env:
+          CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
+        run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
