@@ -1260,6 +1260,13 @@ class Settings:
         ):
             return True
         return False
+    
+    @classmethod
+    def load(cls, file_name):
+        return zivid._settings_converter.to_settings(_zivid.Settings(str(file_name)))
+    
+    def save(self, file_name):
+        zivid._settings_converter.to_internal_settings(self).save(str(file_name))
 
     @property
     def acquisitions(self):
