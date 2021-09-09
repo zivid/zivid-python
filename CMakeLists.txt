@@ -12,7 +12,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 conan_cmake_run(
     REQUIRES
-        eigen/3.3.7@conan/stable
+        eigen/3.3.9
         pybind11/2.6.1
     CMAKE_TARGETS
     BASIC_SETUP)
