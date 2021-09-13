@@ -123,6 +123,12 @@ def test_set_ambient_light_frequency():
     assert suggested_settings.ambient_light_frequency == "none"
     assert isinstance(suggested_settings.ambient_light_frequency, str)
 
+    # AmbientLightFrequency enum is not optional, so should throw if given None
+    with pytest.raises(TypeError):
+        suggested_settings.ambient_light_frequency = None
+    with pytest.raises(TypeError):
+        SuggestSettingsParameters(ambient_light_frequency=None)
+
 
 def test_suggest_settings_str():
     from zivid.capture_assistant import SuggestSettingsParameters

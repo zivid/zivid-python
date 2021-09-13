@@ -6,7 +6,7 @@ disable=missing-docstring,
 
 
 [FORMAT]
-max-line-length=150 # Generated code for data-models will sometimes have long lines.
+max-line-length=150
 
 # Allow long lines if they contains long strings
 ignore-long-lines="[^"]{80,}"

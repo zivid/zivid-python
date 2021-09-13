@@ -1,16 +1,14 @@
 """Auto generated, do not edit."""
-# pylint: disable=too-many-arguments,missing-class-docstring,missing-function-docstring
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring
 import _zivid
-import zivid
-import zivid._camera_info_converter
 
 
 class CameraInfo:
     class Revision:
         def __init__(
             self,
-            major=_zivid.CameraInfo().Revision().Major().value,
-            minor=_zivid.CameraInfo().Revision().Minor().value,
+            major=_zivid.CameraInfo.Revision.Major().value,
+            minor=_zivid.CameraInfo.Revision.Minor().value,
         ):
 
             if isinstance(major, (int,)):
@@ -21,6 +19,7 @@ class CameraInfo:
                         value_type=type(major)
                     )
                 )
+
             if isinstance(minor, (int,)):
                 self._minor = _zivid.CameraInfo.Revision.Minor(minor)
             else:
@@ -66,14 +65,12 @@ class CameraInfo:
             return False
 
         def __str__(self):
-            return str(
-                zivid._camera_info_converter.to_internal_camera_info_revision(self)
-            )
+            return str(_to_internal_camera_info_revision(self))
 
     class UserData:
         def __init__(
             self,
-            max_size_bytes=_zivid.CameraInfo().UserData().MaxSizeBytes().value,
+            max_size_bytes=_zivid.CameraInfo.UserData.MaxSizeBytes().value,
         ):
 
             if isinstance(max_size_bytes, (int,)):
@@ -108,15 +105,13 @@ class CameraInfo:
             return False
 
         def __str__(self):
-            return str(
-                zivid._camera_info_converter.to_internal_camera_info_user_data(self)
-            )
+            return str(_to_internal_camera_info_user_data(self))
 
     def __init__(
         self,
-        firmware_version=_zivid.CameraInfo().FirmwareVersion().value,
-        model_name=_zivid.CameraInfo().ModelName().value,
-        serial_number=_zivid.CameraInfo().SerialNumber().value,
+        firmware_version=_zivid.CameraInfo.FirmwareVersion().value,
+        model_name=_zivid.CameraInfo.ModelName().value,
+        serial_number=_zivid.CameraInfo.SerialNumber().value,
         revision=None,
         user_data=None,
     ):
@@ -129,6 +124,7 @@ class CameraInfo:
                     value_type=type(firmware_version)
                 )
             )
+
         if isinstance(model_name, (str,)):
             self._model_name = _zivid.CameraInfo.ModelName(model_name)
         else:
@@ -137,6 +133,7 @@ class CameraInfo:
                     value_type=type(model_name)
                 )
             )
+
         if isinstance(serial_number, (str,)):
             self._serial_number = _zivid.CameraInfo.SerialNumber(serial_number)
         else:
@@ -145,14 +142,16 @@ class CameraInfo:
                     value_type=type(serial_number)
                 )
             )
+
         if revision is None:
-            revision = zivid.CameraInfo.Revision()
-        if not isinstance(revision, zivid.CameraInfo.Revision):
+            revision = self.Revision()
+        if not isinstance(revision, self.Revision):
             raise TypeError("Unsupported type: {value}".format(value=type(revision)))
         self._revision = revision
+
         if user_data is None:
-            user_data = zivid.CameraInfo.UserData()
-        if not isinstance(user_data, zivid.CameraInfo.UserData):
+            user_data = self.UserData()
+        if not isinstance(user_data, self.UserData):
             raise TypeError("Unsupported type: {value}".format(value=type(user_data)))
         self._user_data = user_data
 
@@ -211,13 +210,13 @@ class CameraInfo:
 
     @revision.setter
     def revision(self, value):
-        if not isinstance(value, zivid.CameraInfo.Revision):
+        if not isinstance(value, self.Revision):
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._revision = value
 
     @user_data.setter
     def user_data(self, value):
-        if not isinstance(value, zivid.CameraInfo.UserData):
+        if not isinstance(value, self.UserData):
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._user_data = value
 
@@ -233,4 +232,68 @@ class CameraInfo:
         return False
 
     def __str__(self):
-        return str(zivid._camera_info_converter.to_internal_camera_info(self))
+        return str(_to_internal_camera_info(self))
+
+
+def _to_camera_info_revision(internal_revision):
+    return CameraInfo.Revision(
+        major=internal_revision.major.value,
+        minor=internal_revision.minor.value,
+    )
+
+
+def _to_camera_info_user_data(internal_user_data):
+    return CameraInfo.UserData(
+        max_size_bytes=internal_user_data.max_size_bytes.value,
+    )
+
+
+def _to_camera_info(internal_camera_info):
+    return CameraInfo(
+        revision=_to_camera_info_revision(internal_camera_info.revision),
+        user_data=_to_camera_info_user_data(internal_camera_info.user_data),
+        firmware_version=internal_camera_info.firmware_version.value,
+        model_name=internal_camera_info.model_name.value,
+        serial_number=internal_camera_info.serial_number.value,
+    )
+
+
+def _to_internal_camera_info_revision(revision):
+    internal_revision = _zivid.CameraInfo.Revision()
+
+    internal_revision.major = _zivid.CameraInfo.Revision.Major(revision.major)
+    internal_revision.minor = _zivid.CameraInfo.Revision.Minor(revision.minor)
+
+    return internal_revision
+
+
+def _to_internal_camera_info_user_data(user_data):
+    internal_user_data = _zivid.CameraInfo.UserData()
+
+    internal_user_data.max_size_bytes = _zivid.CameraInfo.UserData.MaxSizeBytes(
+        user_data.max_size_bytes
+    )
+
+    return internal_user_data
+
+
+def _to_internal_camera_info(camera_info):
+    internal_camera_info = _zivid.CameraInfo()
+
+    internal_camera_info.firmware_version = _zivid.CameraInfo.FirmwareVersion(
+        camera_info.firmware_version
+    )
+    internal_camera_info.model_name = _zivid.CameraInfo.ModelName(
+        camera_info.model_name
+    )
+    internal_camera_info.serial_number = _zivid.CameraInfo.SerialNumber(
+        camera_info.serial_number
+    )
+
+    internal_camera_info.revision = _to_internal_camera_info_revision(
+        camera_info.revision
+    )
+    internal_camera_info.user_data = _to_internal_camera_info_user_data(
+        camera_info.user_data
+    )
+    return internal_camera_info

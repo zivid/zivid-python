@@ -20,6 +20,8 @@ flake8==3.9.2
     #   flake8-docstrings
 flake8-docstrings==1.6.0
     # via -r continuous-integration/python-requirements/lint.in
+inflection==0.5.1
+    # via -r continuous-integration/python-requirements/lint.in
 isort==5.9.3
     # via pylint
 lazy-object-proxy==1.6.0

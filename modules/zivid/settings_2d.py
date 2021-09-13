@@ -1,20 +1,18 @@
 """Auto generated, do not edit."""
-# pylint: disable=missing-class-docstring,missing-function-docstring,line-too-long
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring
 import datetime
 import collections.abc
 import _zivid
-import zivid
-import zivid._settings2_d_converter
 
 
 class Settings2D:
     class Acquisition:
         def __init__(
             self,
-            aperture=_zivid.Settings2D().Acquisition().Aperture().value,
-            brightness=_zivid.Settings2D().Acquisition().Brightness().value,
-            exposure_time=_zivid.Settings2D().Acquisition().ExposureTime().value,
-            gain=_zivid.Settings2D().Acquisition().Gain().value,
+            aperture=_zivid.Settings2D.Acquisition.Aperture().value,
+            brightness=_zivid.Settings2D.Acquisition.Brightness().value,
+            exposure_time=_zivid.Settings2D.Acquisition.ExposureTime().value,
+            gain=_zivid.Settings2D.Acquisition.Gain().value,
         ):
 
             if (
@@ -34,6 +32,7 @@ class Settings2D:
                         value_type=type(aperture)
                     )
                 )
+
             if (
                 isinstance(
                     brightness,
@@ -51,6 +50,7 @@ class Settings2D:
                         value_type=type(brightness)
                     )
                 )
+
             if (
                 isinstance(exposure_time, (datetime.timedelta,))
                 or exposure_time is None
@@ -64,6 +64,7 @@ class Settings2D:
                         value_type=type(exposure_time)
                     )
                 )
+
             if (
                 isinstance(
                     gain,
@@ -180,18 +181,16 @@ class Settings2D:
             return False
 
         def __str__(self):
-            return str(
-                zivid._settings2_d_converter.to_internal_settings2_d_acquisition(self)
-            )
+            return str(_to_internal_settings2d_acquisition(self))
 
     class Processing:
         class Color:
             class Balance:
                 def __init__(
                     self,
-                    blue=_zivid.Settings2D().Processing.Color.Balance().Blue().value,
-                    green=_zivid.Settings2D().Processing.Color.Balance().Green().value,
-                    red=_zivid.Settings2D().Processing.Color.Balance().Red().value,
+                    blue=_zivid.Settings2D.Processing.Color.Balance.Blue().value,
+                    green=_zivid.Settings2D.Processing.Color.Balance.Green().value,
+                    red=_zivid.Settings2D.Processing.Color.Balance.Red().value,
                 ):
 
                     if (
@@ -213,6 +212,7 @@ class Settings2D:
                                 value_type=type(blue)
                             )
                         )
+
                     if (
                         isinstance(
                             green,
@@ -232,6 +232,7 @@ class Settings2D:
                                 value_type=type(green)
                             )
                         )
+
                     if (
                         isinstance(
                             red,
@@ -338,15 +339,11 @@ class Settings2D:
                     return False
 
                 def __str__(self):
-                    return str(
-                        zivid._settings2_d_converter.to_internal_settings2_d_processing_color_balance(
-                            self
-                        )
-                    )
+                    return str(_to_internal_settings2d_processing_color_balance(self))
 
             def __init__(
                 self,
-                gamma=_zivid.Settings2D().Processing.Color().Gamma().value,
+                gamma=_zivid.Settings2D.Processing.Color.Gamma().value,
                 balance=None,
             ):
 
@@ -367,9 +364,10 @@ class Settings2D:
                             value_type=type(gamma)
                         )
                     )
+
                 if balance is None:
-                    balance = zivid.Settings2D.Processing.Color.Balance()
-                if not isinstance(balance, zivid.Settings2D.Processing.Color.Balance):
+                    balance = self.Balance()
+                if not isinstance(balance, self.Balance):
                     raise TypeError(
                         "Unsupported type: {value}".format(value=type(balance))
                     )
@@ -405,7 +403,7 @@ class Settings2D:
 
             @balance.setter
             def balance(self, value):
-                if not isinstance(value, zivid.Settings2D.Processing.Color.Balance):
+                if not isinstance(value, self.Balance):
                     raise TypeError(
                         "Unsupported type {value}".format(value=type(value))
                     )
@@ -417,11 +415,7 @@ class Settings2D:
                 return False
 
             def __str__(self):
-                return str(
-                    zivid._settings2_d_converter.to_internal_settings2_d_processing_color(
-                        self
-                    )
-                )
+                return str(_to_internal_settings2d_processing_color(self))
 
         def __init__(
             self,
@@ -429,8 +423,8 @@ class Settings2D:
         ):
 
             if color is None:
-                color = zivid.Settings2D.Processing.Color()
-            if not isinstance(color, zivid.Settings2D.Processing.Color):
+                color = self.Color()
+            if not isinstance(color, self.Color):
                 raise TypeError("Unsupported type: {value}".format(value=type(color)))
             self._color = color
 
@@ -440,7 +434,7 @@ class Settings2D:
 
         @color.setter
         def color(self, value):
-            if not isinstance(value, zivid.Settings2D.Processing.Color):
+            if not isinstance(value, self.Color):
                 raise TypeError("Unsupported type {value}".format(value=type(value)))
             self._color = value
 
@@ -450,51 +444,64 @@ class Settings2D:
             return False
 
         def __str__(self):
-            return str(
-                zivid._settings2_d_converter.to_internal_settings2_d_processing(self)
-            )
-
-    @property
-    def processing(self):
-        return self._processing
-
-    @property
-    def acquisitions(self):
-        return self._acquisitions
-
-    @acquisitions.setter
-    def acquisitions(self, value):
-        if not isinstance(value, collections.abc.Iterable):
-            raise TypeError("Unsupported type: {value}".format(value=type(value)))
-        self._acquisitions = _convert_to_acquistions(value)
-
-    @processing.setter
-    def processing(self, value):
-        if not isinstance(value, zivid.Settings2D.Processing):
-            raise TypeError("Unsupported type {value}".format(value=type(value)))
-        self._processing = value
-
-    def __str__(self):
-        return str(zivid._settings2_d_converter.to_internal_settings2_d(self))
+            return str(_to_internal_settings2d_processing(self))
 
     def __init__(
         self,
         acquisitions=None,
         processing=None,
     ):
+
         if acquisitions is None:
-            acquisitions = _zivid.Settings().Acquisitions().value
-        if not isinstance(acquisitions, collections.abc.Iterable):
+            self._acquisitions = []
+        elif isinstance(acquisitions, (collections.abc.Iterable,)):
+            self._acquisitions = []
+            for item in acquisitions:
+                if isinstance(item, self.Acquisition):
+                    self._acquisitions.append(item)
+                else:
+                    raise TypeError(
+                        "Unsupported type {item_type}".format(item_type=type(item))
+                    )
+        else:
             raise TypeError(
-                "Unsupported type: {value}".format(value=type(acquisitions))
+                "Unsupported type, expected: (collections.abc.Iterable,) or None, got {value_type}".format(
+                    value_type=type(acquisitions)
+                )
             )
-        self._acquisitions = _convert_to_acquistions(acquisitions)
 
         if processing is None:
-            processing = zivid.Settings2D.Processing()
-        if not isinstance(processing, zivid.Settings2D.Processing):
+            processing = self.Processing()
+        if not isinstance(processing, self.Processing):
             raise TypeError("Unsupported type: {value}".format(value=type(processing)))
         self._processing = processing
+
+    @property
+    def acquisitions(self):
+        return self._acquisitions
+
+    @property
+    def processing(self):
+        return self._processing
+
+    @acquisitions.setter
+    def acquisitions(self, value):
+        if not isinstance(value, (collections.abc.Iterable,)):
+            raise TypeError("Unsupported type {value}".format(value=type(value)))
+        self._acquisitions = []
+        for item in value:
+            if isinstance(item, self.Acquisition):
+                self._acquisitions.append(item)
+            else:
+                raise TypeError(
+                    "Unsupported type {item_type}".format(item_type=type(item))
+                )
+
+    @processing.setter
+    def processing(self, value):
+        if not isinstance(value, self.Processing):
+            raise TypeError("Unsupported type {value}".format(value=type(value)))
+        self._processing = value
 
     def __eq__(self, other):
         if (
@@ -504,16 +511,110 @@ class Settings2D:
             return True
         return False
 
+    def __str__(self):
+        return str(_to_internal_settings2d(self))
 
-def _convert_to_acquistions(inputs):
-    temp = []
-    for acquisition_element in inputs:
-        if isinstance(acquisition_element, Settings2D.Acquisition):
-            temp.append(acquisition_element)
-        else:
-            raise TypeError(
-                "Unsupported type {type_of_acquisition_element}".format(
-                    type_of_acquisition_element=type(acquisition_element)
-                )
-            )
-    return temp
+
+def _to_settings2d_acquisition(internal_acquisition):
+    return Settings2D.Acquisition(
+        aperture=internal_acquisition.aperture.value,
+        brightness=internal_acquisition.brightness.value,
+        exposure_time=internal_acquisition.exposure_time.value,
+        gain=internal_acquisition.gain.value,
+    )
+
+
+def _to_settings2d_processing_color_balance(internal_balance):
+    return Settings2D.Processing.Color.Balance(
+        blue=internal_balance.blue.value,
+        green=internal_balance.green.value,
+        red=internal_balance.red.value,
+    )
+
+
+def _to_settings2d_processing_color(internal_color):
+    return Settings2D.Processing.Color(
+        balance=_to_settings2d_processing_color_balance(internal_color.balance),
+        gamma=internal_color.gamma.value,
+    )
+
+
+def _to_settings2d_processing(internal_processing):
+    return Settings2D.Processing(
+        color=_to_settings2d_processing_color(internal_processing.color),
+    )
+
+
+def _to_settings2d(internal_settings2d):
+    return Settings2D(
+        acquisitions=[
+            _to_settings2d_acquisition(value)
+            for value in internal_settings2d.acquisitions.value
+        ],
+        processing=_to_settings2d_processing(internal_settings2d.processing),
+    )
+
+
+def _to_internal_settings2d_acquisition(acquisition):
+    internal_acquisition = _zivid.Settings2D.Acquisition()
+
+    internal_acquisition.aperture = _zivid.Settings2D.Acquisition.Aperture(
+        acquisition.aperture
+    )
+    internal_acquisition.brightness = _zivid.Settings2D.Acquisition.Brightness(
+        acquisition.brightness
+    )
+    internal_acquisition.exposure_time = _zivid.Settings2D.Acquisition.ExposureTime(
+        acquisition.exposure_time
+    )
+    internal_acquisition.gain = _zivid.Settings2D.Acquisition.Gain(acquisition.gain)
+
+    return internal_acquisition
+
+
+def _to_internal_settings2d_processing_color_balance(balance):
+    internal_balance = _zivid.Settings2D.Processing.Color.Balance()
+
+    internal_balance.blue = _zivid.Settings2D.Processing.Color.Balance.Blue(
+        balance.blue
+    )
+    internal_balance.green = _zivid.Settings2D.Processing.Color.Balance.Green(
+        balance.green
+    )
+    internal_balance.red = _zivid.Settings2D.Processing.Color.Balance.Red(balance.red)
+
+    return internal_balance
+
+
+def _to_internal_settings2d_processing_color(color):
+    internal_color = _zivid.Settings2D.Processing.Color()
+
+    internal_color.gamma = _zivid.Settings2D.Processing.Color.Gamma(color.gamma)
+
+    internal_color.balance = _to_internal_settings2d_processing_color_balance(
+        color.balance
+    )
+    return internal_color
+
+
+def _to_internal_settings2d_processing(processing):
+    internal_processing = _zivid.Settings2D.Processing()
+
+    internal_processing.color = _to_internal_settings2d_processing_color(
+        processing.color
+    )
+    return internal_processing
+
+
+def _to_internal_settings2d(settings2d):
+    internal_settings2d = _zivid.Settings2D()
+
+    temp_acquisitions = _zivid.Settings2D.Acquisitions()
+    for value in settings2d.acquisitions:
+        temp_acquisitions.append(_to_internal_settings2d_acquisition(value))
+    internal_settings2d.acquisitions = temp_acquisitions
+
+    internal_settings2d.processing = _to_internal_settings2d_processing(
+        settings2d.processing
+    )
+    return internal_settings2d
