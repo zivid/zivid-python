@@ -12,7 +12,7 @@ def get_version():
 
 
 def _zivid_sdk_version():
-    return "2.4.1"
+    return "2.4.2"
 
 
 def _zivid_python_version():
