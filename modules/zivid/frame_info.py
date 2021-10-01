@@ -9,7 +9,8 @@ import zivid._frame_info_converter
 class FrameInfo:
     class SoftwareVersion:
         def __init__(
-            self, core=_zivid.FrameInfo().SoftwareVersion().Core().value,
+            self,
+            core=_zivid.FrameInfo().SoftwareVersion().Core().value,
         ):
 
             if isinstance(core, (str,)):
@@ -49,7 +50,9 @@ class FrameInfo:
             )
 
     def __init__(
-        self, time_stamp=_zivid.FrameInfo().TimeStamp().value, software_version=None,
+        self,
+        time_stamp=_zivid.FrameInfo().TimeStamp().value,
+        software_version=None,
     ):
 
         if isinstance(time_stamp, (datetime.datetime,)):

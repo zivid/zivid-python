@@ -201,6 +201,16 @@ def run_sample(name, working_directory=None):
 
     if working_directory is not None:
         with Cd(working_directory):
-            subprocess.check_output(args=("python", str(sample),))
+            subprocess.check_output(
+                args=(
+                    "python",
+                    str(sample),
+                )
+            )
     else:
-        subprocess.check_output(args=("python", str(sample),))
+        subprocess.check_output(
+            args=(
+                "python",
+                str(sample),
+            )
+        )

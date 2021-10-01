@@ -110,7 +110,8 @@ def to_settings_processing_filters_reflection(internal_reflection):
 
 def to_settings_processing_filters_smoothing_gaussian(internal_gaussian):
     return zivid.Settings.Processing.Filters.Smoothing.Gaussian(
-        enabled=internal_gaussian.enabled.value, sigma=internal_gaussian.sigma.value,
+        enabled=internal_gaussian.enabled.value,
+        sigma=internal_gaussian.sigma.value,
     )
 
 
@@ -245,8 +246,10 @@ def to_internal_settings_processing_filters_experimental_contrast_distortion(
 def to_internal_settings_processing_filters_experimental(experimental):
     internal_experimental = _zivid.Settings.Processing.Filters.Experimental()
 
-    internal_experimental.contrast_distortion = to_internal_settings_processing_filters_experimental_contrast_distortion(
-        experimental.contrast_distortion
+    internal_experimental.contrast_distortion = (
+        to_internal_settings_processing_filters_experimental_contrast_distortion(
+            experimental.contrast_distortion
+        )
     )
     return internal_experimental
 
@@ -257,8 +260,8 @@ def to_internal_settings_processing_filters_noise_removal(removal):
     internal_removal.enabled = _zivid.Settings.Processing.Filters.Noise.Removal.Enabled(
         removal.enabled
     )
-    internal_removal.threshold = _zivid.Settings.Processing.Filters.Noise.Removal.Threshold(
-        removal.threshold
+    internal_removal.threshold = (
+        _zivid.Settings.Processing.Filters.Noise.Removal.Threshold(removal.threshold)
     )
 
     return internal_removal
@@ -276,11 +279,11 @@ def to_internal_settings_processing_filters_noise(noise):
 def to_internal_settings_processing_filters_outlier_removal(removal):
     internal_removal = _zivid.Settings.Processing.Filters.Outlier.Removal()
 
-    internal_removal.enabled = _zivid.Settings.Processing.Filters.Outlier.Removal.Enabled(
-        removal.enabled
+    internal_removal.enabled = (
+        _zivid.Settings.Processing.Filters.Outlier.Removal.Enabled(removal.enabled)
     )
-    internal_removal.threshold = _zivid.Settings.Processing.Filters.Outlier.Removal.Threshold(
-        removal.threshold
+    internal_removal.threshold = (
+        _zivid.Settings.Processing.Filters.Outlier.Removal.Threshold(removal.threshold)
     )
 
     return internal_removal
@@ -298,8 +301,8 @@ def to_internal_settings_processing_filters_outlier(outlier):
 def to_internal_settings_processing_filters_reflection_removal(removal):
     internal_removal = _zivid.Settings.Processing.Filters.Reflection.Removal()
 
-    internal_removal.enabled = _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled(
-        removal.enabled
+    internal_removal.enabled = (
+        _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled(removal.enabled)
     )
 
     return internal_removal
@@ -308,8 +311,8 @@ def to_internal_settings_processing_filters_reflection_removal(removal):
 def to_internal_settings_processing_filters_reflection(reflection):
     internal_reflection = _zivid.Settings.Processing.Filters.Reflection()
 
-    internal_reflection.removal = to_internal_settings_processing_filters_reflection_removal(
-        reflection.removal
+    internal_reflection.removal = (
+        to_internal_settings_processing_filters_reflection_removal(reflection.removal)
     )
     return internal_reflection
 
@@ -317,11 +320,11 @@ def to_internal_settings_processing_filters_reflection(reflection):
 def to_internal_settings_processing_filters_smoothing_gaussian(gaussian):
     internal_gaussian = _zivid.Settings.Processing.Filters.Smoothing.Gaussian()
 
-    internal_gaussian.enabled = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Enabled(
-        gaussian.enabled
+    internal_gaussian.enabled = (
+        _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Enabled(gaussian.enabled)
     )
-    internal_gaussian.sigma = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Sigma(
-        gaussian.sigma
+    internal_gaussian.sigma = (
+        _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Sigma(gaussian.sigma)
     )
 
     return internal_gaussian
@@ -330,8 +333,8 @@ def to_internal_settings_processing_filters_smoothing_gaussian(gaussian):
 def to_internal_settings_processing_filters_smoothing(smoothing):
     internal_smoothing = _zivid.Settings.Processing.Filters.Smoothing()
 
-    internal_smoothing.gaussian = to_internal_settings_processing_filters_smoothing_gaussian(
-        smoothing.gaussian
+    internal_smoothing.gaussian = (
+        to_internal_settings_processing_filters_smoothing_gaussian(smoothing.gaussian)
     )
     return internal_smoothing
 
@@ -339,8 +342,8 @@ def to_internal_settings_processing_filters_smoothing(smoothing):
 def to_internal_settings_processing_filters(filters):
     internal_filters = _zivid.Settings.Processing.Filters()
 
-    internal_filters.experimental = to_internal_settings_processing_filters_experimental(
-        filters.experimental
+    internal_filters.experimental = (
+        to_internal_settings_processing_filters_experimental(filters.experimental)
     )
     internal_filters.noise = to_internal_settings_processing_filters_noise(
         filters.noise

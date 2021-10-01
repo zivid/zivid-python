@@ -17,7 +17,16 @@ class Settings2D:
             gain=_zivid.Settings2D().Acquisition().Gain().value,
         ):
 
-            if isinstance(aperture, (float, int,)) or aperture is None:
+            if (
+                isinstance(
+                    aperture,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or aperture is None
+            ):
                 self._aperture = _zivid.Settings2D.Acquisition.Aperture(aperture)
             else:
                 raise TypeError(
@@ -25,7 +34,16 @@ class Settings2D:
                         value_type=type(aperture)
                     )
                 )
-            if isinstance(brightness, (float, int,)) or brightness is None:
+            if (
+                isinstance(
+                    brightness,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or brightness is None
+            ):
                 self._brightness = _zivid.Settings2D.Acquisition.Brightness(brightness)
             else:
                 raise TypeError(
@@ -46,7 +64,16 @@ class Settings2D:
                         value_type=type(exposure_time)
                     )
                 )
-            if isinstance(gain, (float, int,)) or gain is None:
+            if (
+                isinstance(
+                    gain,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or gain is None
+            ):
                 self._gain = _zivid.Settings2D.Acquisition.Gain(gain)
             else:
                 raise TypeError(
@@ -73,7 +100,16 @@ class Settings2D:
 
         @aperture.setter
         def aperture(self, value):
-            if isinstance(value, (float, int,)) or value is None:
+            if (
+                isinstance(
+                    value,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or value is None
+            ):
                 self._aperture = _zivid.Settings2D.Acquisition.Aperture(value)
             else:
                 raise TypeError(
@@ -84,7 +120,16 @@ class Settings2D:
 
         @brightness.setter
         def brightness(self, value):
-            if isinstance(value, (float, int,)) or value is None:
+            if (
+                isinstance(
+                    value,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or value is None
+            ):
                 self._brightness = _zivid.Settings2D.Acquisition.Brightness(value)
             else:
                 raise TypeError(
@@ -106,7 +151,16 @@ class Settings2D:
 
         @gain.setter
         def gain(self, value):
-            if isinstance(value, (float, int,)) or value is None:
+            if (
+                isinstance(
+                    value,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or value is None
+            ):
                 self._gain = _zivid.Settings2D.Acquisition.Gain(value)
             else:
                 raise TypeError(
@@ -140,7 +194,16 @@ class Settings2D:
                     red=_zivid.Settings2D().Processing.Color.Balance().Red().value,
                 ):
 
-                    if isinstance(blue, (float, int,)) or blue is None:
+                    if (
+                        isinstance(
+                            blue,
+                            (
+                                float,
+                                int,
+                            ),
+                        )
+                        or blue is None
+                    ):
                         self._blue = _zivid.Settings2D.Processing.Color.Balance.Blue(
                             blue
                         )
@@ -150,7 +213,16 @@ class Settings2D:
                                 value_type=type(blue)
                             )
                         )
-                    if isinstance(green, (float, int,)) or green is None:
+                    if (
+                        isinstance(
+                            green,
+                            (
+                                float,
+                                int,
+                            ),
+                        )
+                        or green is None
+                    ):
                         self._green = _zivid.Settings2D.Processing.Color.Balance.Green(
                             green
                         )
@@ -160,7 +232,16 @@ class Settings2D:
                                 value_type=type(green)
                             )
                         )
-                    if isinstance(red, (float, int,)) or red is None:
+                    if (
+                        isinstance(
+                            red,
+                            (
+                                float,
+                                int,
+                            ),
+                        )
+                        or red is None
+                    ):
                         self._red = _zivid.Settings2D.Processing.Color.Balance.Red(red)
                     else:
                         raise TypeError(
@@ -183,7 +264,16 @@ class Settings2D:
 
                 @blue.setter
                 def blue(self, value):
-                    if isinstance(value, (float, int,)) or value is None:
+                    if (
+                        isinstance(
+                            value,
+                            (
+                                float,
+                                int,
+                            ),
+                        )
+                        or value is None
+                    ):
                         self._blue = _zivid.Settings2D.Processing.Color.Balance.Blue(
                             value
                         )
@@ -196,7 +286,16 @@ class Settings2D:
 
                 @green.setter
                 def green(self, value):
-                    if isinstance(value, (float, int,)) or value is None:
+                    if (
+                        isinstance(
+                            value,
+                            (
+                                float,
+                                int,
+                            ),
+                        )
+                        or value is None
+                    ):
                         self._green = _zivid.Settings2D.Processing.Color.Balance.Green(
                             value
                         )
@@ -209,7 +308,16 @@ class Settings2D:
 
                 @red.setter
                 def red(self, value):
-                    if isinstance(value, (float, int,)) or value is None:
+                    if (
+                        isinstance(
+                            value,
+                            (
+                                float,
+                                int,
+                            ),
+                        )
+                        or value is None
+                    ):
                         self._red = _zivid.Settings2D.Processing.Color.Balance.Red(
                             value
                         )
@@ -242,7 +350,16 @@ class Settings2D:
                 balance=None,
             ):
 
-                if isinstance(gamma, (float, int,)) or gamma is None:
+                if (
+                    isinstance(
+                        gamma,
+                        (
+                            float,
+                            int,
+                        ),
+                    )
+                    or gamma is None
+                ):
                     self._gamma = _zivid.Settings2D.Processing.Color.Gamma(gamma)
                 else:
                     raise TypeError(
@@ -268,7 +385,16 @@ class Settings2D:
 
             @gamma.setter
             def gamma(self, value):
-                if isinstance(value, (float, int,)) or value is None:
+                if (
+                    isinstance(
+                        value,
+                        (
+                            float,
+                            int,
+                        ),
+                    )
+                    or value is None
+                ):
                     self._gamma = _zivid.Settings2D.Processing.Color.Gamma(value)
                 else:
                     raise TypeError(
@@ -298,7 +424,8 @@ class Settings2D:
                 )
 
         def __init__(
-            self, color=None,
+            self,
+            color=None,
         ):
 
             if color is None:
@@ -351,7 +478,9 @@ class Settings2D:
         return str(zivid._settings2_d_converter.to_internal_settings2_d(self))
 
     def __init__(
-        self, acquisitions=None, processing=None,
+        self,
+        acquisitions=None,
+        processing=None,
     ):
         if acquisitions is None:
             acquisitions = _zivid.Settings().Acquisitions().value

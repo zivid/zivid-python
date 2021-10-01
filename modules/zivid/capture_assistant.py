@@ -76,8 +76,10 @@ class SuggestSettingsParameters:
                 )
             )
         if isinstance(max_capture_time, (datetime.timedelta,)):
-            self._max_capture_time = _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime(
-                max_capture_time
+            self._max_capture_time = (
+                _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime(
+                    max_capture_time
+                )
             )
         else:
             raise TypeError(
@@ -131,8 +133,8 @@ class SuggestSettingsParameters:
     @max_capture_time.setter
     def max_capture_time(self, value):
         if isinstance(value, (datetime.timedelta,)):
-            self._max_capture_time = _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime(
-                value
+            self._max_capture_time = (
+                _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime(value)
             )
         else:
             raise TypeError(

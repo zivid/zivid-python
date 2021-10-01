@@ -128,7 +128,9 @@ def test_settings_processing_color(application):
     )
 
 
-def test_settings_processing_color_gamma(application,):
+def test_settings_processing_color_gamma(
+    application,
+):
     import zivid
     import numbers
 
@@ -140,7 +142,9 @@ def test_settings_processing_color_gamma(application,):
     )
 
 
-def test_settings_processing_color_balance(application,):
+def test_settings_processing_color_balance(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -150,11 +154,15 @@ def test_settings_processing_color_balance(application,):
         expected_data_type=zivid.Settings2D.Processing.Color.Balance,
     )
     pytest.helpers.equality_tester(
-        zivid.Settings2D.Processing.Color.Balance, [1.1, 1.1, 1.1], [1.2, 1.1, 1.1],
+        zivid.Settings2D.Processing.Color.Balance,
+        [1.1, 1.1, 1.1],
+        [1.2, 1.1, 1.1],
     )
 
 
-def test_settings_processing_color_balance_red(application,):
+def test_settings_processing_color_balance_red(
+    application,
+):
     import zivid
     import numbers
 
@@ -166,7 +174,9 @@ def test_settings_processing_color_balance_red(application,):
     )
 
 
-def test_settings_processing_color_balance_green(application,):
+def test_settings_processing_color_balance_green(
+    application,
+):
     import zivid
     import numbers
 
@@ -178,7 +188,9 @@ def test_settings_processing_color_balance_green(application,):
     )
 
 
-def test_settings_processing_color_balance_blue(application,):
+def test_settings_processing_color_balance_blue(
+    application,
+):
     import zivid
     import numbers
 

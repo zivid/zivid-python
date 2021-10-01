@@ -72,7 +72,8 @@ class CameraInfo:
 
     class UserData:
         def __init__(
-            self, max_size_bytes=_zivid.CameraInfo().UserData().MaxSizeBytes().value,
+            self,
+            max_size_bytes=_zivid.CameraInfo().UserData().MaxSizeBytes().value,
         ):
 
             if isinstance(max_size_bytes, (int,)):
