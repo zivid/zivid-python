@@ -18,11 +18,11 @@ darglint==1.5.3
     # via -r continuous-integration/python-requirements/lint.in
 distro==1.6.0
     # via scikit-build
-flake8==3.8.3
+flake8==3.9.2
     # via
     #   -r continuous-integration/python-requirements/lint.in
     #   flake8-docstrings
-flake8-docstrings==1.5.0
+flake8-docstrings==1.6.0
     # via -r continuous-integration/python-requirements/lint.in
 isort==5.9.3
     # via pylint
@@ -36,11 +36,11 @@ packaging==21.0
     # via scikit-build
 pathspec==0.9.0
     # via black
-pycodestyle==2.6.0
+pycodestyle==2.7.0
     # via flake8
 pydocstyle==6.1.1
     # via flake8-docstrings
-pyflakes==2.2.0
+pyflakes==2.3.1
     # via flake8
 pylint==2.6.0
     # via -r continuous-integration/python-requirements/lint.in
