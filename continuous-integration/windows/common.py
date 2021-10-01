@@ -23,5 +23,12 @@ def run_process(args, env=None, workdir=None):
 def install_pip_dependencies(requirements_file):
     print("Installing python test requirements", flush=True)
     run_process(
-        ("python", "-m", "pip", "install", "--requirement", str(requirements_file),)
+        (
+            "python",
+            "-m",
+            "pip",
+            "install",
+            "--requirement",
+            str(requirements_file),
+        )
     )

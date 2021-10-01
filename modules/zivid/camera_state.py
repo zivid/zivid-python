@@ -16,7 +16,13 @@ class CameraState:
             pcb=_zivid.CameraState().Temperature().PCB().value,
         ):
 
-            if isinstance(dmd, (float, int,)):
+            if isinstance(
+                dmd,
+                (
+                    float,
+                    int,
+                ),
+            ):
                 self._dmd = _zivid.CameraState.Temperature.DMD(dmd)
             else:
                 raise TypeError(
@@ -24,7 +30,13 @@ class CameraState:
                         value_type=type(dmd)
                     )
                 )
-            if isinstance(general, (float, int,)):
+            if isinstance(
+                general,
+                (
+                    float,
+                    int,
+                ),
+            ):
                 self._general = _zivid.CameraState.Temperature.General(general)
             else:
                 raise TypeError(
@@ -32,7 +44,13 @@ class CameraState:
                         value_type=type(general)
                     )
                 )
-            if isinstance(led, (float, int,)):
+            if isinstance(
+                led,
+                (
+                    float,
+                    int,
+                ),
+            ):
                 self._led = _zivid.CameraState.Temperature.LED(led)
             else:
                 raise TypeError(
@@ -40,7 +58,13 @@ class CameraState:
                         value_type=type(led)
                     )
                 )
-            if isinstance(lens, (float, int,)):
+            if isinstance(
+                lens,
+                (
+                    float,
+                    int,
+                ),
+            ):
                 self._lens = _zivid.CameraState.Temperature.Lens(lens)
             else:
                 raise TypeError(
@@ -48,7 +72,13 @@ class CameraState:
                         value_type=type(lens)
                     )
                 )
-            if isinstance(pcb, (float, int,)):
+            if isinstance(
+                pcb,
+                (
+                    float,
+                    int,
+                ),
+            ):
                 self._pcb = _zivid.CameraState.Temperature.PCB(pcb)
             else:
                 raise TypeError(
@@ -79,7 +109,13 @@ class CameraState:
 
         @dmd.setter
         def dmd(self, value):
-            if isinstance(value, (float, int,)):
+            if isinstance(
+                value,
+                (
+                    float,
+                    int,
+                ),
+            ):
                 self._dmd = _zivid.CameraState.Temperature.DMD(value)
             else:
                 raise TypeError(
@@ -90,7 +126,13 @@ class CameraState:
 
         @general.setter
         def general(self, value):
-            if isinstance(value, (float, int,)):
+            if isinstance(
+                value,
+                (
+                    float,
+                    int,
+                ),
+            ):
                 self._general = _zivid.CameraState.Temperature.General(value)
             else:
                 raise TypeError(
@@ -101,7 +143,13 @@ class CameraState:
 
         @led.setter
         def led(self, value):
-            if isinstance(value, (float, int,)):
+            if isinstance(
+                value,
+                (
+                    float,
+                    int,
+                ),
+            ):
                 self._led = _zivid.CameraState.Temperature.LED(value)
             else:
                 raise TypeError(
@@ -112,7 +160,13 @@ class CameraState:
 
         @lens.setter
         def lens(self, value):
-            if isinstance(value, (float, int,)):
+            if isinstance(
+                value,
+                (
+                    float,
+                    int,
+                ),
+            ):
                 self._lens = _zivid.CameraState.Temperature.Lens(value)
             else:
                 raise TypeError(
@@ -123,7 +177,13 @@ class CameraState:
 
         @pcb.setter
         def pcb(self, value):
-            if isinstance(value, (float, int,)):
+            if isinstance(
+                value,
+                (
+                    float,
+                    int,
+                ),
+            ):
                 self._pcb = _zivid.CameraState.Temperature.PCB(value)
             else:
                 raise TypeError(

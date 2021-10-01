@@ -232,7 +232,9 @@ def test_settings_processing_color(application):
     )
 
 
-def test_settings_processing_color_gamma(application,):
+def test_settings_processing_color_gamma(
+    application,
+):
     import zivid
     import numbers
 
@@ -244,7 +246,9 @@ def test_settings_processing_color_gamma(application,):
     )
 
 
-def test_settings_processing_color_balance(application,):
+def test_settings_processing_color_balance(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -254,11 +258,15 @@ def test_settings_processing_color_balance(application,):
         expected_data_type=zivid.Settings.Processing.Color.Balance,
     )
     pytest.helpers.equality_tester(
-        zivid.Settings.Processing.Color.Balance, [1.1, 1.1, 1.1], [1.2, 1.1, 1.1],
+        zivid.Settings.Processing.Color.Balance,
+        [1.1, 1.1, 1.1],
+        [1.2, 1.1, 1.1],
     )
 
 
-def test_settings_processing_color_balance_red(application,):
+def test_settings_processing_color_balance_red(
+    application,
+):
     import zivid
     import numbers
 
@@ -270,7 +278,9 @@ def test_settings_processing_color_balance_red(application,):
     )
 
 
-def test_settings_processing_color_balance_green(application,):
+def test_settings_processing_color_balance_green(
+    application,
+):
     import zivid
     import numbers
 
@@ -282,7 +292,9 @@ def test_settings_processing_color_balance_green(application,):
     )
 
 
-def test_settings_processing_color_balance_blue(application,):
+def test_settings_processing_color_balance_blue(
+    application,
+):
     import zivid
     import numbers
 
@@ -294,7 +306,9 @@ def test_settings_processing_color_balance_blue(application,):
     )
 
 
-def test_settings_processing_filters(application,):
+def test_settings_processing_filters(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -326,7 +340,9 @@ def test_settings_processing_filters(application,):
     )
 
 
-def test_settings_processing_filters_experimental(application,):
+def test_settings_processing_filters_experimental(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -354,7 +370,9 @@ def test_settings_processing_filters_experimental(application,):
     )
 
 
-def test_settings_processing_filters_experimental_contrast_distortion(application,):
+def test_settings_processing_filters_experimental_contrast_distortion(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -472,7 +490,9 @@ def test_settings_processing_filters_experimental_contrast_distortion_correction
     )
 
 
-def test_settings_processing_filters_noise(application,):
+def test_settings_processing_filters_noise(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -488,7 +508,9 @@ def test_settings_processing_filters_noise(application,):
     )
 
 
-def test_settings_processing_filters_noise_removal(application,):
+def test_settings_processing_filters_noise_removal(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -498,11 +520,15 @@ def test_settings_processing_filters_noise_removal(application,):
         expected_data_type=zivid.Settings.Processing.Filters.Noise.Removal,
     )
     pytest.helpers.equality_tester(
-        zivid.Settings.Processing.Filters.Noise.Removal, [True], [False],
+        zivid.Settings.Processing.Filters.Noise.Removal,
+        [True],
+        [False],
     )
 
 
-def test_settings_processing_filters_noise_removal_enabled(application,):
+def test_settings_processing_filters_noise_removal_enabled(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -513,7 +539,9 @@ def test_settings_processing_filters_noise_removal_enabled(application,):
     )
 
 
-def test_settings_processing_filters_noise_removal_threshold(application,):
+def test_settings_processing_filters_noise_removal_threshold(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -524,7 +552,9 @@ def test_settings_processing_filters_noise_removal_threshold(application,):
     )
 
 
-def test_settings_processing_filters_outlier(application,):
+def test_settings_processing_filters_outlier(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -540,7 +570,9 @@ def test_settings_processing_filters_outlier(application,):
     )
 
 
-def test_settings_processing_filters_outlier_removal(application,):
+def test_settings_processing_filters_outlier_removal(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -550,11 +582,15 @@ def test_settings_processing_filters_outlier_removal(application,):
         expected_data_type=zivid.Settings.Processing.Filters.Outlier.Removal,
     )
     pytest.helpers.equality_tester(
-        zivid.Settings.Processing.Filters.Outlier.Removal, [True], [False],
+        zivid.Settings.Processing.Filters.Outlier.Removal,
+        [True],
+        [False],
     )
 
 
-def test_settings_processing_filters_outlier_removal_enabled(application,):
+def test_settings_processing_filters_outlier_removal_enabled(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -565,7 +601,9 @@ def test_settings_processing_filters_outlier_removal_enabled(application,):
     )
 
 
-def test_settings_processing_filters_outlier_removal_threshold(application,):
+def test_settings_processing_filters_outlier_removal_threshold(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -576,7 +614,9 @@ def test_settings_processing_filters_outlier_removal_threshold(application,):
     )
 
 
-def test_settings_processing_filters_reflection(application,):
+def test_settings_processing_filters_reflection(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -592,7 +632,9 @@ def test_settings_processing_filters_reflection(application,):
     )
 
 
-def test_settings_processing_filters_reflection_removal(application,):
+def test_settings_processing_filters_reflection_removal(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -602,11 +644,15 @@ def test_settings_processing_filters_reflection_removal(application,):
         expected_data_type=zivid.Settings.Processing.Filters.Reflection.Removal,
     )
     pytest.helpers.equality_tester(
-        zivid.Settings.Processing.Filters.Reflection.Removal, [True], [False],
+        zivid.Settings.Processing.Filters.Reflection.Removal,
+        [True],
+        [False],
     )
 
 
-def test_settings_processing_filters_reflection_removal_enabled(application,):
+def test_settings_processing_filters_reflection_removal_enabled(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -617,7 +663,9 @@ def test_settings_processing_filters_reflection_removal_enabled(application,):
     )
 
 
-def test_settings_processing_filters_smoothing(application,):
+def test_settings_processing_filters_smoothing(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -633,7 +681,9 @@ def test_settings_processing_filters_smoothing(application,):
     )
 
 
-def test_settings_processing_filters_smoothing_gaussian(application,):
+def test_settings_processing_filters_smoothing_gaussian(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -643,11 +693,15 @@ def test_settings_processing_filters_smoothing_gaussian(application,):
         expected_data_type=zivid.Settings.Processing.Filters.Smoothing.Gaussian,
     )
     pytest.helpers.equality_tester(
-        zivid.Settings.Processing.Filters.Smoothing.Gaussian, [True], [False],
+        zivid.Settings.Processing.Filters.Smoothing.Gaussian,
+        [True],
+        [False],
     )
 
 
-def test_settings_processing_filters_smoothing_gaussian_sigma(application,):
+def test_settings_processing_filters_smoothing_gaussian_sigma(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(
@@ -658,7 +712,9 @@ def test_settings_processing_filters_smoothing_gaussian_sigma(application,):
     )
 
 
-def test_settings_processing_filters_smoothing_gaussian_enabled(application,):
+def test_settings_processing_filters_smoothing_gaussian_enabled(
+    application,
+):
     import zivid
 
     pytest.helpers.set_attribute_tester(

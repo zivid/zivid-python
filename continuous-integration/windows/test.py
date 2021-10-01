@@ -17,7 +17,14 @@ def _test(root):
     sys_path_value = _read_sys_env(sys_path_key)
     environment[sys_path_key] = sys_path_value
     run_process(
-        ("python", "-m", "pytest", str(root), "-c", str(root / "pytest.ini"),),
+        (
+            "python",
+            "-m",
+            "pytest",
+            str(root),
+            "-c",
+            str(root / "pytest.ini"),
+        ),
         env=environment,
     )
 

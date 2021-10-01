@@ -5,7 +5,8 @@ import _zivid
 
 def to_camera_info_revision(internal_revision):
     return zivid.CameraInfo.Revision(
-        major=internal_revision.major.value, minor=internal_revision.minor.value,
+        major=internal_revision.major.value,
+        minor=internal_revision.minor.value,
     )
 
 

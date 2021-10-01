@@ -4,7 +4,9 @@ import _zivid
 
 
 def to_frame_info_software_version(internal_software_version):
-    return zivid.FrameInfo.SoftwareVersion(core=internal_software_version.core.value,)
+    return zivid.FrameInfo.SoftwareVersion(
+        core=internal_software_version.core.value,
+    )
 
 
 def to_frame_info(internal_frame_info):

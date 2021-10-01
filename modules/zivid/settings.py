@@ -17,7 +17,16 @@ class Settings:
             gain=_zivid.Settings().Acquisition().Gain().value,
         ):
 
-            if isinstance(aperture, (float, int,)) or aperture is None:
+            if (
+                isinstance(
+                    aperture,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or aperture is None
+            ):
                 self._aperture = _zivid.Settings.Acquisition.Aperture(aperture)
             else:
                 raise TypeError(
@@ -25,7 +34,16 @@ class Settings:
                         value_type=type(aperture)
                     )
                 )
-            if isinstance(brightness, (float, int,)) or brightness is None:
+            if (
+                isinstance(
+                    brightness,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or brightness is None
+            ):
                 self._brightness = _zivid.Settings.Acquisition.Brightness(brightness)
             else:
                 raise TypeError(
@@ -46,7 +64,16 @@ class Settings:
                         value_type=type(exposure_time)
                     )
                 )
-            if isinstance(gain, (float, int,)) or gain is None:
+            if (
+                isinstance(
+                    gain,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or gain is None
+            ):
                 self._gain = _zivid.Settings.Acquisition.Gain(gain)
             else:
                 raise TypeError(
@@ -73,7 +100,16 @@ class Settings:
 
         @aperture.setter
         def aperture(self, value):
-            if isinstance(value, (float, int,)) or value is None:
+            if (
+                isinstance(
+                    value,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or value is None
+            ):
                 self._aperture = _zivid.Settings.Acquisition.Aperture(value)
             else:
                 raise TypeError(
@@ -84,7 +120,16 @@ class Settings:
 
         @brightness.setter
         def brightness(self, value):
-            if isinstance(value, (float, int,)) or value is None:
+            if (
+                isinstance(
+                    value,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or value is None
+            ):
                 self._brightness = _zivid.Settings.Acquisition.Brightness(value)
             else:
                 raise TypeError(
@@ -106,7 +151,16 @@ class Settings:
 
         @gain.setter
         def gain(self, value):
-            if isinstance(value, (float, int,)) or value is None:
+            if (
+                isinstance(
+                    value,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or value is None
+            ):
                 self._gain = _zivid.Settings.Acquisition.Gain(value)
             else:
                 raise TypeError(
@@ -138,7 +192,16 @@ class Settings:
                     red=_zivid.Settings().Processing.Color.Balance().Red().value,
                 ):
 
-                    if isinstance(blue, (float, int,)) or blue is None:
+                    if (
+                        isinstance(
+                            blue,
+                            (
+                                float,
+                                int,
+                            ),
+                        )
+                        or blue is None
+                    ):
                         self._blue = _zivid.Settings.Processing.Color.Balance.Blue(blue)
                     else:
                         raise TypeError(
@@ -146,7 +209,16 @@ class Settings:
                                 value_type=type(blue)
                             )
                         )
-                    if isinstance(green, (float, int,)) or green is None:
+                    if (
+                        isinstance(
+                            green,
+                            (
+                                float,
+                                int,
+                            ),
+                        )
+                        or green is None
+                    ):
                         self._green = _zivid.Settings.Processing.Color.Balance.Green(
                             green
                         )
@@ -156,7 +228,16 @@ class Settings:
                                 value_type=type(green)
                             )
                         )
-                    if isinstance(red, (float, int,)) or red is None:
+                    if (
+                        isinstance(
+                            red,
+                            (
+                                float,
+                                int,
+                            ),
+                        )
+                        or red is None
+                    ):
                         self._red = _zivid.Settings.Processing.Color.Balance.Red(red)
                     else:
                         raise TypeError(
@@ -179,7 +260,16 @@ class Settings:
 
                 @blue.setter
                 def blue(self, value):
-                    if isinstance(value, (float, int,)) or value is None:
+                    if (
+                        isinstance(
+                            value,
+                            (
+                                float,
+                                int,
+                            ),
+                        )
+                        or value is None
+                    ):
                         self._blue = _zivid.Settings.Processing.Color.Balance.Blue(
                             value
                         )
@@ -192,7 +282,16 @@ class Settings:
 
                 @green.setter
                 def green(self, value):
-                    if isinstance(value, (float, int,)) or value is None:
+                    if (
+                        isinstance(
+                            value,
+                            (
+                                float,
+                                int,
+                            ),
+                        )
+                        or value is None
+                    ):
                         self._green = _zivid.Settings.Processing.Color.Balance.Green(
                             value
                         )
@@ -205,7 +304,16 @@ class Settings:
 
                 @red.setter
                 def red(self, value):
-                    if isinstance(value, (float, int,)) or value is None:
+                    if (
+                        isinstance(
+                            value,
+                            (
+                                float,
+                                int,
+                            ),
+                        )
+                        or value is None
+                    ):
                         self._red = _zivid.Settings.Processing.Color.Balance.Red(value)
                     else:
                         raise TypeError(
@@ -236,7 +344,16 @@ class Settings:
                 balance=None,
             ):
 
-                if isinstance(gamma, (float, int,)) or gamma is None:
+                if (
+                    isinstance(
+                        gamma,
+                        (
+                            float,
+                            int,
+                        ),
+                    )
+                    or gamma is None
+                ):
                     self._gamma = _zivid.Settings.Processing.Color.Gamma(gamma)
                 else:
                     raise TypeError(
@@ -262,7 +379,16 @@ class Settings:
 
             @gamma.setter
             def gamma(self, value):
-                if isinstance(value, (float, int,)) or value is None:
+                if (
+                    isinstance(
+                        value,
+                        (
+                            float,
+                            int,
+                        ),
+                    )
+                    or value is None
+                ):
                     self._gamma = _zivid.Settings.Processing.Color.Gamma(value)
                 else:
                     raise TypeError(
@@ -317,7 +443,16 @@ class Settings:
                                         value_type=type(enabled)
                                     )
                                 )
-                            if isinstance(strength, (float, int,)) or strength is None:
+                            if (
+                                isinstance(
+                                    strength,
+                                    (
+                                        float,
+                                        int,
+                                    ),
+                                )
+                                or strength is None
+                            ):
                                 self._strength = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Strength(
                                     strength
                                 )
@@ -351,7 +486,16 @@ class Settings:
 
                         @strength.setter
                         def strength(self, value):
-                            if isinstance(value, (float, int,)) or value is None:
+                            if (
+                                isinstance(
+                                    value,
+                                    (
+                                        float,
+                                        int,
+                                    ),
+                                )
+                                or value is None
+                            ):
                                 self._strength = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Strength(
                                     value
                                 )
@@ -401,7 +545,13 @@ class Settings:
                                     )
                                 )
                             if (
-                                isinstance(threshold, (float, int,))
+                                isinstance(
+                                    threshold,
+                                    (
+                                        float,
+                                        int,
+                                    ),
+                                )
                                 or threshold is None
                             ):
                                 self._threshold = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Threshold(
@@ -437,7 +587,16 @@ class Settings:
 
                         @threshold.setter
                         def threshold(self, value):
-                            if isinstance(value, (float, int,)) or value is None:
+                            if (
+                                isinstance(
+                                    value,
+                                    (
+                                        float,
+                                        int,
+                                    ),
+                                )
+                                or value is None
+                            ):
                                 self._threshold = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Threshold(
                                     value
                                 )
@@ -464,7 +623,9 @@ class Settings:
                             )
 
                     def __init__(
-                        self, correction=None, removal=None,
+                        self,
+                        correction=None,
+                        removal=None,
                     ):
 
                         if correction is None:
@@ -540,7 +701,8 @@ class Settings:
                         )
 
                 def __init__(
-                    self, contrast_distortion=None,
+                    self,
+                    contrast_distortion=None,
                 ):
 
                     if contrast_distortion is None:
@@ -609,7 +771,16 @@ class Settings:
                                     value_type=type(enabled)
                                 )
                             )
-                        if isinstance(threshold, (float, int,)) or threshold is None:
+                        if (
+                            isinstance(
+                                threshold,
+                                (
+                                    float,
+                                    int,
+                                ),
+                            )
+                            or threshold is None
+                        ):
                             self._threshold = _zivid.Settings.Processing.Filters.Noise.Removal.Threshold(
                                 threshold
                             )
@@ -643,7 +814,16 @@ class Settings:
 
                     @threshold.setter
                     def threshold(self, value):
-                        if isinstance(value, (float, int,)) or value is None:
+                        if (
+                            isinstance(
+                                value,
+                                (
+                                    float,
+                                    int,
+                                ),
+                            )
+                            or value is None
+                        ):
                             self._threshold = _zivid.Settings.Processing.Filters.Noise.Removal.Threshold(
                                 value
                             )
@@ -670,7 +850,8 @@ class Settings:
                         )
 
                 def __init__(
-                    self, removal=None,
+                    self,
+                    removal=None,
                 ):
 
                     if removal is None:
@@ -733,7 +914,16 @@ class Settings:
                                     value_type=type(enabled)
                                 )
                             )
-                        if isinstance(threshold, (float, int,)) or threshold is None:
+                        if (
+                            isinstance(
+                                threshold,
+                                (
+                                    float,
+                                    int,
+                                ),
+                            )
+                            or threshold is None
+                        ):
                             self._threshold = _zivid.Settings.Processing.Filters.Outlier.Removal.Threshold(
                                 threshold
                             )
@@ -767,7 +957,16 @@ class Settings:
 
                     @threshold.setter
                     def threshold(self, value):
-                        if isinstance(value, (float, int,)) or value is None:
+                        if (
+                            isinstance(
+                                value,
+                                (
+                                    float,
+                                    int,
+                                ),
+                            )
+                            or value is None
+                        ):
                             self._threshold = _zivid.Settings.Processing.Filters.Outlier.Removal.Threshold(
                                 value
                             )
@@ -794,7 +993,8 @@ class Settings:
                         )
 
                 def __init__(
-                    self, removal=None,
+                    self,
+                    removal=None,
                 ):
 
                     if removal is None:
@@ -884,7 +1084,8 @@ class Settings:
                         )
 
                 def __init__(
-                    self, removal=None,
+                    self,
+                    removal=None,
                 ):
 
                     if removal is None:
@@ -947,7 +1148,16 @@ class Settings:
                                     value_type=type(enabled)
                                 )
                             )
-                        if isinstance(sigma, (float, int,)) or sigma is None:
+                        if (
+                            isinstance(
+                                sigma,
+                                (
+                                    float,
+                                    int,
+                                ),
+                            )
+                            or sigma is None
+                        ):
                             self._sigma = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Sigma(
                                 sigma
                             )
@@ -981,7 +1191,16 @@ class Settings:
 
                     @sigma.setter
                     def sigma(self, value):
-                        if isinstance(value, (float, int,)) or value is None:
+                        if (
+                            isinstance(
+                                value,
+                                (
+                                    float,
+                                    int,
+                                ),
+                            )
+                            or value is None
+                        ):
                             self._sigma = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Sigma(
                                 value
                             )
@@ -1008,7 +1227,8 @@ class Settings:
                         )
 
                 def __init__(
-                    self, gaussian=None,
+                    self,
+                    gaussian=None,
                 ):
 
                     if gaussian is None:
@@ -1181,7 +1401,9 @@ class Settings:
                 )
 
         def __init__(
-            self, color=None, filters=None,
+            self,
+            color=None,
+            filters=None,
         ):
 
             if color is None:
@@ -1237,7 +1459,9 @@ class Settings:
         self._processing = value
 
     def __init__(
-        self, acquisitions=None, processing=None,
+        self,
+        acquisitions=None,
+        processing=None,
     ):
         if acquisitions is None:
             acquisitions = _zivid.Settings().Acquisitions().value

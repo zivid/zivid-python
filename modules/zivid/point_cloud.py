@@ -116,9 +116,11 @@ class PointCloud:
         Returns:
             Reference to the same PointCloud instance (for chaining calls)
         """
-        internal_downsampling = PointCloud.Downsampling._valid_values[  # pylint: disable=protected-access
-            downsampling
-        ]
+        internal_downsampling = (
+            PointCloud.Downsampling._valid_values[  # pylint: disable=protected-access
+                downsampling
+            ]
+        )
         self.__impl.downsample(internal_downsampling)
         return self
 
@@ -131,9 +133,11 @@ class PointCloud:
         Returns:
             A new PointCloud instance
         """
-        internal_downsampling = PointCloud.Downsampling._valid_values[  # pylint: disable=protected-access
-            downsampling
-        ]
+        internal_downsampling = (
+            PointCloud.Downsampling._valid_values[  # pylint: disable=protected-access
+                downsampling
+            ]
+        )
         return PointCloud(self.__impl.downsampled(internal_downsampling))
 
     @property
