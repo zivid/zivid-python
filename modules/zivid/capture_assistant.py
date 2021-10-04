@@ -2,7 +2,7 @@
 import datetime
 
 import _zivid
-import zivid._settings_converter as _settings_converter
+from zivid import _settings_converter
 from zivid._capture_assistant_suggest_settings_parameters_converter import (
     to_internal_capture_assistant_suggest_settings_parameters,
 )

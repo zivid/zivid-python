@@ -2,10 +2,10 @@
 from pathlib import Path
 import _zivid
 
-import zivid._settings_converter as _settings_converter
-import zivid._camera_state_converter as _camera_state_converter
-import zivid._camera_info_converter as _camera_info_converter
-import zivid._frame_info_converter as _frame_info_converter
+from zivid import _settings_converter
+from zivid import _camera_state_converter
+from zivid import _camera_info_converter
+from zivid import _frame_info_converter
 from zivid.point_cloud import PointCloud
 
 

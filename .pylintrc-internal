@@ -1,6 +1,6 @@
 [MESSAGES CONTROL]
 disable=missing-docstring,
-        duplicate-code # Triggers on data-models
+        consider-using-f-string # Keep .format() as long as we want unofficial python3.5 support
 
 [FORMAT]
 max-line-length=150 # Generated code for data-models will sometimes have long lines.
