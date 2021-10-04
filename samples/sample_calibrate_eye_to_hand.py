@@ -37,7 +37,7 @@ def _main():
     camera = app.connect_camera()
 
     current_pose_id = 0
-    calibration_inputs = list()
+    calibration_inputs = []
     calibrate = False
 
     while not calibrate:

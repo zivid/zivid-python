@@ -10,10 +10,10 @@ def repo_root():
 def run_process(args, env=None, workdir=None):
     sys.stdout.flush()
     try:
-        process = subprocess.Popen(args, env=env, cwd=workdir)
-        exit_code = process.wait()
-        if exit_code != 0:
-            raise RuntimeError("Wait failed with exit code {}".format(exit_code))
+        with subprocess.Popen(args, env=env, cwd=workdir) as process:
+            exit_code = process.wait()
+            if exit_code != 0:
+                raise RuntimeError("Wait failed with exit code {}".format(exit_code))
     except Exception as ex:
         raise type(ex)("Process failed: '{}'.".format(" ".join(args))) from ex
     finally:

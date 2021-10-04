@@ -1,9 +1,9 @@
 """Contains the Frame class."""
 import _zivid
 
-import zivid._settings2_d_converter as _settings_converter
-import zivid._camera_state_converter as _camera_state_converter
-import zivid._frame_info_converter as _frame_info_converter
+from zivid import _settings2_d_converter
+from zivid import _camera_state_converter
+from zivid import _frame_info_converter
 from zivid.image import Image
 
 
@@ -51,7 +51,7 @@ class Frame2D:
         Returns:
             A Settings2D instance
         """
-        return _settings_converter.to_settings2_d(self.__impl.settings)
+        return _settings2_d_converter.to_settings2_d(self.__impl.settings)
 
     @property
     def state(self):

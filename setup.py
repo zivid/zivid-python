@@ -67,10 +67,12 @@ def _check_dependency(module_name, package_hint=None):
 def _check_cpp17_compiler():
     def run_process(args, **kwargs):
         try:
-            process = subprocess.Popen(args, **kwargs)
-            exit_code = process.wait()
-            if exit_code != 0:
-                raise RuntimeError("Wait failed with exit code {}".format(exit_code))
+            with subprocess.Popen(args, **kwargs) as process:
+                exit_code = process.wait()
+                if exit_code != 0:
+                    raise RuntimeError(
+                        "Wait failed with exit code {}".format(exit_code)
+                    )
         except Exception as ex:
             raise type(ex)("Process failed: '{}'.".format(" ".join(args))) from ex
 
@@ -121,7 +123,7 @@ def _main():
         name="zivid",
         version=_zivid_python_version(),
         description="Defining the Future of 3D Machine Vision",
-        long_description=open("README.md").read(),
+        long_description=Path("README.md").read_text(encoding="utf-8"),
         long_description_content_type="text/markdown",
         url="https://www.zivid.com",
         author="Zivid AS",

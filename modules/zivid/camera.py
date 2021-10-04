@@ -3,10 +3,10 @@ from zivid.frame import Frame
 from zivid.frame_2d import Frame2D
 import zivid
 from zivid.settings_2d import Settings2D
-import zivid._settings_converter as _settings_converter
-import zivid._settings2_d_converter as _settings_2d_converter
-import zivid._camera_state_converter as _camera_state_converter
-import zivid._camera_info_converter as _camera_info_converter
+from zivid import _settings_converter
+from zivid import _settings2_d_converter
+from zivid import _camera_state_converter
+from zivid import _camera_info_converter
 import _zivid
 
 
@@ -62,7 +62,7 @@ class Camera:
         if isinstance(settings, Settings2D):
             return Frame2D(
                 self.__impl.capture(
-                    _settings_2d_converter.to_internal_settings2_d(settings)
+                    _settings2_d_converter.to_internal_settings2_d(settings)
                 )
             )
         raise TypeError("Unsupported settings type: {}".format(type(settings)))
