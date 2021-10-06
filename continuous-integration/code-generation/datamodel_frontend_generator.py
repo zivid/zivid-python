@@ -366,6 +366,23 @@ def _create_properties(node_data: NodeData, base_type: str) -> str:
     )
 
 
+def _create_save_load_functions(node_data: NodeData, base_type: str):
+    full_dot_path = _get_dot_path(base_type=base_type, node_path=node_data.path)
+    underscore_name = _get_underscore_name(
+        base_type=base_type, node_path=node_data.path
+    )
+    return dedent(
+        f"""
+        @classmethod
+        def load(cls, file_name):
+            return _to_{underscore_name}({full_dot_path}(str(file_name)))
+
+        def save(self, file_name):
+            _to_internal_{underscore_name}(self).save(str(file_name))
+        """
+    )
+
+
 def _create_enum_class(member: NodeData, base_type: str) -> str:
 
     full_dot_path = _get_dot_path(base_type, member.path)
@@ -405,9 +422,10 @@ def _create_enum_classes(node_data: NodeData, base_type: str) -> str:
     )
 
 
-def _create_class(node_data: NodeData, base_type: str) -> str:
+def _create_class(node_data: NodeData, base_type: str, is_root: bool) -> str:
     nested_classes = [
-        _create_class(element, base_type=base_type) for element in node_data.children
+        _create_class(element, base_type=base_type, is_root=False)
+        for element in node_data.children
     ]
     nested_classes_string = "\n".join(nested_classes)
 
@@ -418,6 +436,7 @@ def _create_class(node_data: NodeData, base_type: str) -> str:
             {enum_classes}
             {init_function}
             {get_set_properties}
+            {save_load_functions}
             {eq_function}
             {str_function}
         """
@@ -433,6 +452,11 @@ def _create_class(node_data: NodeData, base_type: str) -> str:
             _create_str_special_member_function(node_data, base_type=base_type)
         ),
         get_set_properties=_indent(_create_properties(node_data, base_type=base_type)),
+        save_load_functions=_indent(
+            _create_save_load_functions(node_data, base_type=base_type)
+        )
+        if is_root
+        else "",
     )
 
 
@@ -651,7 +675,7 @@ def _generate_datamodel_frontend(
     # Convert NodeData tree to source code
     base_type = f"{_get_submodule(internal_class)}.{internal_class.name}".lstrip(".")
     raw_text = _imports(extra_imports=extra_imports)
-    raw_text += _create_class(data_model, base_type=base_type)
+    raw_text += _create_class(data_model, base_type=base_type, is_root=True)
     raw_text += _create_to_frontend_converter(data_model, base_type=base_type)
     raw_text += _create_to_internal_converter(data_model, base_type=base_type)
 

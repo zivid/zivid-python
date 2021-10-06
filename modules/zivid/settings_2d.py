@@ -503,6 +503,13 @@ class Settings2D:
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._processing = value
 
+    @classmethod
+    def load(cls, file_name):
+        return _to_settings2d(_zivid.Settings2D(str(file_name)))
+
+    def save(self, file_name):
+        _to_internal_settings2d(self).save(str(file_name))
+
     def __eq__(self, other):
         if (
             self._acquisitions == other._acquisitions

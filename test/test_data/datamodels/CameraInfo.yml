@@ -1,0 +1,12 @@
+__version__:
+  serializer: 1
+  data: 1
+CameraInfo:
+  FirmwareVersion: "1.4.1+08a6d55c"
+  ModelName: "Zivid Two"
+  Revision:
+    Major: 4
+    Minor: 3
+  SerialNumber: "2118813D"
+  UserData:
+    MaxSizeBytes: 32768

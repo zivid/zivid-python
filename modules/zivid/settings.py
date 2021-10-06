@@ -1642,6 +1642,13 @@ class Settings:
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._processing = value
 
+    @classmethod
+    def load(cls, file_name):
+        return _to_settings(_zivid.Settings(str(file_name)))
+
+    def save(self, file_name):
+        _to_internal_settings(self).save(str(file_name))
+
     def __eq__(self, other):
         if (
             self._acquisitions == other._acquisitions
