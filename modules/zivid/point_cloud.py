@@ -61,6 +61,7 @@ class PointCloud:
         xyzw:       ndarray(Height,Width,4) of float
         z:          ndarray(Height,Width)   of float
         rgba:       ndarray(Height,Width,4) of uint8
+        normals:    ndarray(Height,Width,3) of float
         snr:        ndarray(Height,Width)   of float
         xyzrgba:    ndarray(Height,Width)   of composite dtype (accessed with e.g. arr["x"])
 
@@ -80,6 +81,7 @@ class PointCloud:
             "xyzw": _zivid.Array2DPointXYZW,
             "z": _zivid.Array2DPointZ,
             "rgba": _zivid.Array2DColorRGBA,
+            "normals": _zivid.Array2DNormalXYZ,
             "snr": _zivid.Array2DSNR,
             "xyzrgba": _zivid.Array2DPointXYZColorRGBA,
         }

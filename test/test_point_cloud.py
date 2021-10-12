@@ -9,12 +9,14 @@ def test_point_cloud_copy_data(point_cloud):
     xyzw = point_cloud.copy_data("xyzw")
     xyzrgba = point_cloud.copy_data("xyzrgba")
     rgba = point_cloud.copy_data("rgba")
+    normals = point_cloud.copy_data("normals")
     depth = point_cloud.copy_data("z")
     snr = point_cloud.copy_data("snr")
     assert isinstance(xyz, np.ndarray)
     assert isinstance(xyzw, np.ndarray)
     assert isinstance(xyzrgba, np.ndarray)
     assert isinstance(rgba, np.ndarray)
+    assert isinstance(normals, np.ndarray)
     assert isinstance(depth, np.ndarray)
     assert isinstance(snr, np.ndarray)
 
@@ -65,6 +67,20 @@ def test_point_cloud_rgba(point_cloud):
     np.testing.assert_array_equal(rgba[:, :, 1], xyzrgba["g"])
     np.testing.assert_array_equal(rgba[:, :, 2], xyzrgba["b"])
     np.testing.assert_array_equal(rgba[:, :, 3], xyzrgba["a"])
+
+
+def test_point_cloud_normals(point_cloud):
+    import numpy as np
+
+    normals = point_cloud.copy_data("normals")
+
+    assert normals.shape == (point_cloud.height, point_cloud.width, 3)
+    assert normals.dtype == np.float32
+
+    normals_flat = normals.reshape(normals.shape[0] * normals.shape[1], 3)
+    non_nan_normals = normals_flat[~np.isnan(normals_flat[:, 0])]
+    vector_lengths = np.linalg.norm(non_nan_normals, axis=1)
+    np.testing.assert_array_almost_equal(vector_lengths, 1.0)
 
 
 def test_point_cloud_snr(point_cloud):
