@@ -14,27 +14,25 @@ idna==2.10
     # via requests
 iniconfig==1.1.1
     # via pytest
-more-itertools==8.10.0
-    # via pytest
 packaging==21.0
     # via pytest
-pluggy==0.13.1
+pluggy==1.0.0
     # via pytest
 py==1.10.0
     # via pytest
 pyparsing==2.4.7
     # via packaging
-pytest==6.0.1
+pytest==6.2.5
     # via
     #   -r continuous-integration/python-requirements/test.in
     #   pytest-helpers-namespace
     #   pytest-pythonpath
     #   pytest-timeout
-pytest-helpers-namespace==2019.1.8
+pytest-helpers-namespace==2021.4.29
     # via -r continuous-integration/python-requirements/test.in
 pytest-pythonpath==0.7.3
     # via -r continuous-integration/python-requirements/test.in
-pytest-timeout==1.4.2
+pytest-timeout==2.0.1
     # via -r continuous-integration/python-requirements/test.in
 requests==2.24.0
     # via -r continuous-integration/python-requirements/test.in
