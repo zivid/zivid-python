@@ -11,8 +11,8 @@ fi
 
 #Todo: buildDir=$1
 
-cppFiles=$(find "$ROOT_DIR" -name '*.cpp' |grep -v src/3rd-party)
-hFiles=$(find "$ROOT_DIR" -name '*.h' |grep -v src/3rd-party)
+cppFiles=$(find "$ROOT_DIR" -name '*.cpp' |grep --invert-match src/3rd-party |grep --invert-match _skbuild)
+hFiles=$(find "$ROOT_DIR" -name '*.h' |grep --invert-match src/3rd-party |grep --invert-match _skbuild)
 
 if [ -z "$cppFiles" ] || [ -z "$hFiles" ]; then
     echo Error: Cannot find C++ source files
