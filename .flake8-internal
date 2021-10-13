@@ -10,6 +10,7 @@ ignore =
 ### Permanently disabled for internal linting:
     D100, # Missing docstring in public module
     D101, # missing docstring in public class
+    D102, # Missing docstring in public method
     D103, # missing docstring in public function
     D104, # missing docstring in public package
     D105, # missing docstring in magic method
