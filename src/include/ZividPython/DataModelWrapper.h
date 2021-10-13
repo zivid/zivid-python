@@ -122,7 +122,7 @@ namespace ZividPython
         };
 
         template<bool isRoot, typename Dest, typename Target>
-        py::class_<Target> wrapDataModel(Dest &dest, const Target &target)
+        py::class_<Target> wrapDataModel(Dest &dest, const Target &target, const bool uninstantiatedNode = false)
         {
             py::class_<Target> pyClass{ dest, Target::name };
 
@@ -134,6 +134,8 @@ namespace ZividPython
                 .def_readonly_static("node_type", &Target::nodeType)
                 .def_readonly_static("name", &Target::name)
                 .def_readonly_static("path", &Target::path);
+
+            pyClass.attr("uninstantiated_node") = uninstantiatedNode;
 
             if constexpr(isRoot)
             {
@@ -148,7 +150,7 @@ namespace ZividPython
                 // This generator should work on types and not instances.
                 if constexpr(std::is_same_v<Target, Zivid::Settings> || std::is_same_v<Target, Zivid::Settings2D>)
                 {
-                    wrapDataModel<false>(pyClass, typename Target::Acquisition{});
+                    wrapDataModel<false>(pyClass, typename Target::Acquisition{}, true);
                 }
 
                 target.forEach([&](const auto &member) {
@@ -239,6 +241,7 @@ namespace ZividPython
                 using ValueTypeContained = typename Target::ValueType::value_type;
                 pyClass.attr("value_type") = TypeName<ValueTypeContainer>::value;
                 pyClass.attr("is_optional") = Zivid::DataModel::IsOptional<Target>::value;
+                pyClass.attr("contained_type") = ValueTypeContained::name;
 
                 pyClass.def_property_readonly("value", &Target::value)
                     .def("append", [](Target &write, ValueTypeContained value) { write.emplaceBack(std::move(value)); })

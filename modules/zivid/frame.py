@@ -1,11 +1,11 @@
 """Contains the Frame class."""
 from pathlib import Path
-import _zivid
 
-from zivid import _settings_converter
-from zivid import _camera_state_converter
-from zivid import _camera_info_converter
-from zivid import _frame_info_converter
+import _zivid
+from zivid.settings import _to_settings
+from zivid.camera_info import _to_camera_info
+from zivid.camera_state import _to_camera_state
+from zivid.frame_info import _to_frame_info
 from zivid.point_cloud import PointCloud
 
 
@@ -75,7 +75,7 @@ class Frame:
         Returns:
             A Settings instance
         """
-        return _settings_converter.to_settings(self.__impl.settings)
+        return _to_settings(self.__impl.settings)
 
     @property
     def state(self):
@@ -84,7 +84,7 @@ class Frame:
         Returns:
             A CameraState instance
         """
-        return _camera_state_converter.to_camera_state(self.__impl.state)
+        return _to_camera_state(self.__impl.state)
 
     @property
     def info(self):
@@ -93,7 +93,7 @@ class Frame:
         Returns:
             A FrameInfo instance
         """
-        return _frame_info_converter.to_frame_info(self.__impl.info)
+        return _to_frame_info(self.__impl.info)
 
     @property
     def camera_info(self):
@@ -102,7 +102,7 @@ class Frame:
         Returns:
             A CameraInfo instance
         """
-        return _camera_info_converter.to_camera_info(self.__impl.camera_info)
+        return _to_camera_info(self.__impl.camera_info)
 
     def release(self):
         """Release the underlying resources."""

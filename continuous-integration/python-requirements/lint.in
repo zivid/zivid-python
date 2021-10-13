@@ -4,3 +4,4 @@ flake8
 flake8-docstrings
 pylint
 scikit-build
+inflection

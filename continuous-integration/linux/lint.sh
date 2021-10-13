@@ -65,6 +65,9 @@ testsPythonFiles=$(find "$ROOT_DIR/test" -name '*.py')
 internalPythonFiles=$(comm -23 <(echo $nonPublicPythonFiles| tr " " "\n" |sort) \
                                <(echo $testsPythonFiles| tr " " "\n" |sort))
 
+# Check that generated datamodel front-ends are up to date
+python3 "$ROOT_DIR/continuous-integration/code-generation/check_datamodels_up_to_date.py" || exit $?
+
 # Python linting
 runPylint "$publicPythonFiles" ".pylintrc" || exit $?
 runPylint "$internalPythonFiles" ".pylintrc-internal" || exit $?

@@ -1,13 +1,11 @@
 """Contains Camera class."""
+import _zivid
 from zivid.frame import Frame
 from zivid.frame_2d import Frame2D
-import zivid
-from zivid.settings_2d import Settings2D
-from zivid import _settings_converter
-from zivid import _settings2_d_converter
-from zivid import _camera_state_converter
-from zivid import _camera_info_converter
-import _zivid
+from zivid.settings import Settings, _to_internal_settings
+from zivid.settings_2d import Settings2D, _to_internal_settings2d
+from zivid.camera_info import _to_camera_info
+from zivid.camera_state import _to_camera_state
 
 
 class Camera:
@@ -55,16 +53,10 @@ class Camera:
         Raises:
             TypeError: If argument is neither a Settings or a Settings2D
         """
-        if isinstance(settings, zivid.Settings):
-            return Frame(
-                self.__impl.capture(_settings_converter.to_internal_settings(settings))
-            )
+        if isinstance(settings, Settings):
+            return Frame(self.__impl.capture(_to_internal_settings(settings)))
         if isinstance(settings, Settings2D):
-            return Frame2D(
-                self.__impl.capture(
-                    _settings2_d_converter.to_internal_settings2_d(settings)
-                )
-            )
+            return Frame2D(self.__impl.capture(_to_internal_settings2d(settings)))
         raise TypeError("Unsupported settings type: {}".format(type(settings)))
 
     @property
@@ -74,7 +66,7 @@ class Camera:
         Returns:
             A CameraInfo instance
         """
-        return _camera_info_converter.to_camera_info(self.__impl.info)
+        return _to_camera_info(self.__impl.info)
 
     @property
     def state(self):
@@ -83,7 +75,7 @@ class Camera:
         Returns:
             A CameraState instance
         """
-        return _camera_state_converter.to_camera_state(self.__impl.state)
+        return _to_camera_state(self.__impl.state)
 
     def connect(self):
         """Connect to the camera.

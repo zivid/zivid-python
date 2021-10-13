@@ -7,6 +7,7 @@ def test_init_default_settings(application):
     settings_2d = zivid.Settings2D()
 
     assert isinstance(settings_2d.acquisitions, list)
+    assert len(settings_2d.acquisitions) == 0
     assert isinstance(settings_2d.processing, zivid.Settings2D.Processing)
 
     assert isinstance(settings_2d.processing.color, zivid.Settings2D.Processing.Color)
@@ -17,6 +18,39 @@ def test_init_default_settings(application):
     assert settings_2d.processing.color.balance.red is None
     assert settings_2d.processing.color.balance.green is None
     assert settings_2d.processing.color.balance.blue is None
+
+
+def test_set_acquisition_list(application):
+    import zivid
+
+    settings = zivid.Settings2D()
+
+    settings.acquisitions = [
+        zivid.Settings2D.Acquisition(gain=1.0),
+        zivid.Settings2D.Acquisition(gain=2.0),
+        zivid.Settings2D.Acquisition(gain=3.0),
+    ]
+    assert len(settings.acquisitions) == 3
+    assert settings.acquisitions is not None
+    assert isinstance(settings.acquisitions, list)
+    for element in settings.acquisitions:
+        assert isinstance(element, zivid.Settings2D.Acquisition)
+
+    assert settings.acquisitions[0].gain == 1.0
+    assert settings.acquisitions[1].gain == 2.0
+    assert settings.acquisitions[2].gain == 3.0
+
+    settings.acquisitions[0].gain = 4.0
+    assert settings.acquisitions[0].gain == 4.0
+
+
+def test_append_acquisition_list(application):
+    import zivid
+
+    settings = zivid.Settings2D()
+    settings.acquisitions.append(zivid.Settings2D.Acquisition(brightness=1.1))
+    assert len(settings.acquisitions) == 1
+    assert settings.acquisitions[0].brightness == 1.1
 
 
 def test_default_acquisition(application):

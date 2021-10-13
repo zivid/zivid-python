@@ -1,19 +1,17 @@
 """Auto generated, do not edit."""
-# pylint: disable=too-many-arguments,missing-class-docstring,missing-function-docstring
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring
 import _zivid
-import zivid
-import zivid._camera_state_converter
 
 
 class CameraState:
     class Temperature:
         def __init__(
             self,
-            dmd=_zivid.CameraState().Temperature().DMD().value,
-            general=_zivid.CameraState().Temperature().General().value,
-            led=_zivid.CameraState().Temperature().LED().value,
-            lens=_zivid.CameraState().Temperature().Lens().value,
-            pcb=_zivid.CameraState().Temperature().PCB().value,
+            dmd=_zivid.CameraState.Temperature.DMD().value,
+            general=_zivid.CameraState.Temperature.General().value,
+            led=_zivid.CameraState.Temperature.LED().value,
+            lens=_zivid.CameraState.Temperature.Lens().value,
+            pcb=_zivid.CameraState.Temperature.PCB().value,
         ):
 
             if isinstance(
@@ -30,6 +28,7 @@ class CameraState:
                         value_type=type(dmd)
                     )
                 )
+
             if isinstance(
                 general,
                 (
@@ -44,6 +43,7 @@ class CameraState:
                         value_type=type(general)
                     )
                 )
+
             if isinstance(
                 led,
                 (
@@ -58,6 +58,7 @@ class CameraState:
                         value_type=type(led)
                     )
                 )
+
             if isinstance(
                 lens,
                 (
@@ -72,6 +73,7 @@ class CameraState:
                         value_type=type(lens)
                     )
                 )
+
             if isinstance(
                 pcb,
                 (
@@ -204,14 +206,12 @@ class CameraState:
             return False
 
         def __str__(self):
-            return str(
-                zivid._camera_state_converter.to_internal_camera_state_temperature(self)
-            )
+            return str(_to_internal_camera_state_temperature(self))
 
     def __init__(
         self,
-        available=_zivid.CameraState().Available().value,
-        connected=_zivid.CameraState().Connected().value,
+        available=_zivid.CameraState.Available().value,
+        connected=_zivid.CameraState.Connected().value,
         temperature=None,
     ):
 
@@ -223,6 +223,7 @@ class CameraState:
                     value_type=type(available)
                 )
             )
+
         if isinstance(connected, (bool,)):
             self._connected = _zivid.CameraState.Connected(connected)
         else:
@@ -231,9 +232,10 @@ class CameraState:
                     value_type=type(connected)
                 )
             )
+
         if temperature is None:
-            temperature = zivid.CameraState.Temperature()
-        if not isinstance(temperature, zivid.CameraState.Temperature):
+            temperature = self.Temperature()
+        if not isinstance(temperature, self.Temperature):
             raise TypeError("Unsupported type: {value}".format(value=type(temperature)))
         self._temperature = temperature
 
@@ -273,7 +275,7 @@ class CameraState:
 
     @temperature.setter
     def temperature(self, value):
-        if not isinstance(value, zivid.CameraState.Temperature):
+        if not isinstance(value, self.Temperature):
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._temperature = value
 
@@ -287,4 +289,52 @@ class CameraState:
         return False
 
     def __str__(self):
-        return str(zivid._camera_state_converter.to_internal_camera_state(self))
+        return str(_to_internal_camera_state(self))
+
+
+def _to_camera_state_temperature(internal_temperature):
+    return CameraState.Temperature(
+        dmd=internal_temperature.dmd.value,
+        general=internal_temperature.general.value,
+        led=internal_temperature.led.value,
+        lens=internal_temperature.lens.value,
+        pcb=internal_temperature.pcb.value,
+    )
+
+
+def _to_camera_state(internal_camera_state):
+    return CameraState(
+        temperature=_to_camera_state_temperature(internal_camera_state.temperature),
+        available=internal_camera_state.available.value,
+        connected=internal_camera_state.connected.value,
+    )
+
+
+def _to_internal_camera_state_temperature(temperature):
+    internal_temperature = _zivid.CameraState.Temperature()
+
+    internal_temperature.dmd = _zivid.CameraState.Temperature.DMD(temperature.dmd)
+    internal_temperature.general = _zivid.CameraState.Temperature.General(
+        temperature.general
+    )
+    internal_temperature.led = _zivid.CameraState.Temperature.LED(temperature.led)
+    internal_temperature.lens = _zivid.CameraState.Temperature.Lens(temperature.lens)
+    internal_temperature.pcb = _zivid.CameraState.Temperature.PCB(temperature.pcb)
+
+    return internal_temperature
+
+
+def _to_internal_camera_state(camera_state):
+    internal_camera_state = _zivid.CameraState()
+
+    internal_camera_state.available = _zivid.CameraState.Available(
+        camera_state.available
+    )
+    internal_camera_state.connected = _zivid.CameraState.Connected(
+        camera_state.connected
+    )
+
+    internal_camera_state.temperature = _to_internal_camera_state_temperature(
+        camera_state.temperature
+    )
+    return internal_camera_state

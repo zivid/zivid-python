@@ -7,6 +7,8 @@ def test_default_settings(application):
     settings = zivid.Settings()
 
     assert isinstance(settings.acquisitions, list)
+    assert len(settings.acquisitions) == 0
+    assert settings.experimental.engine is None
     assert isinstance(settings.processing, zivid.Settings.Processing)
     assert isinstance(settings.processing.color, zivid.Settings.Processing.Color)
     assert isinstance(
@@ -16,6 +18,7 @@ def test_default_settings(application):
     assert settings.processing.color.balance.red is None
     assert settings.processing.color.balance.green is None
     assert settings.processing.color.balance.blue is None
+    assert settings.processing.color.experimental.tone_mapping.enabled is None
 
     assert isinstance(settings.processing.filters, zivid.Settings.Processing.Filters)
     assert isinstance(
@@ -89,11 +92,23 @@ def test_set_acquisition_list():
 
     settings = Settings()
 
-    settings.acquisitions = [Settings.Acquisition(), settings.Acquisition()]
+    settings.acquisitions = [
+        Settings.Acquisition(gain=1.0),
+        Settings.Acquisition(gain=2.0),
+        Settings.Acquisition(gain=3.0),
+    ]
+    assert len(settings.acquisitions) == 3
     assert settings.acquisitions is not None
     assert isinstance(settings.acquisitions, list)
     for element in settings.acquisitions:
         assert isinstance(element, Settings.Acquisition)
+
+    assert settings.acquisitions[0].gain == 1.0
+    assert settings.acquisitions[1].gain == 2.0
+    assert settings.acquisitions[2].gain == 3.0
+
+    settings.acquisitions[0].gain = 4.0
+    assert settings.acquisitions[0].gain == 4.0
 
 
 def test_set_acquisition_generator():
@@ -192,6 +207,51 @@ def test_acquisition_aperture(application):
     )
 
 
+def test_settings_experimental(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings(),
+        member="experimental",
+        value=zivid.Settings.Experimental(),
+        expected_data_type=zivid.Settings.Experimental,
+    )
+    pytest.helpers.equality_tester(
+        zivid.Settings.Experimental,
+        ["phase"],
+        ["stripe"],
+    )
+    pytest.helpers.equality_tester(
+        zivid.Settings.Experimental,
+        ["phase"],
+        [None],
+    )
+
+
+def test_settings_experimental_engine(application):
+    import zivid
+
+    for value in zivid.Settings.Experimental.Engine.valid_values():
+        pytest.helpers.set_attribute_tester(
+            settings_instance=zivid.Settings.Experimental(),
+            member="engine",
+            value=value,
+            expected_data_type=str,
+        )
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Experimental(),
+        member="engine",
+        value=None,
+        expected_data_type=type(None),
+    )
+    # Is optional enum
+    zivid.Settings.Experimental(engine="stripe")
+    zivid.Settings.Experimental(engine="phase")
+    zivid.Settings.Experimental(engine=None)
+    with pytest.raises(KeyError):
+        zivid.Settings.Experimental(engine="_dummy_")
+
+
 def test_settings_processing(application):
     import zivid
 
@@ -262,6 +322,78 @@ def test_settings_processing_color_balance(
         [1.1, 1.1, 1.1],
         [1.2, 1.1, 1.1],
     )
+
+
+def test_settings_processing_color_experimental(
+    application,
+):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Color(),
+        member="experimental",
+        value=zivid.Settings.Processing.Color.Experimental(),
+        expected_data_type=zivid.Settings.Processing.Color.Experimental,
+    )
+    pytest.helpers.equality_tester(
+        zivid.Settings.Processing.Color.Experimental,
+        [zivid.Settings.Processing.Color.Experimental.ToneMapping()],
+        [zivid.Settings.Processing.Color.Experimental.ToneMapping(enabled="always")],
+    )
+
+
+def test_settings_processing_color_experimental_tonemapping(
+    application,
+):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Color.Experimental(),
+        member="tone_mapping",
+        value=zivid.Settings.Processing.Color.Experimental.ToneMapping(),
+        expected_data_type=zivid.Settings.Processing.Color.Experimental.ToneMapping,
+    )
+
+    pytest.helpers.equality_tester(
+        zivid.Settings.Processing.Color.Experimental.ToneMapping,
+        ["always"],
+        ["hdrOnly"],
+    )
+    pytest.helpers.equality_tester(
+        zivid.Settings.Processing.Color.Experimental.ToneMapping,
+        ["always"],
+        [None],
+    )
+
+
+def test_settings_processing_color_experimental_tonemapping_enabled(
+    application,
+):
+    import zivid
+
+    for (
+        value
+    ) in (
+        zivid.Settings.Processing.Color.Experimental.ToneMapping.Enabled.valid_values()
+    ):
+        pytest.helpers.set_attribute_tester(
+            settings_instance=zivid.Settings.Processing.Color.Experimental.ToneMapping(),
+            member="enabled",
+            value=value,
+            expected_data_type=str,
+        )
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Color.Experimental.ToneMapping(),
+        member="enabled",
+        value=None,
+        expected_data_type=type(None),
+    )
+    # Is optional enum
+    zivid.Settings.Processing.Color.Experimental.ToneMapping(enabled="always")
+    zivid.Settings.Processing.Color.Experimental.ToneMapping(enabled="hdrOnly")
+    zivid.Settings.Processing.Color.Experimental.ToneMapping(enabled=None)
+    with pytest.raises(KeyError):
+        zivid.Settings.Processing.Color.Experimental.ToneMapping(enabled="_dummy_")
 
 
 def test_settings_processing_color_balance_red(
@@ -723,6 +855,12 @@ def test_settings_processing_filters_smoothing_gaussian_enabled(
         value=True,
         expected_data_type=bool,
     )
+
+
+def test_print_settings(application):
+    import zivid
+
+    print(zivid.Settings())
 
 
 def test_print_acquisition(application):

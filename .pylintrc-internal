@@ -1,12 +1,11 @@
 [MESSAGES CONTROL]
 disable=missing-docstring,
         consider-using-f-string, # Keep .format() as long as we want unofficial python3.5 support
-        cyclic-import, # Should be re-enabled whenever possible
         duplicate-code, # Might have to be permanently disabled because of the code generation
 
 
 [FORMAT]
-max-line-length=150 # Generated code for data-models will sometimes have long lines.
+max-line-length=150
 
 # Allow long lines if they contains long strings
 ignore-long-lines="[^"]{80,}"

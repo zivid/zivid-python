@@ -1,5 +1,4 @@
 from datetime import datetime
-import pytest
 import zivid
 
 
@@ -25,17 +24,3 @@ def test_set_time_stamp(frame_info):
     assert isinstance(str(frame_info.time_stamp), str)
     assert isinstance(frame_info.time_stamp, datetime)
     assert frame_info.time_stamp == new_time_stamp
-
-
-def test_set_illegal_time_stamp(frame_info):
-    with pytest.raises(ValueError):
-        frame_info.time_stamp = datetime(1337, 1, 1)
-    with pytest.raises(ValueError):
-        frame_info.time_stamp = datetime(1969, 12, 31)
-
-
-def test_init_illegal_time_stamp():
-    with pytest.raises(ValueError):
-        _ = zivid.FrameInfo(time_stamp=datetime(1969, 12, 31))
-    with pytest.raises(ValueError):
-        _ = zivid.FrameInfo(time_stamp=datetime(1337, 1, 1))

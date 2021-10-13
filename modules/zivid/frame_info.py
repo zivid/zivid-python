@@ -1,16 +1,14 @@
 """Auto generated, do not edit."""
-# pylint: disable=missing-class-docstring,missing-function-docstring
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring
 import datetime
 import _zivid
-import zivid
-import zivid._frame_info_converter
 
 
 class FrameInfo:
     class SoftwareVersion:
         def __init__(
             self,
-            core=_zivid.FrameInfo().SoftwareVersion().Core().value,
+            core=_zivid.FrameInfo.SoftwareVersion.Core().value,
         ):
 
             if isinstance(core, (str,)):
@@ -43,25 +41,15 @@ class FrameInfo:
             return False
 
         def __str__(self):
-            return str(
-                zivid._frame_info_converter.to_internal_frame_info_software_version(
-                    self
-                )
-            )
+            return str(_to_internal_frame_info_software_version(self))
 
     def __init__(
         self,
-        time_stamp=_zivid.FrameInfo().TimeStamp().value,
+        time_stamp=_zivid.FrameInfo.TimeStamp().value,
         software_version=None,
     ):
 
         if isinstance(time_stamp, (datetime.datetime,)):
-            if time_stamp < datetime.datetime(1970, 1, 1):
-                raise ValueError(
-                    "Unsupported time stamp: '{time_stamp}', time stamp can only be set to a time point after January 1st, 1970".format(
-                        time_stamp=time_stamp
-                    )
-                )
             self._time_stamp = _zivid.FrameInfo.TimeStamp(time_stamp)
         else:
             raise TypeError(
@@ -69,9 +57,10 @@ class FrameInfo:
                     value_type=type(time_stamp)
                 )
             )
+
         if software_version is None:
-            software_version = zivid.FrameInfo.SoftwareVersion()
-        if not isinstance(software_version, zivid.FrameInfo.SoftwareVersion):
+            software_version = self.SoftwareVersion()
+        if not isinstance(software_version, self.SoftwareVersion):
             raise TypeError(
                 "Unsupported type: {value}".format(value=type(software_version))
             )
@@ -88,12 +77,6 @@ class FrameInfo:
     @time_stamp.setter
     def time_stamp(self, value):
         if isinstance(value, (datetime.datetime,)):
-            if value < datetime.datetime(1970, 1, 1):
-                raise ValueError(
-                    "Unsupported time stamp: '{value}', time stamp can only be set to a time point after January 1st, 1970".format(
-                        value=value
-                    )
-                )
             self._time_stamp = _zivid.FrameInfo.TimeStamp(value)
         else:
             raise TypeError(
@@ -104,7 +87,7 @@ class FrameInfo:
 
     @software_version.setter
     def software_version(self, value):
-        if not isinstance(value, zivid.FrameInfo.SoftwareVersion):
+        if not isinstance(value, self.SoftwareVersion):
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._software_version = value
 
@@ -117,4 +100,40 @@ class FrameInfo:
         return False
 
     def __str__(self):
-        return str(zivid._frame_info_converter.to_internal_frame_info(self))
+        return str(_to_internal_frame_info(self))
+
+
+def _to_frame_info_software_version(internal_software_version):
+    return FrameInfo.SoftwareVersion(
+        core=internal_software_version.core.value,
+    )
+
+
+def _to_frame_info(internal_frame_info):
+    return FrameInfo(
+        software_version=_to_frame_info_software_version(
+            internal_frame_info.software_version
+        ),
+        time_stamp=internal_frame_info.time_stamp.value,
+    )
+
+
+def _to_internal_frame_info_software_version(software_version):
+    internal_software_version = _zivid.FrameInfo.SoftwareVersion()
+
+    internal_software_version.core = _zivid.FrameInfo.SoftwareVersion.Core(
+        software_version.core
+    )
+
+    return internal_software_version
+
+
+def _to_internal_frame_info(frame_info):
+    internal_frame_info = _zivid.FrameInfo()
+
+    internal_frame_info.time_stamp = _zivid.FrameInfo.TimeStamp(frame_info.time_stamp)
+
+    internal_frame_info.software_version = _to_internal_frame_info_software_version(
+        frame_info.software_version
+    )
+    return internal_frame_info
