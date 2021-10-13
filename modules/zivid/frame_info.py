@@ -91,6 +91,13 @@ class FrameInfo:
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._software_version = value
 
+    @classmethod
+    def load(cls, file_name):
+        return _to_frame_info(_zivid.FrameInfo(str(file_name)))
+
+    def save(self, file_name):
+        _to_internal_frame_info(self).save(str(file_name))
+
     def __eq__(self, other):
         if (
             self._time_stamp == other._time_stamp

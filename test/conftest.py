@@ -13,6 +13,11 @@ def _testdata_dir():
     return (Path(__file__).parent.parent / "test" / "test_data").resolve()
 
 
+@pytest.fixture(name="datamodel_yml_dir")
+def datamodel_yml_dir_fixture():
+    return _testdata_dir() / "datamodels"
+
+
 @pytest.fixture(name="application", scope="module")
 def application_fixture():
     with zivid.Application() as app:

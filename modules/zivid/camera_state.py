@@ -279,6 +279,13 @@ class CameraState:
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._temperature = value
 
+    @classmethod
+    def load(cls, file_name):
+        return _to_camera_state(_zivid.CameraState(str(file_name)))
+
+    def save(self, file_name):
+        _to_internal_camera_state(self).save(str(file_name))
+
     def __eq__(self, other):
         if (
             self._available == other._available

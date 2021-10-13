@@ -220,6 +220,13 @@ class CameraInfo:
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._user_data = value
 
+    @classmethod
+    def load(cls, file_name):
+        return _to_camera_info(_zivid.CameraInfo(str(file_name)))
+
+    def save(self, file_name):
+        _to_internal_camera_info(self).save(str(file_name))
+
     def __eq__(self, other):
         if (
             self._firmware_version == other._firmware_version

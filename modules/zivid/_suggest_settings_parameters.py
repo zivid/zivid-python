@@ -106,6 +106,17 @@ class SuggestSettingsParameters:
                 )
             )
 
+    @classmethod
+    def load(cls, file_name):
+        return _to_capture_assistant_suggest_settings_parameters(
+            _zivid.capture_assistant.SuggestSettingsParameters(str(file_name))
+        )
+
+    def save(self, file_name):
+        _to_internal_capture_assistant_suggest_settings_parameters(self).save(
+            str(file_name)
+        )
+
     def __eq__(self, other):
         if (
             self._ambient_light_frequency == other._ambient_light_frequency
