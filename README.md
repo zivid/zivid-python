@@ -150,6 +150,7 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 | Ubuntu 18.04     | 3.6                      | 2.4.2             |
 | Fedora 30        | 3.7                      | 2.4.2             |
 | Fedora 33        | 3.9                      | 2.4.2             |
+| Fedora 34        | 3.9                      | 2.4.2             |
 | Windows 10       | 3.6, 3.7, 3.8, 3.9, 3.10 | 2.4.2             |
 | Arch Linux       | latest                   | 2.4.2             |
 

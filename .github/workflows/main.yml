@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: ["ubuntu:18.04", "ubuntu:20.04", "fedora:30", "fedora:33", "archlinux/archlinux:base"]
+        os: ["ubuntu:18.04", "ubuntu:20.04", "fedora:30", "fedora:33", "fedora:34", "archlinux/archlinux:base"]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
