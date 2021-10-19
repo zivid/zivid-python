@@ -71,6 +71,18 @@ namespace ZividPython
             .def_buffer(pointCloudDataBuffer<NativeType, WrapperType, 4>);
     }
 
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::NormalXYZ>> pyClass)
+    {
+        using WrapperType = float;
+        using NativeType = Zivid::NormalXYZ;
+        static_assert(std::is_same_v<WrapperType, decltype(NativeType::x)>);
+        static_assert(std::is_same_v<WrapperType, decltype(NativeType::y)>);
+        static_assert(std::is_same_v<WrapperType, decltype(NativeType::z)>);
+
+        pyClass.def(py::init<>(&pointCloudDataCopier<NativeType>))
+            .def_buffer(pointCloudDataBuffer<NativeType, WrapperType, 3>);
+    }
+
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::PointXYZ>> pyClass)
     {
         using WrapperType = float;

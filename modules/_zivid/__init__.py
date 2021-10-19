@@ -36,6 +36,7 @@ try:
         __version__,
         Application,
         Array2DColorRGBA,
+        Array2DNormalXYZ,
         Array2DPointXYZ,
         Array2DPointXYZColorRGBA,
         Array2DPointXYZW,
