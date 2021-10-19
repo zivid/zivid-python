@@ -82,6 +82,8 @@ def _imports(extra_imports: Sequence[str]) -> str:
         "line-too-long",
         "missing-function-docstring",
         "missing-class-docstring",
+        "too-many-branches",
+        "too-many-boolean-expressions",
     ]
 
     header = ""
