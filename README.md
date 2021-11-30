@@ -161,6 +161,6 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 [pypi-url]: https://pypi.org/project/zivid
 
 [zivid-knowledge-base-url]: http://support.zivid.com
-[zivid-software-installation-url]: https://support.zivid.com/latest/rst/academy/getting-started/zivid-software-installation.html
+[zivid-software-installation-url]: https://support.zivid.com/latest/getting-started/software-installation.html
 [zivid-download-software-url]: https://www.zivid.com/downloads
 [zivid-software-url]: http://www.zivid.com/software
