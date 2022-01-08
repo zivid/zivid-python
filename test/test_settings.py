@@ -9,6 +9,8 @@ def test_default_settings(application):
     assert isinstance(settings.acquisitions, list)
     assert len(settings.acquisitions) == 0
     assert settings.experimental.engine is None
+    assert isinstance(settings.diagnostics, zivid.Settings.Diagnostics)
+    assert settings.diagnostics.enabled is None
     assert isinstance(settings.processing, zivid.Settings.Processing)
     assert isinstance(settings.processing.color, zivid.Settings.Processing.Color)
     assert isinstance(
@@ -204,6 +206,33 @@ def test_acquisition_aperture(application):
         member="aperture",
         value=20.5,
         expected_data_type=numbers.Real,
+    )
+
+
+def test_settings_diagnostics(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings(),
+        member="diagnostics",
+        value=zivid.Settings.Diagnostics(),
+        expected_data_type=zivid.Settings.Diagnostics,
+    )
+    pytest.helpers.equality_tester(
+        zivid.Settings.Diagnostics,
+        [True],
+        [False],
+    )
+
+
+def test_settings_diagnostics_enabled(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Diagnostics(),
+        member="enabled",
+        value=True,
+        expected_data_type=bool,
     )
 
 

@@ -183,6 +183,44 @@ class Settings:
         def __str__(self):
             return str(_to_internal_settings_acquisition(self))
 
+    class Diagnostics:
+        def __init__(
+            self,
+            enabled=_zivid.Settings.Diagnostics.Enabled().value,
+        ):
+
+            if isinstance(enabled, (bool,)) or enabled is None:
+                self._enabled = _zivid.Settings.Diagnostics.Enabled(enabled)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                        value_type=type(enabled)
+                    )
+                )
+
+        @property
+        def enabled(self):
+            return self._enabled.value
+
+        @enabled.setter
+        def enabled(self, value):
+            if isinstance(value, (bool,)) or value is None:
+                self._enabled = _zivid.Settings.Diagnostics.Enabled(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: bool or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
+
+        def __eq__(self, other):
+            if self._enabled == other._enabled:
+                return True
+            return False
+
+        def __str__(self):
+            return str(_to_internal_settings_diagnostics(self))
+
     class Experimental:
         class Engine:
 
@@ -1569,6 +1607,7 @@ class Settings:
     def __init__(
         self,
         acquisitions=None,
+        diagnostics=None,
         experimental=None,
         processing=None,
     ):
@@ -1591,6 +1630,12 @@ class Settings:
                 )
             )
 
+        if diagnostics is None:
+            diagnostics = self.Diagnostics()
+        if not isinstance(diagnostics, self.Diagnostics):
+            raise TypeError("Unsupported type: {value}".format(value=type(diagnostics)))
+        self._diagnostics = diagnostics
+
         if experimental is None:
             experimental = self.Experimental()
         if not isinstance(experimental, self.Experimental):
@@ -1608,6 +1653,10 @@ class Settings:
     @property
     def acquisitions(self):
         return self._acquisitions
+
+    @property
+    def diagnostics(self):
+        return self._diagnostics
 
     @property
     def experimental(self):
@@ -1629,6 +1678,12 @@ class Settings:
                 raise TypeError(
                     "Unsupported type {item_type}".format(item_type=type(item))
                 )
+
+    @diagnostics.setter
+    def diagnostics(self, value):
+        if not isinstance(value, self.Diagnostics):
+            raise TypeError("Unsupported type {value}".format(value=type(value)))
+        self._diagnostics = value
 
     @experimental.setter
     def experimental(self, value):
@@ -1652,6 +1707,7 @@ class Settings:
     def __eq__(self, other):
         if (
             self._acquisitions == other._acquisitions
+            and self._diagnostics == other._diagnostics
             and self._experimental == other._experimental
             and self._processing == other._processing
         ):
@@ -1668,6 +1724,12 @@ def _to_settings_acquisition(internal_acquisition):
         brightness=internal_acquisition.brightness.value,
         exposure_time=internal_acquisition.exposure_time.value,
         gain=internal_acquisition.gain.value,
+    )
+
+
+def _to_settings_diagnostics(internal_diagnostics):
+    return Settings.Diagnostics(
+        enabled=internal_diagnostics.enabled.value,
     )
 
 
@@ -1832,6 +1894,7 @@ def _to_settings(internal_settings):
             _to_settings_acquisition(value)
             for value in internal_settings.acquisitions.value
         ],
+        diagnostics=_to_settings_diagnostics(internal_settings.diagnostics),
         experimental=_to_settings_experimental(internal_settings.experimental),
         processing=_to_settings_processing(internal_settings.processing),
     )
@@ -1852,6 +1915,16 @@ def _to_internal_settings_acquisition(acquisition):
     internal_acquisition.gain = _zivid.Settings.Acquisition.Gain(acquisition.gain)
 
     return internal_acquisition
+
+
+def _to_internal_settings_diagnostics(diagnostics):
+    internal_diagnostics = _zivid.Settings.Diagnostics()
+
+    internal_diagnostics.enabled = _zivid.Settings.Diagnostics.Enabled(
+        diagnostics.enabled
+    )
+
+    return internal_diagnostics
 
 
 def _to_internal_settings_experimental(experimental):
@@ -2098,6 +2171,9 @@ def _to_internal_settings(settings):
         temp_acquisitions.append(_to_internal_settings_acquisition(value))
     internal_settings.acquisitions = temp_acquisitions
 
+    internal_settings.diagnostics = _to_internal_settings_diagnostics(
+        settings.diagnostics
+    )
     internal_settings.experimental = _to_internal_settings_experimental(
         settings.experimental
     )
