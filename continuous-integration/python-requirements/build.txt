@@ -6,66 +6,63 @@
 #
 bottle==0.12.19
     # via conan
-certifi==2021.5.30
+certifi==2021.10.8
     # via requests
-charset-normalizer==2.0.6
+charset-normalizer==2.0.10
     # via requests
-cmake==3.18.4.post1
+cmake==3.22.1
     # via -r continuous-integration/python-requirements/build.in
 colorama==0.4.4
     # via conan
-conan==1.40.3
+conan==1.44.1
     # via -r continuous-integration/python-requirements/build.in
 distro==1.6.0
     # via
     #   conan
     #   scikit-build
-fasteners==0.16.3
+fasteners==0.17.2
     # via conan
-future==0.18.2
-    # via conan
-idna==3.2
+idna==3.3
     # via requests
-jinja2==2.11.3
+jinja2==3.0.3
     # via conan
 markupsafe==2.0.1
     # via jinja2
-ninja==1.10.0.post2
+ninja==1.10.2.3
     # via -r continuous-integration/python-requirements/build.in
 node-semver==0.6.1
     # via conan
-packaging==21.0
+packaging==21.3
     # via scikit-build
 patch-ng==1.17.4
     # via conan
 pluginbase==1.0.1
     # via conan
-pygments==2.10.0
+pygments==2.11.2
     # via conan
 pyjwt==1.7.1
     # via conan
-pyparsing==2.4.7
+pyparsing==3.0.6
     # via packaging
 python-dateutil==2.8.2
     # via conan
 pyyaml==5.4.1
     # via conan
-requests==2.26.0
+requests==2.27.1
     # via conan
-scikit-build==0.11.1
+scikit-build==0.12.0
     # via -r continuous-integration/python-requirements/build.in
 six==1.16.0
     # via
     #   conan
-    #   fasteners
     #   python-dateutil
 tqdm==4.62.3
     # via conan
-urllib3==1.26.7
+urllib3==1.26.8
     # via
     #   conan
     #   requests
-wheel==0.37.0
+wheel==0.37.1
     # via scikit-build
 
 # The following packages are considered to be unsafe in a requirements file:
