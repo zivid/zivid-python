@@ -56,7 +56,7 @@ jobs:
         run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
 
   create-windows-binary-distribution:
-    runs-on: windows-2016
+    runs-on: windows-2019
     strategy:
       matrix:
         python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
@@ -128,7 +128,7 @@ jobs:
 
   test-windows-binary-distribution:
     needs: create-windows-binary-distribution
-    runs-on: windows-2016
+    runs-on: windows-2019
     strategy:
       matrix:
         python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
