@@ -99,7 +99,6 @@ jobs:
           - fedora:30
           - fedora:33
           - fedora:34
-          - fedora:35
           - ubuntu:18.04
           - ubuntu:20.04
     steps:
