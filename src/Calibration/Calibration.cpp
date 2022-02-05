@@ -2,12 +2,15 @@
 #include <Zivid/Calibration/HandEye.h>
 #include <Zivid/Calibration/MultiCamera.h>
 #include <Zivid/Calibration/Pose.h>
+#include <Zivid/Experimental/Calibration.h>
 #include <Zivid/PointCloud.h>
 
 #include <ZividPython/Calibration/Detector.h>
 #include <ZividPython/Calibration/HandEye.h>
 #include <ZividPython/Calibration/MultiCamera.h>
 #include <ZividPython/Calibration/Pose.h>
+#include <ZividPython/ReleasableCamera.h>
+#include <ZividPython/ReleasableFrame.h>
 #include <ZividPython/ReleasablePointCloud.h>
 #include <ZividPython/Wrappers.h>
 
@@ -36,6 +39,13 @@ namespace ZividPython::Calibration
                  })
             .def("calibrate_eye_in_hand", &Zivid::Calibration::calibrateEyeInHand)
             .def("calibrate_eye_to_hand", &Zivid::Calibration::calibrateEyeToHand)
-            .def("calibrate_multi_camera", &Zivid::Calibration::calibrateMultiCamera);
+            .def("calibrate_multi_camera", &Zivid::Calibration::calibrateMultiCamera)
+            .def("intrinsics",
+                 [](ReleasableCamera &releasableCamera) {
+                     return Zivid::Experimental::Calibration::intrinsics(releasableCamera.impl());
+                 })
+            .def("estimate_intrinsics", [](ReleasableFrame &releasableFrame) {
+                return Zivid::Experimental::Calibration::estimateIntrinsics(releasableFrame.impl());
+            });
     }
 } // namespace ZividPython::Calibration

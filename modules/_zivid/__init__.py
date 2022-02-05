@@ -43,6 +43,7 @@ try:
         Array2DPointZ,
         Array2DSNR,
         Camera,
+        CameraIntrinsics,
         CameraState,
         firmware,
         calibration,
