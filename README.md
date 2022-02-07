@@ -62,6 +62,7 @@ To quickly capture a point cloud using default settings, run the following code:
     frame.save("result.zdf")
 
 ### Point cloud data access
+
 Data can easily be accessed in the form of Numpy arrays:
 
     import zivid
@@ -73,6 +74,7 @@ Data can easily be accessed in the form of Numpy arrays:
     rgba = frame.point_cloud().copy_data("rgba") # Get point colors as [Height,Width,4] uint8 array
 
 ### Capture Assistant
+
 Instead of manually adjusting settings, the Capture Assistant may be used to find the optimal settings for your scene:
 
     import zivid
@@ -151,7 +153,6 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 | Fedora 30        | 3.7                      | 2.6.0             |
 | Fedora 33        | 3.9                      | 2.6.0             |
 | Fedora 34        | 3.9                      | 2.6.0             |
-| Fedora 35        | 3.10                     | 2.6.0             |
 | Windows 10       | 3.6, 3.7, 3.8, 3.9, 3.10 | 2.6.0             |
 | Arch Linux       | latest                   | 2.6.0             |
 
