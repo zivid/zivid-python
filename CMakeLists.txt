@@ -13,7 +13,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 conan_cmake_run(
     REQUIRES
         eigen/3.3.9
-        pybind11/2.6.1
+        pybind11/2.9.1
     CMAKE_TARGETS
     BASIC_SETUP)
 
