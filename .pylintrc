@@ -1,6 +1,10 @@
 [MESSAGES CONTROL]
 disable=duplicate-code, # Triggers on data-models
         consider-using-f-string # Keep .format() as long as we want unofficial python3.5 support
+
+[BASIC]
+good-names=i,j,k,ex,cx,cy,fx,fy,k1,k2,k3,p1,p2
+
 [FORMAT]
 max-line-length=120
 

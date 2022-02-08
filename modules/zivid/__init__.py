@@ -21,3 +21,4 @@ from zivid.sdk_version import SDKVersion
 from zivid.settings import Settings
 from zivid.settings_2d import Settings2D
 from zivid.camera_info import CameraInfo
+from zivid.camera_intrinsics import CameraIntrinsics

@@ -710,6 +710,7 @@ def generate_all_datamodels(dest_dir: Path) -> None:
             "_suggest_settings_parameters.py",
             ["datetime"],
         ),
+        (_zivid.CameraIntrinsics, "camera_intrinsics.py", []),
     ]:
         _generate_datamodel_frontend(
             internal_class=internal_class,
