@@ -40,5 +40,5 @@ function aur_install {
 ln -s /usr/lib/libtinfo.so.{6,5} || exit $?
 aur_install intel-opencl-runtime a7db4fe8cfa872078034f7966bb2def788bf8e5d ncurses5-compat-libs || exit $?
 
-aur_install zivid-telicam-driver fdb8aed85e9b99bac1248886bc1bcb0749336abf || exit $?
-aur_install zivid 3de8cdad9965221572902613c36523f5c5aecc94 || exit $?
+aur_install zivid-telicam-driver c2dc70bc1118c6aef729bb1804ced8e2c74cbc5a || exit $?
+aur_install zivid 9d5f15f1cf9bb43445378abc4d443c1c8b79451d || exit $?
