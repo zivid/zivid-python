@@ -16,7 +16,7 @@ Zivid Python is the official Python package for Zivid 3D cameras. Read more abou
 ### Dependencies
 
 * [Python](https://www.python.org/) version 3.6 or higher
-* [Zivid SDK][zivid-download-software-url] version 2.6.0 (see [here][zivid-software-installation-url] for help)
+* [Zivid SDK][zivid-download-software-url] version 2.6.1 (see [here][zivid-software-installation-url] for help)
 * [Compiler](doc/CompilerInstallation.md) with C++17 support
 
 *Windows users also needs to make sure that the Zivid SDK installation folder is in system `PATH` before using the package, not only the terminal PATH variable. The default install location that should be added to system `PATH` is `C:\Program Files\Zivid\bin`.*
@@ -30,7 +30,6 @@ After having installed the latest Zivid SDK, the easiest way to install Zivid Py
 Installation may take some time since the `setup.py` script will download additional dependencies and compile C++ source code in the background.
 
 On some systems Python 3 `pip` is called `pip3`. In this guide we assume it is called `pip`. When using PIP version 19 or higher build dependencies are handled automatically.
-
 
 #### Old PIP
 
@@ -148,13 +147,13 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 
 | Operating System | Python version           | Zivid SDK version |
 | :--------------- | :----------------------- | :---------------- |
-| Ubuntu 20.04     | 3.8                      | 2.6.0             |
-| Ubuntu 18.04     | 3.6                      | 2.6.0             |
-| Fedora 30        | 3.7                      | 2.6.0             |
-| Fedora 33        | 3.9                      | 2.6.0             |
-| Fedora 34        | 3.9                      | 2.6.0             |
-| Windows 10       | 3.6, 3.7, 3.8, 3.9, 3.10 | 2.6.0             |
-| Arch Linux       | latest                   | 2.6.0             |
+| Ubuntu 20.04     | 3.8                      | 2.6.1             |
+| Ubuntu 18.04     | 3.6                      | 2.6.1             |
+| Fedora 30        | 3.7                      | 2.6.1             |
+| Fedora 33        | 3.9                      | 2.6.1             |
+| Fedora 34        | 3.9                      | 2.6.1             |
+| Windows 10       | 3.6, 3.7, 3.8, 3.9, 3.10 | 2.6.1             |
+| Arch Linux       | latest                   | 2.6.1             |
 
 [header-image]: https://www.zivid.com/hubfs/softwarefiles/images/zivid-generic-github-header.png
 [ci-badge]: https://img.shields.io/github/workflow/status/zivid/zivid-python/Main%20CI%20workflow/master
