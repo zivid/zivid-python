@@ -10,12 +10,24 @@ endif()
 find_package(Python3 "${PYTHON_INTERPRETER_VERSION}" EXACT REQUIRED COMPONENTS Interpreter Development)
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
-conan_cmake_run(
-    REQUIRES
+conan_cmake_configure(
+    REQUIRES 
         eigen/3.3.9
         pybind11/2.6.1
-    CMAKE_TARGETS
-    BASIC_SETUP)
+    GENERATORS cmake_find_package)
+
+conan_cmake_autodetect(CONAN_SETTINGS)
+
+set(CONAN_INSTALL_FOLDER "${CMAKE_BINARY_DIR}/conan_install")
+
+conan_cmake_install(
+    PATH_OR_REFERENCE .
+    REMOTE conancenter
+    SETTINGS ${CONAN_SETTINGS}
+    INSTALL_FOLDER ${CONAN_INSTALL_FOLDER}
+    )
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CONAN_INSTALL_FOLDER})
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -27,6 +39,8 @@ if(MSVC)
     add_compile_options(/bigobj)
 endif()
 
+find_package(Eigen3 3.3.9 MODULE REQUIRED)
+find_package(pybind11 2.6.1 MODULE REQUIRED)
 find_package(Zivid ${ZIVID_SDK_VERSION} EXACT COMPONENTS Core REQUIRED)
 
 add_subdirectory(src)

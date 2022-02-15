@@ -44,8 +44,8 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE Zivid::Core
             Python3::Module
-            CONAN_PKG::pybind11
-            CONAN_PKG::eigen
+            pybind11::pybind11
+            Eigen3::Eigen
 )
 
 install(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION modules/${PROJECT_NAME})
