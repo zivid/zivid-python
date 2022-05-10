@@ -89,6 +89,9 @@ namespace ZividPython
         else if constexpr(WrapType::singleton == wrapType)
         {
             pyClass.def_static("release", &Source::release);
+            // Singletons are released on module unload
+            // https://pybind11.readthedocs.io/en/stable/advanced/misc.html#module-destructors
+            dest.attr(exposedName).attr("_cleanup") = pybind11::capsule([] { Source::release(); });
         }
         wrapFunction(pyClass);
     }
