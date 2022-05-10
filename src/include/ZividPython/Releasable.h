@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <optional>
 #include <stdexcept>
 
@@ -126,7 +127,7 @@ namespace ZividPython
             // Keep the singleton alive forever to avoid races with
             // static variables that the singleton may need during destruction
             // This should be fixed a more elegant way!
-            if(!globalImpl) globalImpl = new T;
+            if(!globalImpl) globalImpl = std::make_shared<T>();
         }
 
         decltype(auto) toString() const
@@ -142,14 +143,13 @@ namespace ZividPython
 
         static void release()
         {
-            delete globalImpl;
-            globalImpl = nullptr;
+            globalImpl.reset();
         }
 
     private:
-        static T *globalImpl;
+        static std::shared_ptr<T> globalImpl;
     };
 
     template<typename T>
-    T *Singleton<T>::globalImpl{ nullptr };
+    std::shared_ptr<T> Singleton<T>::globalImpl{ nullptr };
 } // namespace ZividPython
