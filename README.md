@@ -153,7 +153,6 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 | Fedora 33        | 3.9                      | 2.6.1             |
 | Fedora 34        | 3.9                      | 2.6.1             |
 | Windows 10       | 3.6, 3.7, 3.8, 3.9, 3.10 | 2.6.1             |
-| Arch Linux       | latest                   | 2.6.1             |
 
 [header-image]: https://www.zivid.com/hubfs/softwarefiles/images/zivid-generic-github-header.png
 [ci-badge]: https://img.shields.io/github/workflow/status/zivid/zivid-python/Main%20CI%20workflow/master
