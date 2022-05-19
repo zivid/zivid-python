@@ -4,6 +4,7 @@ This module should not be imported directly by end-user, but rather accessed thr
 the zivid.calibration module.
 """
 import _zivid
+from zivid._calibration.pose import Pose
 
 
 class DetectionResult:
@@ -46,6 +47,17 @@ class DetectionResult:
             A 1D array containing the X, Y and Z coordinates of the centroid
         """
         return self.__impl.centroid()
+
+    def pose(self):
+        """Get position and orientation of the top left detected corner in camera-space.
+
+        Pose calculation works for official Zivid calibration boards only.
+        An exception will be thrown if valid() is false or if the board is not supported.
+
+        Returns:
+            The Pose of the top left corner (4x4 transformation matrix)
+        """
+        return Pose(self.__impl.pose().to_matrix())
 
     def __bool__(self):
         return bool(self.__impl)

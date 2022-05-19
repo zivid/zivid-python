@@ -12,8 +12,10 @@ namespace ZividPython
     void wrapClass(pybind11::class_<Zivid::Calibration::DetectionResult> pyClass)
     {
         pyClass.def("valid", &Zivid::Calibration::DetectionResult::valid)
-            .def("centroid", [](const Zivid::Calibration::DetectionResult &detectionResult) {
-                return Conversion::toPyVector(detectionResult.centroid());
-            });
+            .def("centroid",
+                 [](const Zivid::Calibration::DetectionResult &detectionResult) {
+                     return Conversion::toPyVector(detectionResult.centroid());
+                 })
+            .def("pose", &Zivid::Calibration::DetectionResult::pose);
     }
 } // namespace ZividPython

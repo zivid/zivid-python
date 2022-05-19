@@ -67,6 +67,11 @@ def checkerboard_frames_fixture(application):
     yield frames
 
 
+@pytest.fixture(name="calibration_board_frame", scope="module")
+def calibration_board_frame_fixture(application):
+    yield zivid.Frame(_testdata_dir() / "ZVD-CB01.zdf")
+
+
 @pytest.fixture(name="multicamera_transforms", scope="module")
 def multicamera_transforms_fixture():
     transforms = [
