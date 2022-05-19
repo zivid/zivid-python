@@ -31,7 +31,6 @@ Installation may take some time since the `setup.py` script will download additi
 
 On some systems Python 3 `pip` is called `pip3`. In this guide we assume it is called `pip`. When using PIP version 19 or higher build dependencies are handled automatically.
 
-
 #### Old PIP
 
 If you are using a version of PIP older than version 19 please manually install the dependencies listed in [pyproject.toml](pyproject.toml) before installing zivid.
@@ -62,6 +61,7 @@ To quickly capture a point cloud using default settings, run the following code:
     frame.save("result.zdf")
 
 ### Point cloud data access
+
 Data can easily be accessed in the form of Numpy arrays:
 
     import zivid
@@ -73,6 +73,7 @@ Data can easily be accessed in the form of Numpy arrays:
     rgba = frame.point_cloud().copy_data("rgba") # Get point colors as [Height,Width,4] uint8 array
 
 ### Capture Assistant
+
 Instead of manually adjusting settings, the Capture Assistant may be used to find the optimal settings for your scene:
 
     import zivid
@@ -152,7 +153,6 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 | Fedora 33        | 3.9                      | 2.5.0             |
 | Fedora 34        | 3.9                      | 2.5.0             |
 | Windows 10       | 3.6, 3.7, 3.8, 3.9, 3.10 | 2.5.0             |
-| Arch Linux       | latest                   | 2.5.0             |
 
 [header-image]: https://www.zivid.com/hubfs/softwarefiles/images/zivid-generic-github-header.png
 [ci-badge]: https://img.shields.io/github/workflow/status/zivid/zivid-python/Main%20CI%20workflow/master
