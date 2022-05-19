@@ -7,27 +7,6 @@ on:
     - cron:  '0 22 * * *'
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-        with:
-          lfs: false
-      - name: Build and lint on Archlinux
-        run: |
-          docker run \
-              --volume $PWD:/host \
-              --workdir /host/continuous-integration/linux \
-              --env "PYTHONDONTWRITEBYTECODE=1" \
-              archlinux/archlinux:base  \
-              bash -c "./setup.sh && ./build.sh && ./lint.sh"
-      - name: Notify Teams
-        if: ${{ failure() && github.ref == 'refs/heads/master' }}
-        env:
-          CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
-        run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
-
   create-source-distribution:
     runs-on: ubuntu-latest
     steps:
@@ -94,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: ["ubuntu:18.04", "ubuntu:20.04", "fedora:30", "fedora:33", "fedora:34", "archlinux/archlinux:base"]
+        os: ["ubuntu:18.04", "ubuntu:20.04", "fedora:30", "fedora:33", "fedora:34"]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -152,7 +131,7 @@ jobs:
         run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
 
   deploy:
-    needs: [lint, test-linux-source-distribution, test-windows-binary-distribution]
+    needs: [test-linux-source-distribution, test-windows-binary-distribution]
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
