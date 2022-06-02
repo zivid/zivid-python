@@ -447,120 +447,84 @@ class Settings:
                     return str(_to_internal_settings_processing_color_balance(self))
 
             class Experimental:
-                class ToneMapping:
-                    class Enabled:
+                class Mode:
 
-                        always = "always"
-                        hdrOnly = "hdrOnly"
+                    automatic = "automatic"
+                    toneMapping = "toneMapping"
+                    useFirstAcquisition = "useFirstAcquisition"
 
-                        _valid_values = {
-                            "always": _zivid.Settings.Processing.Color.Experimental.ToneMapping.Enabled.always,
-                            "hdrOnly": _zivid.Settings.Processing.Color.Experimental.ToneMapping.Enabled.hdrOnly,
-                        }
+                    _valid_values = {
+                        "automatic": _zivid.Settings.Processing.Color.Experimental.Mode.automatic,
+                        "toneMapping": _zivid.Settings.Processing.Color.Experimental.Mode.toneMapping,
+                        "useFirstAcquisition": _zivid.Settings.Processing.Color.Experimental.Mode.useFirstAcquisition,
+                    }
 
-                        @classmethod
-                        def valid_values(cls):
-                            return list(cls._valid_values.keys())
-
-                    def __init__(
-                        self,
-                        enabled=_zivid.Settings.Processing.Color.Experimental.ToneMapping.Enabled().value,
-                    ):
-
-                        if (
-                            isinstance(
-                                enabled,
-                                _zivid.Settings.Processing.Color.Experimental.ToneMapping.Enabled.enum,
-                            )
-                            or enabled is None
-                        ):
-                            self._enabled = _zivid.Settings.Processing.Color.Experimental.ToneMapping.Enabled(
-                                enabled
-                            )
-                        elif isinstance(enabled, str):
-                            self._enabled = _zivid.Settings.Processing.Color.Experimental.ToneMapping.Enabled(
-                                self.Enabled._valid_values[enabled]
-                            )
-                        else:
-                            raise TypeError(
-                                "Unsupported type, expected: str or None, got {value_type}".format(
-                                    value_type=type(enabled)
-                                )
-                            )
-
-                    @property
-                    def enabled(self):
-                        if self._enabled.value is None:
-                            return None
-                        for key, internal_value in self.Enabled._valid_values.items():
-                            if internal_value == self._enabled.value:
-                                return key
-                        raise ValueError(
-                            "Unsupported value {value}".format(value=self._enabled)
-                        )
-
-                    @enabled.setter
-                    def enabled(self, value):
-                        if isinstance(value, str):
-                            self._enabled = _zivid.Settings.Processing.Color.Experimental.ToneMapping.Enabled(
-                                self.Enabled._valid_values[value]
-                            )
-                        elif (
-                            isinstance(
-                                value,
-                                _zivid.Settings.Processing.Color.Experimental.ToneMapping.Enabled.enum,
-                            )
-                            or value is None
-                        ):
-                            self._enabled = _zivid.Settings.Processing.Color.Experimental.ToneMapping.Enabled(
-                                value
-                            )
-                        else:
-                            raise TypeError(
-                                "Unsupported type, expected: str or None, got {value_type}".format(
-                                    value_type=type(value)
-                                )
-                            )
-
-                    def __eq__(self, other):
-                        if self._enabled == other._enabled:
-                            return True
-                        return False
-
-                    def __str__(self):
-                        return str(
-                            _to_internal_settings_processing_color_experimental_tone_mapping(
-                                self
-                            )
-                        )
+                    @classmethod
+                    def valid_values(cls):
+                        return list(cls._valid_values.keys())
 
                 def __init__(
                     self,
-                    tone_mapping=None,
+                    mode=_zivid.Settings.Processing.Color.Experimental.Mode().value,
                 ):
 
-                    if tone_mapping is None:
-                        tone_mapping = self.ToneMapping()
-                    if not isinstance(tone_mapping, self.ToneMapping):
-                        raise TypeError(
-                            "Unsupported type: {value}".format(value=type(tone_mapping))
+                    if (
+                        isinstance(
+                            mode,
+                            _zivid.Settings.Processing.Color.Experimental.Mode.enum,
                         )
-                    self._tone_mapping = tone_mapping
+                        or mode is None
+                    ):
+                        self._mode = _zivid.Settings.Processing.Color.Experimental.Mode(
+                            mode
+                        )
+                    elif isinstance(mode, str):
+                        self._mode = _zivid.Settings.Processing.Color.Experimental.Mode(
+                            self.Mode._valid_values[mode]
+                        )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: str or None, got {value_type}".format(
+                                value_type=type(mode)
+                            )
+                        )
 
                 @property
-                def tone_mapping(self):
-                    return self._tone_mapping
+                def mode(self):
+                    if self._mode.value is None:
+                        return None
+                    for key, internal_value in self.Mode._valid_values.items():
+                        if internal_value == self._mode.value:
+                            return key
+                    raise ValueError(
+                        "Unsupported value {value}".format(value=self._mode)
+                    )
 
-                @tone_mapping.setter
-                def tone_mapping(self, value):
-                    if not isinstance(value, self.ToneMapping):
-                        raise TypeError(
-                            "Unsupported type {value}".format(value=type(value))
+                @mode.setter
+                def mode(self, value):
+                    if isinstance(value, str):
+                        self._mode = _zivid.Settings.Processing.Color.Experimental.Mode(
+                            self.Mode._valid_values[value]
                         )
-                    self._tone_mapping = value
+                    elif (
+                        isinstance(
+                            value,
+                            _zivid.Settings.Processing.Color.Experimental.Mode.enum,
+                        )
+                        or value is None
+                    ):
+                        self._mode = _zivid.Settings.Processing.Color.Experimental.Mode(
+                            value
+                        )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: str or None, got {value_type}".format(
+                                value_type=type(value)
+                            )
+                        )
 
                 def __eq__(self, other):
-                    if self._tone_mapping == other._tone_mapping:
+                    if self._mode == other._mode:
                         return True
                     return False
 
@@ -1225,9 +1189,97 @@ class Settings:
 
             class Reflection:
                 class Removal:
+                    class Experimental:
+                        class Mode:
+
+                            global_ = "global"
+                            local = "local"
+
+                            _valid_values = {
+                                "global": _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode.global_,
+                                "local": _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode.local,
+                            }
+
+                            @classmethod
+                            def valid_values(cls):
+                                return list(cls._valid_values.keys())
+
+                        def __init__(
+                            self,
+                            mode=_zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode().value,
+                        ):
+
+                            if (
+                                isinstance(
+                                    mode,
+                                    _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode.enum,
+                                )
+                                or mode is None
+                            ):
+                                self._mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode(
+                                    mode
+                                )
+                            elif isinstance(mode, str):
+                                self._mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode(
+                                    self.Mode._valid_values[mode]
+                                )
+                            else:
+                                raise TypeError(
+                                    "Unsupported type, expected: str or None, got {value_type}".format(
+                                        value_type=type(mode)
+                                    )
+                                )
+
+                        @property
+                        def mode(self):
+                            if self._mode.value is None:
+                                return None
+                            for key, internal_value in self.Mode._valid_values.items():
+                                if internal_value == self._mode.value:
+                                    return key
+                            raise ValueError(
+                                "Unsupported value {value}".format(value=self._mode)
+                            )
+
+                        @mode.setter
+                        def mode(self, value):
+                            if isinstance(value, str):
+                                self._mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode(
+                                    self.Mode._valid_values[value]
+                                )
+                            elif (
+                                isinstance(
+                                    value,
+                                    _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode.enum,
+                                )
+                                or value is None
+                            ):
+                                self._mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode(
+                                    value
+                                )
+                            else:
+                                raise TypeError(
+                                    "Unsupported type, expected: str or None, got {value_type}".format(
+                                        value_type=type(value)
+                                    )
+                                )
+
+                        def __eq__(self, other):
+                            if self._mode == other._mode:
+                                return True
+                            return False
+
+                        def __str__(self):
+                            return str(
+                                _to_internal_settings_processing_filters_reflection_removal_experimental(
+                                    self
+                                )
+                            )
+
                     def __init__(
                         self,
                         enabled=_zivid.Settings.Processing.Filters.Reflection.Removal.Enabled().value,
+                        experimental=None,
                     ):
 
                         if isinstance(enabled, (bool,)) or enabled is None:
@@ -1241,9 +1293,23 @@ class Settings:
                                 )
                             )
 
+                        if experimental is None:
+                            experimental = self.Experimental()
+                        if not isinstance(experimental, self.Experimental):
+                            raise TypeError(
+                                "Unsupported type: {value}".format(
+                                    value=type(experimental)
+                                )
+                            )
+                        self._experimental = experimental
+
                     @property
                     def enabled(self):
                         return self._enabled.value
+
+                    @property
+                    def experimental(self):
+                        return self._experimental
 
                     @enabled.setter
                     def enabled(self, value):
@@ -1258,8 +1324,19 @@ class Settings:
                                 )
                             )
 
+                    @experimental.setter
+                    def experimental(self, value):
+                        if not isinstance(value, self.Experimental):
+                            raise TypeError(
+                                "Unsupported type {value}".format(value=type(value))
+                            )
+                        self._experimental = value
+
                     def __eq__(self, other):
-                        if self._enabled == other._enabled:
+                        if (
+                            self._enabled == other._enabled
+                            and self._experimental == other._experimental
+                        ):
                             return True
                         return False
 
@@ -1747,17 +1824,9 @@ def _to_settings_processing_color_balance(internal_balance):
     )
 
 
-def _to_settings_processing_color_experimental_tone_mapping(internal_tone_mapping):
-    return Settings.Processing.Color.Experimental.ToneMapping(
-        enabled=internal_tone_mapping.enabled.value,
-    )
-
-
 def _to_settings_processing_color_experimental(internal_experimental):
     return Settings.Processing.Color.Experimental(
-        tone_mapping=_to_settings_processing_color_experimental_tone_mapping(
-            internal_experimental.tone_mapping
-        ),
+        mode=internal_experimental.mode.value,
     )
 
 
@@ -1838,8 +1907,19 @@ def _to_settings_processing_filters_outlier(internal_outlier):
     )
 
 
+def _to_settings_processing_filters_reflection_removal_experimental(
+    internal_experimental,
+):
+    return Settings.Processing.Filters.Reflection.Removal.Experimental(
+        mode=internal_experimental.mode.value,
+    )
+
+
 def _to_settings_processing_filters_reflection_removal(internal_removal):
     return Settings.Processing.Filters.Reflection.Removal(
+        experimental=_to_settings_processing_filters_reflection_removal_experimental(
+            internal_removal.experimental
+        ),
         enabled=internal_removal.enabled.value,
     )
 
@@ -1949,26 +2029,13 @@ def _to_internal_settings_processing_color_balance(balance):
     return internal_balance
 
 
-def _to_internal_settings_processing_color_experimental_tone_mapping(tone_mapping):
-    internal_tone_mapping = _zivid.Settings.Processing.Color.Experimental.ToneMapping()
-
-    internal_tone_mapping.enabled = (
-        _zivid.Settings.Processing.Color.Experimental.ToneMapping.Enabled(
-            tone_mapping._enabled.value
-        )
-    )
-
-    return internal_tone_mapping
-
-
 def _to_internal_settings_processing_color_experimental(experimental):
     internal_experimental = _zivid.Settings.Processing.Color.Experimental()
 
-    internal_experimental.tone_mapping = (
-        _to_internal_settings_processing_color_experimental_tone_mapping(
-            experimental.tone_mapping
-        )
+    internal_experimental.mode = _zivid.Settings.Processing.Color.Experimental.Mode(
+        experimental._mode.value
     )
+
     return internal_experimental
 
 
@@ -2091,6 +2158,22 @@ def _to_internal_settings_processing_filters_outlier(outlier):
     return internal_outlier
 
 
+def _to_internal_settings_processing_filters_reflection_removal_experimental(
+    experimental,
+):
+    internal_experimental = (
+        _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental()
+    )
+
+    internal_experimental.mode = (
+        _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode(
+            experimental._mode.value
+        )
+    )
+
+    return internal_experimental
+
+
 def _to_internal_settings_processing_filters_reflection_removal(removal):
     internal_removal = _zivid.Settings.Processing.Filters.Reflection.Removal()
 
@@ -2098,6 +2181,11 @@ def _to_internal_settings_processing_filters_reflection_removal(removal):
         _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled(removal.enabled)
     )
 
+    internal_removal.experimental = (
+        _to_internal_settings_processing_filters_reflection_removal_experimental(
+            removal.experimental
+        )
+    )
     return internal_removal
 
 
