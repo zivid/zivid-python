@@ -57,6 +57,7 @@ try:
         Frame2D,
         ImageRGBA,
         CameraInfo,
+        infield_correction,
     )
 except ImportError as ex:
 
