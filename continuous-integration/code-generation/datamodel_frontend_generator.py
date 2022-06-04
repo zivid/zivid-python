@@ -503,7 +503,7 @@ def _parse_internal_datamodel(current_class: Any) -> NodeData:
         for member in dir(current_class.enum):
             if str(member).startswith("__"):
                 continue
-            if str(member) == "name":
+            if str(member) == "name" or str(member) == "value":
                 continue
             enum_vars.append(member)
 
