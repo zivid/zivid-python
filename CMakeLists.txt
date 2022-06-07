@@ -11,10 +11,11 @@ find_package(Python3 "${PYTHON_INTERPRETER_VERSION}" EXACT REQUIRED COMPONENTS I
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 conan_cmake_configure(
-    REQUIRES 
+    REQUIRES
         eigen/3.3.9
         pybind11/2.9.1
-    GENERATORS cmake_find_package)
+    GENERATORS cmake_find_package
+    OPTIONS eigen:MPL2_only=True)
 
 conan_cmake_autodetect(CONAN_SETTINGS)
 
