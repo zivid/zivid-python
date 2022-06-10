@@ -137,7 +137,7 @@ When installing using PIP it is possible to specify the required version. This c
 
 ## License
 
-This project is licensed, see the [LICENSE](LICENSE) file for details.
+This project is licensed, see the [LICENSE](LICENSE) file for details. The licenses of dependencies are listed [here](./licenses-dependencies).
 
 ## Support
 
