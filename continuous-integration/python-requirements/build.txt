@@ -4,18 +4,18 @@
 #
 #    pip-compile continuous-integration/python-requirements/build.in
 #
-bottle==0.12.19
+bottle==0.12.20
     # via conan
 certifi==2021.10.8
     # via requests
 charset-normalizer==2.0.10
     # via requests
 cmake==3.22.1
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 colorama==0.4.4
     # via conan
 conan==1.44.1
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 distro==1.6.0
     # via
     #   conan
@@ -29,7 +29,7 @@ jinja2==3.0.3
 markupsafe==2.0.1
     # via jinja2
 ninja==1.10.2.3
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 node-semver==0.6.1
     # via conan
 packaging==21.3
@@ -51,7 +51,7 @@ pyyaml==5.4.1
 requests==2.27.1
     # via conan
 scikit-build==0.12.0
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 six==1.16.0
     # via
     #   conan
