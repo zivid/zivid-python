@@ -392,8 +392,10 @@ def _create_enum_class(member: NodeData, base_type: str) -> str:
     static_members = ["\n"]
     valid_values = ["\n"]
     for enum_var in member.enum_vars:
-        static_members.append(f'{enum_var} = "{enum_var}"')
-        valid_values.append(f'"{enum_var}": {full_dot_path}.{enum_var},')
+        # Some members have a trailing underscore added to avoid collision with reserved keywords.
+        # For the string-representation we strip that trailing underscore out.
+        static_members.append(f'{enum_var} = "{enum_var.rstrip("_")}"')
+        valid_values.append(f'"{enum_var.rstrip("_")}": {full_dot_path}.{enum_var},')
 
     return dedent(
         """

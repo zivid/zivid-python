@@ -20,7 +20,7 @@ def test_default_settings(application):
     assert settings.processing.color.balance.red is None
     assert settings.processing.color.balance.green is None
     assert settings.processing.color.balance.blue is None
-    assert settings.processing.color.experimental.tone_mapping.enabled is None
+    assert settings.processing.color.experimental.mode is None
 
     assert isinstance(settings.processing.filters, zivid.Settings.Processing.Filters)
     assert isinstance(
@@ -76,6 +76,13 @@ def test_default_settings(application):
         zivid.Settings.Processing.Filters.Reflection.Removal,
     )
     assert settings.processing.filters.reflection.removal.enabled is None
+
+    assert isinstance(
+        settings.processing.filters.reflection.removal.experimental,
+        zivid.Settings.Processing.Filters.Reflection.Removal.Experimental,
+    )
+
+    assert settings.processing.filters.reflection.removal.experimental.mode is None
 
     assert isinstance(
         settings.processing.filters.smoothing,
@@ -364,65 +371,49 @@ def test_settings_processing_color_experimental(
         value=zivid.Settings.Processing.Color.Experimental(),
         expected_data_type=zivid.Settings.Processing.Color.Experimental,
     )
+
     pytest.helpers.equality_tester(
         zivid.Settings.Processing.Color.Experimental,
-        [zivid.Settings.Processing.Color.Experimental.ToneMapping()],
-        [zivid.Settings.Processing.Color.Experimental.ToneMapping(enabled="always")],
-    )
-
-
-def test_settings_processing_color_experimental_tonemapping(
-    application,
-):
-    import zivid
-
-    pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings.Processing.Color.Experimental(),
-        member="tone_mapping",
-        value=zivid.Settings.Processing.Color.Experimental.ToneMapping(),
-        expected_data_type=zivid.Settings.Processing.Color.Experimental.ToneMapping,
-    )
-
-    pytest.helpers.equality_tester(
-        zivid.Settings.Processing.Color.Experimental.ToneMapping,
-        ["always"],
-        ["hdrOnly"],
-    )
-    pytest.helpers.equality_tester(
-        zivid.Settings.Processing.Color.Experimental.ToneMapping,
-        ["always"],
+        ["automatic"],
         [None],
     )
 
+    pytest.helpers.equality_tester(
+        zivid.Settings.Processing.Color.Experimental,
+        ["automatic"],
+        ["useFirstAcquisition"],
+    )
 
-def test_settings_processing_color_experimental_tonemapping_enabled(
-    application,
-):
+    pytest.helpers.equality_tester(
+        zivid.Settings.Processing.Color.Experimental,
+        ["automatic"],
+        ["toneMapping"],
+    )
+
+
+def test_settings_processing_color_experimental_mode(application):
     import zivid
 
-    for (
-        value
-    ) in (
-        zivid.Settings.Processing.Color.Experimental.ToneMapping.Enabled.valid_values()
-    ):
+    for value in zivid.Settings.Processing.Color.Experimental.Mode.valid_values():
         pytest.helpers.set_attribute_tester(
-            settings_instance=zivid.Settings.Processing.Color.Experimental.ToneMapping(),
-            member="enabled",
+            settings_instance=zivid.Settings.Processing.Color.Experimental(),
+            member="mode",
             value=value,
             expected_data_type=str,
         )
     pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings.Processing.Color.Experimental.ToneMapping(),
-        member="enabled",
+        settings_instance=zivid.Settings.Processing.Color.Experimental(),
+        member="mode",
         value=None,
         expected_data_type=type(None),
     )
     # Is optional enum
-    zivid.Settings.Processing.Color.Experimental.ToneMapping(enabled="always")
-    zivid.Settings.Processing.Color.Experimental.ToneMapping(enabled="hdrOnly")
-    zivid.Settings.Processing.Color.Experimental.ToneMapping(enabled=None)
+    zivid.Settings.Processing.Color.Experimental(mode="automatic")
+    zivid.Settings.Processing.Color.Experimental(mode="useFirstAcquisition")
+    zivid.Settings.Processing.Color.Experimental(mode="toneMapping")
+    zivid.Settings.Processing.Color.Experimental(mode=None)
     with pytest.raises(KeyError):
-        zivid.Settings.Processing.Color.Experimental.ToneMapping(enabled="_dummy_")
+        zivid.Settings.Processing.Color.Experimental(mode="_dummy_")
 
 
 def test_settings_processing_color_balance_red(
@@ -804,10 +795,29 @@ def test_settings_processing_filters_reflection_removal(
         value=zivid.Settings.Processing.Filters.Reflection.Removal(),
         expected_data_type=zivid.Settings.Processing.Filters.Reflection.Removal,
     )
+
     pytest.helpers.equality_tester(
         zivid.Settings.Processing.Filters.Reflection.Removal,
         [True],
         [False],
+    )
+
+    pytest.helpers.equality_tester(
+        zivid.Settings.Processing.Filters.Reflection.Removal,
+        [True, zivid.Settings.Processing.Filters.Reflection.Removal.Experimental()],
+        [False, zivid.Settings.Processing.Filters.Reflection.Removal.Experimental()],
+    )
+
+    pytest.helpers.equality_tester(
+        zivid.Settings.Processing.Filters.Reflection.Removal,
+        [
+            True,
+            zivid.Settings.Processing.Filters.Reflection.Removal.Experimental("global"),
+        ],
+        [
+            True,
+            zivid.Settings.Processing.Filters.Reflection.Removal.Experimental("local"),
+        ],
     )
 
 
@@ -822,6 +832,57 @@ def test_settings_processing_filters_reflection_removal_enabled(
         value=True,
         expected_data_type=bool,
     )
+
+
+def test_settings_processing_filters_reflection_removal_experimental(
+    application,
+):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Filters.Reflection.Removal(),
+        member="experimental",
+        value=zivid.Settings.Processing.Filters.Reflection.Removal.Experimental(),
+        expected_data_type=zivid.Settings.Processing.Filters.Reflection.Removal.Experimental,
+    )
+
+    pytest.helpers.equality_tester(
+        zivid.Settings.Processing.Filters.Reflection.Removal.Experimental,
+        ["global"],
+        ["local"],
+    )
+
+
+def test_settings_processing_filters_reflection_removal_experimental_mode(
+    application,
+):
+    import zivid
+
+    for (
+        value
+    ) in (
+        zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode.valid_values()
+    ):
+        pytest.helpers.set_attribute_tester(
+            settings_instance=zivid.Settings.Processing.Filters.Reflection.Removal.Experimental(),
+            member="mode",
+            value=value,
+            expected_data_type=str,
+        )
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Filters.Reflection.Removal.Experimental(),
+        member="mode",
+        value=None,
+        expected_data_type=type(None),
+    )
+
+    # Is optional enum
+    zivid.Settings.Processing.Filters.Reflection.Removal.Experimental(mode="global")
+    zivid.Settings.Processing.Filters.Reflection.Removal.Experimental(mode="local")
+    with pytest.raises(KeyError):
+        zivid.Settings.Processing.Filters.Reflection.Removal.Experimental(
+            mode="_dummy_"
+        )
 
 
 def test_settings_processing_filters_smoothing(

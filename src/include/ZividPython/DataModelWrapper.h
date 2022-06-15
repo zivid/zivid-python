@@ -178,7 +178,15 @@ namespace ZividPython
                     ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(pyClass, "enum", ValueType, [](auto &pyEnum) {
                         for(const auto &value : Target::validValues())
                         {
-                            pyEnum.value(Target{ value }.toString().c_str(), value);
+                            auto name = Target{ value }.toString();
+                            if(name == "global")
+                            {
+                                // Special handling due to "global" being a reserved keyword in Python.
+                                // The standard in these cases is to add a trailing underscore.
+                                // https://peps.python.org/pep-0008/#naming-conventions
+                                name = name + "_";
+                            }
+                            pyEnum.value(name.c_str(), value);
                         }
                         pyEnum.export_values();
                     });
