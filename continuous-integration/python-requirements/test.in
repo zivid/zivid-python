@@ -3,3 +3,4 @@ pytest-helpers-namespace
 pytest-pythonpath
 pytest-timeout
 requests
+ninja
