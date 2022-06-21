@@ -15,7 +15,7 @@ fi
 source /etc/os-release || exit $?
 
 osId=$ID
-if [[ $VERSION_ID ]]; then
+if [[ $ID != "arch" ]]; then
     osId=$osId-$VERSION_ID
 fi
 
