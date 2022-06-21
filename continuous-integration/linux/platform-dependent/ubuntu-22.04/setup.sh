@@ -12,6 +12,7 @@ apt-yes dist-upgrade || exit $?
 
 apt-yes install \
     build-essential \
+    clang \
     clinfo \
     cmake \
     g++ \
