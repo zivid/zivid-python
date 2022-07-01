@@ -19,6 +19,8 @@ Zivid Python is the official Python package for Zivid 3D cameras. Read more abou
 * [Zivid SDK][zivid-download-software-url] version 2.7.0 (see [here][zivid-software-installation-url] for help)
 * [Compiler](doc/CompilerInstallation.md) with C++17 support
 
+*Ubuntu users must install Python headers (`apt install python3-dev`) in addition to the regular `python3` package.*
+
 *Windows users also needs to make sure that the Zivid SDK installation folder is in system `PATH` before using the package, not only the terminal PATH variable. The default install location that should be added to system `PATH` is `C:\Program Files\Zivid\bin`.*
 
 ### Installing official version from PyPI using PIP
