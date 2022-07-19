@@ -29,6 +29,10 @@ After having installed the latest Zivid SDK, the easiest way to install Zivid Py
 
     pip install zivid
 
+Note:
+
+> If you don't use the latest Zivid SDK version you need to manually specify the version. See [Versioning](#versioning).
+
 Installation may take some time since the `setup.py` script will download additional dependencies and compile C++ source code in the background.
 
 On some systems Python 3 `pip` is called `pip3`. In this guide we assume it is called `pip`. When using PIP version 19 or higher build dependencies are handled automatically.
@@ -107,6 +111,8 @@ This python module is using [PEP 440](https://www.python.org/dev/peps/pep-0440) 
 
 The version number of the Zivid Python module consists of six numbers. The three first numbers of the version is the [semantic version](https://semver.org/) of the code in this repository. The last three numbers is the version of the underlying Zivid SDK library used by the Python module.
 
+To check which version of zivid-python that corresponds to a specific version of Zivid SDK, check out [zivid-python-releases-url] or run `pip index versions zivid`.
+
 ### Version breakdown
 
                                         Zivid SDK version = 1.4.1 (semantic version)
@@ -168,3 +174,4 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 [zivid-software-installation-url]: https://support.zivid.com/latest/getting-started/software-installation.html
 [zivid-download-software-url]: https://www.zivid.com/downloads
 [zivid-software-url]: http://www.zivid.com/software
+[zivid-python-releases-url]: https://pypi.org/project/zivid/#history
