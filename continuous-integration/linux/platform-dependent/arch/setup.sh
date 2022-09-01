@@ -12,6 +12,7 @@ pacman -Syu --noconfirm --needed \
        ninja \
        numactl \
        python-pip \
+       python-setuptools \
        shellcheck \
        sudo \
     || exit $?
