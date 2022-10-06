@@ -55,3 +55,25 @@ def test_multicamera_calibration(checkerboard_frames, multicamera_transforms):
             assert residual.translation() == 0.0
         else:
             assert residual.translation() > 0.0
+
+
+def test_multicamera_calibration_save_load(checkerboard_frames):
+    from pathlib import Path
+    import tempfile
+    import numpy as np
+    import zivid
+
+    multicamera_output = zivid.calibration.calibrate_multi_camera(
+        [
+            zivid.calibration.detect_feature_points(frame.point_cloud())
+            for frame in checkerboard_frames
+        ]
+    )
+
+    with tempfile.TemporaryDirectory() as tmpdir, zivid.Application() as _:
+        file_path = Path(tmpdir) / "matrix.yml"
+        for transform in multicamera_output.transforms():
+            zivid.Matrix4x4(transform).save(file_path)
+            np.testing.assert_allclose(
+                zivid.Matrix4x4(transform), zivid.Matrix4x4(file_path), rtol=1e-6
+            )

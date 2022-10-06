@@ -1,6 +1,5 @@
 """This file imports all non protected classes, modules and packages from the current level."""
 
-
 import zivid._version
 
 __version__ = zivid._version.get_version(__name__)  # pylint: disable=protected-access
@@ -22,3 +21,4 @@ from zivid.settings import Settings
 from zivid.settings_2d import Settings2D
 from zivid.camera_info import CameraInfo
 from zivid.camera_intrinsics import CameraIntrinsics
+from zivid.matrix4x4 import Matrix4x4

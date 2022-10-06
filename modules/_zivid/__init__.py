@@ -58,6 +58,7 @@ try:
         ImageRGBA,
         CameraInfo,
         infield_correction,
+        Matrix4x4,
     )
 except ImportError as ex:
 

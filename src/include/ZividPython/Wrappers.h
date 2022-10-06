@@ -114,11 +114,14 @@ namespace ZividPython
     }
 } // namespace ZividPython
 
-#define ZIVID_PYTHON_WRAP_CLASS(dest, name)                                                                            \
+#define ZIVID_PYTHON_WRAP_CLASS(dest, name, ...)                                                                       \
     ZividPython::wrapClass<name, ZividPython::WrapType::normal>(dest,                                                  \
                                                                 static_cast<void (*)(pybind11::class_<name>)>(         \
                                                                     ZividPython::wrapClass),                           \
-                                                                #name)
+                                                                #name,                                                 \
+                                                                ##__VA_ARGS__)
+
+#define ZIVID_PYTHON_WRAP_CLASS_BUFFER(dest, name) ZIVID_PYTHON_WRAP_CLASS(dest, name, pybind11::buffer_protocol{})
 
 #define ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(dest, name, source, callback)                                           \
     ZividPython::wrapEnum<source>(dest, name, callback)

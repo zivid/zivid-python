@@ -4,11 +4,11 @@
 #include <ZividPython/Wrappers.h>
 
 #include <ZividPython/Calibration/Calibration.h>
-#include <ZividPython/Calibration/Pose.h>
 #include <ZividPython/CaptureAssistant.h>
 #include <ZividPython/DataModel.h>
 #include <ZividPython/Firmware.h>
 #include <ZividPython/InfieldCorrection/InfieldCorrection.h>
+#include <ZividPython/Matrix4x4.h>
 #include <ZividPython/ReleasableArray2D.h>
 #include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/ReleasableFrame.h>
@@ -39,6 +39,8 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Camera);
     ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Frame);
     ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Frame2D);
+
+    ZIVID_PYTHON_WRAP_CLASS_BUFFER(module, Matrix4x4);
 
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, ImageRGBA);
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, PointCloud);
