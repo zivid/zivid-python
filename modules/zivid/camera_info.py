@@ -113,12 +113,14 @@ class CameraInfo:
         zividOnePlusMedium = "zividOnePlusMedium"
         zividOnePlusSmall = "zividOnePlusSmall"
         zividTwo = "zividTwo"
+        zividTwoL100 = "zividTwoL100"
 
         _valid_values = {
             "zividOnePlusLarge": _zivid.CameraInfo.Model.zividOnePlusLarge,
             "zividOnePlusMedium": _zivid.CameraInfo.Model.zividOnePlusMedium,
             "zividOnePlusSmall": _zivid.CameraInfo.Model.zividOnePlusSmall,
             "zividTwo": _zivid.CameraInfo.Model.zividTwo,
+            "zividTwoL100": _zivid.CameraInfo.Model.zividTwoL100,
         }
 
         @classmethod
