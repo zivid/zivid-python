@@ -1,5 +1,7 @@
 """Hand-eye calibration sample."""
+from pathlib import Path
 import datetime
+import tempfile
 
 import numpy as np
 import zivid
@@ -74,6 +76,14 @@ def _main():
         print("Result:\n{}".format(calibration_result))
     else:
         print("FAILED")
+
+    print("Getting calibration result transformation matrix")
+    transformed_numpy_matrix = calibration_result.transform()
+
+    print("Saving calibration result transformation matrix")
+    with tempfile.TemporaryDirectory() as tempdir:
+        file_path = Path(tempdir) / "hand_eye.yml"
+        zivid.Matrix4x4(transformed_numpy_matrix).save(file_path)
 
 
 if __name__ == "__main__":

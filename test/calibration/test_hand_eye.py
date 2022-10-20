@@ -11,7 +11,6 @@ def test_handeye_input_init_failure(checkerboard_frames, transform):
 
 
 def test_handeye_input(checkerboard_frames, transform):
-
     import numpy as np
     import zivid.calibration
 
@@ -41,7 +40,6 @@ def test_handeye_input(checkerboard_frames, transform):
 def test_eyetohand_calibration(
     handeye_eth_frames, handeye_eth_poses, handeye_eth_transform
 ):
-
     import numpy as np
     import zivid.calibration
 
@@ -79,3 +77,28 @@ def test_eyetohand_calibration(
         assert residual.translation() >= 0.0
         assert isinstance(residual.rotation(), float)
         assert residual.rotation() >= 0.0
+
+
+def test_eyetohand_calibration_save_load(handeye_eth_frames, handeye_eth_poses):
+    from pathlib import Path
+    import tempfile
+    import zivid
+    import numpy as np
+
+    handeye_output = zivid.calibration.calibrate_eye_to_hand(
+        [
+            zivid.calibration.HandEyeInput(
+                zivid.calibration.Pose(pose_matrix),
+                zivid.calibration.detect_feature_points(frame.point_cloud()),
+            )
+            for frame, pose_matrix in zip(handeye_eth_frames, handeye_eth_poses)
+        ]
+    )
+
+    with tempfile.TemporaryDirectory() as tmpdir, zivid.Application() as _:
+        transform = handeye_output.transform()
+        file_path = Path(tmpdir) / "matrix.yml"
+        zivid.Matrix4x4(transform).save(file_path)
+        np.testing.assert_allclose(
+            zivid.Matrix4x4(transform), zivid.Matrix4x4(file_path), rtol=1e-6
+        )
