@@ -8,7 +8,7 @@ from common import repo_root, run_process, install_pip_dependencies
 def _install_zivid_sdk():
     import requests  # pylint: disable=import-outside-toplevel
 
-    with tempfile.TemporaryDirectory() as temp_dir:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as temp_dir:
         zivid_installer_url = "https://www.zivid.com/hubfs/softwarefiles/releases/2.8.0+891708ba-1/windows/ZividSetup_2.8.0+891708ba-1.exe"
         print("Downloading {}".format(zivid_installer_url), flush=True)
         zivid_installer = Path(temp_dir) / "ZividSetup.exe"
@@ -21,7 +21,7 @@ def _install_zivid_sdk():
 def _install_intel_opencl_runtime():
     import requests  # pylint: disable=import-outside-toplevel
 
-    with tempfile.TemporaryDirectory() as temp_dir:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as temp_dir:
         intel_opencl_runtime_url = "https://www.dropbox.com/s/09bk2nx31hzrupf/opencl_runtime_18.1_x64_setup-20200625-090300.msi?raw=1"
         print("Downloading {}".format(intel_opencl_runtime_url), flush=True)
         opencl_runtime = Path(temp_dir) / "opencl_runtime.msi"
