@@ -155,6 +155,7 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 
 | Operating System | Python version           | Zivid SDK version |
 | :--------------- | :----------------------- | :---------------- |
+| Ubuntu 22.04     | 3.10                     | 2.8.0             |
 | Ubuntu 20.04     | 3.8                      | 2.8.0             |
 | Ubuntu 18.04     | 3.6                      | 2.8.0             |
 | Fedora 30        | 3.7                      | 2.8.0             |

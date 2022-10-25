@@ -97,6 +97,7 @@ jobs:
         os:
           - ubuntu:18.04
           - ubuntu:20.04
+          - ubuntu:22.04
           - fedora:30
           - fedora:33
           - fedora:34
