@@ -176,7 +176,7 @@ def test_setitem():
         matrix[0, 0] = "42"
 
     with pytest.raises(TypeError):
-        matrix[0, 0] = 10 ** 1000
+        matrix[0, 0] = 10**1000
 
     with pytest.raises(IndexError):
         matrix[1000, 0] = 0
