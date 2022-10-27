@@ -13,7 +13,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 conan_cmake_configure(
     REQUIRES
         eigen/3.3.9
-        pybind11/2.9.1
+        pybind11/2.10.0
     GENERATORS cmake_find_package
     OPTIONS eigen:MPL2_only=True)
 
@@ -41,7 +41,7 @@ if(MSVC)
 endif()
 
 find_package(Eigen3 3.3.9 MODULE REQUIRED)
-find_package(pybind11 2.9.1 MODULE REQUIRED)
+find_package(pybind11 2.10.0 MODULE REQUIRED)
 find_package(Zivid ${ZIVID_SDK_VERSION} EXACT COMPONENTS Core REQUIRED)
 
 add_subdirectory(src)

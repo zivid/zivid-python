@@ -5,3 +5,5 @@ flake8-docstrings
 pylint
 scikit-build
 inflection
+pytest
+requests
