@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           lfs: false
       - name: Build and lint on Archlinux
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           lfs: false
       - name: Create source distribution
@@ -44,7 +44,7 @@ jobs:
               ubuntu:20.04 \
               bash -c "./setup.sh && ./create-source-distribution.sh"
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: source-distribution
           path: dist/zivid*.tar.gz
@@ -62,11 +62,11 @@ jobs:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           lfs: false
       - name: Set up Python ${{matrix.python-version}}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{matrix.python-version}}
       - name: Setup
@@ -78,7 +78,7 @@ jobs:
           CC: 'cl.exe'
         run: python continuous-integration\windows\create_binary_distribution.py
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: bdist-win-python${{matrix.python-version}}
           path: dist/zivid*.whl
@@ -104,11 +104,11 @@ jobs:
           - archlinux/archlinux:base
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           lfs: true
       - name: Download artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: source-distribution
           path: dist
@@ -134,16 +134,16 @@ jobs:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           lfs: true
       - name: Download artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: bdist-win-python${{matrix.python-version}}
           path: dist
       - name: Set up Python ${{matrix.python-version}}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{matrix.python-version}}
       - name: Setup
@@ -163,11 +163,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           lfs: false
       - name: Download all artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           path: artifacts
       - name: Collect and check
@@ -179,7 +179,7 @@ jobs:
               ubuntu:20.04 \
               bash -c "./collect-and-check-artifacts.sh"
       - name: Upload all as single artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: distributions_all
           path: distribution/
