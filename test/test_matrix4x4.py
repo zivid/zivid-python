@@ -77,6 +77,18 @@ def sample_1d_list() -> list:
     )
 
 
+def sample_transformation_matrix() -> numpy.ndarray:
+
+    return numpy.array(
+        [
+            [1.0, 0.0, 0.0, 150.0],
+            [0.0, 1.0, 0.0, 160.0],
+            [0.0, 0.0, 1.0, 250.0],
+            [0.0, 0.0, 0.0, 1.0],
+        ]
+    )
+
+
 def test_default_init():
     assert_all_equal_flat(zivid.Matrix4x4(), [0.0] * 16)
 
@@ -108,6 +120,12 @@ def test_4x4_array_init():
 
     with pytest.raises(TypeError):
         zivid.Matrix4x4([[]] * 4)
+
+
+def test_pose_init():
+    pose = zivid.calibration.Pose(sample_transformation_matrix())
+    matrix = zivid.Matrix4x4(pose)
+    assert_all_equal_2d(matrix, sample_transformation_matrix())
 
 
 def test_getitem():

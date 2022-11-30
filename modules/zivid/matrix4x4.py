@@ -1,6 +1,7 @@
 """Contains Matrix4x4 class."""
 import pathlib
 import _zivid
+from zivid.calibration import Pose
 
 
 class Matrix4x4(_zivid.Matrix4x4):
@@ -15,6 +16,7 @@ class Matrix4x4(_zivid.Matrix4x4):
         * None or no arguments -> Zero initializes all values.
         * 1 dimensional List or numpy.ndarray of 16 floats -> Map 1D array of 16 values into this 2D array of 4x4.
         * 2 dimensional List or numpy.ndarray of 4x4 floats -> Copy 2D array of size 4x4.
+        * Instance of zivid.calibration.Pose -> Copy of the matrix contained in the Pose
         * str or pathlib.Path -> Load the matrix from a file.
 
         Args:
@@ -22,6 +24,8 @@ class Matrix4x4(_zivid.Matrix4x4):
         """
         if arg is None:
             super().__init__()
+        elif isinstance(arg, Pose):
+            super().__init__(arg.to_matrix())
         elif isinstance(arg, pathlib.Path):
             super().__init__(str(arg))
         else:
