@@ -103,7 +103,9 @@ If you do not have a camera, you can use the `FileCameraZividOne.zfc` file in [Z
 
 ## Examples
 
-More advanced example programs can be found in the [samples](samples) directory.
+Basic example programs can be found in the [samples](samples) directory.
+Many more advanced example programs may be found in the separate
+[zivid-python-samples](https://github.com/zivid/zivid-python-samples) repository.
 
 ## Versioning
 
