@@ -102,7 +102,7 @@ Instead of manually adjusting settings, the Capture Assistant may be used to fin
 
 ### Using camera emulation
 
-If you do not have a camera, you can use the `FileCameraZividOne.zfc` file in [ZividSampleData2.zip](http://www.zivid.com/software/ZividSampleData2.zip) to emulate a camera.
+If you do not have a camera, you can use the `FileCameraZividOne.zfc` file in [ZividSampleData2.zip][zivid-download-sampledata-url] to emulate a camera.
 
     import zivid
     app = zivid.Application()
@@ -185,6 +185,7 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 [zivid-knowledge-base-url]: http://support.zivid.com
 [zivid-software-installation-url]: https://support.zivid.com/latest/getting-started/software-installation.html
 [zivid-download-software-url]: https://www.zivid.com/downloads
+[zivid-download-sampledata-url]: https://www.zivid.com/software/ZividSampleData2.zip
 [zivid-software-url]: http://www.zivid.com/software
 [zivid-python-releases-url]: https://pypi.org/project/zivid/#history
 [zivid-studio-guide-url]: https://support.zivid.com/en/latest/getting-started/studio-guide.html
