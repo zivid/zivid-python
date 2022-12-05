@@ -57,6 +57,8 @@ this option is considered experimental/unofficial.
 
 ## Quick Start
 
+### Point cloud capture
+
 To quickly capture a point cloud using default settings, run the following code:
 
     import zivid
@@ -65,6 +67,14 @@ To quickly capture a point cloud using default settings, run the following code:
     settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
     frame = camera.capture(settings)
     frame.save("result.zdf")
+
+Instead of using the API to define capture settings, it is also possible to load them from YML files that
+have been exported from [Zivid Studio][zivid-studio-guide-url] or downloaded from the Zivid Knowledge Base
+[settings library][zivid-two-standard-settings-url]. This can be done by providing the filesystem path to
+such a file, for example:
+
+    settings = Settings.load("ZividTwo_Settings_2xHDR_Normal.yml")
+    frame = camera.capture(settings)
 
 ### Point cloud data access
 
@@ -177,3 +187,5 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 [zivid-download-software-url]: https://www.zivid.com/downloads
 [zivid-software-url]: http://www.zivid.com/software
 [zivid-python-releases-url]: https://pypi.org/project/zivid/#history
+[zivid-studio-guide-url]: https://support.zivid.com/en/latest/getting-started/studio-guide.html
+[zivid-two-standard-settings-url]: https://support.zivid.com/en/latest/reference-articles/standard-acquisition-settings-zivid-two.html
