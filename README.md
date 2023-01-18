@@ -177,7 +177,7 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 | Arch Linux       | latest                    |
 
 [header-image]: https://www.zivid.com/hubfs/softwarefiles/images/zivid-generic-github-header.png
-[ci-badge]: https://img.shields.io/github/workflow/status/zivid/zivid-python/Main%20CI%20workflow/master
+[ci-badge]: https://img.shields.io/github/actions/workflow/status/zivid/zivid-python/main.yml?branch=master
 [ci-url]: https://github.com/zivid/zivid-python/actions?query=workflow%3A%22Main+CI+workflow%22+branch%3Amaster
 [pypi-badge]: https://img.shields.io/pypi/v/zivid.svg
 [pypi-url]: https://pypi.org/project/zivid
