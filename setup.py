@@ -8,7 +8,7 @@ from skbuild import setup
 
 # To be replaced by: from setuptools_scm import get_version
 def get_version():
-    return "2.7.0"
+    return "2.7.1"
 
 
 def _zivid_sdk_version():
