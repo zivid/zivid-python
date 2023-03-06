@@ -13,6 +13,7 @@ apt-yes dist-upgrade || exit $?
 apt-yes install \
     clinfo \
     g++ \
+    jq \
     python3-dev \
     python3-venv \
     python3-pip \
@@ -36,5 +37,5 @@ function install_www_deb {
     rm -r $TMP_DIR || exit $?
 }
 
-install_www_deb https://www.zivid.com/hubfs/softwarefiles/releases/2.8.1+dd4dffea-1/u18/zivid-telicam-driver_3.0.1.1-3_amd64.deb || exit $?
-install_www_deb https://www.zivid.com/hubfs/softwarefiles/releases/2.8.1+dd4dffea-1/u18/zivid_2.8.1+dd4dffea-1_amd64.deb || exit $?
+install_www_deb "https://www.zivid.com/hubfs/softwarefiles/releases/${ZIVID_SDK_EXACT_VERSION}/u18/zivid-telicam-driver_${ZIVID_TELICAM_EXACT_VERSION}_amd64.deb" || exit $?
+install_www_deb "https://www.zivid.com/hubfs/softwarefiles/releases/${ZIVID_SDK_EXACT_VERSION}/u18/zivid_${ZIVID_SDK_EXACT_VERSION}_amd64.deb" || exit $?
