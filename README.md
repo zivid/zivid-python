@@ -167,6 +167,7 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 
 | Operating System | Python version            |
 | :--------------- | :------------------------ |
+| Ubuntu 22.04     | 3.10                      |
 | Ubuntu 20.04     | 3.8                       |
 | Ubuntu 18.04     | 3.6                       |
 | Fedora 30        | 3.7                       |
