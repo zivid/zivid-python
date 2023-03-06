@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(realpath $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd) )"
+
 function install_opencl_cpu_runtime {
     TMP_DIR=$(mktemp --tmpdir --directory zivid-setup-opencl-cpu-XXXX) || exit $?
     pushd $TMP_DIR || exit $?
@@ -28,3 +30,10 @@ EOF
     popd || exit $?
     rm -r $TMP_DIR || exit $?
 }
+
+# Read versions.json and set as environment variables
+VERSIONS_FILE="${SCRIPT_DIR}/../../versions.json"
+for var in $(jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ${VERSIONS_FILE} ); do
+    echo "Setting env var from ${VERSIONS_FILE}: ${var}"
+    export ${var?}
+done
