@@ -27,6 +27,19 @@ def test_default_settings(application):
         settings.processing.filters.experimental,
         zivid.Settings.Processing.Filters.Experimental,
     )
+
+    assert isinstance(
+        settings.processing.filters.cluster, zivid.Settings.Processing.Filters.Cluster
+    )
+    assert isinstance(
+        settings.processing.filters.cluster.removal,
+        zivid.Settings.Processing.Filters.Cluster.Removal,
+    )
+
+    assert settings.processing.filters.cluster.removal.enabled is None
+    assert settings.processing.filters.cluster.removal.min_area is None
+    assert settings.processing.filters.cluster.removal.max_neighbor_distance is None
+
     assert isinstance(
         settings.processing.filters.experimental.contrast_distortion,
         zivid.Settings.Processing.Filters.Experimental.ContrastDistortion,
@@ -48,6 +61,15 @@ def test_default_settings(application):
         settings.processing.filters.experimental.contrast_distortion.removal.enabled
         is None
     )
+
+    assert isinstance(
+        settings.processing.filters.experimental.hole_filling,
+        zivid.Settings.Processing.Filters.Experimental.HoleFilling,
+    )
+
+    assert settings.processing.filters.experimental.hole_filling.enabled is None
+    assert settings.processing.filters.experimental.hole_filling.hole_size is None
+    assert settings.processing.filters.experimental.hole_filling.strictness is None
 
     assert isinstance(
         settings.processing.filters.noise, zivid.Settings.Processing.Filters.Noise
@@ -94,6 +116,22 @@ def test_default_settings(application):
     )
     assert settings.processing.filters.smoothing.gaussian.enabled is None
     assert settings.processing.filters.smoothing.gaussian.sigma is None
+
+    assert isinstance(settings.region_of_interest, zivid.Settings.RegionOfInterest)
+    assert isinstance(
+        settings.region_of_interest.box, zivid.Settings.RegionOfInterest.Box
+    )
+    assert isinstance(
+        settings.region_of_interest.depth, zivid.Settings.RegionOfInterest.Depth
+    )
+
+    assert settings.region_of_interest.box.enabled is None
+    assert settings.region_of_interest.box.extents is None
+    assert settings.region_of_interest.box.point_o is None
+    assert settings.region_of_interest.box.point_a is None
+    assert settings.region_of_interest.box.point_b is None
+    assert settings.region_of_interest.depth.enabled is None
+    assert settings.region_of_interest.depth.range is None
 
 
 def test_set_acquisition_list():
@@ -472,21 +510,13 @@ def test_settings_processing_filters(
     pytest.helpers.equality_tester(
         zivid.Settings.Processing.Filters,
         [
-            zivid.Settings.Processing.Filters.Experimental(
-                contrast_distortion=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion(
-                    correction=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction(
-                        enabled=True
-                    )
-                )
+            zivid.Settings.Processing.Filters.Cluster(
+                zivid.Settings.Processing.Filters.Cluster.Removal(enabled=True)
             )
         ],
         [
-            zivid.Settings.Processing.Filters.Experimental(
-                contrast_distortion=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion(
-                    correction=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction(
-                        enabled=False
-                    )
-                )
+            zivid.Settings.Processing.Filters.Cluster(
+                zivid.Settings.Processing.Filters.Cluster.Removal(enabled=False)
             )
         ],
     )
@@ -551,6 +581,64 @@ def test_settings_processing_filters_experimental_contrast_distortion(
                 enabled=True
             ),
         ],
+    )
+
+
+def test_settings_processing_filters_experimental_holefilling(
+    application,
+):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Filters.Experimental(),
+        member="hole_filling",
+        value=zivid.Settings.Processing.Filters.Experimental.HoleFilling(),
+        expected_data_type=zivid.Settings.Processing.Filters.Experimental.HoleFilling,
+    )
+
+    pytest.helpers.equality_tester(
+        zivid.Settings.Processing.Filters.Experimental.HoleFilling,
+        [True],
+        [False],
+    )
+
+
+def test_settings_processing_filters_experimental_holefilling_enabled(
+    application,
+):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Filters.Experimental.HoleFilling(),
+        member="enabled",
+        value=True,
+        expected_data_type=bool,
+    )
+
+
+def test_settings_processing_filters_experimental_holefilling_holesize(
+    application,
+):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Filters.Experimental.HoleFilling(),
+        member="hole_size",
+        value=0.3,
+        expected_data_type=float,
+    )
+
+
+def test_settings_processing_filters_experimental_holefilling_strictness(
+    application,
+):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Filters.Experimental.HoleFilling(),
+        member="strictness",
+        value=3,
+        expected_data_type=int,
     )
 
 
@@ -639,6 +727,82 @@ def test_settings_processing_filters_experimental_contrast_distortion_correction
         member="enabled",
         value=False,
         expected_data_type=bool,
+    )
+
+
+def test_settings_processing_filters_cluster(
+    application,
+):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Filters(),
+        member="cluster",
+        value=zivid.Settings.Processing.Filters.Cluster(),
+        expected_data_type=zivid.Settings.Processing.Filters.Cluster,
+    )
+
+    pytest.helpers.equality_tester(
+        zivid.Settings.Processing.Filters.Cluster,
+        [zivid.Settings.Processing.Filters.Cluster.Removal(enabled=True)],
+        [zivid.Settings.Processing.Filters.Cluster.Removal(enabled=False)],
+    )
+
+
+def test_settings_processing_filters_cluster_removal(
+    application,
+):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Filters.Cluster(),
+        member="removal",
+        value=zivid.Settings.Processing.Filters.Cluster.Removal(),
+        expected_data_type=zivid.Settings.Processing.Filters.Cluster.Removal,
+    )
+    pytest.helpers.equality_tester(
+        zivid.Settings.Processing.Filters.Cluster.Removal,
+        [True],
+        [False],
+    )
+
+
+def test_settings_processing_filters_cluster_removal_enabled(
+    application,
+):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Filters.Cluster.Removal(),
+        member="enabled",
+        value=False,
+        expected_data_type=bool,
+    )
+
+
+def test_settings_processing_filters_cluster_removal_minarea(
+    application,
+):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Filters.Cluster.Removal(),
+        member="min_area",
+        value=150.0,
+        expected_data_type=float,
+    )
+
+
+def test_settings_processing_filters_cluster_removal_maxneighbordistance(
+    application,
+):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.Processing.Filters.Cluster.Removal(),
+        member="max_neighbor_distance",
+        value=5.0,
+        expected_data_type=float,
     )
 
 
@@ -945,6 +1109,155 @@ def test_settings_processing_filters_smoothing_gaussian_enabled(
         value=True,
         expected_data_type=bool,
     )
+
+
+def test_settings_regionofinterest(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings(),
+        member="region_of_interest",
+        value=zivid.Settings.RegionOfInterest(),
+        expected_data_type=zivid.Settings.RegionOfInterest,
+    )
+    pytest.helpers.equality_tester(
+        zivid.Settings.RegionOfInterest,
+        [zivid.Settings.RegionOfInterest.Box(enabled=True)],
+        [zivid.Settings.RegionOfInterest.Box(enabled=False)],
+    )
+
+
+def test_settings_regionofinterest_box(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.RegionOfInterest(),
+        member="box",
+        value=zivid.Settings.RegionOfInterest.Box(),
+        expected_data_type=zivid.Settings.RegionOfInterest.Box,
+    )
+    pytest.helpers.equality_tester(
+        zivid.Settings.RegionOfInterest.Box,
+        [True],
+        [False],
+    )
+
+
+def test_settings_regionofinterest_box_enabled(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.RegionOfInterest.Box(),
+        member="enabled",
+        value=True,
+        expected_data_type=bool,
+    )
+
+
+def test_settings_regionofinterest_box_pointo(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.RegionOfInterest.Box(),
+        member="point_o",
+        value=[100.0, 200.0, 300.0],
+        expected_data_type=list,
+    )
+
+
+def test_settings_regionofinterest_box_pointa(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.RegionOfInterest.Box(),
+        member="point_a",
+        value=[100.0, 200.0, 300.0],
+        expected_data_type=list,
+    )
+
+
+def test_settings_regionofinterest_box_pointb(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.RegionOfInterest.Box(),
+        member="point_b",
+        value=[100.0, 200.0, 300.0],
+        expected_data_type=list,
+    )
+
+
+def test_settings_regionofinterest_box_extents(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.RegionOfInterest.Box(),
+        member="extents",
+        value=[-100.0, 500.0],
+        expected_data_type=list,
+    )
+
+    # A range must have two elements
+    with pytest.raises(TypeError):
+        zivid.Settings.RegionOfInterest.Box(extents=[])
+    with pytest.raises(TypeError):
+        zivid.Settings.RegionOfInterest.Box(extents=[100.0])
+    with pytest.raises(TypeError):
+        zivid.Settings.RegionOfInterest.Box(extents=[100.0, 200.0, 300.0])
+
+    # A range must have min <= max
+    with pytest.raises(TypeError):
+        zivid.Settings.RegionOfInterest.Box(extents=[100.0, 50.0])
+
+
+def test_settings_regionofinterest_depth(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.RegionOfInterest(),
+        member="depth",
+        value=zivid.Settings.RegionOfInterest.Depth(),
+        expected_data_type=zivid.Settings.RegionOfInterest.Depth,
+    )
+    pytest.helpers.equality_tester(
+        zivid.Settings.RegionOfInterest.Depth,
+        [True],
+        [False],
+    )
+
+
+def test_settings_regionofinterest_depth_enabled(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.RegionOfInterest.Depth(),
+        member="enabled",
+        value=True,
+        expected_data_type=bool,
+    )
+
+
+def test_settings_regionofinterest_depth_range(application):
+    import zivid
+
+    pytest.helpers.set_attribute_tester(
+        settings_instance=zivid.Settings.RegionOfInterest.Depth(),
+        member="range",
+        value=[100.0, 1500.0],
+        expected_data_type=list,
+    )
+
+    # A range must have two elements
+    with pytest.raises(TypeError):
+        zivid.Settings.RegionOfInterest.Depth(range=[])
+    with pytest.raises(TypeError):
+        zivid.Settings.RegionOfInterest.Depth(range=[100.0])
+    with pytest.raises(TypeError):
+        zivid.Settings.RegionOfInterest.Depth(range=[100.0, 200.0, 300.0])
+
+    # A range must have min <= max
+    with pytest.raises(TypeError):
+        zivid.Settings.RegionOfInterest.Depth(range=[100.0, -200.0])
 
 
 def test_print_settings(application):

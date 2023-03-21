@@ -4,6 +4,8 @@ disable=missing-docstring,
         duplicate-code,
         unused-argument,
         pointless-statement,
+        too-many-lines,
+        too-many-statements,
         consider-using-f-string # Keep .format() as long as we want unofficial python3.5 support
 
 [FORMAT]

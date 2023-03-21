@@ -170,10 +170,22 @@ def set_attribute_tester(settings_instance, member, value, expected_data_type):
         setattr(settings_instance, member, DummyClass())
     if expected_data_type in (int, float, numbers.Real):
         with pytest.raises(IndexError):
-            setattr(settings_instance, member, 999999999999)
-            setattr(settings_instance, member, -999999999999)
+            setattr(settings_instance, member, 999999999)
+        with pytest.raises(IndexError):
+            setattr(settings_instance, member, -999999999)
     elif expected_data_type == bool:
         pass
+    elif expected_data_type == list:
+        with pytest.raises(TypeError):
+            setattr(settings_instance, member, 1)
+        with pytest.raises(TypeError):
+            setattr(settings_instance, member, 1.0)
+        with pytest.raises(TypeError):
+            setattr(settings_instance, member, True)
+
+        # Setter for list can also take a numpy array, but this should not change the getter's type
+        setattr(settings_instance, member, np.array(value))
+        assert isinstance(getattr(settings_instance, member), expected_data_type)
     else:
         with pytest.raises(TypeError):
             setattr(settings_instance, member, True)

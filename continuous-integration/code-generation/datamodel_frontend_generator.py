@@ -53,6 +53,7 @@ class NodeData:
     snake_case: str
     is_leaf: bool
     is_enum: bool
+    is_array_like: bool
     is_uninstantiated_node: bool
     enum_vars: tuple
     path: Path
@@ -82,6 +83,7 @@ def _imports(extra_imports: Sequence[str]) -> str:
         "line-too-long",
         "missing-function-docstring",
         "missing-class-docstring",
+        "redefined-builtin",
         "too-many-branches",
         "too-many-boolean-expressions",
     ]
@@ -316,13 +318,25 @@ def _create_properties(node_data: NodeData, base_type: str) -> str:
                 " or ".join(underlying_type_str) + can_be_none_error_message_part
             )
 
-            get_properties += dedent(
-                """
-                @property
-                def {member}(self):
-                    return self._{member}.value
-                """
-            ).format(member=member.snake_case)
+            if member.is_array_like:
+                get_properties += dedent(
+                    """
+                    @property
+                    def {member}(self):
+                        if self._{member}.value is None:
+                            return None
+                        return self._{member}.value.to_array()
+                    """
+                ).format(member=member.snake_case)
+
+            else:
+                get_properties += dedent(
+                    """
+                    @property
+                    def {member}(self):
+                        return self._{member}.value
+                    """
+                ).format(member=member.snake_case)
 
             set_properties += dedent(
                 f"""
@@ -518,6 +532,9 @@ def _parse_internal_datamodel(current_class: Any) -> NodeData:
         snake_case=_to_snake_case(current_class.name),
         is_leaf=is_leaf,
         is_enum=is_enum_class,
+        # The C++ generator creates the `is_array_like` attribute only on leaf nodes. The `is_leaf` check is to ensure
+        # we don't access a non-existent `is_array_like` on other types of data model nodes.
+        is_array_like=is_leaf and current_class.is_array_like,
         is_uninstantiated_node=current_class.uninstantiated_node,
         enum_vars=tuple(enum_vars),
         path=Path(current_class.path),

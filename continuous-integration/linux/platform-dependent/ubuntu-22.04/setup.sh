@@ -37,5 +37,5 @@ function install_www_deb {
     rm -r $TMP_DIR || exit $?
 }
 
-install_www_deb "https://www.zivid.com/hubfs/softwarefiles/releases/${ZIVID_SDK_EXACT_VERSION}/u22/zivid-telicam-driver_${ZIVID_TELICAM_EXACT_VERSION}_amd64.deb" || exit $?
-install_www_deb "https://www.zivid.com/hubfs/softwarefiles/releases/${ZIVID_SDK_EXACT_VERSION}/u22/zivid_${ZIVID_SDK_EXACT_VERSION}_amd64.deb" || exit $?
+install_www_deb "https://downloads.zivid.com/sdk/releases/${ZIVID_SDK_EXACT_VERSION}/u22/zivid-telicam-driver_${ZIVID_TELICAM_EXACT_VERSION}_amd64.deb" || exit $?
+install_www_deb "https://downloads.zivid.com/sdk/releases/${ZIVID_SDK_EXACT_VERSION}/u22/zivid_${ZIVID_SDK_EXACT_VERSION}_amd64.deb" || exit $?
