@@ -16,6 +16,18 @@
 
 namespace py = pybind11;
 
+namespace
+{
+    template<typename T>
+    class TypeIsZividRange : public std::false_type
+    {};
+
+    template<typename U>
+    class TypeIsZividRange<Zivid::Range<U>> : public std::true_type
+    {};
+
+} // namespace
+
 namespace ZividPython
 {
     namespace Detail
@@ -53,6 +65,18 @@ namespace ZividPython
         struct TypeName<std::vector<T>>
         {
             static constexpr const char *value{ "(collections.abc.Iterable,)" };
+        };
+
+        template<>
+        struct TypeName<Zivid::PointXYZ>
+        {
+            static constexpr const char *value{ "(collections.abc.Iterable, _zivid.data_model.PointXYZ)" };
+        };
+
+        template<>
+        struct TypeName<Zivid::Range<double>>
+        {
+            static constexpr const char *value{ "(collections.abc.Iterable, _zivid.data_model.Range)" };
         };
 
         template<>
@@ -229,6 +253,9 @@ namespace ZividPython
                     pyClass.def(py::self > py::self); // NOLINT
                     pyClass.def(py::self < py::self); // NOLINT
                 }
+
+                pyClass.attr("is_array_like") = TypeIsZividRange<typename Target::ValueType>::value
+                                                || std::is_same<typename Target::ValueType, Zivid::PointXYZ>::value;
 
                 if constexpr(Zivid::DataModel::HasValidValues<Target>::value)
                 {

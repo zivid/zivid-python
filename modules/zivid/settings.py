@@ -1,5 +1,5 @@
 """Auto generated, do not edit."""
-# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,too-many-branches,too-many-boolean-expressions
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import datetime
 import collections.abc
 import _zivid
@@ -635,6 +635,185 @@ class Settings:
                 return str(_to_internal_settings_processing_color(self))
 
         class Filters:
+            class Cluster:
+                class Removal:
+                    def __init__(
+                        self,
+                        enabled=_zivid.Settings.Processing.Filters.Cluster.Removal.Enabled().value,
+                        max_neighbor_distance=_zivid.Settings.Processing.Filters.Cluster.Removal.MaxNeighborDistance().value,
+                        min_area=_zivid.Settings.Processing.Filters.Cluster.Removal.MinArea().value,
+                    ):
+
+                        if isinstance(enabled, (bool,)) or enabled is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Cluster.Removal.Enabled(
+                                enabled
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                                    value_type=type(enabled)
+                                )
+                            )
+
+                        if (
+                            isinstance(
+                                max_neighbor_distance,
+                                (
+                                    float,
+                                    int,
+                                ),
+                            )
+                            or max_neighbor_distance is None
+                        ):
+                            self._max_neighbor_distance = _zivid.Settings.Processing.Filters.Cluster.Removal.MaxNeighborDistance(
+                                max_neighbor_distance
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                    value_type=type(max_neighbor_distance)
+                                )
+                            )
+
+                        if (
+                            isinstance(
+                                min_area,
+                                (
+                                    float,
+                                    int,
+                                ),
+                            )
+                            or min_area is None
+                        ):
+                            self._min_area = _zivid.Settings.Processing.Filters.Cluster.Removal.MinArea(
+                                min_area
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                    value_type=type(min_area)
+                                )
+                            )
+
+                    @property
+                    def enabled(self):
+                        return self._enabled.value
+
+                    @property
+                    def max_neighbor_distance(self):
+                        return self._max_neighbor_distance.value
+
+                    @property
+                    def min_area(self):
+                        return self._min_area.value
+
+                    @enabled.setter
+                    def enabled(self, value):
+                        if isinstance(value, (bool,)) or value is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Cluster.Removal.Enabled(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: bool or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
+
+                    @max_neighbor_distance.setter
+                    def max_neighbor_distance(self, value):
+                        if (
+                            isinstance(
+                                value,
+                                (
+                                    float,
+                                    int,
+                                ),
+                            )
+                            or value is None
+                        ):
+                            self._max_neighbor_distance = _zivid.Settings.Processing.Filters.Cluster.Removal.MaxNeighborDistance(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
+
+                    @min_area.setter
+                    def min_area(self, value):
+                        if (
+                            isinstance(
+                                value,
+                                (
+                                    float,
+                                    int,
+                                ),
+                            )
+                            or value is None
+                        ):
+                            self._min_area = _zivid.Settings.Processing.Filters.Cluster.Removal.MinArea(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
+
+                    def __eq__(self, other):
+                        if (
+                            self._enabled == other._enabled
+                            and self._max_neighbor_distance
+                            == other._max_neighbor_distance
+                            and self._min_area == other._min_area
+                        ):
+                            return True
+                        return False
+
+                    def __str__(self):
+                        return str(
+                            _to_internal_settings_processing_filters_cluster_removal(
+                                self
+                            )
+                        )
+
+                def __init__(
+                    self,
+                    removal=None,
+                ):
+
+                    if removal is None:
+                        removal = self.Removal()
+                    if not isinstance(removal, self.Removal):
+                        raise TypeError(
+                            "Unsupported type: {value}".format(value=type(removal))
+                        )
+                    self._removal = removal
+
+                @property
+                def removal(self):
+                    return self._removal
+
+                @removal.setter
+                def removal(self, value):
+                    if not isinstance(value, self.Removal):
+                        raise TypeError(
+                            "Unsupported type {value}".format(value=type(value))
+                        )
+                    self._removal = value
+
+                def __eq__(self, other):
+                    if self._removal == other._removal:
+                        return True
+                    return False
+
+                def __str__(self):
+                    return str(_to_internal_settings_processing_filters_cluster(self))
+
             class Experimental:
                 class ContrastDistortion:
                     class Correction:
@@ -892,9 +1071,136 @@ class Settings:
                             )
                         )
 
+                class HoleFilling:
+                    def __init__(
+                        self,
+                        enabled=_zivid.Settings.Processing.Filters.Experimental.HoleFilling.Enabled().value,
+                        hole_size=_zivid.Settings.Processing.Filters.Experimental.HoleFilling.HoleSize().value,
+                        strictness=_zivid.Settings.Processing.Filters.Experimental.HoleFilling.Strictness().value,
+                    ):
+
+                        if isinstance(enabled, (bool,)) or enabled is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Experimental.HoleFilling.Enabled(
+                                enabled
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                                    value_type=type(enabled)
+                                )
+                            )
+
+                        if (
+                            isinstance(
+                                hole_size,
+                                (
+                                    float,
+                                    int,
+                                ),
+                            )
+                            or hole_size is None
+                        ):
+                            self._hole_size = _zivid.Settings.Processing.Filters.Experimental.HoleFilling.HoleSize(
+                                hole_size
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                    value_type=type(hole_size)
+                                )
+                            )
+
+                        if isinstance(strictness, (int,)) or strictness is None:
+                            self._strictness = _zivid.Settings.Processing.Filters.Experimental.HoleFilling.Strictness(
+                                strictness
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (int,) or None, got {value_type}".format(
+                                    value_type=type(strictness)
+                                )
+                            )
+
+                    @property
+                    def enabled(self):
+                        return self._enabled.value
+
+                    @property
+                    def hole_size(self):
+                        return self._hole_size.value
+
+                    @property
+                    def strictness(self):
+                        return self._strictness.value
+
+                    @enabled.setter
+                    def enabled(self, value):
+                        if isinstance(value, (bool,)) or value is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Experimental.HoleFilling.Enabled(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: bool or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
+
+                    @hole_size.setter
+                    def hole_size(self, value):
+                        if (
+                            isinstance(
+                                value,
+                                (
+                                    float,
+                                    int,
+                                ),
+                            )
+                            or value is None
+                        ):
+                            self._hole_size = _zivid.Settings.Processing.Filters.Experimental.HoleFilling.HoleSize(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
+
+                    @strictness.setter
+                    def strictness(self, value):
+                        if isinstance(value, (int,)) or value is None:
+                            self._strictness = _zivid.Settings.Processing.Filters.Experimental.HoleFilling.Strictness(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: int or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
+
+                    def __eq__(self, other):
+                        if (
+                            self._enabled == other._enabled
+                            and self._hole_size == other._hole_size
+                            and self._strictness == other._strictness
+                        ):
+                            return True
+                        return False
+
+                    def __str__(self):
+                        return str(
+                            _to_internal_settings_processing_filters_experimental_hole_filling(
+                                self
+                            )
+                        )
+
                 def __init__(
                     self,
                     contrast_distortion=None,
+                    hole_filling=None,
                 ):
 
                     if contrast_distortion is None:
@@ -907,9 +1213,21 @@ class Settings:
                         )
                     self._contrast_distortion = contrast_distortion
 
+                    if hole_filling is None:
+                        hole_filling = self.HoleFilling()
+                    if not isinstance(hole_filling, self.HoleFilling):
+                        raise TypeError(
+                            "Unsupported type: {value}".format(value=type(hole_filling))
+                        )
+                    self._hole_filling = hole_filling
+
                 @property
                 def contrast_distortion(self):
                     return self._contrast_distortion
+
+                @property
+                def hole_filling(self):
+                    return self._hole_filling
 
                 @contrast_distortion.setter
                 def contrast_distortion(self, value):
@@ -919,8 +1237,19 @@ class Settings:
                         )
                     self._contrast_distortion = value
 
+                @hole_filling.setter
+                def hole_filling(self, value):
+                    if not isinstance(value, self.HoleFilling):
+                        raise TypeError(
+                            "Unsupported type {value}".format(value=type(value))
+                        )
+                    self._hole_filling = value
+
                 def __eq__(self, other):
-                    if self._contrast_distortion == other._contrast_distortion:
+                    if (
+                        self._contrast_distortion == other._contrast_distortion
+                        and self._hole_filling == other._hole_filling
+                    ):
                         return True
                     return False
 
@@ -1514,12 +1843,21 @@ class Settings:
 
             def __init__(
                 self,
+                cluster=None,
                 experimental=None,
                 noise=None,
                 outlier=None,
                 reflection=None,
                 smoothing=None,
             ):
+
+                if cluster is None:
+                    cluster = self.Cluster()
+                if not isinstance(cluster, self.Cluster):
+                    raise TypeError(
+                        "Unsupported type: {value}".format(value=type(cluster))
+                    )
+                self._cluster = cluster
 
                 if experimental is None:
                     experimental = self.Experimental()
@@ -1562,6 +1900,10 @@ class Settings:
                 self._smoothing = smoothing
 
             @property
+            def cluster(self):
+                return self._cluster
+
+            @property
             def experimental(self):
                 return self._experimental
 
@@ -1580,6 +1922,14 @@ class Settings:
             @property
             def smoothing(self):
                 return self._smoothing
+
+            @cluster.setter
+            def cluster(self, value):
+                if not isinstance(value, self.Cluster):
+                    raise TypeError(
+                        "Unsupported type {value}".format(value=type(value))
+                    )
+                self._cluster = value
 
             @experimental.setter
             def experimental(self, value):
@@ -1623,7 +1973,8 @@ class Settings:
 
             def __eq__(self, other):
                 if (
-                    self._experimental == other._experimental
+                    self._cluster == other._cluster
+                    and self._experimental == other._experimental
                     and self._noise == other._noise
                     and self._outlier == other._outlier
                     and self._reflection == other._reflection
@@ -1681,12 +2032,335 @@ class Settings:
         def __str__(self):
             return str(_to_internal_settings_processing(self))
 
+    class RegionOfInterest:
+        class Box:
+            def __init__(
+                self,
+                enabled=_zivid.Settings.RegionOfInterest.Box.Enabled().value,
+                extents=_zivid.Settings.RegionOfInterest.Box.Extents().value,
+                point_a=_zivid.Settings.RegionOfInterest.Box.PointA().value,
+                point_b=_zivid.Settings.RegionOfInterest.Box.PointB().value,
+                point_o=_zivid.Settings.RegionOfInterest.Box.PointO().value,
+            ):
+
+                if isinstance(enabled, (bool,)) or enabled is None:
+                    self._enabled = _zivid.Settings.RegionOfInterest.Box.Enabled(
+                        enabled
+                    )
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                            value_type=type(enabled)
+                        )
+                    )
+
+                if (
+                    isinstance(
+                        extents, (collections.abc.Iterable, _zivid.data_model.Range)
+                    )
+                    or extents is None
+                ):
+                    self._extents = _zivid.Settings.RegionOfInterest.Box.Extents(
+                        extents
+                    )
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: (collections.abc.Iterable, _zivid.data_model.Range) or None, got {value_type}".format(
+                            value_type=type(extents)
+                        )
+                    )
+
+                if (
+                    isinstance(
+                        point_a, (collections.abc.Iterable, _zivid.data_model.PointXYZ)
+                    )
+                    or point_a is None
+                ):
+                    self._point_a = _zivid.Settings.RegionOfInterest.Box.PointA(point_a)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: (collections.abc.Iterable, _zivid.data_model.PointXYZ) or None, got {value_type}".format(
+                            value_type=type(point_a)
+                        )
+                    )
+
+                if (
+                    isinstance(
+                        point_b, (collections.abc.Iterable, _zivid.data_model.PointXYZ)
+                    )
+                    or point_b is None
+                ):
+                    self._point_b = _zivid.Settings.RegionOfInterest.Box.PointB(point_b)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: (collections.abc.Iterable, _zivid.data_model.PointXYZ) or None, got {value_type}".format(
+                            value_type=type(point_b)
+                        )
+                    )
+
+                if (
+                    isinstance(
+                        point_o, (collections.abc.Iterable, _zivid.data_model.PointXYZ)
+                    )
+                    or point_o is None
+                ):
+                    self._point_o = _zivid.Settings.RegionOfInterest.Box.PointO(point_o)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: (collections.abc.Iterable, _zivid.data_model.PointXYZ) or None, got {value_type}".format(
+                            value_type=type(point_o)
+                        )
+                    )
+
+            @property
+            def enabled(self):
+                return self._enabled.value
+
+            @property
+            def extents(self):
+                if self._extents.value is None:
+                    return None
+                return self._extents.value.to_array()
+
+            @property
+            def point_a(self):
+                if self._point_a.value is None:
+                    return None
+                return self._point_a.value.to_array()
+
+            @property
+            def point_b(self):
+                if self._point_b.value is None:
+                    return None
+                return self._point_b.value.to_array()
+
+            @property
+            def point_o(self):
+                if self._point_o.value is None:
+                    return None
+                return self._point_o.value.to_array()
+
+            @enabled.setter
+            def enabled(self, value):
+                if isinstance(value, (bool,)) or value is None:
+                    self._enabled = _zivid.Settings.RegionOfInterest.Box.Enabled(value)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: bool or None, got {value_type}".format(
+                            value_type=type(value)
+                        )
+                    )
+
+            @extents.setter
+            def extents(self, value):
+                if (
+                    isinstance(
+                        value, (collections.abc.Iterable, _zivid.data_model.Range)
+                    )
+                    or value is None
+                ):
+                    self._extents = _zivid.Settings.RegionOfInterest.Box.Extents(value)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: collections.abc.Iterable or  _zivid.data_model.Rang or None, got {value_type}".format(
+                            value_type=type(value)
+                        )
+                    )
+
+            @point_a.setter
+            def point_a(self, value):
+                if (
+                    isinstance(
+                        value, (collections.abc.Iterable, _zivid.data_model.PointXYZ)
+                    )
+                    or value is None
+                ):
+                    self._point_a = _zivid.Settings.RegionOfInterest.Box.PointA(value)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: collections.abc.Iterable or  _zivid.data_model.PointXY or None, got {value_type}".format(
+                            value_type=type(value)
+                        )
+                    )
+
+            @point_b.setter
+            def point_b(self, value):
+                if (
+                    isinstance(
+                        value, (collections.abc.Iterable, _zivid.data_model.PointXYZ)
+                    )
+                    or value is None
+                ):
+                    self._point_b = _zivid.Settings.RegionOfInterest.Box.PointB(value)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: collections.abc.Iterable or  _zivid.data_model.PointXY or None, got {value_type}".format(
+                            value_type=type(value)
+                        )
+                    )
+
+            @point_o.setter
+            def point_o(self, value):
+                if (
+                    isinstance(
+                        value, (collections.abc.Iterable, _zivid.data_model.PointXYZ)
+                    )
+                    or value is None
+                ):
+                    self._point_o = _zivid.Settings.RegionOfInterest.Box.PointO(value)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: collections.abc.Iterable or  _zivid.data_model.PointXY or None, got {value_type}".format(
+                            value_type=type(value)
+                        )
+                    )
+
+            def __eq__(self, other):
+                if (
+                    self._enabled == other._enabled
+                    and self._extents == other._extents
+                    and self._point_a == other._point_a
+                    and self._point_b == other._point_b
+                    and self._point_o == other._point_o
+                ):
+                    return True
+                return False
+
+            def __str__(self):
+                return str(_to_internal_settings_region_of_interest_box(self))
+
+        class Depth:
+            def __init__(
+                self,
+                enabled=_zivid.Settings.RegionOfInterest.Depth.Enabled().value,
+                range=_zivid.Settings.RegionOfInterest.Depth.Range().value,
+            ):
+
+                if isinstance(enabled, (bool,)) or enabled is None:
+                    self._enabled = _zivid.Settings.RegionOfInterest.Depth.Enabled(
+                        enabled
+                    )
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                            value_type=type(enabled)
+                        )
+                    )
+
+                if (
+                    isinstance(
+                        range, (collections.abc.Iterable, _zivid.data_model.Range)
+                    )
+                    or range is None
+                ):
+                    self._range = _zivid.Settings.RegionOfInterest.Depth.Range(range)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: (collections.abc.Iterable, _zivid.data_model.Range) or None, got {value_type}".format(
+                            value_type=type(range)
+                        )
+                    )
+
+            @property
+            def enabled(self):
+                return self._enabled.value
+
+            @property
+            def range(self):
+                if self._range.value is None:
+                    return None
+                return self._range.value.to_array()
+
+            @enabled.setter
+            def enabled(self, value):
+                if isinstance(value, (bool,)) or value is None:
+                    self._enabled = _zivid.Settings.RegionOfInterest.Depth.Enabled(
+                        value
+                    )
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: bool or None, got {value_type}".format(
+                            value_type=type(value)
+                        )
+                    )
+
+            @range.setter
+            def range(self, value):
+                if (
+                    isinstance(
+                        value, (collections.abc.Iterable, _zivid.data_model.Range)
+                    )
+                    or value is None
+                ):
+                    self._range = _zivid.Settings.RegionOfInterest.Depth.Range(value)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: collections.abc.Iterable or  _zivid.data_model.Rang or None, got {value_type}".format(
+                            value_type=type(value)
+                        )
+                    )
+
+            def __eq__(self, other):
+                if self._enabled == other._enabled and self._range == other._range:
+                    return True
+                return False
+
+            def __str__(self):
+                return str(_to_internal_settings_region_of_interest_depth(self))
+
+        def __init__(
+            self,
+            box=None,
+            depth=None,
+        ):
+
+            if box is None:
+                box = self.Box()
+            if not isinstance(box, self.Box):
+                raise TypeError("Unsupported type: {value}".format(value=type(box)))
+            self._box = box
+
+            if depth is None:
+                depth = self.Depth()
+            if not isinstance(depth, self.Depth):
+                raise TypeError("Unsupported type: {value}".format(value=type(depth)))
+            self._depth = depth
+
+        @property
+        def box(self):
+            return self._box
+
+        @property
+        def depth(self):
+            return self._depth
+
+        @box.setter
+        def box(self, value):
+            if not isinstance(value, self.Box):
+                raise TypeError("Unsupported type {value}".format(value=type(value)))
+            self._box = value
+
+        @depth.setter
+        def depth(self, value):
+            if not isinstance(value, self.Depth):
+                raise TypeError("Unsupported type {value}".format(value=type(value)))
+            self._depth = value
+
+        def __eq__(self, other):
+            if self._box == other._box and self._depth == other._depth:
+                return True
+            return False
+
+        def __str__(self):
+            return str(_to_internal_settings_region_of_interest(self))
+
     def __init__(
         self,
         acquisitions=None,
         diagnostics=None,
         experimental=None,
         processing=None,
+        region_of_interest=None,
     ):
 
         if acquisitions is None:
@@ -1727,6 +2401,14 @@ class Settings:
             raise TypeError("Unsupported type: {value}".format(value=type(processing)))
         self._processing = processing
 
+        if region_of_interest is None:
+            region_of_interest = self.RegionOfInterest()
+        if not isinstance(region_of_interest, self.RegionOfInterest):
+            raise TypeError(
+                "Unsupported type: {value}".format(value=type(region_of_interest))
+            )
+        self._region_of_interest = region_of_interest
+
     @property
     def acquisitions(self):
         return self._acquisitions
@@ -1742,6 +2424,10 @@ class Settings:
     @property
     def processing(self):
         return self._processing
+
+    @property
+    def region_of_interest(self):
+        return self._region_of_interest
 
     @acquisitions.setter
     def acquisitions(self, value):
@@ -1774,6 +2460,12 @@ class Settings:
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._processing = value
 
+    @region_of_interest.setter
+    def region_of_interest(self, value):
+        if not isinstance(value, self.RegionOfInterest):
+            raise TypeError("Unsupported type {value}".format(value=type(value)))
+        self._region_of_interest = value
+
     @classmethod
     def load(cls, file_name):
         return _to_settings(_zivid.Settings(str(file_name)))
@@ -1787,6 +2479,7 @@ class Settings:
             and self._diagnostics == other._diagnostics
             and self._experimental == other._experimental
             and self._processing == other._processing
+            and self._region_of_interest == other._region_of_interest
         ):
             return True
         return False
@@ -1840,6 +2533,22 @@ def _to_settings_processing_color(internal_color):
     )
 
 
+def _to_settings_processing_filters_cluster_removal(internal_removal):
+    return Settings.Processing.Filters.Cluster.Removal(
+        enabled=internal_removal.enabled.value,
+        max_neighbor_distance=internal_removal.max_neighbor_distance.value,
+        min_area=internal_removal.min_area.value,
+    )
+
+
+def _to_settings_processing_filters_cluster(internal_cluster):
+    return Settings.Processing.Filters.Cluster(
+        removal=_to_settings_processing_filters_cluster_removal(
+            internal_cluster.removal
+        ),
+    )
+
+
 def _to_settings_processing_filters_experimental_contrast_distortion_correction(
     internal_correction,
 ):
@@ -1871,10 +2580,21 @@ def _to_settings_processing_filters_experimental_contrast_distortion(
     )
 
 
+def _to_settings_processing_filters_experimental_hole_filling(internal_hole_filling):
+    return Settings.Processing.Filters.Experimental.HoleFilling(
+        enabled=internal_hole_filling.enabled.value,
+        hole_size=internal_hole_filling.hole_size.value,
+        strictness=internal_hole_filling.strictness.value,
+    )
+
+
 def _to_settings_processing_filters_experimental(internal_experimental):
     return Settings.Processing.Filters.Experimental(
         contrast_distortion=_to_settings_processing_filters_experimental_contrast_distortion(
             internal_experimental.contrast_distortion
+        ),
+        hole_filling=_to_settings_processing_filters_experimental_hole_filling(
+            internal_experimental.hole_filling
         ),
     )
 
@@ -1949,6 +2669,7 @@ def _to_settings_processing_filters_smoothing(internal_smoothing):
 
 def _to_settings_processing_filters(internal_filters):
     return Settings.Processing.Filters(
+        cluster=_to_settings_processing_filters_cluster(internal_filters.cluster),
         experimental=_to_settings_processing_filters_experimental(
             internal_filters.experimental
         ),
@@ -1968,6 +2689,30 @@ def _to_settings_processing(internal_processing):
     )
 
 
+def _to_settings_region_of_interest_box(internal_box):
+    return Settings.RegionOfInterest.Box(
+        enabled=internal_box.enabled.value,
+        extents=internal_box.extents.value,
+        point_a=internal_box.point_a.value,
+        point_b=internal_box.point_b.value,
+        point_o=internal_box.point_o.value,
+    )
+
+
+def _to_settings_region_of_interest_depth(internal_depth):
+    return Settings.RegionOfInterest.Depth(
+        enabled=internal_depth.enabled.value,
+        range=internal_depth.range.value,
+    )
+
+
+def _to_settings_region_of_interest(internal_region_of_interest):
+    return Settings.RegionOfInterest(
+        box=_to_settings_region_of_interest_box(internal_region_of_interest.box),
+        depth=_to_settings_region_of_interest_depth(internal_region_of_interest.depth),
+    )
+
+
 def _to_settings(internal_settings):
     return Settings(
         acquisitions=[
@@ -1977,6 +2722,9 @@ def _to_settings(internal_settings):
         diagnostics=_to_settings_diagnostics(internal_settings.diagnostics),
         experimental=_to_settings_experimental(internal_settings.experimental),
         processing=_to_settings_processing(internal_settings.processing),
+        region_of_interest=_to_settings_region_of_interest(
+            internal_settings.region_of_interest
+        ),
     )
 
 
@@ -2053,6 +2801,33 @@ def _to_internal_settings_processing_color(color):
     return internal_color
 
 
+def _to_internal_settings_processing_filters_cluster_removal(removal):
+    internal_removal = _zivid.Settings.Processing.Filters.Cluster.Removal()
+
+    internal_removal.enabled = (
+        _zivid.Settings.Processing.Filters.Cluster.Removal.Enabled(removal.enabled)
+    )
+    internal_removal.max_neighbor_distance = (
+        _zivid.Settings.Processing.Filters.Cluster.Removal.MaxNeighborDistance(
+            removal.max_neighbor_distance
+        )
+    )
+    internal_removal.min_area = (
+        _zivid.Settings.Processing.Filters.Cluster.Removal.MinArea(removal.min_area)
+    )
+
+    return internal_removal
+
+
+def _to_internal_settings_processing_filters_cluster(cluster):
+    internal_cluster = _zivid.Settings.Processing.Filters.Cluster()
+
+    internal_cluster.removal = _to_internal_settings_processing_filters_cluster_removal(
+        cluster.removal
+    )
+    return internal_cluster
+
+
 def _to_internal_settings_processing_filters_experimental_contrast_distortion_correction(
     correction,
 ):
@@ -2103,12 +2878,41 @@ def _to_internal_settings_processing_filters_experimental_contrast_distortion(
     return internal_contrast_distortion
 
 
+def _to_internal_settings_processing_filters_experimental_hole_filling(hole_filling):
+    internal_hole_filling = (
+        _zivid.Settings.Processing.Filters.Experimental.HoleFilling()
+    )
+
+    internal_hole_filling.enabled = (
+        _zivid.Settings.Processing.Filters.Experimental.HoleFilling.Enabled(
+            hole_filling.enabled
+        )
+    )
+    internal_hole_filling.hole_size = (
+        _zivid.Settings.Processing.Filters.Experimental.HoleFilling.HoleSize(
+            hole_filling.hole_size
+        )
+    )
+    internal_hole_filling.strictness = (
+        _zivid.Settings.Processing.Filters.Experimental.HoleFilling.Strictness(
+            hole_filling.strictness
+        )
+    )
+
+    return internal_hole_filling
+
+
 def _to_internal_settings_processing_filters_experimental(experimental):
     internal_experimental = _zivid.Settings.Processing.Filters.Experimental()
 
     internal_experimental.contrast_distortion = (
         _to_internal_settings_processing_filters_experimental_contrast_distortion(
             experimental.contrast_distortion
+        )
+    )
+    internal_experimental.hole_filling = (
+        _to_internal_settings_processing_filters_experimental_hole_filling(
+            experimental.hole_filling
         )
     )
     return internal_experimental
@@ -2223,6 +3027,9 @@ def _to_internal_settings_processing_filters_smoothing(smoothing):
 def _to_internal_settings_processing_filters(filters):
     internal_filters = _zivid.Settings.Processing.Filters()
 
+    internal_filters.cluster = _to_internal_settings_processing_filters_cluster(
+        filters.cluster
+    )
     internal_filters.experimental = (
         _to_internal_settings_processing_filters_experimental(filters.experimental)
     )
@@ -2251,6 +3058,41 @@ def _to_internal_settings_processing(processing):
     return internal_processing
 
 
+def _to_internal_settings_region_of_interest_box(box):
+    internal_box = _zivid.Settings.RegionOfInterest.Box()
+
+    internal_box.enabled = _zivid.Settings.RegionOfInterest.Box.Enabled(box.enabled)
+    internal_box.extents = _zivid.Settings.RegionOfInterest.Box.Extents(box.extents)
+    internal_box.point_a = _zivid.Settings.RegionOfInterest.Box.PointA(box.point_a)
+    internal_box.point_b = _zivid.Settings.RegionOfInterest.Box.PointB(box.point_b)
+    internal_box.point_o = _zivid.Settings.RegionOfInterest.Box.PointO(box.point_o)
+
+    return internal_box
+
+
+def _to_internal_settings_region_of_interest_depth(depth):
+    internal_depth = _zivid.Settings.RegionOfInterest.Depth()
+
+    internal_depth.enabled = _zivid.Settings.RegionOfInterest.Depth.Enabled(
+        depth.enabled
+    )
+    internal_depth.range = _zivid.Settings.RegionOfInterest.Depth.Range(depth.range)
+
+    return internal_depth
+
+
+def _to_internal_settings_region_of_interest(region_of_interest):
+    internal_region_of_interest = _zivid.Settings.RegionOfInterest()
+
+    internal_region_of_interest.box = _to_internal_settings_region_of_interest_box(
+        region_of_interest.box
+    )
+    internal_region_of_interest.depth = _to_internal_settings_region_of_interest_depth(
+        region_of_interest.depth
+    )
+    return internal_region_of_interest
+
+
 def _to_internal_settings(settings):
     internal_settings = _zivid.Settings()
 
@@ -2266,4 +3108,7 @@ def _to_internal_settings(settings):
         settings.experimental
     )
     internal_settings.processing = _to_internal_settings_processing(settings.processing)
+    internal_settings.region_of_interest = _to_internal_settings_region_of_interest(
+        settings.region_of_interest
+    )
     return internal_settings

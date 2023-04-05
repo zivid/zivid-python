@@ -59,6 +59,7 @@ try:
         CameraInfo,
         infield_correction,
         Matrix4x4,
+        data_model,
     )
 except ImportError as ex:
 
