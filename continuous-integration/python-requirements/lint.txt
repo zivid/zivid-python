@@ -9,29 +9,27 @@ astroid==2.8.0
 attrs==22.1.0
     # via pytest
 black==22.10.0
-    # via -r continuous-integration/python-requirements/lint.in
-certifi==2022.9.24
+    # via -r lint.in
+certifi==2022.12.7
     # via requests
 charset-normalizer==2.1.1
     # via requests
 click==8.0.1
     # via black
 darglint==1.8.0
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 distro==1.6.0
     # via scikit-build
-exceptiongroup==1.0.0rc9
-    # via pytest
 flake8==3.9.2
     # via
-    #   -r continuous-integration/python-requirements/lint.in
+    #   -r lint.in
     #   flake8-docstrings
 flake8-docstrings==1.6.0
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 idna==3.4
     # via requests
 inflection==0.5.1
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 iniconfig==1.1.1
     # via pytest
 isort==5.9.3
@@ -63,23 +61,19 @@ pydocstyle==6.1.1
 pyflakes==2.3.1
     # via flake8
 pylint==2.11.1
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 pyparsing==2.4.7
     # via packaging
 pytest==7.2.0
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 requests==2.28.1
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 scikit-build==0.11.1
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 snowballstemmer==2.1.0
     # via pydocstyle
 toml==0.10.2
     # via pylint
-tomli==1.2.1
-    # via
-    #   black
-    #   pytest
 urllib3==1.26.12
     # via requests
 wheel==0.37.0

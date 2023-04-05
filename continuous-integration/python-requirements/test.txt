@@ -6,12 +6,10 @@
 #
 attrs==21.2.0
     # via pytest
-certifi==2021.5.30
+certifi==2022.12.7
     # via requests
 chardet==3.0.4
     # via requests
-exceptiongroup==1.0.0rc9
-    # via pytest
 idna==2.10
     # via requests
 iniconfig==1.1.1
@@ -24,16 +22,14 @@ pyparsing==2.4.7
     # via packaging
 pytest==7.2.0
     # via
-    #   -r continuous-integration/python-requirements/test.in
+    #   -r test.in
     #   pytest-helpers-namespace
     #   pytest-timeout
 pytest-helpers-namespace==2021.4.29
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r test.in
 pytest-timeout==2.0.1
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r test.in
 requests==2.24.0
-    # via -r continuous-integration/python-requirements/test.in
-tomli==2.0.1
-    # via pytest
+    # via -r test.in
 urllib3==1.25.11
     # via requests

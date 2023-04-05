@@ -6,7 +6,7 @@
 #
 attrs==21.2.0
     # via pytest
-certifi==2021.5.30
+certifi==2022.12.7
     # via requests
 chardet==3.0.4
     # via requests
@@ -24,18 +24,18 @@ pyparsing==2.4.7
     # via packaging
 pytest==6.2.5
     # via
-    #   -r continuous-integration/python-requirements/test.in
+    #   -r legacy-python36/test.in
     #   pytest-helpers-namespace
     #   pytest-pythonpath
     #   pytest-timeout
 pytest-helpers-namespace==2021.4.29
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r legacy-python36/test.in
 pytest-pythonpath==0.7.3
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r legacy-python36/test.in
 pytest-timeout==2.0.1
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r legacy-python36/test.in
 requests==2.24.0
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r legacy-python36/test.in
 toml==0.10.2
     # via pytest
 urllib3==1.25.11
