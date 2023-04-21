@@ -1,6 +1,7 @@
 """Contains the Frame class."""
 import _zivid
 from zivid.settings_2d import _to_settings2d
+from zivid.camera_info import _to_camera_info
 from zivid.camera_state import _to_camera_state
 from zivid.frame_info import _to_frame_info
 from zivid.image import Image
@@ -69,6 +70,15 @@ class Frame2D:
             A FrameInfo instance
         """
         return _to_frame_info(self.__impl.info)
+
+    @property
+    def camera_info(self):
+        """Get information about the camera used to capture the frame.
+
+        Returns:
+            A CameraInfo instance
+        """
+        return _to_camera_info(self.__impl.camera_info)
 
     def release(self):
         """Release the underlying resources."""

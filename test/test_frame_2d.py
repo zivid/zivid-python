@@ -38,6 +38,15 @@ def test_info(physical_camera_frame_2d):
 
 
 @pytest.mark.physical_camera
+def test_camera_info(physical_camera_frame_2d):
+    from zivid.camera_info import CameraInfo
+
+    camera_info = physical_camera_frame_2d.camera_info
+    assert camera_info
+    assert isinstance(camera_info, CameraInfo)
+
+
+@pytest.mark.physical_camera
 def test_settings(physical_camera_frame_2d):
     import zivid
 
