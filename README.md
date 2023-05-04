@@ -175,7 +175,6 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 | Fedora 34        | 3.9                       |
 | Fedora 35        | 3.10                      |
 | Windows 10       | 3.7, 3.8, 3.9, 3.10, 3.11 |
-| Arch Linux       | latest                    |
 
 [header-image]: https://www.zivid.com/hubfs/softwarefiles/images/zivid-generic-github-header.png
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/zivid/zivid-python/main.yml?branch=master

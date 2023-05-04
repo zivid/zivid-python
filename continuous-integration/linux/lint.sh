@@ -7,6 +7,9 @@ python3 -m pip install \
     --requirement "$SCRIPT_DIR/../python-requirements/lint.txt" ||
     exit $?
 
+apt-get --assume-yes install clang-format-15 shellcheck || exit $?
+update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-15 0 || exit $?
+
 
 runPylint() {
     local fileList="$1"

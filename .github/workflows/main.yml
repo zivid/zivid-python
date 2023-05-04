@@ -14,13 +14,14 @@ jobs:
         uses: actions/checkout@v3
         with:
           lfs: false
-      - name: Build and lint on Archlinux
+      - name: Build and lint
+        # Linting job should be run on the latest Ubuntu release that we can support
         run: |
           docker run \
               --volume $PWD:/host \
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
-              archlinux/archlinux:base  \
+              ubuntu:22.10  \
               bash -c "./setup.sh && ./build.sh && ./lint.sh"
       - name: Notify Teams
         if: ${{ failure() && github.ref == 'refs/heads/master' }}
@@ -102,7 +103,6 @@ jobs:
           - fedora:33
           - fedora:34
           - fedora:35
-          - archlinux/archlinux:base
     steps:
       - name: Check out code
         uses: actions/checkout@v3

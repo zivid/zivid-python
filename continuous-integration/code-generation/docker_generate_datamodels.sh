@@ -7,7 +7,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=$(realpath "$SCRIPT_DIR/../..")
 
 docker run --volume $ROOT_DIR:/host \
-           --workdir /host/continuous-integration archlinux/archlinux:base \
+           --workdir /host/continuous-integration ubuntu:20.04 \
            bash -c "./linux/setup.sh && ./linux/build.sh && ./code-generation/generate_datamodels.sh" \
            || exit $?
 
