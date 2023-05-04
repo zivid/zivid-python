@@ -39,7 +39,7 @@ def _python_version():
 
 
 def _make_message_box(*message):
-    width = max([len(e) for e in message])
+    width = max(map(len, message))
 
     box_bar = "+-" + "-" * width + "-+"
     empty_line = "\n| " + " " * width + " |\n"
