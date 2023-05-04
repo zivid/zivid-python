@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 pacman -Syu --noconfirm --needed \
        clang \
        clinfo \
@@ -43,3 +45,9 @@ aur_install intel-opencl-runtime a7db4fe8cfa872078034f7966bb2def788bf8e5d ncurse
 
 aur_install zivid-telicam-driver 4fd3efa4b01a0ff2142928f38ed50c1a9fbfcb44 || exit $?
 aur_install zivid 54bca017fe77f2e415761881a602d39097745c15 || exit $?
+
+# Install custom conan settings.yml
+# TODO(https://github.com/conan-io/conan/pull/13007)
+echo "Updating conan settings"
+mkdir --parents /root/.conan/ || exit $?
+cp $SCRIPT_DIR/settings.yml /root/.conan/ || exit $?
