@@ -51,3 +51,8 @@ aur_install zivid 54bca017fe77f2e415761881a602d39097745c15 || exit $?
 echo "Updating conan settings"
 mkdir --parents /root/.conan/ || exit $?
 cp $SCRIPT_DIR/settings.yml /root/.conan/ || exit $?
+
+# Use cloudflare mirror
+# The dollar sign in variables should not be expanded, so disable this check to use single quotes
+# shellcheck disable=SC2016
+echo 'Server = https://cloudflaremirrors.com/archlinux/$repo/os/$arch' >/etc/pacman.d/mirrorlist
