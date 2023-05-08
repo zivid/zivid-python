@@ -167,15 +167,14 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 
 | Operating System | Python version            |
 | :--------------- | :------------------------ |
+| Ubuntu 22.10     | 3.10                      |
 | Ubuntu 22.04     | 3.10                      |
 | Ubuntu 20.04     | 3.8                       |
 | Ubuntu 18.04     | 3.6                       |
-| Fedora 30        | 3.7                       |
-| Fedora 33        | 3.9                       |
 | Fedora 34        | 3.9                       |
 | Fedora 35        | 3.10                      |
+| Fedora 36        | 3.10                      |
 | Windows 10       | 3.7, 3.8, 3.9, 3.10, 3.11 |
-| Arch Linux       | latest                    |
 
 [header-image]: https://www.zivid.com/hubfs/softwarefiles/images/zivid-generic-github-header.png
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/zivid/zivid-python/main.yml?branch=master

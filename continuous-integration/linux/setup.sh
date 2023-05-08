@@ -14,10 +14,7 @@ fi
 
 source /etc/os-release || exit $?
 
-osId=$ID
-if [[ $ID != "arch" ]]; then
-    osId=$osId-$VERSION_ID
-fi
+osId=$ID-$VERSION_ID
 
 setupScript=$SCRIPT_DIR/platform-dependent/$osId/setup.sh
 
