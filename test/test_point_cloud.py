@@ -255,7 +255,6 @@ def test_downsampled_chaining(point_cloud):
 
 
 def test_height_context_manager(frame):
-
     with frame.point_cloud() as point_cloud:
         point_cloud.height
     with pytest.raises(RuntimeError):
@@ -263,7 +262,6 @@ def test_height_context_manager(frame):
 
 
 def test_width_context_manager(frame):
-
     with frame.point_cloud() as point_cloud:
         point_cloud.width
     with pytest.raises(RuntimeError):
@@ -271,7 +269,6 @@ def test_width_context_manager(frame):
 
 
 def test_copy_data_context_manager(frame):
-
     with frame.point_cloud() as point_cloud:
         point_cloud.copy_data(data_format="xyzrgba")
     with pytest.raises(RuntimeError):

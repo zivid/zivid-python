@@ -1,15 +1,21 @@
 [flake8]
 ignore =
 ### Covered better by pylint
-    E501, # Line too long
+    # Line too long
+    E501,
 ### Covered by pylint
-    F401, # Imported but unused
+    # Imported but unused
+    F401,
 ### in conflict with black
-    W503, # line break before binary operator
-    E302, # expected 2 blank lines, found 0
-    D202, # No blank lines allowed after function docstring
+    # line break before binary operator
+    W503,
+    # expected 2 blank lines, found 0
+    E302,
+    # No blank lines allowed after function docstring
+    D202,
 ### We do not currently require docstrings in "magic methods"
-    D105, # missing docstring in magic method
+    # missing docstring in magic method
+    D105,
 show-source = True
 
 ### Ignore docstring complaints in data models

@@ -10,7 +10,6 @@ class FrameInfo:
             self,
             core=_zivid.FrameInfo.SoftwareVersion.Core().value,
         ):
-
             if isinstance(core, (str,)):
                 self._core = _zivid.FrameInfo.SoftwareVersion.Core(core)
             else:
@@ -49,7 +48,6 @@ class FrameInfo:
                 self,
                 model=_zivid.FrameInfo.SystemInfo.CPU.Model().value,
             ):
-
                 if isinstance(model, (str,)):
                     self._model = _zivid.FrameInfo.SystemInfo.CPU.Model(model)
                 else:
@@ -88,7 +86,6 @@ class FrameInfo:
                 model=_zivid.FrameInfo.SystemInfo.ComputeDevice.Model().value,
                 vendor=_zivid.FrameInfo.SystemInfo.ComputeDevice.Vendor().value,
             ):
-
                 if isinstance(model, (str,)):
                     self._model = _zivid.FrameInfo.SystemInfo.ComputeDevice.Model(model)
                 else:
@@ -155,7 +152,6 @@ class FrameInfo:
             cpu=None,
             compute_device=None,
         ):
-
             if isinstance(operating_system, (str,)):
                 self._operating_system = _zivid.FrameInfo.SystemInfo.OperatingSystem(
                     operating_system
@@ -236,7 +232,6 @@ class FrameInfo:
         software_version=None,
         system_info=None,
     ):
-
         if isinstance(time_stamp, (datetime.datetime,)):
             self._time_stamp = _zivid.FrameInfo.TimeStamp(time_stamp)
         else:

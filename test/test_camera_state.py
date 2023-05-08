@@ -62,7 +62,6 @@ def test_temperature_pcb(file_camera):
 
 
 def test_illegal_set_state(file_camera):
-
     with pytest.raises(AttributeError):
         file_camera.state = file_camera.state
 

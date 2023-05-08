@@ -12,7 +12,6 @@ class CameraIntrinsics:
             fx=_zivid.CameraIntrinsics.CameraMatrix.FX().value,
             fy=_zivid.CameraIntrinsics.CameraMatrix.FY().value,
         ):
-
             if isinstance(
                 cx,
                 (
@@ -179,7 +178,6 @@ class CameraIntrinsics:
             p1=_zivid.CameraIntrinsics.Distortion.P1().value,
             p2=_zivid.CameraIntrinsics.Distortion.P2().value,
         ):
-
             if isinstance(
                 k1,
                 (
@@ -379,7 +377,6 @@ class CameraIntrinsics:
         camera_matrix=None,
         distortion=None,
     ):
-
         if camera_matrix is None:
             camera_matrix = self.CameraMatrix()
         if not isinstance(camera_matrix, self.CameraMatrix):

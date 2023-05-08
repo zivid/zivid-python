@@ -13,7 +13,6 @@ import pytest
     ],
 )
 def test_basic_save_load(application, datamodel_yml_dir, datamodel):
-
     from operator import attrgetter
     from pathlib import Path
     from tempfile import TemporaryDirectory

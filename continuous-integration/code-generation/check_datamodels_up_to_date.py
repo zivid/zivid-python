@@ -6,7 +6,6 @@ from datamodel_frontend_generator import generate_all_datamodels
 
 
 def _check_datamodels_up_to_date(repo_root: Path):
-
     regeneration_script = Path(
         "continuous-integration/code-generation/docker_generate_datamodels.sh"
     )

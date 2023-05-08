@@ -10,7 +10,6 @@ class CameraInfo:
             major=_zivid.CameraInfo.Revision.Major().value,
             minor=_zivid.CameraInfo.Revision.Minor().value,
         ):
-
             if isinstance(major, (int,)):
                 self._major = _zivid.CameraInfo.Revision.Major(major)
             else:
@@ -72,7 +71,6 @@ class CameraInfo:
             self,
             max_size_bytes=_zivid.CameraInfo.UserData.MaxSizeBytes().value,
         ):
-
             if isinstance(max_size_bytes, (int,)):
                 self._max_size_bytes = _zivid.CameraInfo.UserData.MaxSizeBytes(
                     max_size_bytes
@@ -108,7 +106,6 @@ class CameraInfo:
             return str(_to_internal_camera_info_user_data(self))
 
     class Model:
-
         zividOnePlusLarge = "zividOnePlusLarge"
         zividOnePlusMedium = "zividOnePlusMedium"
         zividOnePlusSmall = "zividOnePlusSmall"
@@ -136,7 +133,6 @@ class CameraInfo:
         revision=None,
         user_data=None,
     ):
-
         if isinstance(firmware_version, (str,)):
             self._firmware_version = _zivid.CameraInfo.FirmwareVersion(firmware_version)
         else:

@@ -14,7 +14,6 @@ class Settings2D:
             exposure_time=_zivid.Settings2D.Acquisition.ExposureTime().value,
             gain=_zivid.Settings2D.Acquisition.Gain().value,
         ):
-
             if (
                 isinstance(
                     aperture,
@@ -192,7 +191,6 @@ class Settings2D:
                     green=_zivid.Settings2D.Processing.Color.Balance.Green().value,
                     red=_zivid.Settings2D.Processing.Color.Balance.Red().value,
                 ):
-
                     if (
                         isinstance(
                             blue,
@@ -346,7 +344,6 @@ class Settings2D:
                 gamma=_zivid.Settings2D.Processing.Color.Gamma().value,
                 balance=None,
             ):
-
                 if (
                     isinstance(
                         gamma,
@@ -421,7 +418,6 @@ class Settings2D:
             self,
             color=None,
         ):
-
             if color is None:
                 color = self.Color()
             if not isinstance(color, self.Color):
@@ -451,7 +447,6 @@ class Settings2D:
         acquisitions=None,
         processing=None,
     ):
-
         if acquisitions is None:
             self._acquisitions = []
         elif isinstance(acquisitions, (collections.abc.Iterable,)):

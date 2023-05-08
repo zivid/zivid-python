@@ -74,7 +74,6 @@ def _inner_classes_list(cls: Any) -> List:
 
 
 def _imports(extra_imports: Sequence[str]) -> str:
-
     linter_exceptions = [
         "too-many-lines",
         "protected-access",
@@ -98,13 +97,11 @@ def _imports(extra_imports: Sequence[str]) -> str:
 
 
 def _create_init_special_member_function(node_data: NodeData, base_type: str) -> str:
-
     full_dot_path = _get_dot_path(base_type, node_data.path)
     signature_vars = ""
     member_variable_set = ""
 
     for container in node_data.member_containers:
-
         if container.container_info is None:
             raise RuntimeError(f"Unexpected lack of container info: {container}")
 
@@ -129,7 +126,6 @@ def _create_init_special_member_function(node_data: NodeData, base_type: str) ->
         )
 
     for member in node_data.member_variables:
-
         if member.member_info is None:
             raise RuntimeError(f"Unexpected lack of member info: {member}")
 
@@ -142,7 +138,6 @@ def _create_init_special_member_function(node_data: NodeData, base_type: str) ->
         signature_vars += f"{member.snake_case}={full_dot_path}.{member.name}().value,"
 
         if member.is_enum:
-
             member_variable_set += dedent(
                 f"""
                 if isinstance({member.snake_case},{full_dot_path}.{member.name}.enum) {is_none_check}:
@@ -168,7 +163,6 @@ def _create_init_special_member_function(node_data: NodeData, base_type: str) ->
             )
 
     for child_class in node_data.children:
-
         if child_class.is_uninstantiated_node:
             continue
         signature_vars += f"{child_class.snake_case}=None,"
@@ -224,7 +218,6 @@ def _create_eq_special_member_function(node_data: NodeData) -> str:
 
 
 def _create_str_special_member_function(node_data: NodeData, base_type: str) -> str:
-
     full_underscore_path = _get_underscore_name(base_type, node_data.path)
     str_content = f"str(_to_internal_{full_underscore_path}(self))"
 
@@ -237,12 +230,10 @@ def _create_str_special_member_function(node_data: NodeData, base_type: str) -> 
 
 
 def _create_properties(node_data: NodeData, base_type: str) -> str:
-
     get_properties = "\n"
     set_properties = "\n"
 
     for node in node_data.member_containers:
-
         if node.container_info is None:
             raise RuntimeError(f"Unexpected lack of container info: {node}")
 
@@ -270,7 +261,6 @@ def _create_properties(node_data: NodeData, base_type: str) -> str:
         )
 
     for member in node_data.member_variables:
-
         if member.member_info is None:
             raise RuntimeError(f"Unexpected lack of member info: {member}")
 
@@ -400,7 +390,6 @@ def _create_save_load_functions(node_data: NodeData, base_type: str):
 
 
 def _create_enum_class(member: NodeData, base_type: str) -> str:
-
     full_dot_path = _get_dot_path(base_type, member.path)
 
     static_members = ["\n"]
@@ -493,7 +482,6 @@ def _parse_internal_datamodel(current_class: Any) -> NodeData:
     member_containers = []
     to_be_removed = []
     for child in child_classes:
-
         if child.underlying_zivid_class.node_type.name == "leaf_data_model_list":
             child.container_info = ContainerInfo(
                 contained_type=child.underlying_zivid_class.contained_type,
@@ -546,7 +534,6 @@ def _parse_internal_datamodel(current_class: Any) -> NodeData:
 
 
 def _create_to_frontend_converter(node_data: NodeData, base_type: str) -> str:
-
     base_typename = base_type.split(".")[-1]
     temp_internal_name = f"internal_{node_data.snake_case}"
     nested_converters = [
@@ -599,7 +586,6 @@ def _create_to_frontend_converter(node_data: NodeData, base_type: str) -> str:
 
 
 def _create_to_internal_converter(node_data: NodeData, base_type: str) -> str:
-
     temp_internal_name = f"internal_{node_data.snake_case}"
     nested_converters = [
         _create_to_internal_converter(element, base_type=base_type)
@@ -702,7 +688,6 @@ def _generate_datamodel_frontend(
 
     # Format source code and save to destination path
     with tempfile.NamedTemporaryFile(suffix=".py") as temp_file:
-
         temp_file_path = Path(temp_file.name)
         temp_file_path.write_text(raw_text, encoding="utf-8")
         if verbose:
@@ -717,7 +702,6 @@ def _generate_datamodel_frontend(
 
 
 def generate_all_datamodels(dest_dir: Path) -> None:
-
     for internal_class, filename, extra_imports in [
         (_zivid.Settings, "settings.py", ["datetime", "collections.abc"]),
         (_zivid.Settings2D, "settings_2d.py", ["datetime", "collections.abc"]),

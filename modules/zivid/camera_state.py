@@ -13,7 +13,6 @@ class CameraState:
             lens=_zivid.CameraState.Temperature.Lens().value,
             pcb=_zivid.CameraState.Temperature.PCB().value,
         ):
-
             if isinstance(
                 dmd,
                 (
@@ -214,7 +213,6 @@ class CameraState:
         connected=_zivid.CameraState.Connected().value,
         temperature=None,
     ):
-
         if isinstance(available, (bool,)):
             self._available = _zivid.CameraState.Available(available)
         else:
