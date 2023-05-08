@@ -18,7 +18,7 @@ def _install_zivid_sdk():
         zivid_installer_url = f"https://downloads.zivid.com/sdk/releases/{exact_version}/windows/ZividSetup_{exact_version}.exe"
         print("Downloading {}".format(zivid_installer_url), flush=True)
         zivid_installer = Path(temp_dir) / "ZividSetup.exe"
-        response = requests.get(zivid_installer_url)
+        response = requests.get(zivid_installer_url, timeout=(25, 600))
         zivid_installer.write_bytes(response.content)
         print("Installing {}".format(zivid_installer), flush=True)
         run_process((str(zivid_installer), "/S"))
@@ -31,7 +31,7 @@ def _install_intel_opencl_runtime():
         intel_opencl_runtime_url = "https://www.dropbox.com/s/09bk2nx31hzrupf/opencl_runtime_18.1_x64_setup-20200625-090300.msi?raw=1"
         print("Downloading {}".format(intel_opencl_runtime_url), flush=True)
         opencl_runtime = Path(temp_dir) / "opencl_runtime.msi"
-        response = requests.get(intel_opencl_runtime_url)
+        response = requests.get(intel_opencl_runtime_url, timeout=(25, 600))
         opencl_runtime.write_bytes(response.content)
         print("Installing {}".format(opencl_runtime), flush=True)
         run_process(("msiexec", "/i", str(opencl_runtime), "/passive"))

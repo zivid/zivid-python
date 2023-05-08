@@ -6,7 +6,6 @@ import _zivid
 
 class SuggestSettingsParameters:
     class AmbientLightFrequency:
-
         hz50 = "hz50"
         hz60 = "hz60"
         none = "none"
@@ -26,7 +25,6 @@ class SuggestSettingsParameters:
         ambient_light_frequency=_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency().value,
         max_capture_time=_zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime().value,
     ):
-
         if isinstance(
             ambient_light_frequency,
             _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum,

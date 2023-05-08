@@ -53,7 +53,7 @@ def _main() -> None:
             }
         ],
     }
-    request = requests.post(webhook_url, json=payload)
+    request = requests.post(webhook_url, json=payload, timeout=25)
     try:
         request.raise_for_status()
     except requests.HTTPError as ex:

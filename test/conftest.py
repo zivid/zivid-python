@@ -48,7 +48,6 @@ def default_settings_fixture():
 
 @pytest.fixture(name="frame_file", scope="module")
 def frame_file_fixture(application, file_camera, default_settings):
-
     with tempfile.TemporaryDirectory() as temp_dir:
         file_path = Path(temp_dir) / "test_frame.zdf"
         with file_camera.capture(default_settings) as frame:
@@ -58,7 +57,6 @@ def frame_file_fixture(application, file_camera, default_settings):
 
 @pytest.fixture(name="checkerboard_frames", scope="module")
 def checkerboard_frames_fixture(application):
-
     frames = [
         zivid.Frame(file_path)
         for file_path in sorted(_testdata_dir().glob("checkerboard_*.zdf"))
@@ -130,7 +128,6 @@ def physical_camera_image_2d_fixture(physical_camera_frame_2d):
 
 @pytest.fixture(name="transform", scope="function")
 def transform_fixture():
-
     return np.array(
         [
             [1.0, 0.0, 0.0, 10.0],

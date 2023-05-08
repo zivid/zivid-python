@@ -1,20 +1,34 @@
 [flake8]
 ignore =
 ### Covered better by pylint
-    E501, # Line too long
-    F401, # Imported but unused
+    # Line too long
+    E501,
+    # Imported but unused
+    F401,
 ### in conflict with black
-    W503, # line break before binary operator
-    E302, # expected 2 blank lines, found 0
-    D202, # No blank lines allowed after function docstring
+    # line break before binary operator
+    W503,
+    # expected 2 blank lines, found 0
+    E302,
+    # No blank lines allowed after function docstring
+    D202,
 ### Permanently disabled for internal linting:
-    D100, # Missing docstring in public module
-    D101, # missing docstring in public class
-    D102, # Missing docstring in public method
-    D103, # missing docstring in public function
-    D104, # missing docstring in public package
-    D105, # missing docstring in magic method
-    D106, # missing docstring in public nested class
-    D107, # missing docstring in __init__
-    I401, # Missing exception(s) in Raises section
+    # Missing docstring in public module
+    D100,
+    # missing docstring in public class
+    D101,
+    # Missing docstring in public method
+    D102,
+    # missing docstring in public function
+    D103,
+    # missing docstring in public package
+    D104,
+    # missing docstring in magic method
+    D105,
+    # missing docstring in public nested class
+    D106,
+    # missing docstring in __init__
+    D107,
+    # Missing exception(s) in Raises section
+    I401,
 show-source = True

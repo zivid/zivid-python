@@ -6,6 +6,7 @@ from pathlib import Path
 from pkgutil import iter_modules
 from skbuild import setup
 
+
 # To be replaced by: from setuptools_scm import get_version
 def get_version():
     return "2.8.0"
@@ -39,7 +40,7 @@ def _python_version():
 
 
 def _make_message_box(*message):
-    width = max([len(e) for e in message])
+    width = max(len(e) for e in message)
 
     box_bar = "+-" + "-" * width + "-+"
     empty_line = "\n| " + " " * width + " |\n"
