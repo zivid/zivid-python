@@ -44,6 +44,14 @@ class Frame2D:
         """
         return Image(self.__impl.image_rgba())
 
+    def image_bgra(self):
+        """Get color (BGRA) image from the frame.
+
+        Returns:
+            An image instance containing BGRA data
+        """
+        return Image(self.__impl.image_bgra())
+
     @property
     def settings(self):
         """Get the settings used to capture this frame.

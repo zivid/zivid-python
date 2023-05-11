@@ -16,5 +16,16 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS(height)
     };
 
+    class ReleasableImageBGRA : public Releasable<Zivid::Image<Zivid::ColorBGRA>>
+    {
+    public:
+        using Releasable<Zivid::Image<Zivid::ColorBGRA>>::Releasable;
+
+        ZIVID_PYTHON_FORWARD_1_ARGS(save, const std::string &, fileName)
+        ZIVID_PYTHON_FORWARD_0_ARGS(width)
+        ZIVID_PYTHON_FORWARD_0_ARGS(height)
+    };
+
     void wrapClass(pybind11::class_<ReleasableImageRGBA> pyClass);
+    void wrapClass(pybind11::class_<ReleasableImageBGRA> pyClass);
 } // namespace ZividPython

@@ -61,9 +61,11 @@ class PointCloud:
         xyzw:       ndarray(Height,Width,4) of float
         z:          ndarray(Height,Width)   of float
         rgba:       ndarray(Height,Width,4) of uint8
+        bgra:       ndarray(Height,Width,4) of uint8
         normals:    ndarray(Height,Width,3) of float
         snr:        ndarray(Height,Width)   of float
         xyzrgba:    ndarray(Height,Width)   of composite dtype (accessed with e.g. arr["x"])
+        xyzbgra:    ndarray(Height,Width)   of composite dtype (accessed with e.g. arr["x"])
 
         Args:
             data_format: A string specifying the data to be copied
@@ -81,9 +83,11 @@ class PointCloud:
             "xyzw": _zivid.Array2DPointXYZW,
             "z": _zivid.Array2DPointZ,
             "rgba": _zivid.Array2DColorRGBA,
+            "bgra": _zivid.Array2DColorBGRA,
             "normals": _zivid.Array2DNormalXYZ,
             "snr": _zivid.Array2DSNR,
             "xyzrgba": _zivid.Array2DPointXYZColorRGBA,
+            "xyzbgra": _zivid.Array2DPointXYZColorBGRA,
         }
         try:
             data_format_class = data_formats[data_format]

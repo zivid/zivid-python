@@ -11,10 +11,12 @@ namespace ZividPython
 
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::SNR>> pyClass);
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorRGBA>> pyClass);
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorBGRA>> pyClass);
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::NormalXYZ>> pyClass);
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::PointXYZ>> pyClass);
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::PointXYZW>> pyClass);
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::PointZ>> pyClass);
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::PointXYZColorRGBA>> pyClass);
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::PointXYZColorBGRA>> pyClass);
 
 } // namespace ZividPython

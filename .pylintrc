@@ -13,5 +13,6 @@ ignore-long-lines="[^"]{80,}"
 
 # While camera.capture() can return both Frame and Frame2D, since pylint does not do code path
 # analysis it mistakenly thinks it can only return Frame. This causes false-positive "no-member"
-# warnings when we access methods that only exist on Frame2D (for now this is only image_rgba()).
-generated-members=image_rgba
+# warnings when we access methods that only exist on Frame2D (for now this is only image_rgba()
+# and image_bgra()).
+generated-members=image_rgba,image_bgra

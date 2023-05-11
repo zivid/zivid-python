@@ -12,6 +12,7 @@ namespace ZividPython
             .def_property_readonly("state", &ReleasableFrame2D::state)
             .def_property_readonly("info", &ReleasableFrame2D::info)
             .def_property_readonly("camera_info", &ReleasableFrame2D::cameraInfo)
-            .def("image_rgba", &ReleasableFrame2D::imageRGBA);
+            .def("image_rgba", &ReleasableFrame2D::imageRGBA)
+            .def("image_bgra", &ReleasableFrame2D::imageBGRA);
     }
 } // namespace ZividPython

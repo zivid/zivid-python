@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 
 
@@ -5,18 +6,37 @@ import pytest
 def test_image_context_manager(physical_camera_frame_2d):
     import zivid
 
-    with physical_camera_frame_2d.image_rgba() as image:
-        assert image is not None
-        assert isinstance(image, zivid.Image)
+    with physical_camera_frame_2d.image_rgba() as image_rgba:
+        assert image_rgba is not None
+        assert isinstance(image_rgba, zivid.Image)
+
+    with physical_camera_frame_2d.image_bgra() as image_bgra:
+        assert image_bgra is not None
+        assert isinstance(image_bgra, zivid.Image)
 
 
 @pytest.mark.physical_camera
 def test_image(physical_camera_frame_2d):
     import zivid
 
-    image = physical_camera_frame_2d.image_rgba()
-    assert image is not None
-    assert isinstance(image, zivid.Image)
+    image_rgba = physical_camera_frame_2d.image_rgba()
+    assert image_rgba is not None
+    assert isinstance(image_rgba, zivid.Image)
+
+    image_bgra = physical_camera_frame_2d.image_bgra()
+    assert image_bgra is not None
+    assert isinstance(image_bgra, zivid.Image)
+
+
+@pytest.mark.physical_camera
+def test_image_rgba_bgra_correspondence(physical_camera_frame_2d):
+    rgba = physical_camera_frame_2d.image_rgba().copy_data()
+    bgra = physical_camera_frame_2d.image_bgra().copy_data()
+
+    np.testing.assert_array_equal(bgra[:, :, 0], rgba[:, :, 2])
+    np.testing.assert_array_equal(bgra[:, :, 1], rgba[:, :, 1])
+    np.testing.assert_array_equal(bgra[:, :, 2], rgba[:, :, 0])
+    np.testing.assert_array_equal(bgra[:, :, 3], rgba[:, :, 3])
 
 
 @pytest.mark.physical_camera
@@ -72,3 +92,8 @@ def test_context_manager(physical_camera):
         frame_2d.image_rgba()
     with pytest.raises(RuntimeError):
         frame_2d.image_rgba()
+
+    with physical_camera.capture(settings_2d) as frame_2d:
+        frame_2d.image_bgra()
+    with pytest.raises(RuntimeError):
+        frame_2d.image_bgra()
