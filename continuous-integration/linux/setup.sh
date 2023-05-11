@@ -31,4 +31,7 @@ clinfo || exit $?
 
 install -D "$ROOT_DIR"/ZividAPIConfig.yml "$HOME"/.config/Zivid/API/Config.yml || exit $?
 
+source $SCRIPT_DIR/venv.sh || exit $?
+create_venv || exit $?
+
 echo Success! [$0]

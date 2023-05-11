@@ -3,6 +3,9 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=$(realpath "$SCRIPT_DIR/../..")
 
+source $SCRIPT_DIR/venv.sh || exit $?
+activate_venv || exit $?
+
 python3_minor_version=$(python3 -c 'import platform; print(platform.python_version_tuple()[1])') || exit $?
 
 if [ $python3_minor_version == "6" ]; then

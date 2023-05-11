@@ -4,6 +4,9 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CI_DIR=$(realpath "$SCRIPT_DIR/..")
 ROOT_DIR=$(realpath "$SCRIPT_DIR/../..")
 
+source $SCRIPT_DIR/venv.sh || exit $?
+activate_venv || exit $?
+
 # Simple setup
 apt-get update || exit $?
 apt-get install --yes python3 python3-pip || exit $?
