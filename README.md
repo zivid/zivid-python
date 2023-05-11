@@ -172,9 +172,9 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 | Ubuntu 22.04     | 3.10                      |
 | Ubuntu 20.04     | 3.8                       |
 | Ubuntu 18.04     | 3.6                       |
-| Fedora 35        | 3.10                      |
-| Fedora 36        | 3.10                      |
 | Fedora 37        | 3.11                      |
+| Fedora 36        | 3.10                      |
+| Fedora 35        | 3.10                      |
 | Windows 10       | 3.7, 3.8, 3.9, 3.10, 3.11 |
 
 [header-image]: https://www.zivid.com/hubfs/softwarefiles/images/zivid-generic-github-header.png
