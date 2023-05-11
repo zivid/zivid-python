@@ -11,8 +11,6 @@ dnf --assumeyes install \
     python3-devel \
     python3-pip \
     wget \
-    findutils \
-    systemd-devel \
     || exit $?
 
 alternatives --install /usr/bin/python python /usr/bin/python3 0 || exit $?
