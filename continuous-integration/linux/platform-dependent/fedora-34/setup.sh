@@ -11,18 +11,15 @@ dnf --assumeyes install \
     python3-devel \
     python3-pip \
     wget \
+    findutils \
+    systemd-devel \
     || exit $?
 
 alternatives --install /usr/bin/python python /usr/bin/python3 0 || exit $?
 alternatives --install /usr/bin/pip pip /usr/bin/pip3 0 || exit $?
 
 source $(realpath $SCRIPT_DIR/../common.sh) || exit $?
-# Install OpenCL CPU runtime driver prerequisites
-dnf --assumeyes install \
-    numactl-libs \
-    redhat-lsb-core \
-    || exit $?
-install_opencl_cpu_runtime || exit $?
+fedora_install_opencl_cpu_runtime || exit $?
 
 function install_www_deb {
     TMP_DIR=$(mktemp --tmpdir --directory zivid-python-install-www-deb-XXXX) || exit $?
