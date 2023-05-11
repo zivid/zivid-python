@@ -21,7 +21,7 @@ jobs:
               --volume $PWD:/host \
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
-              ubuntu:22.10  \
+              ubuntu:23.04  \
               bash -c "./setup.sh && ./build.sh && ./lint.sh"
       - name: Notify Teams
         if: ${{ failure() && github.ref == 'refs/heads/master' }}
@@ -104,6 +104,7 @@ jobs:
           - ubuntu:20.04
           - ubuntu:22.04
           - ubuntu:22.10
+          - ubuntu:23.04
           - fedora:35
           - fedora:36
           - fedora:37
