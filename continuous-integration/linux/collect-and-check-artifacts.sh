@@ -6,8 +6,12 @@ ROOT_DIR=$(realpath "$SCRIPT_DIR/../..")
 
 # Simple setup
 apt-get update || exit $?
-apt-get install --yes python3 python3-pip || exit $?
-pip3 install twine || exit $?
+apt-get install --yes python3 python3-venv || exit $?
+source $SCRIPT_DIR/venv.sh || exit $?
+create_venv || exit $?
+activate_venv || exit $?
+
+python3 -m pip install twine || exit $?
 
 # Move artifacts into a common directory
 mkdir "$ROOT_DIR/distribution" || exit $?
