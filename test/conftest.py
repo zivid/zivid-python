@@ -120,10 +120,16 @@ def physical_camera_frame_2d_fixture(physical_camera):
         yield frame_2d
 
 
-@pytest.fixture(name="physical_camera_image_2d", scope="function")
-def physical_camera_image_2d_fixture(physical_camera_frame_2d):
-    with physical_camera_frame_2d.image_rgba() as image_2d:
-        yield image_2d
+@pytest.fixture(name="physical_camera_image_2d_rgba", scope="function")
+def physical_camera_image_2d_rgba_fixture(physical_camera_frame_2d):
+    with physical_camera_frame_2d.image_rgba() as image_2d_rgb:
+        yield image_2d_rgb
+
+
+@pytest.fixture(name="physical_camera_image_2d_bgra", scope="function")
+def physical_camera_image_2d_bgra_fixture(physical_camera_frame_2d):
+    with physical_camera_frame_2d.image_bgra() as image_2d_bgr:
+        yield image_2d_bgr
 
 
 @pytest.fixture(name="transform", scope="function")

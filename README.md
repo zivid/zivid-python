@@ -87,6 +87,7 @@ Data can easily be accessed in the form of Numpy arrays:
     frame = camera.capture(settings)
     xyz = frame.point_cloud().copy_data("xyz") # Get point coordinates as [Height,Width,3] float array
     rgba = frame.point_cloud().copy_data("rgba") # Get point colors as [Height,Width,4] uint8 array
+    bgra = frame.point_cloud().copy_data("bgra") # Get point colors as [Height,Width,4] uint8 array
 
 ### Capture Assistant
 

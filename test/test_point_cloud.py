@@ -8,14 +8,18 @@ def test_point_cloud_copy_data(point_cloud):
     xyz = point_cloud.copy_data("xyz")
     xyzw = point_cloud.copy_data("xyzw")
     xyzrgba = point_cloud.copy_data("xyzrgba")
+    xyzbgra = point_cloud.copy_data("xyzbgra")
     rgba = point_cloud.copy_data("rgba")
+    bgra = point_cloud.copy_data("bgra")
     normals = point_cloud.copy_data("normals")
     depth = point_cloud.copy_data("z")
     snr = point_cloud.copy_data("snr")
     assert isinstance(xyz, np.ndarray)
     assert isinstance(xyzw, np.ndarray)
     assert isinstance(xyzrgba, np.ndarray)
+    assert isinstance(xyzbgra, np.ndarray)
     assert isinstance(rgba, np.ndarray)
+    assert isinstance(bgra, np.ndarray)
     assert isinstance(normals, np.ndarray)
     assert isinstance(depth, np.ndarray)
     assert isinstance(snr, np.ndarray)
@@ -33,6 +37,7 @@ def test_point_cloud_xyzw(point_cloud):
     xyz = point_cloud.copy_data("xyz")
     xyzw = point_cloud.copy_data("xyzw")
     xyzrgba = point_cloud.copy_data("xyzrgba")
+    xyzbgra = point_cloud.copy_data("xyzbgra")
     depth = point_cloud.copy_data("z")
 
     assert depth.shape == (point_cloud.height, point_cloud.width)
@@ -44,6 +49,9 @@ def test_point_cloud_xyzw(point_cloud):
     assert xyzrgba["x"].dtype == np.float32
     assert xyzrgba["y"].dtype == np.float32
     assert xyzrgba["z"].dtype == np.float32
+    assert xyzbgra["x"].dtype == np.float32
+    assert xyzbgra["y"].dtype == np.float32
+    assert xyzbgra["z"].dtype == np.float32
     np.testing.assert_array_equal(xyz[:, :, 2], depth)
     np.testing.assert_array_equal(xyz[:, :, 0], xyzw[:, :, 0])
     np.testing.assert_array_equal(xyz[:, :, 1], xyzw[:, :, 1])
@@ -54,11 +62,16 @@ def test_point_cloud_rgba(point_cloud):
     import numpy as np
 
     xyzrgba = point_cloud.copy_data("xyzrgba")
+    xyzbgra = point_cloud.copy_data("xyzbgra")
     rgba = point_cloud.copy_data("rgba")
+    bgra = point_cloud.copy_data("bgra")
 
     assert rgba.shape == (point_cloud.height, point_cloud.width, 4)
+    assert bgra.shape == (point_cloud.height, point_cloud.width, 4)
     assert xyzrgba.shape == (point_cloud.height, point_cloud.width)
+    assert xyzbgra.shape == (point_cloud.height, point_cloud.width)
     assert rgba.dtype == np.uint8
+    assert bgra.dtype == np.uint8
     assert xyzrgba["r"].dtype == np.uint8
     assert xyzrgba["g"].dtype == np.uint8
     assert xyzrgba["b"].dtype == np.uint8
@@ -67,6 +80,22 @@ def test_point_cloud_rgba(point_cloud):
     np.testing.assert_array_equal(rgba[:, :, 1], xyzrgba["g"])
     np.testing.assert_array_equal(rgba[:, :, 2], xyzrgba["b"])
     np.testing.assert_array_equal(rgba[:, :, 3], xyzrgba["a"])
+    assert xyzbgra["b"].dtype == np.uint8
+    assert xyzbgra["g"].dtype == np.uint8
+    assert xyzbgra["r"].dtype == np.uint8
+    assert xyzbgra["a"].dtype == np.uint8
+    np.testing.assert_array_equal(bgra[:, :, 0], xyzbgra["b"])
+    np.testing.assert_array_equal(bgra[:, :, 1], xyzbgra["g"])
+    np.testing.assert_array_equal(bgra[:, :, 2], xyzbgra["r"])
+    np.testing.assert_array_equal(bgra[:, :, 3], xyzbgra["a"])
+    np.testing.assert_array_equal(xyzbgra["r"], xyzrgba["r"])
+    np.testing.assert_array_equal(xyzbgra["g"], xyzrgba["g"])
+    np.testing.assert_array_equal(xyzbgra["b"], xyzrgba["b"])
+    np.testing.assert_array_equal(xyzbgra["a"], xyzrgba["a"])
+    np.testing.assert_array_equal(bgra[:, :, 0], rgba[:, :, 2])
+    np.testing.assert_array_equal(bgra[:, :, 1], rgba[:, :, 1])
+    np.testing.assert_array_equal(bgra[:, :, 2], rgba[:, :, 0])
+    np.testing.assert_array_equal(bgra[:, :, 3], rgba[:, :, 3])
 
 
 def test_point_cloud_normals(point_cloud):
