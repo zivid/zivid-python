@@ -2,33 +2,32 @@
 
 SCRIPT_DIR="$(realpath $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd) )"
 
-function install_opencl_cpu_runtime {
-    TMP_DIR=$(mktemp --tmpdir --directory zivid-setup-opencl-cpu-XXXX) || exit $?
-    pushd $TMP_DIR || exit $?
-    wget -q https://www.dropbox.com/s/h0txd04aqfluglq/l_opencl_p_18.1.0.015.tgz || exit $?
-    tar -xf l_opencl_p_18.1.0.015.tgz || exit $?
-    cd l_opencl_*/ || exit $?
+function ubuntu_install_opencl_cpu_runtime {
 
-    cat > installer_config.cfg <<EOF
-# See silent.cfg in the .tgz for description of the options.
-ACCEPT_EULA=accept
-# 'yes' below is required because the installer officially supports only Ubuntu 16.04. However, it will
-# work fine on Ubuntu 18.04 and Fedora 30 as well.
-CONTINUE_WITH_OPTIONAL_ERROR=yes
-PSET_INSTALL_DIR=/opt/intel
-CONTINUE_WITH_INSTALLDIR_OVERWRITE=yes
-COMPONENTS=DEFAULTS
-PSET_MODE=install
-INTEL_SW_IMPROVEMENT_PROGRAM_CONSENT=no
-SIGNING_ENABLED=yes
+    # Download the key to system keyring
+    INTEL_KEY_URL=https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+    wget -O- $INTEL_KEY_URL | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null || exit $?
+
+    # Add signed entry to apt sources and configure the APT client to use Intel repository
+    echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list || exit $?
+    apt update || exit $?
+
+    # Install the OpenCL runtime
+    apt --assume-yes install intel-oneapi-runtime-opencl intel-oneapi-runtime-compilers || exit $?
+
+}
+
+function fedora_install_opencl_cpu_runtime {
+    tee > /etc/yum.repos.d/oneAPI.repo << EOF
+[oneAPI]
+name=Intel® oneAPI repository
+baseurl=https://yum.repos.intel.com/oneapi
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
 EOF
-    echo "Running Intel OpenCL driver installer."
-    echo "Note: Installer will warn about 'Unsupported operating system' if not run on Ubuntu 16.04."
-    echo "This warning can be ignored."
-    echo
-    ./install.sh --silent installer_config.cfg || exit $?
-    popd || exit $?
-    rm -r $TMP_DIR || exit $?
+    dnf --assumeyes install intel-oneapi-runtime-opencl intel-oneapi-runtime-compilers || exit $?
 }
 
 # Read versions.json and set as environment variables

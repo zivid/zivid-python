@@ -24,9 +24,7 @@ update-alternatives --install /usr/bin/python python /usr/bin/python3 0 || exit 
 update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 0 || exit $?
 
 source $(realpath $SCRIPT_DIR/../common.sh) || exit $?
-# Install OpenCL CPU runtime driver prerequisites
-apt-yes install libnuma-dev lsb-core || exit $?
-install_opencl_cpu_runtime || exit $?
+ubuntu_install_opencl_cpu_runtime || exit $?
 
 function install_www_deb {
     TMP_DIR=$(mktemp --tmpdir --directory zivid-python-install-www-deb-XXXX) || exit $?

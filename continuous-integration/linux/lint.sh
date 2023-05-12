@@ -3,6 +3,9 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=$(realpath "$SCRIPT_DIR/../..")
 
+source $SCRIPT_DIR/venv.sh || exit $?
+activate_venv || exit $?
+
 python3 -m pip install \
     --requirement "$SCRIPT_DIR/../python-requirements/lint.txt" ||
     exit $?
@@ -50,7 +53,7 @@ runShellcheck() {
     echo ""
     echo "Running shellcheck on:"
     echo "${fileList}"
-    shellcheck -x -e SC1090,SC2086,SC2046 $fileList || exit $?
+    shellcheck -x -e SC1090,SC2086,SC2046 --source-path=${SCRIPT_DIR} $fileList || exit $?
 }
 
 # Get list of all bash files
