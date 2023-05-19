@@ -46,6 +46,11 @@ def default_settings_fixture():
     return zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
 
 
+@pytest.fixture(name="default_settings_2d", scope="module")
+def default_settings_2d_fixture():
+    return zivid.Settings2D(acquisitions=[zivid.Settings2D.Acquisition()])
+
+
 @pytest.fixture(name="frame_file", scope="module")
 def frame_file_fixture(application, file_camera, default_settings):
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -92,6 +97,12 @@ def frame_fixture(application, file_camera, default_settings):
         yield frame
 
 
+@pytest.fixture(name="frame_2d", scope="function")
+def frame_2d_fixture(application, file_camera, default_settings_2d):
+    with file_camera.capture(default_settings_2d) as frame2d:
+        yield frame2d
+
+
 @pytest.fixture(name="point_cloud", scope="function")
 def point_cloud_fixture(frame):
     with frame.point_cloud() as point_cloud:
@@ -113,22 +124,15 @@ def handeye_eth_transform_fixture():
     return np.loadtxt(str(path), delimiter=",")
 
 
-@pytest.fixture(name="physical_camera_frame_2d", scope="function")
-def physical_camera_frame_2d_fixture(physical_camera):
-    settings_2d = zivid.Settings2D(acquisitions=[zivid.Settings2D.Acquisition()])
-    with physical_camera.capture(settings_2d) as frame_2d:
-        yield frame_2d
-
-
-@pytest.fixture(name="physical_camera_image_2d_rgba", scope="function")
-def physical_camera_image_2d_rgba_fixture(physical_camera_frame_2d):
-    with physical_camera_frame_2d.image_rgba() as image_2d_rgb:
+@pytest.fixture(name="image_2d_rgba", scope="function")
+def image_2d_rgba_fixture(frame_2d):
+    with frame_2d.image_rgba() as image_2d_rgb:
         yield image_2d_rgb
 
 
-@pytest.fixture(name="physical_camera_image_2d_bgra", scope="function")
-def physical_camera_image_2d_bgra_fixture(physical_camera_frame_2d):
-    with physical_camera_frame_2d.image_bgra() as image_2d_bgr:
+@pytest.fixture(name="image_2d_bgra", scope="function")
+def image_2d_bgra_fixture(frame_2d):
+    with frame_2d.image_bgra() as image_2d_bgr:
         yield image_2d_bgr
 
 
