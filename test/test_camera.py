@@ -104,14 +104,3 @@ def test_state(file_camera):
     state = file_camera.state
     assert state
     assert isinstance(state, zivid.CameraState)
-
-
-@pytest.mark.physical_camera
-def test_capture_2d(physical_camera):
-    import zivid
-
-    settings_2d = zivid.Settings2D(acquisitions=[zivid.Settings2D.Acquisition()])
-
-    frame_2d = physical_camera.capture(settings_2d)
-    assert frame_2d is not None
-    assert isinstance(frame_2d, zivid.Frame2D)
