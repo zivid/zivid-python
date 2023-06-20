@@ -106,6 +106,7 @@ class CameraInfo:
             return str(_to_internal_camera_info_user_data(self))
 
     class Model:
+        zivid2PlusM130 = "zivid2PlusM130"
         zividOnePlusLarge = "zividOnePlusLarge"
         zividOnePlusMedium = "zividOnePlusMedium"
         zividOnePlusSmall = "zividOnePlusSmall"
@@ -113,6 +114,7 @@ class CameraInfo:
         zividTwoL100 = "zividTwoL100"
 
         _valid_values = {
+            "zivid2PlusM130": _zivid.CameraInfo.Model.zivid2PlusM130,
             "zividOnePlusLarge": _zivid.CameraInfo.Model.zividOnePlusLarge,
             "zividOnePlusMedium": _zivid.CameraInfo.Model.zividOnePlusMedium,
             "zividOnePlusSmall": _zivid.CameraInfo.Model.zividOnePlusSmall,
