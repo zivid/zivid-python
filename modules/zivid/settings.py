@@ -221,10 +221,12 @@ class Settings:
 
     class Experimental:
         class Engine:
+            omni = "omni"
             phase = "phase"
             stripe = "stripe"
 
             _valid_values = {
+                "omni": _zivid.Settings.Experimental.Engine.omni,
                 "phase": _zivid.Settings.Experimental.Engine.phase,
                 "stripe": _zivid.Settings.Experimental.Engine.stripe,
             }
@@ -2324,6 +2326,126 @@ class Settings:
         def __str__(self):
             return str(_to_internal_settings_region_of_interest(self))
 
+    class Sampling:
+        class Color:
+            disabled = "disabled"
+            rgb = "rgb"
+
+            _valid_values = {
+                "disabled": _zivid.Settings.Sampling.Color.disabled,
+                "rgb": _zivid.Settings.Sampling.Color.rgb,
+            }
+
+            @classmethod
+            def valid_values(cls):
+                return list(cls._valid_values.keys())
+
+        class Pixel:
+            all = "all"
+            blueSubsample2x2 = "blueSubsample2x2"
+            redSubsample2x2 = "redSubsample2x2"
+
+            _valid_values = {
+                "all": _zivid.Settings.Sampling.Pixel.all,
+                "blueSubsample2x2": _zivid.Settings.Sampling.Pixel.blueSubsample2x2,
+                "redSubsample2x2": _zivid.Settings.Sampling.Pixel.redSubsample2x2,
+            }
+
+            @classmethod
+            def valid_values(cls):
+                return list(cls._valid_values.keys())
+
+        def __init__(
+            self,
+            color=_zivid.Settings.Sampling.Color().value,
+            pixel=_zivid.Settings.Sampling.Pixel().value,
+        ):
+            if isinstance(color, _zivid.Settings.Sampling.Color.enum) or color is None:
+                self._color = _zivid.Settings.Sampling.Color(color)
+            elif isinstance(color, str):
+                self._color = _zivid.Settings.Sampling.Color(
+                    self.Color._valid_values[color]
+                )
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: str or None, got {value_type}".format(
+                        value_type=type(color)
+                    )
+                )
+
+            if isinstance(pixel, _zivid.Settings.Sampling.Pixel.enum) or pixel is None:
+                self._pixel = _zivid.Settings.Sampling.Pixel(pixel)
+            elif isinstance(pixel, str):
+                self._pixel = _zivid.Settings.Sampling.Pixel(
+                    self.Pixel._valid_values[pixel]
+                )
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: str or None, got {value_type}".format(
+                        value_type=type(pixel)
+                    )
+                )
+
+        @property
+        def color(self):
+            if self._color.value is None:
+                return None
+            for key, internal_value in self.Color._valid_values.items():
+                if internal_value == self._color.value:
+                    return key
+            raise ValueError("Unsupported value {value}".format(value=self._color))
+
+        @property
+        def pixel(self):
+            if self._pixel.value is None:
+                return None
+            for key, internal_value in self.Pixel._valid_values.items():
+                if internal_value == self._pixel.value:
+                    return key
+            raise ValueError("Unsupported value {value}".format(value=self._pixel))
+
+        @color.setter
+        def color(self, value):
+            if isinstance(value, str):
+                self._color = _zivid.Settings.Sampling.Color(
+                    self.Color._valid_values[value]
+                )
+            elif (
+                isinstance(value, _zivid.Settings.Sampling.Color.enum) or value is None
+            ):
+                self._color = _zivid.Settings.Sampling.Color(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: str or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
+
+        @pixel.setter
+        def pixel(self, value):
+            if isinstance(value, str):
+                self._pixel = _zivid.Settings.Sampling.Pixel(
+                    self.Pixel._valid_values[value]
+                )
+            elif (
+                isinstance(value, _zivid.Settings.Sampling.Pixel.enum) or value is None
+            ):
+                self._pixel = _zivid.Settings.Sampling.Pixel(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: str or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
+
+        def __eq__(self, other):
+            if self._color == other._color and self._pixel == other._pixel:
+                return True
+            return False
+
+        def __str__(self):
+            return str(_to_internal_settings_sampling(self))
+
     def __init__(
         self,
         acquisitions=None,
@@ -2331,6 +2453,7 @@ class Settings:
         experimental=None,
         processing=None,
         region_of_interest=None,
+        sampling=None,
     ):
         if acquisitions is None:
             self._acquisitions = []
@@ -2378,6 +2501,12 @@ class Settings:
             )
         self._region_of_interest = region_of_interest
 
+        if sampling is None:
+            sampling = self.Sampling()
+        if not isinstance(sampling, self.Sampling):
+            raise TypeError("Unsupported type: {value}".format(value=type(sampling)))
+        self._sampling = sampling
+
     @property
     def acquisitions(self):
         return self._acquisitions
@@ -2397,6 +2526,10 @@ class Settings:
     @property
     def region_of_interest(self):
         return self._region_of_interest
+
+    @property
+    def sampling(self):
+        return self._sampling
 
     @acquisitions.setter
     def acquisitions(self, value):
@@ -2435,6 +2568,12 @@ class Settings:
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._region_of_interest = value
 
+    @sampling.setter
+    def sampling(self, value):
+        if not isinstance(value, self.Sampling):
+            raise TypeError("Unsupported type {value}".format(value=type(value)))
+        self._sampling = value
+
     @classmethod
     def load(cls, file_name):
         return _to_settings(_zivid.Settings(str(file_name)))
@@ -2449,6 +2588,7 @@ class Settings:
             and self._experimental == other._experimental
             and self._processing == other._processing
             and self._region_of_interest == other._region_of_interest
+            and self._sampling == other._sampling
         ):
             return True
         return False
@@ -2682,6 +2822,13 @@ def _to_settings_region_of_interest(internal_region_of_interest):
     )
 
 
+def _to_settings_sampling(internal_sampling):
+    return Settings.Sampling(
+        color=internal_sampling.color.value,
+        pixel=internal_sampling.pixel.value,
+    )
+
+
 def _to_settings(internal_settings):
     return Settings(
         acquisitions=[
@@ -2694,6 +2841,7 @@ def _to_settings(internal_settings):
         region_of_interest=_to_settings_region_of_interest(
             internal_settings.region_of_interest
         ),
+        sampling=_to_settings_sampling(internal_settings.sampling),
     )
 
 
@@ -3062,6 +3210,15 @@ def _to_internal_settings_region_of_interest(region_of_interest):
     return internal_region_of_interest
 
 
+def _to_internal_settings_sampling(sampling):
+    internal_sampling = _zivid.Settings.Sampling()
+
+    internal_sampling.color = _zivid.Settings.Sampling.Color(sampling._color.value)
+    internal_sampling.pixel = _zivid.Settings.Sampling.Pixel(sampling._pixel.value)
+
+    return internal_sampling
+
+
 def _to_internal_settings(settings):
     internal_settings = _zivid.Settings()
 
@@ -3080,4 +3237,5 @@ def _to_internal_settings(settings):
     internal_settings.region_of_interest = _to_internal_settings_region_of_interest(
         settings.region_of_interest
     )
+    internal_settings.sampling = _to_internal_settings_sampling(settings.sampling)
     return internal_settings
