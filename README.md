@@ -16,7 +16,7 @@ Zivid Python is the official Python package for Zivid 3D cameras. Read more abou
 ### Dependencies
 
 * [Python](https://www.python.org/) version 3.6 or higher
-* [Zivid SDK][zivid-download-software-url] version 2.9.0 (see [here][zivid-software-installation-url] for help)
+* [Zivid SDK][zivid-download-software-url] version 2.10.0 (see [here][zivid-software-installation-url] for help)
 * [Compiler](doc/CompilerInstallation.md) with C++17 support
 
 *Ubuntu users must install Python headers (`apt install python3-dev`) in addition to the regular `python3` package.*
