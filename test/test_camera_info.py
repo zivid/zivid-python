@@ -4,7 +4,7 @@ def test_revision(file_camera_info):
     revision = file_camera_info.revision
     assert revision is not None
     assert isinstance(revision, zivid.CameraInfo.Revision)
-    assert revision == zivid.CameraInfo.Revision(0, 0)
+    assert revision == zivid.CameraInfo.Revision(0, 2)
 
 
 def test_firmware_version(file_camera_info):

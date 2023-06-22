@@ -4,8 +4,8 @@ import numpy as np
 def test_region_of_interest_depth(file_camera):
     import zivid
 
-    z_min = 600.0
-    z_max = 625.0
+    z_min = 650.0
+    z_max = 800.0
 
     # Make sure default capture has points outside the range we want
     settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
