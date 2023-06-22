@@ -26,7 +26,7 @@ def application_fixture():
 
 @pytest.fixture(name="file_camera_file", scope="module")
 def file_camera_file_fixture():
-    return _testdata_dir() / "FileCameraZividOne.zfc"
+    return _testdata_dir() / "FileCameraZivid2M70.zfc"
 
 
 @pytest.fixture(name="physical_camera", scope="module")
