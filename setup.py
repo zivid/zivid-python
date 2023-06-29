@@ -2,9 +2,10 @@ import tempfile
 import platform
 import subprocess
 from sys import version_info
+from tempfile import TemporaryDirectory
 from pathlib import Path
 from pkgutil import iter_modules
-from skbuild import setup
+from skbuild import setup, constants
 
 
 # To be replaced by: from setuptools_scm import get_version
@@ -120,31 +121,35 @@ def _main():
 
     _check_cpp17_compiler()
 
-    setup(
-        name="zivid",
-        version=_zivid_python_version(),
-        description="Defining the Future of 3D Machine Vision",
-        long_description=Path("README.md").read_text(encoding="utf-8"),
-        long_description_content_type="text/markdown",
-        url="https://www.zivid.com",
-        author="Zivid AS",
-        author_email="customersuccess@zivid.com",
-        license="BSD 3-Clause",
-        packages=["zivid", "zivid._calibration", "zivid.experimental", "_zivid"],
-        package_dir={"": "modules"},
-        install_requires=["numpy"],
-        cmake_args=[
-            "-DZIVID_PYTHON_VERSION=" + _zivid_python_version(),
-            "-DZIVID_SDK_VERSION=" + _zivid_sdk_version(),
-            "-DPYTHON_INTERPRETER_VERSION=" + _python_version(),
-        ],
-        classifiers=[
-            "License :: OSI Approved :: BSD License",
-            "Programming Language :: Python :: 3",
-            "Programming Language :: Python :: Implementation :: CPython",
-            "Topic :: Scientific/Engineering",
-        ],
-    )
+    with TemporaryDirectory(prefix="zivid-python-build_") as build_dir:
+        print("Overriding build dir: " + build_dir)
+        constants.SKBUILD_DIR = lambda: build_dir
+
+        setup(
+            name="zivid",
+            version=_zivid_python_version(),
+            description="Defining the Future of 3D Machine Vision",
+            long_description=Path("README.md").read_text(encoding="utf-8"),
+            long_description_content_type="text/markdown",
+            url="https://www.zivid.com",
+            author="Zivid AS",
+            author_email="customersuccess@zivid.com",
+            license="BSD 3-Clause",
+            packages=["zivid", "zivid._calibration", "zivid.experimental", "_zivid"],
+            package_dir={"": "modules"},
+            install_requires=["numpy"],
+            cmake_args=[
+                "-DZIVID_PYTHON_VERSION=" + _zivid_python_version(),
+                "-DZIVID_SDK_VERSION=" + _zivid_sdk_version(),
+                "-DPYTHON_INTERPRETER_VERSION=" + _python_version(),
+            ],
+            classifiers=[
+                "License :: OSI Approved :: BSD License",
+                "Programming Language :: Python :: 3",
+                "Programming Language :: Python :: Implementation :: CPython",
+                "Topic :: Scientific/Engineering",
+            ],
+        )
 
 
 if __name__ == "__main__":
