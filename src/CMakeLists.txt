@@ -11,12 +11,14 @@ set(SOURCES
     Firmware.cpp
     InfieldCorrection/InfieldCorrection.cpp
     NodeType.cpp
+    Projection.cpp
     ReleasableArray2D.cpp
     ReleasableCamera.cpp
     ReleasableFrame.cpp
     ReleasableFrame2D.cpp
     ReleasableImage.cpp
     ReleasablePointCloud.cpp
+    ReleasableProjectedImage.cpp
     SingletonApplication.cpp
     Version.cpp
     Wrapper.cpp
