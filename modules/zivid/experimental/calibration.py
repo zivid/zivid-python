@@ -3,20 +3,50 @@
 import _zivid
 from zivid.calibration import DetectionResult
 from zivid.camera_intrinsics import _to_camera_intrinsics
+from zivid.settings import Settings, _to_internal_settings
+from zivid.settings_2d import Settings2D, _to_internal_settings2d
 
 
-def intrinsics(camera):
-    """Get intrinsic parameters of a given camera.
+def intrinsics(camera, settings=None):
+    """Get intrinsic parameters of a given camera and settings (3D or 2D).
+
+    These intrinsic parameters take into account the expected resolution of the point clouds captured
+    with the given settings. If settings are not provided, intrinsics appropriate for the camera's
+    default 3D capture settings is returned.
 
     Args:
         camera: A Camera instance
+        settings: Settings or Settings2D to be used to get correct intrinsics (optional)
 
     Returns:
         A CameraIntrinsics instance
+
+    Raises:
+        TypeError: If settings argument is not Settings or Settings2D
     """
-    return _to_camera_intrinsics(
-        _zivid.calibration.intrinsics(
-            camera._Camera__impl  # pylint: disable=protected-access
+    if settings is None:
+        return _to_camera_intrinsics(
+            _zivid.calibration.intrinsics(
+                camera._Camera__impl  # pylint: disable=protected-access
+            )
+        )
+    if isinstance(settings, Settings):
+        return _to_camera_intrinsics(
+            _zivid.calibration.intrinsics(
+                camera._Camera__impl,  # pylint: disable=protected-access
+                _to_internal_settings(settings),
+            )
+        )
+    if isinstance(settings, Settings2D):
+        return _to_camera_intrinsics(
+            _zivid.calibration.intrinsics(
+                camera._Camera__impl,  # pylint: disable=protected-access
+                _to_internal_settings2d(settings),
+            )
+        )
+    raise TypeError(
+        "Unsupported type for argument settings. Got {}, expected Settings or Settings2D.".format(
+            type(settings)
         )
     )
 
