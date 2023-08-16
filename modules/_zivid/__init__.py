@@ -63,6 +63,8 @@ try:
         infield_correction,
         Matrix4x4,
         data_model,
+        projection,
+        ProjectedImage,
     )
 except ImportError as ex:
 

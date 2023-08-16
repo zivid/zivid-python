@@ -221,10 +221,12 @@ class Settings:
 
     class Experimental:
         class Engine:
+            omni = "omni"
             phase = "phase"
             stripe = "stripe"
 
             _valid_values = {
+                "omni": _zivid.Settings.Experimental.Engine.omni,
                 "phase": _zivid.Settings.Experimental.Engine.phase,
                 "stripe": _zivid.Settings.Experimental.Engine.stripe,
             }
@@ -1337,9 +1339,103 @@ class Settings:
                             _to_internal_settings_processing_filters_noise_removal(self)
                         )
 
+                class Repair:
+                    def __init__(
+                        self,
+                        enabled=_zivid.Settings.Processing.Filters.Noise.Repair.Enabled().value,
+                    ):
+                        if isinstance(enabled, (bool,)) or enabled is None:
+                            self._enabled = (
+                                _zivid.Settings.Processing.Filters.Noise.Repair.Enabled(
+                                    enabled
+                                )
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                                    value_type=type(enabled)
+                                )
+                            )
+
+                    @property
+                    def enabled(self):
+                        return self._enabled.value
+
+                    @enabled.setter
+                    def enabled(self, value):
+                        if isinstance(value, (bool,)) or value is None:
+                            self._enabled = (
+                                _zivid.Settings.Processing.Filters.Noise.Repair.Enabled(
+                                    value
+                                )
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: bool or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
+
+                    def __eq__(self, other):
+                        if self._enabled == other._enabled:
+                            return True
+                        return False
+
+                    def __str__(self):
+                        return str(
+                            _to_internal_settings_processing_filters_noise_repair(self)
+                        )
+
+                class Suppression:
+                    def __init__(
+                        self,
+                        enabled=_zivid.Settings.Processing.Filters.Noise.Suppression.Enabled().value,
+                    ):
+                        if isinstance(enabled, (bool,)) or enabled is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Noise.Suppression.Enabled(
+                                enabled
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                                    value_type=type(enabled)
+                                )
+                            )
+
+                    @property
+                    def enabled(self):
+                        return self._enabled.value
+
+                    @enabled.setter
+                    def enabled(self, value):
+                        if isinstance(value, (bool,)) or value is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Noise.Suppression.Enabled(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: bool or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
+
+                    def __eq__(self, other):
+                        if self._enabled == other._enabled:
+                            return True
+                        return False
+
+                    def __str__(self):
+                        return str(
+                            _to_internal_settings_processing_filters_noise_suppression(
+                                self
+                            )
+                        )
+
                 def __init__(
                     self,
                     removal=None,
+                    repair=None,
+                    suppression=None,
                 ):
                     if removal is None:
                         removal = self.Removal()
@@ -1349,9 +1445,33 @@ class Settings:
                         )
                     self._removal = removal
 
+                    if repair is None:
+                        repair = self.Repair()
+                    if not isinstance(repair, self.Repair):
+                        raise TypeError(
+                            "Unsupported type: {value}".format(value=type(repair))
+                        )
+                    self._repair = repair
+
+                    if suppression is None:
+                        suppression = self.Suppression()
+                    if not isinstance(suppression, self.Suppression):
+                        raise TypeError(
+                            "Unsupported type: {value}".format(value=type(suppression))
+                        )
+                    self._suppression = suppression
+
                 @property
                 def removal(self):
                     return self._removal
+
+                @property
+                def repair(self):
+                    return self._repair
+
+                @property
+                def suppression(self):
+                    return self._suppression
 
                 @removal.setter
                 def removal(self, value):
@@ -1361,8 +1481,28 @@ class Settings:
                         )
                     self._removal = value
 
+                @repair.setter
+                def repair(self, value):
+                    if not isinstance(value, self.Repair):
+                        raise TypeError(
+                            "Unsupported type {value}".format(value=type(value))
+                        )
+                    self._repair = value
+
+                @suppression.setter
+                def suppression(self, value):
+                    if not isinstance(value, self.Suppression):
+                        raise TypeError(
+                            "Unsupported type {value}".format(value=type(value))
+                        )
+                    self._suppression = value
+
                 def __eq__(self, other):
-                    if self._removal == other._removal:
+                    if (
+                        self._removal == other._removal
+                        and self._repair == other._repair
+                        and self._suppression == other._suppression
+                    ):
                         return True
                     return False
 
@@ -2324,6 +2464,126 @@ class Settings:
         def __str__(self):
             return str(_to_internal_settings_region_of_interest(self))
 
+    class Sampling:
+        class Color:
+            disabled = "disabled"
+            rgb = "rgb"
+
+            _valid_values = {
+                "disabled": _zivid.Settings.Sampling.Color.disabled,
+                "rgb": _zivid.Settings.Sampling.Color.rgb,
+            }
+
+            @classmethod
+            def valid_values(cls):
+                return list(cls._valid_values.keys())
+
+        class Pixel:
+            all = "all"
+            blueSubsample2x2 = "blueSubsample2x2"
+            redSubsample2x2 = "redSubsample2x2"
+
+            _valid_values = {
+                "all": _zivid.Settings.Sampling.Pixel.all,
+                "blueSubsample2x2": _zivid.Settings.Sampling.Pixel.blueSubsample2x2,
+                "redSubsample2x2": _zivid.Settings.Sampling.Pixel.redSubsample2x2,
+            }
+
+            @classmethod
+            def valid_values(cls):
+                return list(cls._valid_values.keys())
+
+        def __init__(
+            self,
+            color=_zivid.Settings.Sampling.Color().value,
+            pixel=_zivid.Settings.Sampling.Pixel().value,
+        ):
+            if isinstance(color, _zivid.Settings.Sampling.Color.enum) or color is None:
+                self._color = _zivid.Settings.Sampling.Color(color)
+            elif isinstance(color, str):
+                self._color = _zivid.Settings.Sampling.Color(
+                    self.Color._valid_values[color]
+                )
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: str or None, got {value_type}".format(
+                        value_type=type(color)
+                    )
+                )
+
+            if isinstance(pixel, _zivid.Settings.Sampling.Pixel.enum) or pixel is None:
+                self._pixel = _zivid.Settings.Sampling.Pixel(pixel)
+            elif isinstance(pixel, str):
+                self._pixel = _zivid.Settings.Sampling.Pixel(
+                    self.Pixel._valid_values[pixel]
+                )
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: str or None, got {value_type}".format(
+                        value_type=type(pixel)
+                    )
+                )
+
+        @property
+        def color(self):
+            if self._color.value is None:
+                return None
+            for key, internal_value in self.Color._valid_values.items():
+                if internal_value == self._color.value:
+                    return key
+            raise ValueError("Unsupported value {value}".format(value=self._color))
+
+        @property
+        def pixel(self):
+            if self._pixel.value is None:
+                return None
+            for key, internal_value in self.Pixel._valid_values.items():
+                if internal_value == self._pixel.value:
+                    return key
+            raise ValueError("Unsupported value {value}".format(value=self._pixel))
+
+        @color.setter
+        def color(self, value):
+            if isinstance(value, str):
+                self._color = _zivid.Settings.Sampling.Color(
+                    self.Color._valid_values[value]
+                )
+            elif (
+                isinstance(value, _zivid.Settings.Sampling.Color.enum) or value is None
+            ):
+                self._color = _zivid.Settings.Sampling.Color(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: str or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
+
+        @pixel.setter
+        def pixel(self, value):
+            if isinstance(value, str):
+                self._pixel = _zivid.Settings.Sampling.Pixel(
+                    self.Pixel._valid_values[value]
+                )
+            elif (
+                isinstance(value, _zivid.Settings.Sampling.Pixel.enum) or value is None
+            ):
+                self._pixel = _zivid.Settings.Sampling.Pixel(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: str or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
+
+        def __eq__(self, other):
+            if self._color == other._color and self._pixel == other._pixel:
+                return True
+            return False
+
+        def __str__(self):
+            return str(_to_internal_settings_sampling(self))
+
     def __init__(
         self,
         acquisitions=None,
@@ -2331,6 +2591,7 @@ class Settings:
         experimental=None,
         processing=None,
         region_of_interest=None,
+        sampling=None,
     ):
         if acquisitions is None:
             self._acquisitions = []
@@ -2378,6 +2639,12 @@ class Settings:
             )
         self._region_of_interest = region_of_interest
 
+        if sampling is None:
+            sampling = self.Sampling()
+        if not isinstance(sampling, self.Sampling):
+            raise TypeError("Unsupported type: {value}".format(value=type(sampling)))
+        self._sampling = sampling
+
     @property
     def acquisitions(self):
         return self._acquisitions
@@ -2397,6 +2664,10 @@ class Settings:
     @property
     def region_of_interest(self):
         return self._region_of_interest
+
+    @property
+    def sampling(self):
+        return self._sampling
 
     @acquisitions.setter
     def acquisitions(self, value):
@@ -2435,6 +2706,12 @@ class Settings:
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._region_of_interest = value
 
+    @sampling.setter
+    def sampling(self, value):
+        if not isinstance(value, self.Sampling):
+            raise TypeError("Unsupported type {value}".format(value=type(value)))
+        self._sampling = value
+
     @classmethod
     def load(cls, file_name):
         return _to_settings(_zivid.Settings(str(file_name)))
@@ -2449,6 +2726,7 @@ class Settings:
             and self._experimental == other._experimental
             and self._processing == other._processing
             and self._region_of_interest == other._region_of_interest
+            and self._sampling == other._sampling
         ):
             return True
         return False
@@ -2575,9 +2853,25 @@ def _to_settings_processing_filters_noise_removal(internal_removal):
     )
 
 
+def _to_settings_processing_filters_noise_repair(internal_repair):
+    return Settings.Processing.Filters.Noise.Repair(
+        enabled=internal_repair.enabled.value,
+    )
+
+
+def _to_settings_processing_filters_noise_suppression(internal_suppression):
+    return Settings.Processing.Filters.Noise.Suppression(
+        enabled=internal_suppression.enabled.value,
+    )
+
+
 def _to_settings_processing_filters_noise(internal_noise):
     return Settings.Processing.Filters.Noise(
         removal=_to_settings_processing_filters_noise_removal(internal_noise.removal),
+        repair=_to_settings_processing_filters_noise_repair(internal_noise.repair),
+        suppression=_to_settings_processing_filters_noise_suppression(
+            internal_noise.suppression
+        ),
     )
 
 
@@ -2682,6 +2976,13 @@ def _to_settings_region_of_interest(internal_region_of_interest):
     )
 
 
+def _to_settings_sampling(internal_sampling):
+    return Settings.Sampling(
+        color=internal_sampling.color.value,
+        pixel=internal_sampling.pixel.value,
+    )
+
+
 def _to_settings(internal_settings):
     return Settings(
         acquisitions=[
@@ -2694,6 +2995,7 @@ def _to_settings(internal_settings):
         region_of_interest=_to_settings_region_of_interest(
             internal_settings.region_of_interest
         ),
+        sampling=_to_settings_sampling(internal_settings.sampling),
     )
 
 
@@ -2900,11 +3202,39 @@ def _to_internal_settings_processing_filters_noise_removal(removal):
     return internal_removal
 
 
+def _to_internal_settings_processing_filters_noise_repair(repair):
+    internal_repair = _zivid.Settings.Processing.Filters.Noise.Repair()
+
+    internal_repair.enabled = _zivid.Settings.Processing.Filters.Noise.Repair.Enabled(
+        repair.enabled
+    )
+
+    return internal_repair
+
+
+def _to_internal_settings_processing_filters_noise_suppression(suppression):
+    internal_suppression = _zivid.Settings.Processing.Filters.Noise.Suppression()
+
+    internal_suppression.enabled = (
+        _zivid.Settings.Processing.Filters.Noise.Suppression.Enabled(
+            suppression.enabled
+        )
+    )
+
+    return internal_suppression
+
+
 def _to_internal_settings_processing_filters_noise(noise):
     internal_noise = _zivid.Settings.Processing.Filters.Noise()
 
     internal_noise.removal = _to_internal_settings_processing_filters_noise_removal(
         noise.removal
+    )
+    internal_noise.repair = _to_internal_settings_processing_filters_noise_repair(
+        noise.repair
+    )
+    internal_noise.suppression = (
+        _to_internal_settings_processing_filters_noise_suppression(noise.suppression)
     )
     return internal_noise
 
@@ -3062,6 +3392,15 @@ def _to_internal_settings_region_of_interest(region_of_interest):
     return internal_region_of_interest
 
 
+def _to_internal_settings_sampling(sampling):
+    internal_sampling = _zivid.Settings.Sampling()
+
+    internal_sampling.color = _zivid.Settings.Sampling.Color(sampling._color.value)
+    internal_sampling.pixel = _zivid.Settings.Sampling.Pixel(sampling._pixel.value)
+
+    return internal_sampling
+
+
 def _to_internal_settings(settings):
     internal_settings = _zivid.Settings()
 
@@ -3080,4 +3419,5 @@ def _to_internal_settings(settings):
     internal_settings.region_of_interest = _to_internal_settings_region_of_interest(
         settings.region_of_interest
     )
+    internal_settings.sampling = _to_internal_settings_sampling(settings.sampling)
     return internal_settings
