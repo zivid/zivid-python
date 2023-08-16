@@ -18,9 +18,11 @@
 
 #include <vector>
 
+namespace py = pybind11;
+
 namespace ZividPython::Calibration
 {
-    void wrapAsSubmodule(pybind11::module &dest)
+    void wrapAsSubmodule(py::module &dest)
     {
         using namespace Zivid::Calibration;
 
@@ -40,10 +42,26 @@ namespace ZividPython::Calibration
             .def("calibrate_eye_in_hand", &Zivid::Calibration::calibrateEyeInHand)
             .def("calibrate_eye_to_hand", &Zivid::Calibration::calibrateEyeToHand)
             .def("calibrate_multi_camera", &Zivid::Calibration::calibrateMultiCamera)
-            .def("intrinsics",
-                 [](ReleasableCamera &releasableCamera) {
-                     return Zivid::Experimental::Calibration::intrinsics(releasableCamera.impl());
-                 })
+            .def(
+                "intrinsics",
+                [](ReleasableCamera &releasableCamera) {
+                    return Zivid::Experimental::Calibration::intrinsics(releasableCamera.impl());
+                },
+                py::arg("camera"))
+            .def(
+                "intrinsics",
+                [](ReleasableCamera &releasableCamera, const Zivid::Settings &settings) {
+                    return Zivid::Experimental::Calibration::intrinsics(releasableCamera.impl(), settings);
+                },
+                py::arg("camera"),
+                py::arg("settings"))
+            .def(
+                "intrinsics",
+                [](ReleasableCamera &releasableCamera, const Zivid::Settings2D &settings_2d) {
+                    return Zivid::Experimental::Calibration::intrinsics(releasableCamera.impl(), settings_2d);
+                },
+                py::arg("camera"),
+                py::arg("settings_2d"))
             .def("estimate_intrinsics", [](ReleasableFrame &releasableFrame) {
                 return Zivid::Experimental::Calibration::estimateIntrinsics(releasableFrame.impl());
             });
