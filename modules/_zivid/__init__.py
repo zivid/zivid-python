@@ -65,6 +65,7 @@ try:
         data_model,
         projection,
         ProjectedImage,
+        presets,
     )
 except ImportError as ex:
 

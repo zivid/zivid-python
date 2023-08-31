@@ -12,6 +12,7 @@ set(SOURCES
     InfieldCorrection/InfieldCorrection.cpp
     NodeType.cpp
     Projection.cpp
+    Presets.cpp
     ReleasableArray2D.cpp
     ReleasableCamera.cpp
     ReleasableFrame.cpp
