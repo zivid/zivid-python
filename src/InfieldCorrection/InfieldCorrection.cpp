@@ -23,6 +23,12 @@ namespace ZividPython::InfieldCorrection
 
         dest.def("detect_feature_points_infield",
                  [](ReleasableCamera &releasableCamera) { return detectFeaturePoints(releasableCamera.impl()); })
+            .def("detect_feature_points_infield",
+                 [](const ReleasableFrame &releasableFrame) { return detectFeaturePoints(releasableFrame.impl()); })
+            .def("capture_calibration_board",
+                 [](ReleasableCamera &releasableCamera) {
+                     return ReleasableFrame{ captureCalibrationBoard(releasableCamera.impl()) };
+                 })
             .def("verify_camera", &verifyCamera)
             .def("compute_camera_correction", &computeCameraCorrection)
             .def("write_camera_correction",
