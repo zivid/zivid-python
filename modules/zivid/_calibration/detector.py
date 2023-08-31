@@ -24,7 +24,7 @@ class DetectionResult:
         if not isinstance(impl, _zivid.calibration.DetectionResult):
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), type(_zivid.calibration.DetectionResult)
+                    type(impl), _zivid.calibration.DetectionResult
                 )
             )
 

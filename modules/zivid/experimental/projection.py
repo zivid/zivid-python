@@ -28,7 +28,7 @@ class ProjectedImage:
         else:
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {}.".format(
-                    type(impl), type(_zivid.ProjectedImage)
+                    type(impl), _zivid.ProjectedImage
                 )
             )
 

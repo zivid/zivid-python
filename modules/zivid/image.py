@@ -21,8 +21,8 @@ class Image:
         if not isinstance(impl, (_zivid.ImageRGBA, _zivid.ImageBGRA)):
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {} or {}".format(
-                    type(impl), type(_zivid.ImageRGBA), type(_zivid.ImageBGRA)
-                )
+                    type(impl), _zivid.ImageRGBA, _zivid.ImageBGRA
+                ),
             )
         self.__impl = impl
 

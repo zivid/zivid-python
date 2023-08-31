@@ -76,7 +76,7 @@ class HandEyeResidual:
         if not isinstance(impl, _zivid.calibration.HandEyeResidual):
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), type(_zivid.calibration.HandEyeResidual)
+                    type(impl), _zivid.calibration.HandEyeResidual
                 )
             )
         self.__impl = impl
@@ -118,7 +118,7 @@ class HandEyeOutput:
         if not isinstance(impl, _zivid.calibration.HandEyeOutput):
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), type(_zivid.calibration.HandEyeOutput)
+                    type(impl), _zivid.calibration.HandEyeOutput
                 )
             )
         self.__impl = impl

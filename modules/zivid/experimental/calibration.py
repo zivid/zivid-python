@@ -299,7 +299,7 @@ class CameraVerification:
         if not isinstance(impl, _zivid.infield_correction.CameraVerification):
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), type(_zivid.infield_correction.CameraVerification)
+                    type(impl), _zivid.infield_correction.CameraVerification
                 )
             )
         self.__impl = impl
@@ -351,7 +351,7 @@ class AccuracyEstimate:
         if not isinstance(impl, _zivid.infield_correction.AccuracyEstimate):
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), type(_zivid.infield_correction.AccuracyEstimate)
+                    type(impl), _zivid.infield_correction.AccuracyEstimate
                 )
             )
         self.__impl = impl
@@ -415,7 +415,7 @@ class CameraCorrection:
         if not isinstance(impl, _zivid.infield_correction.CameraCorrection):
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), type(_zivid.infield_correction.CameraCorrection)
+                    type(impl), _zivid.infield_correction.CameraCorrection
                 )
             )
         self.__impl = impl

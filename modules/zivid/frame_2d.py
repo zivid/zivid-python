@@ -29,7 +29,7 @@ class Frame2D:
         else:
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {}.".format(
-                    type(impl), type(_zivid.Frame2D)
+                    type(impl), _zivid.Frame2D
                 )
             )
 
