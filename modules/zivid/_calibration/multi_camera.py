@@ -24,7 +24,7 @@ class MultiCameraResidual:
         if not isinstance(impl, _zivid.calibration.MultiCameraResidual):
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), type(_zivid.calibration.MultiCameraResidual)
+                    type(impl), _zivid.calibration.MultiCameraResidual
                 )
             )
         self.__impl = impl
@@ -58,7 +58,7 @@ class MultiCameraOutput:
         if not isinstance(impl, _zivid.calibration.MultiCameraOutput):
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), type(_zivid.calibration.MultiCameraOutput)
+                    type(impl), _zivid.calibration.MultiCameraOutput
                 )
             )
         self.__impl = impl

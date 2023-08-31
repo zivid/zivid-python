@@ -29,7 +29,7 @@ class Camera:
         if not isinstance(impl, _zivid.Camera):
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), type(_zivid.Camera)
+                    type(impl), _zivid.Camera
                 )
             )
 

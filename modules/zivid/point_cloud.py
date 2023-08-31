@@ -48,7 +48,7 @@ class PointCloud:
         if not isinstance(impl, _zivid.PointCloud):
             raise TypeError(
                 "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), type(_zivid.PointCloud)
+                    type(impl), _zivid.PointCloud
                 )
             )
         self.__impl = impl
