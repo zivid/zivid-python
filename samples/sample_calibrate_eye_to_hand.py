@@ -36,54 +36,55 @@ def _enter_robot_pose(index):
 
 def _main():
     app = zivid.Application()
-    camera = app.connect_camera()
+    with app.connect_camera() as camera:
+        current_pose_id = 0
+        calibration_inputs = []
+        calibrate = False
 
-    current_pose_id = 0
-    calibration_inputs = []
-    calibrate = False
+        while not calibrate:
+            command = input(
+                "Enter command, p (to add robot pose) or c (to perform calibration):"
+            ).strip()
+            if command == "p":
+                try:
+                    robot_pose = _enter_robot_pose(current_pose_id)
 
-    while not calibrate:
-        command = input(
-            "Enter command, p (to add robot pose) or c (to perform calibration):"
-        ).strip()
-        if command == "p":
-            try:
-                robot_pose = _enter_robot_pose(current_pose_id)
+                    frame = _acquire_checkerboard_frame(camera)
 
-                frame = _acquire_checkerboard_frame(camera)
+                    print("Detecting checkerboard square centers... ")
+                    result = zivid.calibration.detect_feature_points(
+                        frame.point_cloud()
+                    )
 
-                print("Detecting checkerboard square centers... ")
-                result = zivid.calibration.detect_feature_points(frame.point_cloud())
+                    if result:
+                        print("OK")
+                        res = zivid.calibration.HandEyeInput(robot_pose, result)
+                        calibration_inputs.append(res)
+                        current_pose_id += 1
+                    else:
+                        print("FAILED")
+                except ValueError as ex:
+                    print(ex)
+            elif command == "c":
+                calibrate = True
+            else:
+                print("Unknown command '{}'".format(command))
 
-                if result:
-                    print("OK")
-                    res = zivid.calibration.HandEyeInput(robot_pose, result)
-                    calibration_inputs.append(res)
-                    current_pose_id += 1
-                else:
-                    print("FAILED")
-            except ValueError as ex:
-                print(ex)
-        elif command == "c":
-            calibrate = True
+        print("Performing hand-eye calibration...")
+        calibration_result = zivid.calibration.calibrate_eye_to_hand(calibration_inputs)
+        if calibration_result:
+            print("OK")
+            print("Result:\n{}".format(calibration_result))
         else:
-            print("Unknown command '{}'".format(command))
+            print("FAILED")
 
-    print("Performing hand-eye calibration...")
-    calibration_result = zivid.calibration.calibrate_eye_to_hand(calibration_inputs)
-    if calibration_result:
-        print("OK")
-        print("Result:\n{}".format(calibration_result))
-    else:
-        print("FAILED")
+        print("Getting calibration result transformation matrix")
+        transformed_numpy_matrix = calibration_result.transform()
 
-    print("Getting calibration result transformation matrix")
-    transformed_numpy_matrix = calibration_result.transform()
-
-    print("Saving calibration result transformation matrix")
-    with tempfile.TemporaryDirectory() as tempdir:
-        file_path = Path(tempdir) / "hand_eye.yml"
-        zivid.Matrix4x4(transformed_numpy_matrix).save(file_path)
+        print("Saving calibration result transformation matrix")
+        with tempfile.TemporaryDirectory() as tempdir:
+            file_path = Path(tempdir) / "hand_eye.yml"
+            zivid.Matrix4x4(transformed_numpy_matrix).save(file_path)
 
 
 if __name__ == "__main__":

@@ -60,6 +60,9 @@ def _main():
         f"Time taken to capture synchronously from {len(cameras)} camera(s): {end-start} seconds"
     )
 
+    for camera in cameras:
+        camera.disconnect()
+
 
 if __name__ == "__main__":
     _main()
