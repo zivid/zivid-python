@@ -2,7 +2,9 @@
 
 import _zivid
 from zivid.calibration import DetectionResult
+from zivid.camera import Camera
 from zivid.camera_intrinsics import _to_camera_intrinsics
+from zivid.frame import Frame
 from zivid.settings import Settings, _to_internal_settings
 from zivid.settings_2d import Settings2D, _to_internal_settings2d
 
@@ -69,7 +71,34 @@ def estimate_intrinsics(frame):
     )
 
 
-def detect_feature_points(camera):
+def capture_calibration_board(camera):
+    """Capture the calibration board.
+
+    This function is used to capture an official Zivid calibration board, using settings that are
+    optimized for the board. This method must be used to capture the Frame that is given as input to
+    detect_feature_points(frame).
+
+    You can also call detect_feature_points(camera), providing a camera as the first argument, and
+    it will call this function for you.
+
+    To verify if you successfully captured the calibration board and found the feature points, call
+    detection_result = detect_feature_points(frame) with the frame returned from this function, then
+    check detection_result.valid() on the returned DetectionResult object.
+
+    Args:
+        camera: A camera that is pointing at a calibration checkerboard.
+
+    Returns:
+        A Frame that can be used with detect_feature_points.
+    """
+    return Frame(
+        _zivid.infield_correction.capture_calibration_board(
+            camera._Camera__impl  # pylint: disable=protected-access
+        )
+    )
+
+
+def detect_feature_points(source):
     """Detect feature points from a calibration object.
 
     Using this version of the detectFeaturePoints function is necessary to
@@ -80,15 +109,27 @@ def detect_feature_points(camera):
     verified checkerboards.
 
     Args:
-        camera: A Camera that is pointing at a calibration checkerboard.
+        source: A Camera that is pointing at a calibration checkerboard
+                or a Frame that was captured using capture_calibration_board.
 
     Returns:
         A DetectionResult instance.
+
+    Raises:
+        TypeError: If source is not a Camera or a Frame.
     """
-    return DetectionResult(
-        _zivid.infield_correction.detect_feature_points_infield(
-            camera._Camera__impl  # pylint: disable=protected-access
+    if isinstance(source, Camera):
+        _source = source._Camera__impl  # pylint: disable=protected-access
+    elif isinstance(source, Frame):
+        _source = source._Frame__impl  # pylint: disable=protected-access
+    else:
+        raise TypeError(
+            "Unsupported type for argument source. Got {}, expected {}, {}".format(
+                type(source), Camera, Frame
+            )
         )
+    return DetectionResult(
+        _zivid.infield_correction.detect_feature_points_infield(_source)
     )
 
 
