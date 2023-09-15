@@ -95,14 +95,13 @@ jobs:
     runs-on: ubuntu-latest
     # Build & test job should be run on:
     # - All Ubuntu versions officially supported by Zivid SDK
-    # - All Ubuntu versions newer than the latest LTS
+    # - All (not end-of-life) Ubuntu versions newer than the latest LTS
     # - The three latest Fedora releases that we can support
     strategy:
       matrix:
         os:
           - ubuntu:20.04
           - ubuntu:22.04
-          - ubuntu:22.10
           - ubuntu:23.04
           - fedora:35
           - fedora:36
