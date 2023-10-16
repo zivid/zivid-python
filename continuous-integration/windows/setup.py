@@ -28,13 +28,13 @@ def _install_intel_opencl_runtime():
     import requests  # pylint: disable=import-outside-toplevel
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        intel_opencl_runtime_url = "https://www.dropbox.com/s/09bk2nx31hzrupf/opencl_runtime_18.1_x64_setup-20200625-090300.msi?raw=1"
-        print("Downloading {}".format(intel_opencl_runtime_url), flush=True)
-        opencl_runtime = Path(temp_dir) / "opencl_runtime.msi"
-        response = requests.get(intel_opencl_runtime_url, timeout=(25, 600))
-        opencl_runtime.write_bytes(response.content)
-        print("Installing {}".format(opencl_runtime), flush=True)
-        run_process(("msiexec", "/i", str(opencl_runtime), "/passive"))
+        intel_oneapi_opencl_installer_url = "https://registrationcenter-download.intel.com/akdlm/IRC_NAS/faf10bb4-a1b3-46cf-ae0b-986b419e1b1c-opencl/w_opencl_runtime_p_2023.2.0.49500.exe"
+        print("Downloading {}".format(intel_oneapi_opencl_installer_url), flush=True)
+        opencl_runtime_installer = Path(temp_dir) / "opencl_runtime_installer.exe"
+        response = requests.get(intel_oneapi_opencl_installer_url, timeout=(25, 600))
+        opencl_runtime_installer.write_bytes(response.content)
+        print("Installing {}".format(opencl_runtime_installer), flush=True)
+        run_process((str(opencl_runtime_installer), "--silent", "--a", "/quiet"))
 
 
 def _write_zivid_cpu_configuration_file():
