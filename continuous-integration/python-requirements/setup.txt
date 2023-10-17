@@ -11,6 +11,6 @@ charset-normalizer==3.1.0
 idna==3.4
     # via requests
 requests==2.30.0
-    # via -r continuous-integration/python-requirements/setup.in
-urllib3==2.0.2
+    # via -r setup.in
+urllib3==1.26.17
     # via requests
