@@ -10,11 +10,11 @@ from skbuild import setup, constants
 
 # To be replaced by: from setuptools_scm import get_version
 def get_version():
-    return "2.10.0"
+    return "2.10.1"
 
 
 def _zivid_sdk_version():
-    return "2.10.0"
+    return "2.10.1"
 
 
 def _zivid_python_version():
