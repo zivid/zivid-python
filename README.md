@@ -168,6 +168,7 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 
 | Operating System | Python version            |
 | :--------------- | :------------------------ |
+| Ubuntu 23.10     | 3.11                      |
 | Ubuntu 23.04     | 3.11                      |
 | Ubuntu 22.04     | 3.10                      |
 | Ubuntu 20.04     | 3.8                       |
