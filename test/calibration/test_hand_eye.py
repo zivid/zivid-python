@@ -95,7 +95,7 @@ def test_eyetohand_calibration_save_load(handeye_eth_frames, handeye_eth_poses):
         ]
     )
 
-    with tempfile.TemporaryDirectory() as tmpdir, zivid.Application() as _:
+    with tempfile.TemporaryDirectory() as tmpdir:
         transform = handeye_output.transform()
         file_path = Path(tmpdir) / "matrix.yml"
         zivid.Matrix4x4(transform).save(file_path)

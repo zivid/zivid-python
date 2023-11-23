@@ -52,7 +52,7 @@ def default_settings_2d_fixture():
 
 
 @pytest.fixture(name="frame_file", scope="module")
-def frame_file_fixture(application, file_camera, default_settings):
+def frame_file_fixture(file_camera, default_settings):
     with tempfile.TemporaryDirectory() as temp_dir:
         file_path = Path(temp_dir) / "test_frame.zdf"
         with file_camera.capture(default_settings) as frame:
@@ -68,11 +68,14 @@ def checkerboard_frames_fixture(application):
     ]
     assert len(frames) == 3
     yield frames
+    for frame in frames:
+        frame.release()
 
 
 @pytest.fixture(name="calibration_board_frame", scope="module")
 def calibration_board_frame_fixture(application):
-    yield zivid.Frame(_testdata_dir() / "ZVD-CB01.zdf")
+    with zivid.Frame(_testdata_dir() / "ZVD-CB01.zdf") as frame:
+        yield frame
 
 
 @pytest.fixture(name="multicamera_transforms", scope="module")
@@ -89,6 +92,8 @@ def handeye_eth_frames_fixture(application):
     path = _testdata_dir() / "handeye" / "eth"
     frames = [zivid.Frame(file_path) for file_path in sorted(path.glob("*.zdf"))]
     yield frames
+    for frame in frames:
+        frame.release()
 
 
 @pytest.fixture(name="frame", scope="function")
