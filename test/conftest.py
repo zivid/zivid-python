@@ -18,7 +18,7 @@ def datamodel_yml_dir_fixture():
     return _testdata_dir() / "datamodels"
 
 
-@pytest.fixture(name="application", scope="module")
+@pytest.fixture(name="application", scope="session")
 def application_fixture():
     with zivid.Application() as app:
         yield app
