@@ -13,7 +13,8 @@ function ubuntu_install_opencl_cpu_runtime {
     apt update || exit $?
 
     # Install the OpenCL runtime
-    apt --assume-yes install intel-oneapi-runtime-opencl intel-oneapi-runtime-compilers || exit $?
+    # TODO: remove libxml2 once Intel sorts out its package dependencies
+    apt --assume-yes install libxml2 intel-oneapi-runtime-opencl-2024 intel-oneapi-runtime-compilers-2024 || exit $?
 
 }
 
@@ -27,7 +28,7 @@ gpgcheck=1
 repo_gpgcheck=1
 gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
 EOF
-    dnf --assumeyes install intel-oneapi-runtime-opencl intel-oneapi-runtime-compilers || exit $?
+    dnf --assumeyes install intel-oneapi-runtime-opencl-2024 intel-oneapi-runtime-compilers-2024 || exit $?
 }
 
 # Read versions.json and set as environment variables
