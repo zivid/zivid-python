@@ -50,7 +50,8 @@ namespace ZividPython
                     auto next = i + 1;
 
                     if(!isupper(upperCamelCase[previous])
-                       || (next < upperCamelCase.size() && !isupper(upperCamelCase[next])))
+                       || (next < upperCamelCase.size()
+                           && !(isupper(upperCamelCase[next]) || isdigit(upperCamelCase[next]))))
                     {
                         ss << "_";
                     }
