@@ -59,7 +59,8 @@ namespace ZividPython
         pyClass.def_buffer(imageRGBADataBuffer)
             .def("save", &ReleasableImageRGBA::save, py::arg("file_name"))
             .def("width", &ReleasableImageRGBA::width)
-            .def("height", &ReleasableImageRGBA::height);
+            .def("height", &ReleasableImageRGBA::height)
+            .def(py::init<const std::string &>(), "Load image from file");
     }
 
     void wrapClass(pybind11::class_<ReleasableImageBGRA> pyClass)
@@ -67,7 +68,8 @@ namespace ZividPython
         pyClass.def_buffer(imageBGRADataBuffer)
             .def("save", &ReleasableImageBGRA::save, py::arg("file_name"))
             .def("width", &ReleasableImageBGRA::width)
-            .def("height", &ReleasableImageBGRA::height);
+            .def("height", &ReleasableImageBGRA::height)
+            .def(py::init<const std::string &>(), "Load image from file");
     }
 
     void wrapClass(pybind11::class_<ReleasableImageSRGB> pyClass)
@@ -75,6 +77,7 @@ namespace ZividPython
         pyClass.def_buffer(imageSRGBDataBuffer)
             .def("save", &ReleasableImageSRGB::save, py::arg("file_name"))
             .def("width", &ReleasableImageSRGB::width)
-            .def("height", &ReleasableImageSRGB::height);
+            .def("height", &ReleasableImageSRGB::height)
+            .def(py::init<const std::string &>(), "Load image from file");
     }
 } // namespace ZividPython
