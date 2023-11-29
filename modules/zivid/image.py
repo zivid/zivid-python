@@ -18,10 +18,11 @@ class Image:
         Raises:
             TypeError: If argument does not match the expected internal class.
         """
-        if not isinstance(impl, (_zivid.ImageRGBA, _zivid.ImageBGRA)):
+        allowed_types = (_zivid.ImageRGBA, _zivid.ImageBGRA, _zivid.ImageSRGB,)
+        if not isinstance(impl, allowed_types):
             raise TypeError(
-                "Unsupported type for argument impl. Got {}, expected {} or {}".format(
-                    type(impl), _zivid.ImageRGBA, _zivid.ImageBGRA
+                "Unsupported type for argument impl. Got {}, expected one of {}".format(
+                    type(impl), ", ".join(allowed_types)
                 ),
             )
         self.__impl = impl
