@@ -1,4 +1,8 @@
+from pathlib import Path
+import tempfile
+import numpy
 import pytest
+import zivid
 
 
 def test_copy_data(image_2d_bgra):
@@ -48,3 +52,16 @@ def test_width(image_2d_bgra):
 
     assert width is not None
     assert isinstance(width, int)
+
+
+def test_load(frame_2d: zivid.Frame2D):
+    with frame_2d.image_bgra() as image_2d:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            image_file = Path(tmpdir) / "saved_image.png"
+            image_2d.save(image_file)
+            
+            loaded_image = zivid.Image.load(image_file, "bgra")
+            numpy.testing.assert_array_equal(image_2d.copy_data(), loaded_image.copy_data())
+
+            with pytest.raises(ValueError):
+                zivid.Image.load(image_file, "bgr")
