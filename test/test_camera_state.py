@@ -100,3 +100,13 @@ def test_not_equal_temperature():
     temperature2 = CameraState.Temperature(dmd=44)
 
     assert temperature1 != temperature2
+
+
+def test_camera_status(file_camera):
+    from zivid.camera_state import CameraState
+
+    assert file_camera.state.status == CameraState.Status.connected
+    assert file_camera.state.inaccessible_reason is None
+    file_camera.disconnect()
+    assert file_camera.state.status == CameraState.Status.available
+    assert file_camera.state.inaccessible_reason is None

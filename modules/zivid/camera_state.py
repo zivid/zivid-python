@@ -274,11 +274,15 @@ class CameraState:
             return str(_to_internal_camera_state_temperature(self))
 
     class InaccessibleReason:
-        ipConflict = "ipConflict"
+        ipConflictWithAnotherCamera = "ipConflictWithAnotherCamera"
+        ipConflictWithLocalNetworkAdapter = "ipConflictWithLocalNetworkAdapter"
+        ipInMultipleLocalSubnets = "ipInMultipleLocalSubnets"
         ipNotInLocalSubnet = "ipNotInLocalSubnet"
 
         _valid_values = {
-            "ipConflict": _zivid.CameraState.InaccessibleReason.ipConflict,
+            "ipConflictWithAnotherCamera": _zivid.CameraState.InaccessibleReason.ipConflictWithAnotherCamera,
+            "ipConflictWithLocalNetworkAdapter": _zivid.CameraState.InaccessibleReason.ipConflictWithLocalNetworkAdapter,
+            "ipInMultipleLocalSubnets": _zivid.CameraState.InaccessibleReason.ipInMultipleLocalSubnets,
             "ipNotInLocalSubnet": _zivid.CameraState.InaccessibleReason.ipNotInLocalSubnet,
         }
 
