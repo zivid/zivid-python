@@ -1,20 +1,20 @@
+from pathlib import Path
+import tempfile
+import numpy
 import pytest
+import zivid
 
 
 def test_copy_data(image_2d_rgba):
-    import numpy as np
-
     image = image_2d_rgba
     rgba = image.copy_data()
     assert rgba is not None
-    assert isinstance(rgba, np.ndarray)
+    assert isinstance(rgba, numpy.ndarray)
     assert rgba.shape == (image.height, image.width, 4)
-    assert rgba.dtype == np.uint8
+    assert rgba.dtype == numpy.uint8
 
 
 def test_save_path(image_2d_rgba):
-    from pathlib import Path
-
     image_2d_rgba.save(Path("some_file.png"))
 
 
@@ -48,3 +48,18 @@ def test_width(image_2d_rgba):
 
     assert width is not None
     assert isinstance(width, int)
+
+
+def test_load(frame_2d: zivid.Frame2D):
+    with frame_2d.image_rgba() as image_2d:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            image_file = Path(tmpdir) / "saved_image.png"
+            image_2d.save(image_file)
+
+            loaded_image = zivid.Image.load(image_file, "rgba")
+            numpy.testing.assert_array_equal(
+                image_2d.copy_data(), loaded_image.copy_data()
+            )
+
+            with pytest.raises(ValueError):
+                zivid.Image.load(image_file, "rgb")

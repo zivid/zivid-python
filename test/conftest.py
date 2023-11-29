@@ -140,10 +140,12 @@ def image_2d_bgra_fixture(frame_2d):
     with frame_2d.image_bgra() as image_2d_bgr:
         yield image_2d_bgr
 
+
 @pytest.fixture(name="image_2d_srgb", scope="function")
 def image_2d_srgb_fixture(frame_2d):
     with frame_2d.image_srgb() as image_2d_srgb:
         yield image_2d_srgb
+
 
 @pytest.fixture(name="transform", scope="function")
 def transform_fixture():
