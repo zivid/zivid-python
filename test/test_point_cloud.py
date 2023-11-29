@@ -11,6 +11,7 @@ def test_point_cloud_copy_data(point_cloud):
     xyzbgra = point_cloud.copy_data("xyzbgra")
     rgba = point_cloud.copy_data("rgba")
     bgra = point_cloud.copy_data("bgra")
+    srgb = point_cloud.copy_data("srgb")
     normals = point_cloud.copy_data("normals")
     depth = point_cloud.copy_data("z")
     snr = point_cloud.copy_data("snr")
@@ -20,6 +21,7 @@ def test_point_cloud_copy_data(point_cloud):
     assert isinstance(xyzbgra, np.ndarray)
     assert isinstance(rgba, np.ndarray)
     assert isinstance(bgra, np.ndarray)
+    assert isinstance(srgb, np.ndarray)
     assert isinstance(normals, np.ndarray)
     assert isinstance(depth, np.ndarray)
     assert isinstance(snr, np.ndarray)
@@ -65,13 +67,16 @@ def test_point_cloud_rgba(point_cloud):
     xyzbgra = point_cloud.copy_data("xyzbgra")
     rgba = point_cloud.copy_data("rgba")
     bgra = point_cloud.copy_data("bgra")
+    srgb = point_cloud.copy_data("srgb")
 
     assert rgba.shape == (point_cloud.height, point_cloud.width, 4)
     assert bgra.shape == (point_cloud.height, point_cloud.width, 4)
+    assert srgb.shape == (point_cloud.height, point_cloud.width, 4)
     assert xyzrgba.shape == (point_cloud.height, point_cloud.width)
     assert xyzbgra.shape == (point_cloud.height, point_cloud.width)
     assert rgba.dtype == np.uint8
     assert bgra.dtype == np.uint8
+    assert srgb.dtype == np.uint8
     assert xyzrgba["r"].dtype == np.uint8
     assert xyzrgba["g"].dtype == np.uint8
     assert xyzrgba["b"].dtype == np.uint8
