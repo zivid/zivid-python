@@ -52,6 +52,14 @@ class Frame2D:
         """
         return Image(self.__impl.image_bgra())
 
+    def image_srgb(self):
+        """Get color (RGBA) image from the frame in the sRGB color space.
+
+        Returns:
+            An image instance containing RGBA data in sRGB color space
+        """
+        return Image(self.__impl.image_srgb())
+
     @property
     def settings(self):
         """Get the settings used to capture this frame.
