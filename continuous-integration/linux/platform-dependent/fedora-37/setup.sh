@@ -24,7 +24,7 @@ function install_www_deb {
     pushd $TMP_DIR || exit $?
     wget -nv "$@" || exit $?
     ar x ./*deb || exit $?
-    bsdtar -xf data.tar.*z -C / || exit $?
+    bsdtar -xf data.tar.* -C / || exit $?
     ldconfig || exit $?
     popd || exit $?
     rm -r $TMP_DIR || exit $?

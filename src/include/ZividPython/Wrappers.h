@@ -1,7 +1,9 @@
 #pragma once
 
+#include <cctype>
 #include <sstream>
 #include <string>
+#include <string_view>
 
 #include <pybind11/chrono.h>
 #include <pybind11/functional.h>
@@ -12,10 +14,6 @@
 
 #include <ZividPython/Traits.h>
 #include <ZividPython/Wrapper.h>
-
-#include <pybind11/pybind11.h>
-
-#include <string_view>
 
 namespace ZividPython
 {
@@ -33,29 +31,27 @@ namespace ZividPython
                 throw std::invalid_argument{ "String is empty." };
             }
 
-            if(!isupper(upperCamelCase[0]))
+            if(!std::isupper(upperCamelCase.front()))
             {
                 std::stringstream msg;
                 msg << "First character of string: '" << upperCamelCase << "' is not capitalized";
                 throw std::invalid_argument{ msg.str() };
             }
+
             std::stringstream ss;
-            ss << char(tolower(upperCamelCase[0]));
-
-            for(size_t i = 1; i < upperCamelCase.size(); ++i)
+            for(size_t i = 0; i < upperCamelCase.size(); ++i)
             {
-                if(isupper(upperCamelCase[i]))
+                if(i > 0 && std::isupper(upperCamelCase[i]))
                 {
-                    auto previous = i - 1;
-                    auto next = i + 1;
-
-                    if(!isupper(upperCamelCase[previous])
-                       || (next < upperCamelCase.size() && !isupper(upperCamelCase[next])))
+                    const auto prev = i - 1;
+                    const auto next = i + 1;
+                    if(std::islower(upperCamelCase[prev])
+                       || (next < upperCamelCase.size() && std::islower(upperCamelCase[next])))
                     {
                         ss << "_";
                     }
                 }
-                ss << char(tolower(upperCamelCase[i]));
+                ss << char(std::tolower(upperCamelCase[i]));
             }
             return ss.str();
         }
