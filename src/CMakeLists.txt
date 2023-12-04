@@ -11,6 +11,7 @@ set(SOURCES
     Firmware.cpp
     InfieldCorrection/InfieldCorrection.cpp
     NodeType.cpp
+    PixelMapping.cpp
     Projection.cpp
     Presets.cpp
     ReleasableArray2D.cpp

@@ -65,6 +65,7 @@ try:
         infield_correction,
         Matrix4x4,
         data_model,
+        PixelMapping,
         projection,
         ProjectedImage,
         presets,
