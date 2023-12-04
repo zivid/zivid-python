@@ -62,8 +62,16 @@ namespace ZividPython::Calibration
                 },
                 py::arg("camera"),
                 py::arg("settings_2d"))
-            .def("estimate_intrinsics", [](ReleasableFrame &releasableFrame) {
-                return Zivid::Experimental::Calibration::estimateIntrinsics(releasableFrame.impl());
-            });
+            .def("estimate_intrinsics",
+                 [](ReleasableFrame &releasableFrame) {
+                     return Zivid::Experimental::Calibration::estimateIntrinsics(releasableFrame.impl());
+                 })
+            .def(
+                "pixel_mapping",
+                [](ReleasableCamera &releasableCamera, const Zivid::Settings &settings) {
+                    return Zivid::Experimental::Calibration::pixelMapping(releasableCamera.impl(), settings);
+                },
+                py::arg("camera"),
+                py::arg("settings"));
     }
 } // namespace ZividPython::Calibration
