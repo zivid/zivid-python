@@ -6,3 +6,5 @@ env
 __pycache__
 *.swp
 *.swo
+*.egg-info
+.cache

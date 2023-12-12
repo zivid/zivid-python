@@ -1,7 +1,8 @@
 #include <ZividPython/ReleasableArray2D.h>
-
-#include <Zivid/PointCloud.h>
 #include <ZividPython/ReleasablePointCloud.h>
+
+#include <Zivid/Color.h>
+#include <Zivid/PointCloud.h>
 
 #include <pybind11/pybind11.h>
 
@@ -50,6 +51,18 @@ namespace
         return std::make_unique<ZividPython::ReleasableArray2D<NativeType>>(pointCloud.impl().copyData<NativeType>());
     }
 
+    template<typename NativeType>
+    void wrapImageClass(pybind11::class_<ZividPython::ReleasableArray2D<NativeType>> pyClass)
+    {
+        using WrapperType = uint8_t;
+        static_assert(std::is_same_v<WrapperType, decltype(NativeType::r)>);
+        static_assert(std::is_same_v<WrapperType, decltype(NativeType::g)>);
+        static_assert(std::is_same_v<WrapperType, decltype(NativeType::b)>);
+        static_assert(std::is_same_v<WrapperType, decltype(NativeType::a)>);
+
+        pyClass.def(py::init<>(&pointCloudDataCopier<NativeType>))
+            .def_buffer(pointCloudDataBuffer<NativeType, WrapperType, 4>);
+    }
 } // namespace
 
 namespace ZividPython
@@ -66,28 +79,12 @@ namespace ZividPython
 
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorRGBA>> pyClass)
     {
-        using WrapperType = uint8_t;
-        using NativeType = Zivid::ColorRGBA;
-        static_assert(std::is_same_v<WrapperType, decltype(NativeType::r)>);
-        static_assert(std::is_same_v<WrapperType, decltype(NativeType::g)>);
-        static_assert(std::is_same_v<WrapperType, decltype(NativeType::b)>);
-        static_assert(std::is_same_v<WrapperType, decltype(NativeType::a)>);
-
-        pyClass.def(py::init<>(&pointCloudDataCopier<NativeType>))
-            .def_buffer(pointCloudDataBuffer<NativeType, WrapperType, 4>);
+        wrapImageClass<Zivid::ColorRGBA>(pyClass);
     }
 
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorBGRA>> pyClass)
     {
-        using WrapperType = uint8_t;
-        using NativeType = Zivid::ColorBGRA;
-        static_assert(std::is_same_v<WrapperType, decltype(NativeType::b)>);
-        static_assert(std::is_same_v<WrapperType, decltype(NativeType::g)>);
-        static_assert(std::is_same_v<WrapperType, decltype(NativeType::r)>);
-        static_assert(std::is_same_v<WrapperType, decltype(NativeType::a)>);
-
-        pyClass.def(py::init<>(&pointCloudDataCopier<NativeType>))
-            .def_buffer(pointCloudDataBuffer<NativeType, WrapperType, 4>);
+        wrapImageClass<Zivid::ColorBGRA>(pyClass);
     }
 
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::NormalXYZ>> pyClass)
