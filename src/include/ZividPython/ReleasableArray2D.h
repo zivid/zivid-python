@@ -1,8 +1,10 @@
 #pragma once
 
-#include <Zivid/PointCloud.h>
 #include <ZividPython/Releasable.h>
 #include <ZividPython/Wrappers.h>
+
+#include <Zivid/Color.h>
+#include <Zivid/PointCloud.h>
 
 namespace ZividPython
 {
