@@ -1,18 +1,18 @@
 import pytest
 
 
-def test_one_acquisition_in_list(file_camera):
+def test_one_acquisition_in_list(shared_file_camera):
     import zivid
 
     acquisitions = [zivid.Settings.Acquisition()]
     settings = zivid.Settings(acquisitions=acquisitions)
     assert isinstance(acquisitions, list)
-    with file_camera.capture(settings) as frame:
+    with shared_file_camera.capture(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
 
 
-def test_five_acquisitions_in_list(file_camera):
+def test_five_acquisitions_in_list(shared_file_camera):
     import zivid
 
     acquisitions = [
@@ -24,23 +24,23 @@ def test_five_acquisitions_in_list(file_camera):
     ]
     settings = zivid.Settings(acquisitions=acquisitions)
     assert isinstance(acquisitions, list)
-    with file_camera.capture(settings) as frame:
+    with shared_file_camera.capture(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
 
 
-def test_one_acquisition_in_tuple(file_camera):
+def test_one_acquisition_in_tuple(shared_file_camera):
     import zivid
 
     acquisitions = (zivid.Settings.Acquisition(),)
     settings = zivid.Settings(acquisitions=acquisitions)
     assert isinstance(acquisitions, tuple)
-    with file_camera.capture(settings) as frame:
+    with shared_file_camera.capture(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
 
 
-def test_five_acquisition_in_tuple(file_camera):
+def test_five_acquisition_in_tuple(shared_file_camera):
     import zivid
 
     acquisitions = (
@@ -52,35 +52,35 @@ def test_five_acquisition_in_tuple(file_camera):
     )
     settings = zivid.Settings(acquisitions=acquisitions)
     assert isinstance(acquisitions, tuple)
-    with file_camera.capture(settings) as frame:
+    with shared_file_camera.capture(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
 
 
-def test_illegal_settings(file_camera):
+def test_illegal_settings(shared_file_camera):
     import zivid
 
     with pytest.raises(RuntimeError):
-        file_camera.capture(zivid.Settings())
+        shared_file_camera.capture(zivid.Settings())
 
     with pytest.raises(TypeError):
-        file_camera.capture([1, 2, 3, 4, 5])
+        shared_file_camera.capture([1, 2, 3, 4, 5])
 
     with pytest.raises(TypeError):
-        file_camera.capture([zivid.Settings(), zivid.Settings(), 3])
+        shared_file_camera.capture([zivid.Settings(), zivid.Settings(), 3])
 
     with pytest.raises(TypeError):
-        file_camera.capture(file_camera.capture())
+        shared_file_camera.capture(shared_file_camera.capture())
 
 
-def test_empty_settings_list(file_camera):
+def test_empty_settings_list(shared_file_camera):
     import _zivid
 
     with pytest.raises(TypeError):
-        file_camera.capture([])
+        shared_file_camera.capture([])
 
 
-def test_diagnostics_capture(file_camera):
+def test_diagnostics_capture(shared_file_camera):
     from pathlib import Path
     from tempfile import TemporaryDirectory
     import os.path
@@ -89,9 +89,9 @@ def test_diagnostics_capture(file_camera):
     settings = zivid.Settings()
     settings.acquisitions.append(zivid.Settings.Acquisition())
     settings.diagnostics.enabled = False
-    frame_diagnostics_off = file_camera.capture(settings)
+    frame_diagnostics_off = shared_file_camera.capture(settings)
     settings.diagnostics.enabled = True
-    frame_diagnostics_on = file_camera.capture(settings)
+    frame_diagnostics_on = shared_file_camera.capture(settings)
 
     with TemporaryDirectory() as tmpdir:
         file_diagnostics_off = Path(tmpdir) / "diagnostics_off.zdf"

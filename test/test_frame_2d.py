@@ -75,16 +75,16 @@ def test_release(frame_2d):
         frame_2d.image_rgba()
 
 
-def test_context_manager(file_camera):
+def test_context_manager(shared_file_camera):
     import zivid
 
     settings_2d = zivid.Settings2D(acquisitions=[zivid.Settings2D.Acquisition()])
-    with file_camera.capture(settings_2d) as frame_2d:
+    with shared_file_camera.capture(settings_2d) as frame_2d:
         frame_2d.image_rgba()
     with pytest.raises(RuntimeError):
         frame_2d.image_rgba()
 
-    with file_camera.capture(settings_2d) as frame_2d:
+    with shared_file_camera.capture(settings_2d) as frame_2d:
         frame_2d.image_bgra()
     with pytest.raises(RuntimeError):
         frame_2d.image_bgra()

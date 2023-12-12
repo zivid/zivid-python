@@ -29,14 +29,20 @@ def file_camera_file_fixture():
     return _testdata_dir() / "FileCameraZivid2M70.zfc"
 
 
-@pytest.fixture(name="physical_camera", scope="module")
+@pytest.fixture(name="physical_camera", scope="function")
 def physical_camera_fixture(application):
     with application.connect_camera() as cam:
         yield cam
 
 
-@pytest.fixture(name="file_camera", scope="module")
+@pytest.fixture(name="file_camera", scope="function")
 def file_camera_fixture(application, file_camera_file):
+    with application.create_file_camera(file_camera_file) as file_cam:
+        yield file_cam
+
+
+@pytest.fixture(name="shared_file_camera", scope="module")
+def shared_file_camera_fixture(application, file_camera_file):
     with application.create_file_camera(file_camera_file) as file_cam:
         yield file_cam
 
@@ -52,10 +58,10 @@ def default_settings_2d_fixture():
 
 
 @pytest.fixture(name="frame_file", scope="module")
-def frame_file_fixture(file_camera, default_settings):
+def frame_file_fixture(shared_file_camera, default_settings):
     with tempfile.TemporaryDirectory() as temp_dir:
         file_path = Path(temp_dir) / "test_frame.zdf"
-        with file_camera.capture(default_settings) as frame:
+        with shared_file_camera.capture(default_settings) as frame:
             frame.save(file_path)
         yield file_path
 
@@ -97,14 +103,14 @@ def handeye_eth_frames_fixture(application):
 
 
 @pytest.fixture(name="frame", scope="function")
-def frame_fixture(application, file_camera, default_settings):
-    with file_camera.capture(default_settings) as frame:
+def frame_fixture(application, shared_file_camera, default_settings):
+    with shared_file_camera.capture(default_settings) as frame:
         yield frame
 
 
 @pytest.fixture(name="frame_2d", scope="function")
-def frame_2d_fixture(application, file_camera, default_settings_2d):
-    with file_camera.capture(default_settings_2d) as frame2d:
+def frame_2d_fixture(application, shared_file_camera, default_settings_2d):
+    with shared_file_camera.capture(default_settings_2d) as frame2d:
         yield frame2d
 
 
@@ -154,8 +160,8 @@ def transform_fixture():
 
 
 @pytest.fixture(name="file_camera_info", scope="function")
-def file_camera_info_fixture(file_camera):
-    yield file_camera.info
+def file_camera_info_fixture(shared_file_camera):
+    yield shared_file_camera.info
 
 
 @pytest.fixture(name="frame_info", scope="function")

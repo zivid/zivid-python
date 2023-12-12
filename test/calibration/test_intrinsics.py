@@ -17,29 +17,31 @@ def _check_camera_intrinsics(camera_intrinsics):
     assert isinstance(camera_intrinsics.distortion.p2, float)
 
 
-def test_intrinsics(file_camera):
+def test_intrinsics(shared_file_camera):
     from zivid.experimental.calibration import intrinsics
 
-    camera_intrinsics = intrinsics(file_camera)
+    camera_intrinsics = intrinsics(shared_file_camera)
     _check_camera_intrinsics(camera_intrinsics)
 
 
-def test_intrinsics_with_settings_2d(file_camera):
+def test_intrinsics_with_settings_2d(shared_file_camera):
     from zivid.experimental.calibration import intrinsics
     from zivid.settings_2d import Settings2D
 
     camera_intrinsics = intrinsics(
-        camera=file_camera, settings=Settings2D(acquisitions=[Settings2D.Acquisition()])
+        camera=shared_file_camera,
+        settings=Settings2D(acquisitions=[Settings2D.Acquisition()]),
     )
     _check_camera_intrinsics(camera_intrinsics)
 
 
-def test_intrinsics_with_settings_3d(file_camera):
+def test_intrinsics_with_settings_3d(shared_file_camera):
     from zivid.experimental.calibration import intrinsics
     from zivid.settings import Settings
 
     camera_intrinsics = intrinsics(
-        camera=file_camera, settings=Settings(acquisitions=[Settings.Acquisition()])
+        camera=shared_file_camera,
+        settings=Settings(acquisitions=[Settings.Acquisition()]),
     )
     _check_camera_intrinsics(camera_intrinsics)
 

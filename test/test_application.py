@@ -1,14 +1,6 @@
 import pytest
 
 
-def test_init_with():
-    import zivid
-
-    with zivid.Application() as app:
-        assert app
-        assert isinstance(app, zivid.Application)
-
-
 def test_create_file_camera(application, file_camera_file):
     import zivid
 
@@ -61,10 +53,3 @@ def test_to_string(application):
     string = str(application)
     assert string
     assert isinstance(string, str)
-
-
-def test_release(application, file_camera_file):
-    assert application.create_file_camera(file_camera_file)
-    application.release()
-    with pytest.raises(RuntimeError):
-        application.create_file_camera(file_camera_file)

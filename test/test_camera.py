@@ -22,10 +22,10 @@ def test_init_with(application, file_camera_file):
         assert isinstance(file_camera, zivid.camera.Camera)
 
 
-def test_capture_settings(file_camera):
+def test_capture_settings(shared_file_camera):
     import zivid
 
-    frame = file_camera.capture(
+    frame = shared_file_camera.capture(
         zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
     )
     assert frame
@@ -33,10 +33,10 @@ def test_capture_settings(file_camera):
     frame.release()
 
 
-def test_capture_settings_2d(file_camera):
+def test_capture_settings_2d(shared_file_camera):
     import zivid
 
-    frame_2d = file_camera.capture(
+    frame_2d = shared_file_camera.capture(
         zivid.Settings2D(acquisitions=[zivid.Settings2D.Acquisition()])
     )
     assert frame_2d
@@ -84,23 +84,23 @@ def test_connect_capture_chaining(file_camera):
     file_camera.connect().capture(settings)
 
 
-def test_to_string(file_camera):
-    string = str(file_camera)
+def test_to_string(shared_file_camera):
+    string = str(shared_file_camera)
     assert string
     assert isinstance(string, str)
 
 
-def test_info(file_camera):
+def test_info(shared_file_camera):
     import zivid
 
-    info = file_camera.info
+    info = shared_file_camera.info
     assert info
     assert isinstance(info, zivid.CameraInfo)
 
 
-def test_state(file_camera):
+def test_state(shared_file_camera):
     import zivid
 
-    state = file_camera.state
+    state = shared_file_camera.state
     assert state
     assert isinstance(state, zivid.CameraState)
