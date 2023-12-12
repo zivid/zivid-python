@@ -70,7 +70,7 @@ def test_multicamera_calibration_save_load(checkerboard_frames):
         ]
     )
 
-    with tempfile.TemporaryDirectory() as tmpdir, zivid.Application() as _:
+    with tempfile.TemporaryDirectory() as tmpdir:
         file_path = Path(tmpdir) / "matrix.yml"
         for transform in multicamera_output.transforms():
             zivid.Matrix4x4(transform).save(file_path)
