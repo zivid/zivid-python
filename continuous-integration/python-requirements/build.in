@@ -1,4 +1,4 @@
 scikit-build
 cmake
 ninja
-conan==1.59.0
+conan==1.62
