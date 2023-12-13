@@ -1,18 +1,17 @@
 """Query module version."""
-from pkg_resources import get_distribution, DistributionNotFound
+from importlib.metadata import version, PackageNotFoundError
 
 
 def get_version(module_name):
-    """Return the version module version.
+    """Return the version of a module.
 
     Args:
         module_name: Name of a module
 
     Returns:
-        The module version
-
+        The module version or None if not found.
     """
     try:
-        return get_distribution(module_name).version
-    except DistributionNotFound:
+        return version(module_name)
+    except PackageNotFoundError:
         return None
