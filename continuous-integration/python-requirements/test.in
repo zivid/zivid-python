@@ -1,4 +1,5 @@
 pytest
 pytest-helpers-namespace
+pytest-randomly==3.12  # TODO: unfreeze when Python 3.7 support is dropped.
 pytest-timeout
 requests

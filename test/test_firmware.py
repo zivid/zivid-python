@@ -1,10 +1,10 @@
 import pytest
 
 
-def test_is_up_to_date(file_camera):
+def test_is_up_to_date(shared_file_camera):
     from zivid.firmware import is_up_to_date
 
-    assert is_up_to_date(file_camera)
+    assert is_up_to_date(shared_file_camera)
 
 
 def test_update_without_callback(file_camera):

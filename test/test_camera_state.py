@@ -1,69 +1,69 @@
 import pytest
 
 
-def test_available(file_camera):
-    available = file_camera.state.available
+def test_available(shared_file_camera):
+    available = shared_file_camera.state.available
     assert available is not None
     assert isinstance(available, bool)
 
 
-def test_connected(file_camera):
-    connected = file_camera.state.connected
+def test_connected(shared_file_camera):
+    connected = shared_file_camera.state.connected
     assert connected is not None
     assert isinstance(connected, bool)
 
 
-def test_temperature(file_camera):
+def test_temperature(shared_file_camera):
     from zivid.camera_state import CameraState
 
-    temperature = file_camera.state.temperature
+    temperature = shared_file_camera.state.temperature
     assert temperature is not None
     assert isinstance(temperature, CameraState.Temperature)
 
 
-def test_temperature_dmd(file_camera):
+def test_temperature_dmd(shared_file_camera):
     import numbers
 
-    dmd = file_camera.state.temperature.dmd
+    dmd = shared_file_camera.state.temperature.dmd
     assert dmd is not None
     assert isinstance(dmd, numbers.Real)
 
 
-def test_temperature_general(file_camera):
+def test_temperature_general(shared_file_camera):
     import numbers
 
-    general = file_camera.state.temperature.general
+    general = shared_file_camera.state.temperature.general
     assert general is not None
     assert isinstance(general, numbers.Real)
 
 
-def test_temperature_led(file_camera):
+def test_temperature_led(shared_file_camera):
     import numbers
 
-    led = file_camera.state.temperature.led
+    led = shared_file_camera.state.temperature.led
     assert led is not None
     assert isinstance(led, numbers.Real)
 
 
-def test_temperature_lens(file_camera):
+def test_temperature_lens(shared_file_camera):
     import numbers
 
-    lens = file_camera.state.temperature.lens
+    lens = shared_file_camera.state.temperature.lens
     assert lens is not None
     assert isinstance(lens, numbers.Real)
 
 
-def test_temperature_pcb(file_camera):
+def test_temperature_pcb(shared_file_camera):
     import numbers
 
-    pcb = file_camera.state.temperature.pcb
+    pcb = shared_file_camera.state.temperature.pcb
     assert pcb is not None
     assert isinstance(pcb, numbers.Real)
 
 
-def test_illegal_set_state(file_camera):
+def test_illegal_set_state(shared_file_camera):
     with pytest.raises(AttributeError):
-        file_camera.state = file_camera.state
+        shared_file_camera.state = shared_file_camera.state
 
 
 def test_equal_state():
