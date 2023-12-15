@@ -2481,12 +2481,16 @@ class Settings:
         class Pixel:
             all = "all"
             blueSubsample2x2 = "blueSubsample2x2"
+            blueSubsample4x4 = "blueSubsample4x4"
             redSubsample2x2 = "redSubsample2x2"
+            redSubsample4x4 = "redSubsample4x4"
 
             _valid_values = {
                 "all": _zivid.Settings.Sampling.Pixel.all,
                 "blueSubsample2x2": _zivid.Settings.Sampling.Pixel.blueSubsample2x2,
+                "blueSubsample4x4": _zivid.Settings.Sampling.Pixel.blueSubsample4x4,
                 "redSubsample2x2": _zivid.Settings.Sampling.Pixel.redSubsample2x2,
+                "redSubsample4x4": _zivid.Settings.Sampling.Pixel.redSubsample4x4,
             }
 
             @classmethod

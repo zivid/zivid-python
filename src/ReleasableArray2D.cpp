@@ -87,6 +87,11 @@ namespace ZividPython
         wrapImageClass<Zivid::ColorBGRA>(pyClass);
     }
 
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorSRGB>> pyClass)
+    {
+        wrapImageClass<Zivid::ColorSRGB>(pyClass);
+    }
+
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::NormalXYZ>> pyClass)
     {
         using WrapperType = float;
