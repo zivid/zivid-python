@@ -9,6 +9,7 @@
 #include <ZividPython/Firmware.h>
 #include <ZividPython/InfieldCorrection/InfieldCorrection.h>
 #include <ZividPython/Matrix4x4.h>
+#include <ZividPython/PixelMapping.h>
 #include <ZividPython/Presets.h>
 #include <ZividPython/Projection.h>
 #include <ZividPython/ReleasableArray2D.h>
@@ -69,4 +70,7 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, InfieldCorrection);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Projection);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Presets);
+
+    using PixelMapping = Zivid::Experimental::PixelMapping;
+    ZIVID_PYTHON_WRAP_CLASS(module, PixelMapping);
 }

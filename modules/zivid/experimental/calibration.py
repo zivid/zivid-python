@@ -1,6 +1,7 @@
 """Module for experimental calibration features. This API may change in the future."""
 
 import _zivid
+from zivid.experimental import PixelMapping
 from zivid.calibration import DetectionResult
 from zivid.camera import Camera
 from zivid.camera_intrinsics import _to_camera_intrinsics
@@ -68,6 +69,35 @@ def estimate_intrinsics(frame):
         _zivid.calibration.estimate_intrinsics(
             frame._Frame__impl  # pylint: disable=protected-access
         )
+    )
+
+
+def pixel_mapping(camera, settings):
+    """Return pixel mapping information given camera and settings.
+
+    When mapping from a subsampled point cloud to a full resolution
+    2D image it is important to get the pixel mapping correct. This
+    mapping depends on camera model and settings. This function provides
+    the correct parameters to map the 2D coordinates in a point cloud
+    captured using `settings` to the full resolution of the camera.
+
+    Args:
+        camera: Reference to camera instance.
+        settings: Reference to settings instance.
+
+    Returns:
+        A PixelMapping instance.
+    """
+
+    pixel_mapping_handle = _zivid.calibration.pixel_mapping(
+        camera._Camera__impl,  # pylint: disable=protected-access
+        _to_internal_settings(settings),
+    )
+    return PixelMapping(
+        pixel_mapping_handle.row_stride(),
+        pixel_mapping_handle.col_stride(),
+        pixel_mapping_handle.row_offset(),
+        pixel_mapping_handle.col_offset(),
     )
 
 
