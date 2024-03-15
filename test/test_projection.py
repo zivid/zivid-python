@@ -3,7 +3,7 @@ import pytest
 
 @pytest.mark.physical_camera
 def test_projector_resolution(physical_camera):
-    from zivid.experimental.projection import projector_resolution
+    from zivid.projection import projector_resolution
 
     res = projector_resolution(camera=physical_camera)
     assert isinstance(res, tuple)
@@ -14,7 +14,7 @@ def test_projector_resolution(physical_camera):
 
 @pytest.mark.physical_camera
 def test_show_image_bgra(physical_camera):
-    from zivid.experimental.projection import (
+    from zivid.projection import (
         ProjectedImage,
         projector_resolution,
         show_image_bgra,
@@ -49,7 +49,7 @@ def test_show_image_bgra(physical_camera):
 @pytest.mark.physical_camera
 def test_capture_while_projecting(physical_camera):
     from zivid import Frame2D, Settings2D
-    from zivid.experimental.projection import projector_resolution, show_image_bgra
+    from zivid.projection import projector_resolution, show_image_bgra
     import numpy as np
 
     res = projector_resolution(camera=physical_camera)
@@ -65,7 +65,7 @@ def test_capture_while_projecting(physical_camera):
 
 @pytest.mark.physical_camera
 def test_3d_to_projector_pixels(physical_camera):
-    from zivid.experimental.projection import pixels_from_3d_points
+    from zivid.projection import pixels_from_3d_points
     import numpy as np
 
     points = [[0.0, 0.0, 1000.0], [10.0, -10.0, 1200.0]]

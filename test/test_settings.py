@@ -8,7 +8,7 @@ def test_default_settings(application):
 
     assert isinstance(settings.acquisitions, list)
     assert len(settings.acquisitions) == 0
-    assert settings.experimental.engine is None
+    assert settings.engine is None
     assert isinstance(settings.diagnostics, zivid.Settings.Diagnostics)
     assert settings.diagnostics.enabled is None
     assert isinstance(settings.processing, zivid.Settings.Processing)
@@ -63,13 +63,13 @@ def test_default_settings(application):
     )
 
     assert isinstance(
-        settings.processing.filters.experimental.hole_filling,
-        zivid.Settings.Processing.Filters.Experimental.HoleFilling,
+        settings.processing.filters.hole.repair,
+        zivid.Settings.Processing.Filters.Hole.Repair,
     )
 
-    assert settings.processing.filters.experimental.hole_filling.enabled is None
-    assert settings.processing.filters.experimental.hole_filling.hole_size is None
-    assert settings.processing.filters.experimental.hole_filling.strictness is None
+    assert settings.processing.filters.hole.repair.enabled is None
+    assert settings.processing.filters.hole.repair.hole_size is None
+    assert settings.processing.filters.hole.repair.strictness is None
 
     assert isinstance(
         settings.processing.filters.noise, zivid.Settings.Processing.Filters.Noise
@@ -98,13 +98,7 @@ def test_default_settings(application):
         zivid.Settings.Processing.Filters.Reflection.Removal,
     )
     assert settings.processing.filters.reflection.removal.enabled is None
-
-    assert isinstance(
-        settings.processing.filters.reflection.removal.experimental,
-        zivid.Settings.Processing.Filters.Reflection.Removal.Experimental,
-    )
-
-    assert settings.processing.filters.reflection.removal.experimental.mode is None
+    assert settings.processing.filters.reflection.removal.mode is None
 
     assert isinstance(
         settings.processing.filters.smoothing,
@@ -281,49 +275,28 @@ def test_settings_diagnostics_enabled(application):
     )
 
 
-def test_settings_experimental(application):
+def test_settings_engine(application):
     import zivid
 
-    pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings(),
-        member="experimental",
-        value=zivid.Settings.Experimental(),
-        expected_data_type=zivid.Settings.Experimental,
-    )
-    pytest.helpers.equality_tester(
-        zivid.Settings.Experimental,
-        ["phase"],
-        ["stripe"],
-    )
-    pytest.helpers.equality_tester(
-        zivid.Settings.Experimental,
-        ["phase"],
-        [None],
-    )
-
-
-def test_settings_experimental_engine(application):
-    import zivid
-
-    for value in zivid.Settings.Experimental.Engine.valid_values():
+    for value in zivid.Settings.Engine.valid_values():
         pytest.helpers.set_attribute_tester(
-            settings_instance=zivid.Settings.Experimental(),
+            settings_instance=zivid.Settings(),
             member="engine",
             value=value,
             expected_data_type=str,
         )
     pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings.Experimental(),
+        settings_instance=zivid.Settings(),
         member="engine",
         value=None,
         expected_data_type=type(None),
     )
     # Is optional enum
-    zivid.Settings.Experimental(engine="stripe")
-    zivid.Settings.Experimental(engine="phase")
-    zivid.Settings.Experimental(engine=None)
+    zivid.Settings(engine="stripe")
+    zivid.Settings(engine="phase")
+    zivid.Settings(engine=None)
     with pytest.raises(KeyError):
-        zivid.Settings.Experimental(engine="_dummy_")
+        zivid.Settings(engine="_dummy_")
 
 
 def test_settings_processing(application):
@@ -584,58 +557,58 @@ def test_settings_processing_filters_experimental_contrast_distortion(
     )
 
 
-def test_settings_processing_filters_experimental_holefilling(
+def test_settings_processing_filters_hole_repair(
     application,
 ):
     import zivid
 
     pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings.Processing.Filters.Experimental(),
-        member="hole_filling",
-        value=zivid.Settings.Processing.Filters.Experimental.HoleFilling(),
-        expected_data_type=zivid.Settings.Processing.Filters.Experimental.HoleFilling,
+        settings_instance=zivid.Settings.Processing.Filters.Hole(),
+        member="repair",
+        value=zivid.Settings.Processing.Filters.Hole.Repair(),
+        expected_data_type=zivid.Settings.Processing.Filters.Hole.Repair,
     )
 
     pytest.helpers.equality_tester(
-        zivid.Settings.Processing.Filters.Experimental.HoleFilling,
+        zivid.Settings.Processing.Filters.Hole.Repair,
         [True],
         [False],
     )
 
 
-def test_settings_processing_filters_experimental_holefilling_enabled(
+def test_settings_processing_filters_hole_repair_enabled(
     application,
 ):
     import zivid
 
     pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings.Processing.Filters.Experimental.HoleFilling(),
+        settings_instance=zivid.Settings.Processing.Filters.Hole.Repair(),
         member="enabled",
         value=True,
         expected_data_type=bool,
     )
 
 
-def test_settings_processing_filters_experimental_holefilling_holesize(
+def test_settings_processing_filters_hole_repair_holesize(
     application,
 ):
     import zivid
 
     pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings.Processing.Filters.Experimental.HoleFilling(),
+        settings_instance=zivid.Settings.Processing.Filters.Hole.Repair(),
         member="hole_size",
         value=0.3,
         expected_data_type=float,
     )
 
 
-def test_settings_processing_filters_experimental_holefilling_strictness(
+def test_settings_processing_filters_hole_repair_strictness(
     application,
 ):
     import zivid
 
     pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings.Processing.Filters.Experimental.HoleFilling(),
+        settings_instance=zivid.Settings.Processing.Filters.Hole.Repair(),
         member="strictness",
         value=3,
         expected_data_type=int,
@@ -968,19 +941,13 @@ def test_settings_processing_filters_reflection_removal(
 
     pytest.helpers.equality_tester(
         zivid.Settings.Processing.Filters.Reflection.Removal,
-        [True, zivid.Settings.Processing.Filters.Reflection.Removal.Experimental()],
-        [False, zivid.Settings.Processing.Filters.Reflection.Removal.Experimental()],
-    )
-
-    pytest.helpers.equality_tester(
-        zivid.Settings.Processing.Filters.Reflection.Removal,
         [
             True,
-            zivid.Settings.Processing.Filters.Reflection.Removal.Experimental("global"),
+            zivid.Settings.Processing.Filters.Reflection.Removal.Mode.global_,
         ],
         [
             True,
-            zivid.Settings.Processing.Filters.Reflection.Removal.Experimental("local"),
+            zivid.Settings.Processing.Filters.Reflection.Removal.Mode.local,
         ],
     )
 
@@ -998,55 +965,32 @@ def test_settings_processing_filters_reflection_removal_enabled(
     )
 
 
-def test_settings_processing_filters_reflection_removal_experimental(
-    application,
-):
-    import zivid
-
-    pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings.Processing.Filters.Reflection.Removal(),
-        member="experimental",
-        value=zivid.Settings.Processing.Filters.Reflection.Removal.Experimental(),
-        expected_data_type=zivid.Settings.Processing.Filters.Reflection.Removal.Experimental,
-    )
-
-    pytest.helpers.equality_tester(
-        zivid.Settings.Processing.Filters.Reflection.Removal.Experimental,
-        ["global"],
-        ["local"],
-    )
-
-
-def test_settings_processing_filters_reflection_removal_experimental_mode(
+def test_settings_processing_filters_reflection_removal_mode(
     application,
 ):
     import zivid
 
     for (
         value
-    ) in (
-        zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode.valid_values()
-    ):
+    ) in zivid.Settings.Processing.Filters.Reflection.Removal.Mode.valid_values():
         pytest.helpers.set_attribute_tester(
-            settings_instance=zivid.Settings.Processing.Filters.Reflection.Removal.Experimental(),
+            settings_instance=zivid.Settings.Processing.Filters.Reflection.Removal(),
             member="mode",
             value=value,
             expected_data_type=str,
         )
     pytest.helpers.set_attribute_tester(
-        settings_instance=zivid.Settings.Processing.Filters.Reflection.Removal.Experimental(),
+        settings_instance=zivid.Settings.Processing.Filters.Reflection.Removal(),
         member="mode",
         value=None,
         expected_data_type=type(None),
     )
 
     # Is optional enum
-    zivid.Settings.Processing.Filters.Reflection.Removal.Experimental(mode="global")
-    zivid.Settings.Processing.Filters.Reflection.Removal.Experimental(mode="local")
+    zivid.Settings.Processing.Filters.Reflection.Removal(mode="global")
+    zivid.Settings.Processing.Filters.Reflection.Removal(mode="local")
     with pytest.raises(KeyError):
-        zivid.Settings.Processing.Filters.Reflection.Removal.Experimental(
-            mode="_dummy_"
-        )
+        zivid.Settings.Processing.Filters.Reflection.Removal(mode="_dummy_")
 
 
 def test_settings_processing_filters_smoothing(
