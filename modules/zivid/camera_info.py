@@ -133,6 +133,7 @@ class CameraInfo:
     def __init__(
         self,
         firmware_version=_zivid.CameraInfo.FirmwareVersion().value,
+        hardware_revision=_zivid.CameraInfo.HardwareRevision().value,
         model=_zivid.CameraInfo.Model().value,
         model_name=_zivid.CameraInfo.ModelName().value,
         serial_number=_zivid.CameraInfo.SerialNumber().value,
@@ -145,6 +146,17 @@ class CameraInfo:
             raise TypeError(
                 "Unsupported type, expected: (str,), got {value_type}".format(
                     value_type=type(firmware_version)
+                )
+            )
+
+        if isinstance(hardware_revision, (str,)):
+            self._hardware_revision = _zivid.CameraInfo.HardwareRevision(
+                hardware_revision
+            )
+        else:
+            raise TypeError(
+                "Unsupported type, expected: (str,), got {value_type}".format(
+                    value_type=type(hardware_revision)
                 )
             )
 
@@ -194,6 +206,10 @@ class CameraInfo:
         return self._firmware_version.value
 
     @property
+    def hardware_revision(self):
+        return self._hardware_revision.value
+
+    @property
     def model(self):
         if self._model.value is None:
             return None
@@ -222,6 +238,17 @@ class CameraInfo:
     def firmware_version(self, value):
         if isinstance(value, (str,)):
             self._firmware_version = _zivid.CameraInfo.FirmwareVersion(value)
+        else:
+            raise TypeError(
+                "Unsupported type, expected: str, got {value_type}".format(
+                    value_type=type(value)
+                )
+            )
+
+    @hardware_revision.setter
+    def hardware_revision(self, value):
+        if isinstance(value, (str,)):
+            self._hardware_revision = _zivid.CameraInfo.HardwareRevision(value)
         else:
             raise TypeError(
                 "Unsupported type, expected: str, got {value_type}".format(
@@ -286,6 +313,7 @@ class CameraInfo:
     def __eq__(self, other):
         if (
             self._firmware_version == other._firmware_version
+            and self._hardware_revision == other._hardware_revision
             and self._model == other._model
             and self._model_name == other._model_name
             and self._serial_number == other._serial_number
@@ -317,6 +345,7 @@ def _to_camera_info(internal_camera_info):
         revision=_to_camera_info_revision(internal_camera_info.revision),
         user_data=_to_camera_info_user_data(internal_camera_info.user_data),
         firmware_version=internal_camera_info.firmware_version.value,
+        hardware_revision=internal_camera_info.hardware_revision.value,
         model=internal_camera_info.model.value,
         model_name=internal_camera_info.model_name.value,
         serial_number=internal_camera_info.serial_number.value,
@@ -347,6 +376,9 @@ def _to_internal_camera_info(camera_info):
 
     internal_camera_info.firmware_version = _zivid.CameraInfo.FirmwareVersion(
         camera_info.firmware_version
+    )
+    internal_camera_info.hardware_revision = _zivid.CameraInfo.HardwareRevision(
+        camera_info.hardware_revision
     )
     internal_camera_info.model = _zivid.CameraInfo.Model(camera_info._model.value)
     internal_camera_info.model_name = _zivid.CameraInfo.ModelName(
