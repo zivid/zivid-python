@@ -1,16 +1,16 @@
 #pragma once
 
-#include <Zivid/Experimental/ProjectedImage.h>
+#include <Zivid/Projection/ProjectedImage.h>
 #include <ZividPython/Releasable.h>
 #include <ZividPython/ReleasableFrame2D.h>
 #include <ZividPython/Wrappers.h>
 
 namespace ZividPython
 {
-    class ReleasableProjectedImage : public Releasable<Zivid::Experimental::ProjectedImage>
+    class ReleasableProjectedImage : public Releasable<Zivid::Projection::ProjectedImage>
     {
     public:
-        using Releasable<Zivid::Experimental::ProjectedImage>::Releasable;
+        using Releasable<Zivid::Projection::ProjectedImage>::Releasable;
 
         ZIVID_PYTHON_FORWARD_0_ARGS(stop)
         ZIVID_PYTHON_FORWARD_0_ARGS(active)

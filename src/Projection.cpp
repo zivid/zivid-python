@@ -1,7 +1,7 @@
 
 #include <ZividPython/Projection.h>
 
-#include <Zivid/Experimental/Projection.h>
+#include <Zivid/Projection/Projection.h>
 #include <Zivid/Resolution.h>
 #include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/ReleasableProjectedImage.h>
@@ -14,7 +14,7 @@ namespace ZividPython::Projection
     void wrapAsSubmodule(pybind11::module &dest)
     {
         dest.def("projector_resolution", [](const ReleasableCamera &camera) {
-            const auto resolution = Zivid::Experimental::Projection::projectorResolution(camera.impl());
+            const auto resolution = Zivid::Projection::projectorResolution(camera.impl());
             return std::make_pair(resolution.height(), resolution.width());
         });
 
@@ -42,7 +42,7 @@ namespace ZividPython::Projection
                 const Zivid::Image<Zivid::ColorBGRA> zividImage{
                     resolution, imageBGRA.data(), imageBGRA.data() + resolution.size() * sizeof(Zivid::ColorBGRA)
                 };
-                auto projectedImage = Zivid::Experimental::Projection::showImage(camera.impl(), zividImage);
+                auto projectedImage = Zivid::Projection::showImage(camera.impl(), zividImage);
                 return ZividPython::ReleasableProjectedImage(std::move(projectedImage));
             });
 
@@ -58,7 +58,7 @@ namespace ZividPython::Projection
                                     });
 
                      const auto outputInternal =
-                         Zivid::Experimental::Projection::pixelsFrom3DPoints(camera.impl(), pointsInternal);
+                         Zivid::Projection::pixelsFrom3DPoints(camera.impl(), pointsInternal);
 
                      auto output = std::vector<std::array<float, 2>>();
                      output.reserve(outputInternal.size());
