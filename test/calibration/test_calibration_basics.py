@@ -45,5 +45,5 @@ def test_calibration_board_pose(calibration_board_frame):
             [0.085987, -0.000943, 0.996296, 1913.698975],
             [0.000000, 0.000000, 0.000000, 1.000000],
         ],
-        rtol=1e-3,
+        rtol=0.0004,
     )
