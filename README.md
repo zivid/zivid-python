@@ -50,6 +50,11 @@ If you are using a version of PIP older than version 19 please manually install 
     cd zivid-python
     pip install .
 
+The above `pip install .` command may give permission issues on some Windows machines. If so, try the following instead:
+
+    python continuous-integration/windows/create_binary_distribution.py
+    pip install ./dist/*.whl
+
 You may want to build Zivid Python against a different (but compatible) version of Zivid SDK. An example would be if Zivid SDK 2.1 was released but the official
 Zivid Python still formally only supports SDK 2.0. Since all the features of the 2.0 API exist in the 2.1 API, Zivid Python can still be built with the new SDK
 (but without wrapping the latest features). In order to achieve this, edit `setup.py` to target the new SDK version before doing `pip install .`. Note that
