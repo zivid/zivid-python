@@ -57,8 +57,7 @@ namespace ZividPython::Projection
                                         return Zivid::PointXYZ{ point[0], point[1], point[2] };
                                     });
 
-                     const auto outputInternal =
-                         Zivid::Projection::pixelsFrom3DPoints(camera.impl(), pointsInternal);
+                     const auto outputInternal = Zivid::Projection::pixelsFrom3DPoints(camera.impl(), pointsInternal);
 
                      auto output = std::vector<std::array<float, 2>>();
                      output.reserve(outputInternal.size());
