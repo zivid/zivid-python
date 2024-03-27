@@ -55,33 +55,28 @@ jobs:
         env:
           CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
         run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
-
-  create-windows-binary-distribution:
-    runs-on: windows-2019
+  create-linux-binary-distribution:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        pythonabi: ["cp38", "cp310", "cp311"]
     steps:
       - name: Check out code
         uses: actions/checkout@v3
         with:
           lfs: false
-      - name: Set up Python ${{matrix.python-version}}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{matrix.python-version}}
-      - name: Setup
-        run: python continuous-integration\windows\setup.py
       - name: Create binary distribution
-        env:
-          Zivid_DIR: 'C:\Program Files\Zivid\CMake\Zivid'
-          CXX: 'cl.exe'
-          CC: 'cl.exe'
-        run: python continuous-integration\windows\create_binary_distribution.py
+        run: |
+          docker run \
+              --volume $PWD:/host \
+              --workdir /host/continuous-integration/linux \
+              --env "PYTHONDONTWRITEBYTECODE=1" \
+              quay.io/pypa/manylinux_2_28_x86_64 \
+              bash -c "platform-dependent/manylinux/setup.sh && platform-dependent/manylinux/create_wheel.sh ${{ matrix.pythonabi }}"
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: bdist-win-python${{matrix.python-version}}
+          name: bdist-manylinux-${{matrix.pythonabi}}
           path: dist/zivid*.whl
           retention-days: 1
       - name: Notify Teams
@@ -89,6 +84,39 @@ jobs:
         env:
           CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
         run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
+  #create-windows-binary-distribution:
+  #  runs-on: windows-2019
+  #  strategy:
+  #    matrix:
+  #      python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+  #  steps:
+  #    - name: Check out code
+  #      uses: actions/checkout@v3
+  #      with:
+  #        lfs: false
+  #    - name: Set up Python ${{matrix.python-version}}
+  #      uses: actions/setup-python@v4
+  #      with:
+  #        python-version: ${{matrix.python-version}}
+  #    - name: Setup
+  #      run: python continuous-integration\windows\setup.py
+  #    - name: Create binary distribution
+  #      env:
+  #        Zivid_DIR: 'C:\Program Files\Zivid\CMake\Zivid'
+  #        CXX: 'cl.exe'
+  #        CC: 'cl.exe'
+  #      run: python continuous-integration\windows\create_binary_distribution.py
+  #    - name: Upload artifact
+  #      uses: actions/upload-artifact@v3
+  #      with:
+  #        name: bdist-win-python${{matrix.python-version}}
+  #        path: dist/zivid*.whl
+  #        retention-days: 1
+  #    - name: Notify Teams
+  #      if: ${{ failure() && github.ref == 'refs/heads/master' }}
+  #      env:
+  #        CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
+  #      run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
 
   test-linux-source-distribution:
     needs: create-source-distribution
@@ -129,13 +157,24 @@ jobs:
         env:
           CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
         run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
-
-  test-windows-binary-distribution:
-    needs: create-windows-binary-distribution
-    runs-on: windows-2019
+  test-linux-binary-distribution:
+    needs: create-linux-binary-distribution
+    runs-on: ubuntu-latest
+    # Build & test job should be run on:
+    # - All Ubuntu versions officially supported by Zivid SDK
+    # - All (not end-of-life) Ubuntu versions newer than the latest LTS
+    # - The three latest Fedora releases that we can support
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        include:
+          - os: ubuntu:20.04
+            pythonabi: cp38
+          - os: ubuntu:22.04
+            pythonabi: cp310
+          - os: ubuntu:23.04
+            pythonabi: cp311
+          - os: ubuntu:23.10
+            pythonabi: cp311
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -144,26 +183,56 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: bdist-win-python${{matrix.python-version}}
+          name: bdist-manylinux-${{ matrix.pythonabi }}
           path: dist
-      - name: Set up Python ${{matrix.python-version}}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{matrix.python-version}}
-      - name: Setup
-        run: python continuous-integration\windows\setup.py
-      - name: Install from binary distribution
-        run: python continuous-integration\windows\install_binary_distribution.py
-      - name: Test
-        run: python continuous-integration\windows\test.py
+      - name: Install and test binary distribution
+        run: |
+          docker run \
+              --volume $PWD:/host \
+              --workdir /host/continuous-integration/linux \
+              --env "PYTHONDONTWRITEBYTECODE=1" \
+              ${{matrix.os}} \
+              bash -c "./install-binary-distribution-with-bundled-sdk.sh && ./test.sh"
       - name: Notify Teams
         if: ${{ failure() && github.ref == 'refs/heads/master' }}
         env:
           CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
         run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
+  #test-windows-binary-distribution:
+  #  needs: create-windows-binary-distribution
+  #  runs-on: windows-2019
+  #  strategy:
+  #    matrix:
+  #      python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+  #  steps:
+  #    - name: Check out code
+  #      uses: actions/checkout@v3
+  #      with:
+  #        lfs: true
+  #    - name: Download artifact
+  #      uses: actions/download-artifact@v3
+  #      with:
+  #        name: bdist-win-python${{matrix.python-version}}
+  #        path: dist
+  #    - name: Set up Python ${{matrix.python-version}}
+  #      uses: actions/setup-python@v4
+  #      with:
+  #        python-version: ${{matrix.python-version}}
+  #    - name: Setup
+  #      run: python continuous-integration\windows\setup.py
+  #    - name: Install from binary distribution
+  #      run: python continuous-integration\windows\install_binary_distribution.py
+  #    - name: Test
+  #      run: python continuous-integration\windows\test.py
+  #    - name: Notify Teams
+  #      if: ${{ failure() && github.ref == 'refs/heads/master' }}
+  #      env:
+  #        CI_FAILURE_TEAMS_HOOK: ${{ secrets.CI_FAILURE_TEAMS_HOOK }}
+  #      run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
 
   deploy:
-    needs: [lint, test-linux-source-distribution, test-windows-binary-distribution]
+    #needs: [lint, test-linux-source-distribution, test-linux-binary-distribution, test-windows-binary-distribution]
+    needs: [lint, test-linux-source-distribution, test-linux-binary-distribution]
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
