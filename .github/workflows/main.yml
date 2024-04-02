@@ -22,7 +22,7 @@ jobs:
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
               ubuntu:23.10  \
-              bash -c "./setup.sh && ./build.sh && ./lint.sh"
+              bash -c "./setup.sh && ./install-sdk.sh && ./build.sh && ./lint.sh"
       - name: Notify Teams
         if: ${{ failure() && github.ref == 'refs/heads/master' }}
         env:
@@ -123,7 +123,7 @@ jobs:
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
               ${{matrix.os}} \
-              bash -c "./setup.sh && ./build-and-install-source-distribution.sh && ./test.sh"
+              bash -c "./setup.sh && ./install-sdk.sh && ./build-and-install-source-distribution.sh && ./setup-opencl.sh && ./test.sh"
       - name: Notify Teams
         if: ${{ failure() && github.ref == 'refs/heads/master' }}
         env:
