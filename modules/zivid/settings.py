@@ -219,77 +219,6 @@ class Settings:
         def __str__(self):
             return str(_to_internal_settings_diagnostics(self))
 
-    class Experimental:
-        class Engine:
-            omni = "omni"
-            phase = "phase"
-            stripe = "stripe"
-
-            _valid_values = {
-                "omni": _zivid.Settings.Experimental.Engine.omni,
-                "phase": _zivid.Settings.Experimental.Engine.phase,
-                "stripe": _zivid.Settings.Experimental.Engine.stripe,
-            }
-
-            @classmethod
-            def valid_values(cls):
-                return list(cls._valid_values.keys())
-
-        def __init__(
-            self,
-            engine=_zivid.Settings.Experimental.Engine().value,
-        ):
-            if (
-                isinstance(engine, _zivid.Settings.Experimental.Engine.enum)
-                or engine is None
-            ):
-                self._engine = _zivid.Settings.Experimental.Engine(engine)
-            elif isinstance(engine, str):
-                self._engine = _zivid.Settings.Experimental.Engine(
-                    self.Engine._valid_values[engine]
-                )
-            else:
-                raise TypeError(
-                    "Unsupported type, expected: str or None, got {value_type}".format(
-                        value_type=type(engine)
-                    )
-                )
-
-        @property
-        def engine(self):
-            if self._engine.value is None:
-                return None
-            for key, internal_value in self.Engine._valid_values.items():
-                if internal_value == self._engine.value:
-                    return key
-            raise ValueError("Unsupported value {value}".format(value=self._engine))
-
-        @engine.setter
-        def engine(self, value):
-            if isinstance(value, str):
-                self._engine = _zivid.Settings.Experimental.Engine(
-                    self.Engine._valid_values[value]
-                )
-            elif (
-                isinstance(value, _zivid.Settings.Experimental.Engine.enum)
-                or value is None
-            ):
-                self._engine = _zivid.Settings.Experimental.Engine(value)
-            else:
-                raise TypeError(
-                    "Unsupported type, expected: str or None, got {value_type}".format(
-                        value_type=type(value)
-                    )
-                )
-
-        def __eq__(self, other):
-            if self._engine == other._engine:
-                return True
-            return False
-
-        def __str__(self):
-            return str(_to_internal_settings_experimental(self))
-
     class Processing:
         class Color:
             class Balance:
@@ -1060,16 +989,55 @@ class Settings:
                             )
                         )
 
-                class HoleFilling:
+                def __init__(
+                    self,
+                    contrast_distortion=None,
+                ):
+                    if contrast_distortion is None:
+                        contrast_distortion = self.ContrastDistortion()
+                    if not isinstance(contrast_distortion, self.ContrastDistortion):
+                        raise TypeError(
+                            "Unsupported type: {value}".format(
+                                value=type(contrast_distortion)
+                            )
+                        )
+                    self._contrast_distortion = contrast_distortion
+
+                @property
+                def contrast_distortion(self):
+                    return self._contrast_distortion
+
+                @contrast_distortion.setter
+                def contrast_distortion(self, value):
+                    if not isinstance(value, self.ContrastDistortion):
+                        raise TypeError(
+                            "Unsupported type {value}".format(value=type(value))
+                        )
+                    self._contrast_distortion = value
+
+                def __eq__(self, other):
+                    if self._contrast_distortion == other._contrast_distortion:
+                        return True
+                    return False
+
+                def __str__(self):
+                    return str(
+                        _to_internal_settings_processing_filters_experimental(self)
+                    )
+
+            class Hole:
+                class Repair:
                     def __init__(
                         self,
-                        enabled=_zivid.Settings.Processing.Filters.Experimental.HoleFilling.Enabled().value,
-                        hole_size=_zivid.Settings.Processing.Filters.Experimental.HoleFilling.HoleSize().value,
-                        strictness=_zivid.Settings.Processing.Filters.Experimental.HoleFilling.Strictness().value,
+                        enabled=_zivid.Settings.Processing.Filters.Hole.Repair.Enabled().value,
+                        hole_size=_zivid.Settings.Processing.Filters.Hole.Repair.HoleSize().value,
+                        strictness=_zivid.Settings.Processing.Filters.Hole.Repair.Strictness().value,
                     ):
                         if isinstance(enabled, (bool,)) or enabled is None:
-                            self._enabled = _zivid.Settings.Processing.Filters.Experimental.HoleFilling.Enabled(
-                                enabled
+                            self._enabled = (
+                                _zivid.Settings.Processing.Filters.Hole.Repair.Enabled(
+                                    enabled
+                                )
                             )
                         else:
                             raise TypeError(
@@ -1088,8 +1056,10 @@ class Settings:
                             )
                             or hole_size is None
                         ):
-                            self._hole_size = _zivid.Settings.Processing.Filters.Experimental.HoleFilling.HoleSize(
-                                hole_size
+                            self._hole_size = (
+                                _zivid.Settings.Processing.Filters.Hole.Repair.HoleSize(
+                                    hole_size
+                                )
                             )
                         else:
                             raise TypeError(
@@ -1099,7 +1069,7 @@ class Settings:
                             )
 
                         if isinstance(strictness, (int,)) or strictness is None:
-                            self._strictness = _zivid.Settings.Processing.Filters.Experimental.HoleFilling.Strictness(
+                            self._strictness = _zivid.Settings.Processing.Filters.Hole.Repair.Strictness(
                                 strictness
                             )
                         else:
@@ -1124,8 +1094,10 @@ class Settings:
                     @enabled.setter
                     def enabled(self, value):
                         if isinstance(value, (bool,)) or value is None:
-                            self._enabled = _zivid.Settings.Processing.Filters.Experimental.HoleFilling.Enabled(
-                                value
+                            self._enabled = (
+                                _zivid.Settings.Processing.Filters.Hole.Repair.Enabled(
+                                    value
+                                )
                             )
                         else:
                             raise TypeError(
@@ -1146,8 +1118,10 @@ class Settings:
                             )
                             or value is None
                         ):
-                            self._hole_size = _zivid.Settings.Processing.Filters.Experimental.HoleFilling.HoleSize(
-                                value
+                            self._hole_size = (
+                                _zivid.Settings.Processing.Filters.Hole.Repair.HoleSize(
+                                    value
+                                )
                             )
                         else:
                             raise TypeError(
@@ -1159,7 +1133,7 @@ class Settings:
                     @strictness.setter
                     def strictness(self, value):
                         if isinstance(value, (int,)) or value is None:
-                            self._strictness = _zivid.Settings.Processing.Filters.Experimental.HoleFilling.Strictness(
+                            self._strictness = _zivid.Settings.Processing.Filters.Hole.Repair.Strictness(
                                 value
                             )
                         else:
@@ -1180,70 +1154,40 @@ class Settings:
 
                     def __str__(self):
                         return str(
-                            _to_internal_settings_processing_filters_experimental_hole_filling(
-                                self
-                            )
+                            _to_internal_settings_processing_filters_hole_repair(self)
                         )
 
                 def __init__(
                     self,
-                    contrast_distortion=None,
-                    hole_filling=None,
+                    repair=None,
                 ):
-                    if contrast_distortion is None:
-                        contrast_distortion = self.ContrastDistortion()
-                    if not isinstance(contrast_distortion, self.ContrastDistortion):
+                    if repair is None:
+                        repair = self.Repair()
+                    if not isinstance(repair, self.Repair):
                         raise TypeError(
-                            "Unsupported type: {value}".format(
-                                value=type(contrast_distortion)
-                            )
+                            "Unsupported type: {value}".format(value=type(repair))
                         )
-                    self._contrast_distortion = contrast_distortion
-
-                    if hole_filling is None:
-                        hole_filling = self.HoleFilling()
-                    if not isinstance(hole_filling, self.HoleFilling):
-                        raise TypeError(
-                            "Unsupported type: {value}".format(value=type(hole_filling))
-                        )
-                    self._hole_filling = hole_filling
+                    self._repair = repair
 
                 @property
-                def contrast_distortion(self):
-                    return self._contrast_distortion
+                def repair(self):
+                    return self._repair
 
-                @property
-                def hole_filling(self):
-                    return self._hole_filling
-
-                @contrast_distortion.setter
-                def contrast_distortion(self, value):
-                    if not isinstance(value, self.ContrastDistortion):
+                @repair.setter
+                def repair(self, value):
+                    if not isinstance(value, self.Repair):
                         raise TypeError(
                             "Unsupported type {value}".format(value=type(value))
                         )
-                    self._contrast_distortion = value
-
-                @hole_filling.setter
-                def hole_filling(self, value):
-                    if not isinstance(value, self.HoleFilling):
-                        raise TypeError(
-                            "Unsupported type {value}".format(value=type(value))
-                        )
-                    self._hole_filling = value
+                    self._repair = value
 
                 def __eq__(self, other):
-                    if (
-                        self._contrast_distortion == other._contrast_distortion
-                        and self._hole_filling == other._hole_filling
-                    ):
+                    if self._repair == other._repair:
                         return True
                     return False
 
                 def __str__(self):
-                    return str(
-                        _to_internal_settings_processing_filters_experimental(self)
-                    )
+                    return str(_to_internal_settings_processing_filters_hole(self))
 
             class Noise:
                 class Removal:
@@ -1639,95 +1583,23 @@ class Settings:
 
             class Reflection:
                 class Removal:
-                    class Experimental:
-                        class Mode:
-                            global_ = "global"
-                            local = "local"
+                    class Mode:
+                        global_ = "global"
+                        local = "local"
 
-                            _valid_values = {
-                                "global": _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode.global_,
-                                "local": _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode.local,
-                            }
+                        _valid_values = {
+                            "global": _zivid.Settings.Processing.Filters.Reflection.Removal.Mode.global_,
+                            "local": _zivid.Settings.Processing.Filters.Reflection.Removal.Mode.local,
+                        }
 
-                            @classmethod
-                            def valid_values(cls):
-                                return list(cls._valid_values.keys())
-
-                        def __init__(
-                            self,
-                            mode=_zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode().value,
-                        ):
-                            if (
-                                isinstance(
-                                    mode,
-                                    _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode.enum,
-                                )
-                                or mode is None
-                            ):
-                                self._mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode(
-                                    mode
-                                )
-                            elif isinstance(mode, str):
-                                self._mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode(
-                                    self.Mode._valid_values[mode]
-                                )
-                            else:
-                                raise TypeError(
-                                    "Unsupported type, expected: str or None, got {value_type}".format(
-                                        value_type=type(mode)
-                                    )
-                                )
-
-                        @property
-                        def mode(self):
-                            if self._mode.value is None:
-                                return None
-                            for key, internal_value in self.Mode._valid_values.items():
-                                if internal_value == self._mode.value:
-                                    return key
-                            raise ValueError(
-                                "Unsupported value {value}".format(value=self._mode)
-                            )
-
-                        @mode.setter
-                        def mode(self, value):
-                            if isinstance(value, str):
-                                self._mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode(
-                                    self.Mode._valid_values[value]
-                                )
-                            elif (
-                                isinstance(
-                                    value,
-                                    _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode.enum,
-                                )
-                                or value is None
-                            ):
-                                self._mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode(
-                                    value
-                                )
-                            else:
-                                raise TypeError(
-                                    "Unsupported type, expected: str or None, got {value_type}".format(
-                                        value_type=type(value)
-                                    )
-                                )
-
-                        def __eq__(self, other):
-                            if self._mode == other._mode:
-                                return True
-                            return False
-
-                        def __str__(self):
-                            return str(
-                                _to_internal_settings_processing_filters_reflection_removal_experimental(
-                                    self
-                                )
-                            )
+                        @classmethod
+                        def valid_values(cls):
+                            return list(cls._valid_values.keys())
 
                     def __init__(
                         self,
                         enabled=_zivid.Settings.Processing.Filters.Reflection.Removal.Enabled().value,
-                        experimental=None,
+                        mode=_zivid.Settings.Processing.Filters.Reflection.Removal.Mode().value,
                     ):
                         if isinstance(enabled, (bool,)) or enabled is None:
                             self._enabled = _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled(
@@ -1740,23 +1612,41 @@ class Settings:
                                 )
                             )
 
-                        if experimental is None:
-                            experimental = self.Experimental()
-                        if not isinstance(experimental, self.Experimental):
+                        if (
+                            isinstance(
+                                mode,
+                                _zivid.Settings.Processing.Filters.Reflection.Removal.Mode.enum,
+                            )
+                            or mode is None
+                        ):
+                            self._mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Mode(
+                                mode
+                            )
+                        elif isinstance(mode, str):
+                            self._mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Mode(
+                                self.Mode._valid_values[mode]
+                            )
+                        else:
                             raise TypeError(
-                                "Unsupported type: {value}".format(
-                                    value=type(experimental)
+                                "Unsupported type, expected: str or None, got {value_type}".format(
+                                    value_type=type(mode)
                                 )
                             )
-                        self._experimental = experimental
 
                     @property
                     def enabled(self):
                         return self._enabled.value
 
                     @property
-                    def experimental(self):
-                        return self._experimental
+                    def mode(self):
+                        if self._mode.value is None:
+                            return None
+                        for key, internal_value in self.Mode._valid_values.items():
+                            if internal_value == self._mode.value:
+                                return key
+                        raise ValueError(
+                            "Unsupported value {value}".format(value=self._mode)
+                        )
 
                     @enabled.setter
                     def enabled(self, value):
@@ -1771,18 +1661,33 @@ class Settings:
                                 )
                             )
 
-                    @experimental.setter
-                    def experimental(self, value):
-                        if not isinstance(value, self.Experimental):
-                            raise TypeError(
-                                "Unsupported type {value}".format(value=type(value))
+                    @mode.setter
+                    def mode(self, value):
+                        if isinstance(value, str):
+                            self._mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Mode(
+                                self.Mode._valid_values[value]
                             )
-                        self._experimental = value
+                        elif (
+                            isinstance(
+                                value,
+                                _zivid.Settings.Processing.Filters.Reflection.Removal.Mode.enum,
+                            )
+                            or value is None
+                        ):
+                            self._mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Mode(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: str or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
 
                     def __eq__(self, other):
                         if (
                             self._enabled == other._enabled
-                            and self._experimental == other._experimental
+                            and self._mode == other._mode
                         ):
                             return True
                         return False
@@ -1960,6 +1865,7 @@ class Settings:
                 self,
                 cluster=None,
                 experimental=None,
+                hole=None,
                 noise=None,
                 outlier=None,
                 reflection=None,
@@ -1980,6 +1886,14 @@ class Settings:
                         "Unsupported type: {value}".format(value=type(experimental))
                     )
                 self._experimental = experimental
+
+                if hole is None:
+                    hole = self.Hole()
+                if not isinstance(hole, self.Hole):
+                    raise TypeError(
+                        "Unsupported type: {value}".format(value=type(hole))
+                    )
+                self._hole = hole
 
                 if noise is None:
                     noise = self.Noise()
@@ -2022,6 +1936,10 @@ class Settings:
                 return self._experimental
 
             @property
+            def hole(self):
+                return self._hole
+
+            @property
             def noise(self):
                 return self._noise
 
@@ -2052,6 +1970,14 @@ class Settings:
                         "Unsupported type {value}".format(value=type(value))
                     )
                 self._experimental = value
+
+            @hole.setter
+            def hole(self, value):
+                if not isinstance(value, self.Hole):
+                    raise TypeError(
+                        "Unsupported type {value}".format(value=type(value))
+                    )
+                self._hole = value
 
             @noise.setter
             def noise(self, value):
@@ -2089,6 +2015,7 @@ class Settings:
                 if (
                     self._cluster == other._cluster
                     and self._experimental == other._experimental
+                    and self._hole == other._hole
                     and self._noise == other._noise
                     and self._outlier == other._outlier
                     and self._reflection == other._reflection
@@ -2100,10 +2027,86 @@ class Settings:
             def __str__(self):
                 return str(_to_internal_settings_processing_filters(self))
 
+        class Resampling:
+            class Mode:
+                disabled = "disabled"
+                downsample2x2 = "downsample2x2"
+                downsample4x4 = "downsample4x4"
+                upsample2x2 = "upsample2x2"
+                upsample4x4 = "upsample4x4"
+
+                _valid_values = {
+                    "disabled": _zivid.Settings.Processing.Resampling.Mode.disabled,
+                    "downsample2x2": _zivid.Settings.Processing.Resampling.Mode.downsample2x2,
+                    "downsample4x4": _zivid.Settings.Processing.Resampling.Mode.downsample4x4,
+                    "upsample2x2": _zivid.Settings.Processing.Resampling.Mode.upsample2x2,
+                    "upsample4x4": _zivid.Settings.Processing.Resampling.Mode.upsample4x4,
+                }
+
+                @classmethod
+                def valid_values(cls):
+                    return list(cls._valid_values.keys())
+
+            def __init__(
+                self,
+                mode=_zivid.Settings.Processing.Resampling.Mode().value,
+            ):
+                if (
+                    isinstance(mode, _zivid.Settings.Processing.Resampling.Mode.enum)
+                    or mode is None
+                ):
+                    self._mode = _zivid.Settings.Processing.Resampling.Mode(mode)
+                elif isinstance(mode, str):
+                    self._mode = _zivid.Settings.Processing.Resampling.Mode(
+                        self.Mode._valid_values[mode]
+                    )
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: str or None, got {value_type}".format(
+                            value_type=type(mode)
+                        )
+                    )
+
+            @property
+            def mode(self):
+                if self._mode.value is None:
+                    return None
+                for key, internal_value in self.Mode._valid_values.items():
+                    if internal_value == self._mode.value:
+                        return key
+                raise ValueError("Unsupported value {value}".format(value=self._mode))
+
+            @mode.setter
+            def mode(self, value):
+                if isinstance(value, str):
+                    self._mode = _zivid.Settings.Processing.Resampling.Mode(
+                        self.Mode._valid_values[value]
+                    )
+                elif (
+                    isinstance(value, _zivid.Settings.Processing.Resampling.Mode.enum)
+                    or value is None
+                ):
+                    self._mode = _zivid.Settings.Processing.Resampling.Mode(value)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: str or None, got {value_type}".format(
+                            value_type=type(value)
+                        )
+                    )
+
+            def __eq__(self, other):
+                if self._mode == other._mode:
+                    return True
+                return False
+
+            def __str__(self):
+                return str(_to_internal_settings_processing_resampling(self))
+
         def __init__(
             self,
             color=None,
             filters=None,
+            resampling=None,
         ):
             if color is None:
                 color = self.Color()
@@ -2117,6 +2120,14 @@ class Settings:
                 raise TypeError("Unsupported type: {value}".format(value=type(filters)))
             self._filters = filters
 
+            if resampling is None:
+                resampling = self.Resampling()
+            if not isinstance(resampling, self.Resampling):
+                raise TypeError(
+                    "Unsupported type: {value}".format(value=type(resampling))
+                )
+            self._resampling = resampling
+
         @property
         def color(self):
             return self._color
@@ -2124,6 +2135,10 @@ class Settings:
         @property
         def filters(self):
             return self._filters
+
+        @property
+        def resampling(self):
+            return self._resampling
 
         @color.setter
         def color(self, value):
@@ -2137,8 +2152,18 @@ class Settings:
                 raise TypeError("Unsupported type {value}".format(value=type(value)))
             self._filters = value
 
+        @resampling.setter
+        def resampling(self, value):
+            if not isinstance(value, self.Resampling):
+                raise TypeError("Unsupported type {value}".format(value=type(value)))
+            self._resampling = value
+
         def __eq__(self, other):
-            if self._color == other._color and self._filters == other._filters:
+            if (
+                self._color == other._color
+                and self._filters == other._filters
+                and self._resampling == other._resampling
+            ):
                 return True
             return False
 
@@ -2588,11 +2613,26 @@ class Settings:
         def __str__(self):
             return str(_to_internal_settings_sampling(self))
 
+    class Engine:
+        omni = "omni"
+        phase = "phase"
+        stripe = "stripe"
+
+        _valid_values = {
+            "omni": _zivid.Settings.Engine.omni,
+            "phase": _zivid.Settings.Engine.phase,
+            "stripe": _zivid.Settings.Engine.stripe,
+        }
+
+        @classmethod
+        def valid_values(cls):
+            return list(cls._valid_values.keys())
+
     def __init__(
         self,
         acquisitions=None,
+        engine=_zivid.Settings.Engine().value,
         diagnostics=None,
-        experimental=None,
         processing=None,
         region_of_interest=None,
         sampling=None,
@@ -2615,19 +2655,22 @@ class Settings:
                 )
             )
 
+        if isinstance(engine, _zivid.Settings.Engine.enum) or engine is None:
+            self._engine = _zivid.Settings.Engine(engine)
+        elif isinstance(engine, str):
+            self._engine = _zivid.Settings.Engine(self.Engine._valid_values[engine])
+        else:
+            raise TypeError(
+                "Unsupported type, expected: str or None, got {value_type}".format(
+                    value_type=type(engine)
+                )
+            )
+
         if diagnostics is None:
             diagnostics = self.Diagnostics()
         if not isinstance(diagnostics, self.Diagnostics):
             raise TypeError("Unsupported type: {value}".format(value=type(diagnostics)))
         self._diagnostics = diagnostics
-
-        if experimental is None:
-            experimental = self.Experimental()
-        if not isinstance(experimental, self.Experimental):
-            raise TypeError(
-                "Unsupported type: {value}".format(value=type(experimental))
-            )
-        self._experimental = experimental
 
         if processing is None:
             processing = self.Processing()
@@ -2654,12 +2697,17 @@ class Settings:
         return self._acquisitions
 
     @property
-    def diagnostics(self):
-        return self._diagnostics
+    def engine(self):
+        if self._engine.value is None:
+            return None
+        for key, internal_value in self.Engine._valid_values.items():
+            if internal_value == self._engine.value:
+                return key
+        raise ValueError("Unsupported value {value}".format(value=self._engine))
 
     @property
-    def experimental(self):
-        return self._experimental
+    def diagnostics(self):
+        return self._diagnostics
 
     @property
     def processing(self):
@@ -2686,17 +2734,24 @@ class Settings:
                     "Unsupported type {item_type}".format(item_type=type(item))
                 )
 
+    @engine.setter
+    def engine(self, value):
+        if isinstance(value, str):
+            self._engine = _zivid.Settings.Engine(self.Engine._valid_values[value])
+        elif isinstance(value, _zivid.Settings.Engine.enum) or value is None:
+            self._engine = _zivid.Settings.Engine(value)
+        else:
+            raise TypeError(
+                "Unsupported type, expected: str or None, got {value_type}".format(
+                    value_type=type(value)
+                )
+            )
+
     @diagnostics.setter
     def diagnostics(self, value):
         if not isinstance(value, self.Diagnostics):
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._diagnostics = value
-
-    @experimental.setter
-    def experimental(self, value):
-        if not isinstance(value, self.Experimental):
-            raise TypeError("Unsupported type {value}".format(value=type(value)))
-        self._experimental = value
 
     @processing.setter
     def processing(self, value):
@@ -2726,8 +2781,8 @@ class Settings:
     def __eq__(self, other):
         if (
             self._acquisitions == other._acquisitions
+            and self._engine == other._engine
             and self._diagnostics == other._diagnostics
-            and self._experimental == other._experimental
             and self._processing == other._processing
             and self._region_of_interest == other._region_of_interest
             and self._sampling == other._sampling
@@ -2751,12 +2806,6 @@ def _to_settings_acquisition(internal_acquisition):
 def _to_settings_diagnostics(internal_diagnostics):
     return Settings.Diagnostics(
         enabled=internal_diagnostics.enabled.value,
-    )
-
-
-def _to_settings_experimental(internal_experimental):
-    return Settings.Experimental(
-        engine=internal_experimental.engine.value,
     )
 
 
@@ -2831,22 +2880,25 @@ def _to_settings_processing_filters_experimental_contrast_distortion(
     )
 
 
-def _to_settings_processing_filters_experimental_hole_filling(internal_hole_filling):
-    return Settings.Processing.Filters.Experimental.HoleFilling(
-        enabled=internal_hole_filling.enabled.value,
-        hole_size=internal_hole_filling.hole_size.value,
-        strictness=internal_hole_filling.strictness.value,
-    )
-
-
 def _to_settings_processing_filters_experimental(internal_experimental):
     return Settings.Processing.Filters.Experimental(
         contrast_distortion=_to_settings_processing_filters_experimental_contrast_distortion(
             internal_experimental.contrast_distortion
         ),
-        hole_filling=_to_settings_processing_filters_experimental_hole_filling(
-            internal_experimental.hole_filling
-        ),
+    )
+
+
+def _to_settings_processing_filters_hole_repair(internal_repair):
+    return Settings.Processing.Filters.Hole.Repair(
+        enabled=internal_repair.enabled.value,
+        hole_size=internal_repair.hole_size.value,
+        strictness=internal_repair.strictness.value,
+    )
+
+
+def _to_settings_processing_filters_hole(internal_hole):
+    return Settings.Processing.Filters.Hole(
+        repair=_to_settings_processing_filters_hole_repair(internal_hole.repair),
     )
 
 
@@ -2894,20 +2946,10 @@ def _to_settings_processing_filters_outlier(internal_outlier):
     )
 
 
-def _to_settings_processing_filters_reflection_removal_experimental(
-    internal_experimental,
-):
-    return Settings.Processing.Filters.Reflection.Removal.Experimental(
-        mode=internal_experimental.mode.value,
-    )
-
-
 def _to_settings_processing_filters_reflection_removal(internal_removal):
     return Settings.Processing.Filters.Reflection.Removal(
-        experimental=_to_settings_processing_filters_reflection_removal_experimental(
-            internal_removal.experimental
-        ),
         enabled=internal_removal.enabled.value,
+        mode=internal_removal.mode.value,
     )
 
 
@@ -2940,6 +2982,7 @@ def _to_settings_processing_filters(internal_filters):
         experimental=_to_settings_processing_filters_experimental(
             internal_filters.experimental
         ),
+        hole=_to_settings_processing_filters_hole(internal_filters.hole),
         noise=_to_settings_processing_filters_noise(internal_filters.noise),
         outlier=_to_settings_processing_filters_outlier(internal_filters.outlier),
         reflection=_to_settings_processing_filters_reflection(
@@ -2949,10 +2992,17 @@ def _to_settings_processing_filters(internal_filters):
     )
 
 
+def _to_settings_processing_resampling(internal_resampling):
+    return Settings.Processing.Resampling(
+        mode=internal_resampling.mode.value,
+    )
+
+
 def _to_settings_processing(internal_processing):
     return Settings.Processing(
         color=_to_settings_processing_color(internal_processing.color),
         filters=_to_settings_processing_filters(internal_processing.filters),
+        resampling=_to_settings_processing_resampling(internal_processing.resampling),
     )
 
 
@@ -2994,12 +3044,12 @@ def _to_settings(internal_settings):
             for value in internal_settings.acquisitions.value
         ],
         diagnostics=_to_settings_diagnostics(internal_settings.diagnostics),
-        experimental=_to_settings_experimental(internal_settings.experimental),
         processing=_to_settings_processing(internal_settings.processing),
         region_of_interest=_to_settings_region_of_interest(
             internal_settings.region_of_interest
         ),
         sampling=_to_settings_sampling(internal_settings.sampling),
+        engine=internal_settings.engine.value,
     )
 
 
@@ -3028,16 +3078,6 @@ def _to_internal_settings_diagnostics(diagnostics):
     )
 
     return internal_diagnostics
-
-
-def _to_internal_settings_experimental(experimental):
-    internal_experimental = _zivid.Settings.Experimental()
-
-    internal_experimental.engine = _zivid.Settings.Experimental.Engine(
-        experimental._engine.value
-    )
-
-    return internal_experimental
 
 
 def _to_internal_settings_processing_color_balance(balance):
@@ -3153,30 +3193,6 @@ def _to_internal_settings_processing_filters_experimental_contrast_distortion(
     return internal_contrast_distortion
 
 
-def _to_internal_settings_processing_filters_experimental_hole_filling(hole_filling):
-    internal_hole_filling = (
-        _zivid.Settings.Processing.Filters.Experimental.HoleFilling()
-    )
-
-    internal_hole_filling.enabled = (
-        _zivid.Settings.Processing.Filters.Experimental.HoleFilling.Enabled(
-            hole_filling.enabled
-        )
-    )
-    internal_hole_filling.hole_size = (
-        _zivid.Settings.Processing.Filters.Experimental.HoleFilling.HoleSize(
-            hole_filling.hole_size
-        )
-    )
-    internal_hole_filling.strictness = (
-        _zivid.Settings.Processing.Filters.Experimental.HoleFilling.Strictness(
-            hole_filling.strictness
-        )
-    )
-
-    return internal_hole_filling
-
-
 def _to_internal_settings_processing_filters_experimental(experimental):
     internal_experimental = _zivid.Settings.Processing.Filters.Experimental()
 
@@ -3185,12 +3201,32 @@ def _to_internal_settings_processing_filters_experimental(experimental):
             experimental.contrast_distortion
         )
     )
-    internal_experimental.hole_filling = (
-        _to_internal_settings_processing_filters_experimental_hole_filling(
-            experimental.hole_filling
-        )
-    )
     return internal_experimental
+
+
+def _to_internal_settings_processing_filters_hole_repair(repair):
+    internal_repair = _zivid.Settings.Processing.Filters.Hole.Repair()
+
+    internal_repair.enabled = _zivid.Settings.Processing.Filters.Hole.Repair.Enabled(
+        repair.enabled
+    )
+    internal_repair.hole_size = _zivid.Settings.Processing.Filters.Hole.Repair.HoleSize(
+        repair.hole_size
+    )
+    internal_repair.strictness = (
+        _zivid.Settings.Processing.Filters.Hole.Repair.Strictness(repair.strictness)
+    )
+
+    return internal_repair
+
+
+def _to_internal_settings_processing_filters_hole(hole):
+    internal_hole = _zivid.Settings.Processing.Filters.Hole()
+
+    internal_hole.repair = _to_internal_settings_processing_filters_hole_repair(
+        hole.repair
+    )
+    return internal_hole
 
 
 def _to_internal_settings_processing_filters_noise_removal(removal):
@@ -3265,34 +3301,16 @@ def _to_internal_settings_processing_filters_outlier(outlier):
     return internal_outlier
 
 
-def _to_internal_settings_processing_filters_reflection_removal_experimental(
-    experimental,
-):
-    internal_experimental = (
-        _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental()
-    )
-
-    internal_experimental.mode = (
-        _zivid.Settings.Processing.Filters.Reflection.Removal.Experimental.Mode(
-            experimental._mode.value
-        )
-    )
-
-    return internal_experimental
-
-
 def _to_internal_settings_processing_filters_reflection_removal(removal):
     internal_removal = _zivid.Settings.Processing.Filters.Reflection.Removal()
 
     internal_removal.enabled = (
         _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled(removal.enabled)
     )
-
-    internal_removal.experimental = (
-        _to_internal_settings_processing_filters_reflection_removal_experimental(
-            removal.experimental
-        )
+    internal_removal.mode = _zivid.Settings.Processing.Filters.Reflection.Removal.Mode(
+        removal._mode.value
     )
+
     return internal_removal
 
 
@@ -3336,6 +3354,7 @@ def _to_internal_settings_processing_filters(filters):
     internal_filters.experimental = (
         _to_internal_settings_processing_filters_experimental(filters.experimental)
     )
+    internal_filters.hole = _to_internal_settings_processing_filters_hole(filters.hole)
     internal_filters.noise = _to_internal_settings_processing_filters_noise(
         filters.noise
     )
@@ -3351,12 +3370,25 @@ def _to_internal_settings_processing_filters(filters):
     return internal_filters
 
 
+def _to_internal_settings_processing_resampling(resampling):
+    internal_resampling = _zivid.Settings.Processing.Resampling()
+
+    internal_resampling.mode = _zivid.Settings.Processing.Resampling.Mode(
+        resampling._mode.value
+    )
+
+    return internal_resampling
+
+
 def _to_internal_settings_processing(processing):
     internal_processing = _zivid.Settings.Processing()
 
     internal_processing.color = _to_internal_settings_processing_color(processing.color)
     internal_processing.filters = _to_internal_settings_processing_filters(
         processing.filters
+    )
+    internal_processing.resampling = _to_internal_settings_processing_resampling(
+        processing.resampling
     )
     return internal_processing
 
@@ -3413,11 +3445,10 @@ def _to_internal_settings(settings):
         temp_acquisitions.append(_to_internal_settings_acquisition(value))
     internal_settings.acquisitions = temp_acquisitions
 
+    internal_settings.engine = _zivid.Settings.Engine(settings._engine.value)
+
     internal_settings.diagnostics = _to_internal_settings_diagnostics(
         settings.diagnostics
-    )
-    internal_settings.experimental = _to_internal_settings_experimental(
-        settings.experimental
     )
     internal_settings.processing = _to_internal_settings_processing(settings.processing)
     internal_settings.region_of_interest = _to_internal_settings_region_of_interest(
