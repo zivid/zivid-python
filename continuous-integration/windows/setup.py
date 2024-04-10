@@ -6,6 +6,36 @@ from pathlib import Path
 from common import repo_root, run_process, install_pip_dependencies
 
 
+# On Windows the TemporaryDirectory cleanup can sometimes fail.
+# In Python 3.10 and newer, this class has a new argument called
+# `ignore_cleanup_errors` that would help us workaround this issue.
+# However, until we can use Python 3.10, we will need to implement
+# our own workaround.
+class TemporaryDirectoryIgnoringCleanupErrors:
+    def __init__(self):
+        self._tmp_dir = (
+            tempfile.TemporaryDirectory()  # pylint: disable=consider-using-with
+        )
+
+    def __enter__(self):
+        return self._tmp_dir.__enter__()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        try:
+            self._tmp_dir.cleanup()
+        except OSError:
+            pass
+        finally:
+            self._tmp_dir = None
+
+    def __fspath__(self):
+        return self.name
+
+    @property
+    def name(self):
+        return self._tmp_dir.name if self._tmp_dir else None
+
+
 def _install_zivid_sdk():
     import requests  # pylint: disable=import-outside-toplevel
 
@@ -14,7 +44,7 @@ def _install_zivid_sdk():
     )
     exact_version = json.loads(versions_json)["ZIVID_SDK_EXACT_VERSION"]
 
-    with tempfile.TemporaryDirectory() as temp_dir:
+    with TemporaryDirectoryIgnoringCleanupErrors() as temp_dir:
         zivid_installer_url = f"https://downloads.zivid.com/sdk/releases/{exact_version}/windows/ZividSetup_{exact_version}.exe"
         print("Downloading {}".format(zivid_installer_url), flush=True)
         zivid_installer = Path(temp_dir) / "ZividSetup.exe"
@@ -27,7 +57,7 @@ def _install_zivid_sdk():
 def _install_intel_opencl_runtime():
     import requests  # pylint: disable=import-outside-toplevel
 
-    with tempfile.TemporaryDirectory() as temp_dir:
+    with TemporaryDirectoryIgnoringCleanupErrors() as temp_dir:
         intel_oneapi_opencl_installer_url = "https://registrationcenter-download.intel.com/akdlm/IRC_NAS/faf10bb4-a1b3-46cf-ae0b-986b419e1b1c-opencl/w_opencl_runtime_p_2023.2.0.49500.exe"
         print("Downloading {}".format(intel_oneapi_opencl_installer_url), flush=True)
         opencl_runtime_installer = Path(temp_dir) / "opencl_runtime_installer.exe"
