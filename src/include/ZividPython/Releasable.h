@@ -1,9 +1,14 @@
 #pragma once
 
+#include <ZividPython/Traits.h>
+
+#include <pybind11/pybind11.h>
+
+#include <cstddef>
 #include <memory>
 #include <optional>
-#include <pybind11/pybind11.h>
 #include <stdexcept>
+#include <type_traits>
 
 #define WITH_GIL_UNLOCKED(...)                                                                                         \
     [&, this] {                                                                                                        \
@@ -129,12 +134,13 @@ namespace ZividPython
     class Singleton
     {
     public:
-        Singleton()
+        template<typename... Args, typename std::enable_if_t<(std::is_constructible_v<T, Args...>), int> = 0>
+        Singleton(Args &&...args)
         {
             // Keep the singleton alive forever to avoid races with
             // static variables that the singleton may need during destruction
             // This should be fixed a more elegant way!
-            if(!globalImpl) globalImpl = std::make_shared<T>();
+            if(!globalImpl) globalImpl = std::make_shared<T>(std::forward<Args>(args)...);
         }
 
         decltype(auto) toString() const
