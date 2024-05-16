@@ -302,7 +302,7 @@ class InfieldCorrectionInput:
         """Construct an InfieldCorrectionInput instance.
 
         Input data should be captured by calling the version of detect_feature_points that
-        takes a Camera argument.
+        takes a Camera or Frame argument.
 
         Args:
             detection_result: A DetectionResult instance
