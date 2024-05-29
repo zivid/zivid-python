@@ -1,0 +1,9 @@
+[requires]
+eigen/3.4.0
+pybind11/2.12.0
+
+[options]
+eigen/*:MPL2_only=True
+
+[generators]
+CMakeDeps
