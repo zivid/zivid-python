@@ -2,8 +2,8 @@
 # This list is duplicated in setup.py
 # Keep the two lists in sync
 requires = [
-    "cmake",
-    "conan>=1,<2",
+    "cmake>=3.24.0",
+    "conan>=2,<3",
     "ninja",
     "scikit-build",
     ]

@@ -1,5 +1,6 @@
 graft src
 include CMakeLists.txt
+include conanfile.txt
 include LICENSE
 include pyproject.toml
 include README.md
