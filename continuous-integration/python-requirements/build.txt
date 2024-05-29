@@ -9,25 +9,25 @@ certifi==2023.5.7
 charset-normalizer==3.1.0
     # via requests
 cmake==3.26.3
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 colorama==0.4.6
     # via conan
 conan==2.3.2
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 distro==1.8.0
     # via
     #   conan
     #   scikit-build
 fasteners==0.18
     # via conan
-idna==3.4
+idna==3.7
     # via requests
 jinja2==3.1.2
     # via conan
 markupsafe==2.1.2
     # via jinja2
 ninja==1.11.1
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 packaging==23.1
     # via scikit-build
 patch-ng==1.17.4
@@ -39,7 +39,7 @@ pyyaml==6.0.1
 requests==2.30.0
     # via conan
 scikit-build==0.17.3
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 six==1.16.0
     # via python-dateutil
 urllib3==1.26.15
