@@ -741,6 +741,7 @@ def generate_all_datamodels(dest_dir: Path) -> None:
             ["datetime"],
         ),
         (_zivid.CameraIntrinsics, "camera_intrinsics.py", []),
+        (_zivid.NetworkConfiguration, "network_configuration.py", []),
     ]:
         _generate_datamodel_frontend(
             internal_class=internal_class,

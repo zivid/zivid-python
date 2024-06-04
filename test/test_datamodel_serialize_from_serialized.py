@@ -9,6 +9,7 @@ import pytest
         "CameraState",
         "CameraInfo",
         "FrameInfo",
+        "NetworkConfiguration",
         "capture_assistant.SuggestSettingsParameters",
     ],
 )
