@@ -291,6 +291,7 @@ class CameraState:
             return list(cls._valid_values.keys())
 
     class Status:
+        applyingNetworkConfiguration = "applyingNetworkConfiguration"
         available = "available"
         busy = "busy"
         connected = "connected"
@@ -302,6 +303,7 @@ class CameraState:
         updatingFirmware = "updatingFirmware"
 
         _valid_values = {
+            "applyingNetworkConfiguration": _zivid.CameraState.Status.applyingNetworkConfiguration,
             "available": _zivid.CameraState.Status.available,
             "busy": _zivid.CameraState.Status.busy,
             "connected": _zivid.CameraState.Status.connected,

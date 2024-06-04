@@ -64,6 +64,7 @@ try:
         CameraInfo,
         infield_correction,
         Matrix4x4,
+        NetworkConfiguration,
         data_model,
         PixelMapping,
         projection,
