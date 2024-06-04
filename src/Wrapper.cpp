@@ -38,6 +38,7 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraInfo);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, FrameInfo);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraIntrinsics);
+    ZIVID_PYTHON_WRAP_DATA_MODEL(module, NetworkConfiguration);
 
     ZIVID_PYTHON_WRAP_CLASS_AS_SINGLETON(module, Application);
     ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Camera);
