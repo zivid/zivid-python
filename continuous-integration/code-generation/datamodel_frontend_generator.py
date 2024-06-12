@@ -389,6 +389,23 @@ def _create_save_load_functions(node_data: NodeData, base_type: str):
     )
 
 
+def _create_serialize_and_from_serialized_functions(node_data: NodeData, base_type: str):
+    full_dot_path = _get_dot_path(base_type=base_type, node_path=node_data.path)
+    underscore_name = _get_underscore_name(
+        base_type=base_type, node_path=node_data.path
+    )
+    return dedent(
+        f"""
+        @classmethod
+        def from_serialized(cls, value):
+            return _to_{underscore_name}({full_dot_path}.from_serialized(str(value)))
+
+        def serialize(self):
+            return _to_internal_{underscore_name}(self).serialize()
+        """
+    )
+
+
 def _create_enum_class(member: NodeData, base_type: str) -> str:
     full_dot_path = _get_dot_path(base_type, member.path)
 
@@ -444,6 +461,7 @@ def _create_class(node_data: NodeData, base_type: str, is_root: bool) -> str:
             {init_function}
             {get_set_properties}
             {save_load_functions}
+            {serialize_and_from_serialized_functions}
             {eq_function}
             {str_function}
         """
@@ -461,6 +479,9 @@ def _create_class(node_data: NodeData, base_type: str, is_root: bool) -> str:
         get_set_properties=_indent(_create_properties(node_data, base_type=base_type)),
         save_load_functions=_indent(
             _create_save_load_functions(node_data, base_type=base_type)
+        ),
+        serialize_and_from_serialized_functions=_indent(
+            _create_serialize_and_from_serialized_functions(node_data, base_type=base_type)
         )
         if is_root
         else "",
