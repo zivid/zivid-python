@@ -6,7 +6,7 @@ the zivid.calibration module.
 
 import _zivid
 from zivid._calibration.pose import Pose
-from zivid._calibration.detector import DetectionResult
+from zivid._calibration.detector import DetectionResult, DetectionResultFiducialMarkers
 
 
 class HandEyeInput:
@@ -17,7 +17,7 @@ class HandEyeInput:
 
         Args:
             robot_pose: The robot Pose at the time of capture
-            detection_result: The DetectionResult captured when in the above pose
+            detection_result: The DetectionResult or DetectionResultFiducialMarkers captured when in the above pose
 
         Raises:
             TypeError: If one of the input arguments are of the wrong type
@@ -28,16 +28,23 @@ class HandEyeInput:
                     type(robot_pose)
                 )
             )
-        if not isinstance(detection_result, DetectionResult):
-            raise TypeError(
-                "Unsupported type for argument detection_result. Expected zivid.calibration.DetectionResult but got {}".format(
-                    type(detection_result)
-                )
+        if isinstance(detection_result, DetectionResult):
+            self.__impl = _zivid.calibration.HandEyeInput(
+                robot_pose._Pose__impl,  # pylint: disable=protected-access
+                detection_result._DetectionResult__impl,  # pylint: disable=protected-access
             )
-        self.__impl = _zivid.calibration.HandEyeInput(
-            robot_pose._Pose__impl,  # pylint: disable=protected-access
-            detection_result._DetectionResult__impl,  # pylint: disable=protected-access
-        )
+        elif isinstance(detection_result, DetectionResultFiducialMarkers):
+            self.__impl = _zivid.calibration.HandEyeInput(
+                robot_pose._Pose__impl,  # pylint: disable=protected-access
+                detection_result._DetectionResultFiducialMarkers__impl,  # pylint: disable=protected-access
+            )
+        else:
+            raise TypeError(
+                (
+                    "Unsupported type for argument detection_result."
+                    "Expected zivid.calibration.DetectionResult or zivid.calibration.DetectionResultFiducialMarkers but got {}"
+                ).format(type(detection_result))
+            )
 
     def robot_pose(self):
         """Get the contained robot pose.
