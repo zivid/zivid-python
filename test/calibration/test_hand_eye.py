@@ -1,7 +1,12 @@
-def test_handeye_input_init_failure(checkerboard_frames, transform):
-    import pytest
-    import zivid.calibration
+import tempfile
+from pathlib import Path
 
+import zivid
+import numpy as np
+import pytest
+
+
+def test_handeye_input_init_failure(checkerboard_frames, transform):
     frame = checkerboard_frames[0]
     detection_result = zivid.calibration.detect_feature_points(frame.point_cloud())
 
@@ -11,9 +16,6 @@ def test_handeye_input_init_failure(checkerboard_frames, transform):
 
 
 def test_handeye_input(checkerboard_frames, transform):
-    import numpy as np
-    import zivid.calibration
-
     point_cloud = checkerboard_frames[0].point_cloud()
     detection_result = zivid.calibration.detect_feature_points(point_cloud)
     pose = zivid.calibration.Pose(transform)
@@ -37,24 +39,7 @@ def test_handeye_input(checkerboard_frames, transform):
     assert detection_result_returned.valid() == detection_result.valid()
 
 
-def test_eyetohand_calibration(
-    handeye_eth_frames, handeye_eth_poses, handeye_eth_transform
-):
-    import numpy as np
-    import zivid.calibration
-
-    # Assemble input
-    inputs = []
-    for frame, pose_matrix in zip(handeye_eth_frames, handeye_eth_poses):
-        inputs.append(
-            zivid.calibration.HandEyeInput(
-                zivid.calibration.Pose(pose_matrix),
-                zivid.calibration.detect_feature_points(frame.point_cloud()),
-            )
-        )
-
-    # Perform eye-to-hand calibration
-    handeye_output = zivid.calibration.calibrate_eye_to_hand(inputs)
+def _check_handeye_output(inputs, handeye_output, expected_transform):
     assert isinstance(handeye_output, zivid.calibration.HandEyeOutput)
     assert handeye_output.valid()
     assert bool(handeye_output)
@@ -64,7 +49,7 @@ def test_eyetohand_calibration(
     transform_returned = handeye_output.transform()
     assert isinstance(transform_returned, np.ndarray)
     assert transform_returned.shape == (4, 4)
-    np.testing.assert_allclose(transform_returned, handeye_eth_transform, rtol=1e-5)
+    np.testing.assert_allclose(transform_returned, expected_transform, rtol=1e-5)
 
     # Check returned residuals
     residuals_returned = handeye_output.residuals()
@@ -79,12 +64,45 @@ def test_eyetohand_calibration(
         assert residual.rotation() >= 0.0
 
 
-def test_eyetohand_calibration_save_load(handeye_eth_frames, handeye_eth_poses):
-    from pathlib import Path
-    import tempfile
-    import zivid
-    import numpy as np
+def test_eyetohand_calibration(
+    handeye_eth_frames, handeye_eth_poses, handeye_eth_transform
+):
+    # Assemble input
+    inputs = []
+    for frame, pose_matrix in zip(handeye_eth_frames, handeye_eth_poses):
+        inputs.append(
+            zivid.calibration.HandEyeInput(
+                zivid.calibration.Pose(pose_matrix),
+                zivid.calibration.detect_feature_points(frame.point_cloud()),
+            )
+        )
 
+    # Perform eye-to-hand calibration
+    handeye_output = zivid.calibration.calibrate_eye_to_hand(inputs)
+    _check_handeye_output(inputs, handeye_output, handeye_eth_transform)
+
+
+def test_marker_eyetohand_calibration(
+    handeye_eth_frames, handeye_eth_poses, handeye_marker_eth_transform
+):
+    # Assemble input
+    inputs = []
+    for frame, pose_matrix in zip(handeye_eth_frames, handeye_eth_poses):
+        inputs.append(
+            zivid.calibration.HandEyeInput(
+                zivid.calibration.Pose(pose_matrix),
+                zivid.calibration.detect_markers(
+                    frame, [1, 2, 3, 4], zivid.calibration.MarkerDictionary.aruco4x4_50
+                ),
+            )
+        )
+
+    # Perform eye-to-hand calibration
+    handeye_output = zivid.calibration.calibrate_eye_to_hand(inputs)
+    _check_handeye_output(inputs, handeye_output, handeye_marker_eth_transform)
+
+
+def test_eyetohand_calibration_save_load(handeye_eth_frames, handeye_eth_poses):
     handeye_output = zivid.calibration.calibrate_eye_to_hand(
         [
             zivid.calibration.HandEyeInput(
