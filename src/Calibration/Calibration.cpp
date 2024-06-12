@@ -30,6 +30,8 @@ namespace ZividPython::Calibration
         ZIVID_PYTHON_WRAP_CLASS(dest, HandEyeOutput);
         ZIVID_PYTHON_WRAP_CLASS(dest, HandEyeInput);
         ZIVID_PYTHON_WRAP_CLASS(dest, DetectionResult);
+        ZIVID_PYTHON_WRAP_CLASS(dest, MarkerShape);
+        ZIVID_PYTHON_WRAP_CLASS(dest, DetectionResultFiducialMarkers);
         ZIVID_PYTHON_WRAP_CLASS(dest, HandEyeResidual);
 
         ZIVID_PYTHON_WRAP_CLASS(dest, MultiCameraResidual);
@@ -39,6 +41,13 @@ namespace ZividPython::Calibration
                  [](const ReleasablePointCloud &releasablePointCloud) {
                      return Zivid::Calibration::detectFeaturePoints(releasablePointCloud.impl());
                  })
+            .def("detect_markers",
+                 [](const ReleasableFrame &releasableFrame, const std::vector<int> &allowedMarkerIds) { 
+                    // TODO(ESKIL): Allow user to select MarkerDictionary.
+                    // TODO(ESKIL): Wrap DetectionResultFiducialMarkers
+                    return detectMarkers(releasableFrame.impl(), allowedMarkerIds, MarkerDictionary::aruco4x4_50); 
+                    })
+
             .def("calibrate_eye_in_hand", &Zivid::Calibration::calibrateEyeInHand)
             .def("calibrate_eye_to_hand", &Zivid::Calibration::calibrateEyeToHand)
             .def("calibrate_multi_camera", &Zivid::Calibration::calibrateMultiCamera)
