@@ -8,8 +8,6 @@ certifi==2023.5.7
     # via requests
 charset-normalizer==3.1.0
     # via requests
-colorama==0.4.6
-    # via pytest
 idna==3.4
     # via requests
 iniconfig==2.0.0
@@ -20,17 +18,17 @@ pluggy==1.0.0
     # via pytest
 pytest==7.3.1
     # via
-    #   -r continuous-integration/python-requirements/test.in
+    #   -r test.in
     #   pytest-helpers-namespace
     #   pytest-randomly
     #   pytest-timeout
 pytest-helpers-namespace==2021.12.29
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r test.in
 pytest-randomly==3.12.0
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r test.in
 pytest-timeout==2.1.0
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r test.in
 requests==2.30.0
-    # via -r continuous-integration/python-requirements/test.in
-urllib3==2.0.2
+    # via -r test.in
+urllib3==1.26.19
     # via requests
