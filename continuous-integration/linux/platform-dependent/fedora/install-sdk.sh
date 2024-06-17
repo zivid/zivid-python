@@ -11,4 +11,4 @@ function fedora_install_www_deb {
     rm -r $TMP_DIR || exit $?
 }
 
-fedora_install_www_deb "https://downloads.zivid.com/sdk/releases/${ZIVID_SDK_EXACT_VERSION}/u20/zivid_${ZIVID_SDK_EXACT_VERSION}_amd64.deb" || exit $?
+fedora_install_www_deb "https://downloads.zivid.com/sdk/previews/${ZIVID_SDK_EXACT_VERSION}/u20/amd64/zivid_${ZIVID_SDK_EXACT_VERSION}_amd64.deb" || exit $?

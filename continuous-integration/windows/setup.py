@@ -45,7 +45,7 @@ def _install_zivid_sdk():
     exact_version = json.loads(versions_json)["ZIVID_SDK_EXACT_VERSION"]
 
     with TemporaryDirectoryIgnoringCleanupErrors() as temp_dir:
-        zivid_installer_url = f"https://downloads.zivid.com/sdk/releases/{exact_version}/windows/ZividSetup_{exact_version}.exe"
+        zivid_installer_url = f"https://downloads.zivid.com/sdk/previews/{exact_version}/windows/ZividSetup_{exact_version}.exe"
         print("Downloading {}".format(zivid_installer_url), flush=True)
         zivid_installer = Path(temp_dir) / "ZividSetup.exe"
         response = requests.get(zivid_installer_url, timeout=(25, 600))
