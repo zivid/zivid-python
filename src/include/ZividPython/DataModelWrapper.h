@@ -165,7 +165,9 @@ namespace ZividPython
             {
                 pyClass.def(py::init<const std::string &>(), py::arg("file_name"))
                     .def("save", &Target::save, py::arg("file_name"))
-                    .def("load", &Target::load, py::arg("file_name"));
+                    .def("load", &Target::load, py::arg("file_name"))
+                    .def_static("from_serialized", &Target::fromSerialized, py::arg("value"))
+                    .def("serialize", &Target::serialize);
             }
 
             if constexpr(Target::nodeType == Zivid::DataModel::NodeType::group)

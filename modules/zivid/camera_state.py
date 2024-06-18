@@ -495,6 +495,13 @@ class CameraState:
     def save(self, file_name):
         _to_internal_camera_state(self).save(str(file_name))
 
+    @classmethod
+    def from_serialized(cls, value):
+        return _to_camera_state(_zivid.CameraState.from_serialized(str(value)))
+
+    def serialize(self):
+        return _to_internal_camera_state(self).serialize()
+
     def __eq__(self, other):
         if (
             self._available == other._available

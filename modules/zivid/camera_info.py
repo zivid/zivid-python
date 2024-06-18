@@ -310,6 +310,13 @@ class CameraInfo:
     def save(self, file_name):
         _to_internal_camera_info(self).save(str(file_name))
 
+    @classmethod
+    def from_serialized(cls, value):
+        return _to_camera_info(_zivid.CameraInfo.from_serialized(str(value)))
+
+    def serialize(self):
+        return _to_internal_camera_info(self).serialize()
+
     def __eq__(self, other):
         if (
             self._firmware_version == other._firmware_version

@@ -115,6 +115,19 @@ class SuggestSettingsParameters:
             str(file_name)
         )
 
+    @classmethod
+    def from_serialized(cls, value):
+        return _to_capture_assistant_suggest_settings_parameters(
+            _zivid.capture_assistant.SuggestSettingsParameters.from_serialized(
+                str(value)
+            )
+        )
+
+    def serialize(self):
+        return _to_internal_capture_assistant_suggest_settings_parameters(
+            self
+        ).serialize()
+
     def __eq__(self, other):
         if (
             self._ambient_light_frequency == other._ambient_light_frequency

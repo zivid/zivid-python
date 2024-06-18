@@ -150,6 +150,15 @@ class NetworkConfiguration:
     def save(self, file_name):
         _to_internal_network_configuration(self).save(str(file_name))
 
+    @classmethod
+    def from_serialized(cls, value):
+        return _to_network_configuration(
+            _zivid.NetworkConfiguration.from_serialized(str(value))
+        )
+
+    def serialize(self):
+        return _to_internal_network_configuration(self).serialize()
+
     def __eq__(self, other):
         if self._ipv4 == other._ipv4:
             return True
