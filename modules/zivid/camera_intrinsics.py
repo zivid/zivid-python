@@ -418,6 +418,15 @@ class CameraIntrinsics:
     def save(self, file_name):
         _to_internal_camera_intrinsics(self).save(str(file_name))
 
+    @classmethod
+    def from_serialized(cls, value):
+        return _to_camera_intrinsics(
+            _zivid.CameraIntrinsics.from_serialized(str(value))
+        )
+
+    def serialize(self):
+        return _to_internal_camera_intrinsics(self).serialize()
+
     def __eq__(self, other):
         if (
             self._camera_matrix == other._camera_matrix

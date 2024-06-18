@@ -2492,10 +2492,12 @@ class Settings:
     class Sampling:
         class Color:
             disabled = "disabled"
+            grayscale = "grayscale"
             rgb = "rgb"
 
             _valid_values = {
                 "disabled": _zivid.Settings.Sampling.Color.disabled,
+                "grayscale": _zivid.Settings.Sampling.Color.grayscale,
                 "rgb": _zivid.Settings.Sampling.Color.rgb,
             }
 
@@ -2777,6 +2779,13 @@ class Settings:
 
     def save(self, file_name):
         _to_internal_settings(self).save(str(file_name))
+
+    @classmethod
+    def from_serialized(cls, value):
+        return _to_settings(_zivid.Settings.from_serialized(str(value)))
+
+    def serialize(self):
+        return _to_internal_settings(self).serialize()
 
     def __eq__(self, other):
         if (
