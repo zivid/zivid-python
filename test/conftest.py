@@ -47,6 +47,14 @@ def shared_file_camera_fixture(application, file_camera_file):
         yield file_cam
 
 
+@pytest.fixture(name="file_camera_calibration_board", scope="module")
+def file_camera_calibration_board_fixture(application):
+    with application.create_file_camera(
+        _testdata_dir() / "calibration_board.zfc"
+    ) as cam:
+        yield cam
+
+
 @pytest.fixture(name="default_settings", scope="module")
 def default_settings_fixture():
     return zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
@@ -81,6 +89,14 @@ def checkerboard_frames_fixture(application):
 @pytest.fixture(name="calibration_board_frame", scope="module")
 def calibration_board_frame_fixture(application):
     with zivid.Frame(_testdata_dir() / "ZVD-CB01.zdf") as frame:
+        yield frame
+
+
+@pytest.fixture(name="calibration_board_and_aruco_markers_frame", scope="module")
+def calibration_board_and_aruco_markers_frame_fixture(application):
+    with zivid.Frame(
+        _testdata_dir() / "calibration_board_and_aruco_markers.zdf"
+    ) as frame:
         yield frame
 
 

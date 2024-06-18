@@ -8,6 +8,8 @@ from zivid._calibration.detector import (
     MarkerDictionary,
     detect_feature_points,
     detect_markers,
+    detect_calibration_board,
+    capture_calibration_board,
 )
 from zivid._calibration.hand_eye import (
     HandEyeInput,

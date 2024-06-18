@@ -5,6 +5,8 @@ the zivid.calibration module.
 """
 
 import _zivid
+from zivid.camera import Camera
+from zivid.frame import Frame
 from zivid._calibration.pose import Pose
 
 
@@ -277,6 +279,76 @@ def detect_feature_points(point_cloud):
     return DetectionResult(
         _zivid.calibration.detect_feature_points(
             point_cloud._PointCloud__impl  # pylint: disable=protected-access
+        )
+    )
+
+
+def detect_calibration_board(source):
+    """
+    Detect feature points from a calibration board in a frame or using a given camera.
+
+    If a camera is used, this function will perform a relatively slow but high-quality point cloud
+    capture with the camera. This function is necessary for application that require very
+    high-accuracy DetectionResult, such as in-field verification/correction.
+
+    The functionality is to be exclusively used in combination with Zivid verified calibration boards.
+    For further information please visit https://support.zivid.com.
+
+    Args:
+        source: A frame containing an image of a calibration board or a camera pointed at
+            a calibration board
+
+    Raises:
+        TypeError: If source is not of type Camera or Frame
+
+    Returns:
+        A DetectionResult instance
+    """
+
+    if isinstance(source, Camera):
+        return DetectionResult(
+            _zivid.calibration.detect_calibration_board(
+                source._Camera__impl  # pylint: disable=protected-access
+            )
+        )
+    if isinstance(source, Frame):
+        return DetectionResult(
+            _zivid.calibration.detect_calibration_board(
+                source._Frame__impl  # pylint: disable=protected-access
+            )
+        )
+    raise TypeError(
+        "Unsupported type for argument source. Got {}, expected one of {}".format(
+            type(source),
+            (Camera, Frame),
+        )
+    )
+
+
+def capture_calibration_board(camera):
+    """
+    Capture calibration board with the given camera.
+
+    The functionality is to be exclusively used in combination with Zivid verified calibration boards.
+    For further information please visit https://support.zivid.com.
+
+    This function will perform a relatively slow but high-quality point cloud capture with the
+    given camera. This function is necessary for applications that require very high-accuracy
+    captures, such as in-field verification/correction.
+
+    The Frame that is returned from this function may be used as input to `detect_calibration_board`.
+    You may also use `detect_calibration_board` directly, which will invoke this function under the
+    hood and yield a DetectionResult.
+
+    Args:
+        camera: a Camera pointed at a calibration board
+
+    Returns:
+        A Frame
+    """
+    return Frame(
+        _zivid.calibration.capture_calibration_board(
+            camera._Camera__impl  # pylint: disable=protected-access
         )
     )
 
