@@ -1,6 +1,11 @@
 """Module for calibration features, such as HandEye and MultiCamera."""
 # pylint: disable=unused-import
-from zivid._calibration.detector import DetectionResult, detect_feature_points
+from zivid._calibration.detector import (
+    DetectionResult,
+    detect_feature_points,
+    detect_calibration_board,
+    capture_calibration_board,
+)
 from zivid._calibration.hand_eye import (
     HandEyeInput,
     HandEyeResidual,

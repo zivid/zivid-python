@@ -39,6 +39,18 @@ namespace ZividPython::Calibration
                  [](const ReleasablePointCloud &releasablePointCloud) {
                      return Zivid::Calibration::detectFeaturePoints(releasablePointCloud.impl());
                  })
+            .def("detect_calibration_board",
+                 [](ReleasableCamera &releasableCamera) {
+                     return Zivid::Calibration::detectCalibrationBoard(releasableCamera.impl());
+                 })
+            .def("detect_calibration_board",
+                 [](ReleasableFrame &releasableFrame) {
+                     return Zivid::Calibration::detectCalibrationBoard(releasableFrame.impl());
+                 })
+            .def("capture_calibration_board",
+                 [](ReleasableCamera &releasableCamera) {
+                     return ReleasableFrame{ Zivid::Calibration::captureCalibrationBoard(releasableCamera.impl()) };
+                 })
             .def("calibrate_eye_in_hand", &Zivid::Calibration::calibrateEyeInHand)
             .def("calibrate_eye_to_hand", &Zivid::Calibration::calibrateEyeToHand)
             .def("calibrate_multi_camera", &Zivid::Calibration::calibrateMultiCamera)
