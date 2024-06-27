@@ -2780,6 +2780,13 @@ class Settings:
     def save(self, file_name):
         _to_internal_settings(self).save(str(file_name))
 
+    @classmethod
+    def from_serialized(cls, value):
+        return _to_settings(_zivid.Settings.from_serialized(str(value)))
+
+    def serialize(self):
+        return _to_internal_settings(self).serialize()
+
     def __eq__(self, other):
         if (
             self._acquisitions == other._acquisitions

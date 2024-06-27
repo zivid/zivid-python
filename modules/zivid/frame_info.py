@@ -297,6 +297,13 @@ class FrameInfo:
     def save(self, file_name):
         _to_internal_frame_info(self).save(str(file_name))
 
+    @classmethod
+    def from_serialized(cls, value):
+        return _to_frame_info(_zivid.FrameInfo.from_serialized(str(value)))
+
+    def serialize(self):
+        return _to_internal_frame_info(self).serialize()
+
     def __eq__(self, other):
         if (
             self._time_stamp == other._time_stamp

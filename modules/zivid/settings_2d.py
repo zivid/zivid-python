@@ -654,6 +654,13 @@ class Settings2D:
     def save(self, file_name):
         _to_internal_settings2d(self).save(str(file_name))
 
+    @classmethod
+    def from_serialized(cls, value):
+        return _to_settings2d(_zivid.Settings2D.from_serialized(str(value)))
+
+    def serialize(self):
+        return _to_internal_settings2d(self).serialize()
+
     def __eq__(self, other):
         if (
             self._acquisitions == other._acquisitions
