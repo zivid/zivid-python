@@ -2492,10 +2492,12 @@ class Settings:
     class Sampling:
         class Color:
             disabled = "disabled"
+            grayscale = "grayscale"
             rgb = "rgb"
 
             _valid_values = {
                 "disabled": _zivid.Settings.Sampling.Color.disabled,
+                "grayscale": _zivid.Settings.Sampling.Color.grayscale,
                 "rgb": _zivid.Settings.Sampling.Color.rgb,
             }
 

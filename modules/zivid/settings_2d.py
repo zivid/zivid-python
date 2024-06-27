@@ -443,6 +443,19 @@ class Settings2D:
             return str(_to_internal_settings2d_processing(self))
 
     class Sampling:
+        class Color:
+            grayscale = "grayscale"
+            rgb = "rgb"
+
+            _valid_values = {
+                "grayscale": _zivid.Settings2D.Sampling.Color.grayscale,
+                "rgb": _zivid.Settings2D.Sampling.Color.rgb,
+            }
+
+            @classmethod
+            def valid_values(cls):
+                return list(cls._valid_values.keys())
+
         class Pixel:
             all = "all"
             blueSubsample2x2 = "blueSubsample2x2"
@@ -464,8 +477,25 @@ class Settings2D:
 
         def __init__(
             self,
+            color=_zivid.Settings2D.Sampling.Color().value,
             pixel=_zivid.Settings2D.Sampling.Pixel().value,
         ):
+            if (
+                isinstance(color, _zivid.Settings2D.Sampling.Color.enum)
+                or color is None
+            ):
+                self._color = _zivid.Settings2D.Sampling.Color(color)
+            elif isinstance(color, str):
+                self._color = _zivid.Settings2D.Sampling.Color(
+                    self.Color._valid_values[color]
+                )
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: str or None, got {value_type}".format(
+                        value_type=type(color)
+                    )
+                )
+
             if (
                 isinstance(pixel, _zivid.Settings2D.Sampling.Pixel.enum)
                 or pixel is None
@@ -483,6 +513,15 @@ class Settings2D:
                 )
 
         @property
+        def color(self):
+            if self._color.value is None:
+                return None
+            for key, internal_value in self.Color._valid_values.items():
+                if internal_value == self._color.value:
+                    return key
+            raise ValueError("Unsupported value {value}".format(value=self._color))
+
+        @property
         def pixel(self):
             if self._pixel.value is None:
                 return None
@@ -490,6 +529,24 @@ class Settings2D:
                 if internal_value == self._pixel.value:
                     return key
             raise ValueError("Unsupported value {value}".format(value=self._pixel))
+
+        @color.setter
+        def color(self, value):
+            if isinstance(value, str):
+                self._color = _zivid.Settings2D.Sampling.Color(
+                    self.Color._valid_values[value]
+                )
+            elif (
+                isinstance(value, _zivid.Settings2D.Sampling.Color.enum)
+                or value is None
+            ):
+                self._color = _zivid.Settings2D.Sampling.Color(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: str or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         @pixel.setter
         def pixel(self, value):
@@ -510,7 +567,7 @@ class Settings2D:
                 )
 
         def __eq__(self, other):
-            if self._pixel == other._pixel:
+            if self._color == other._color and self._pixel == other._pixel:
                 return True
             return False
 
@@ -642,6 +699,7 @@ def _to_settings2d_processing(internal_processing):
 
 def _to_settings2d_sampling(internal_sampling):
     return Settings2D.Sampling(
+        color=internal_sampling.color.value,
         pixel=internal_sampling.pixel.value,
     )
 
@@ -711,6 +769,7 @@ def _to_internal_settings2d_processing(processing):
 def _to_internal_settings2d_sampling(sampling):
     internal_sampling = _zivid.Settings2D.Sampling()
 
+    internal_sampling.color = _zivid.Settings2D.Sampling.Color(sampling._color.value)
     internal_sampling.pixel = _zivid.Settings2D.Sampling.Pixel(sampling._pixel.value)
 
     return internal_sampling
