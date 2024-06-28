@@ -30,3 +30,4 @@ per-file-ignores =
     camera_info.py:D101,D102,D106,D107
     camera_intrinsics.py:D101,D102,D106,D107
     frame_info.py:D101,D102,D106,D107
+    network_configuration.py:D101,D102,D106,D107
