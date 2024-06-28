@@ -29,6 +29,7 @@ namespace ZividPython
     void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeInput> pyClass)
     {
         pyClass.def(py::init<Zivid::Calibration::Pose, Zivid::Calibration::DetectionResult>())
+            .def(py::init<Zivid::Calibration::Pose, Zivid::Calibration::DetectionResultFiducialMarkers>())
             .def("robot_pose",
                  [](const Zivid::Calibration::HandEyeInput &handEyeInput) {
                      return Conversion::toPy(handEyeInput.robotPose().toMatrix());

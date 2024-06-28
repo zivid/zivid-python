@@ -22,4 +22,10 @@ namespace ZividPython::Conversion
     {
         return Eigen::Vector3f{ source.x, source.y, source.z };
     }
+
+    inline auto toPyVector(const Zivid::PointXY &source)
+    {
+        return Eigen::Vector2f{ source.x, source.y };
+    }
+
 } // namespace ZividPython::Conversion

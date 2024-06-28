@@ -3,9 +3,13 @@
 # pylint: disable=unused-import
 from zivid._calibration.detector import (
     DetectionResult,
+    DetectionResultFiducialMarkers,
+    MarkerShape,
+    MarkerDictionary,
     detect_feature_points,
     detect_calibration_board,
     capture_calibration_board,
+    detect_markers,
 )
 from zivid._calibration.hand_eye import (
     HandEyeInput,

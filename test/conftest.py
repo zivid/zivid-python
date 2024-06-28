@@ -94,9 +94,7 @@ def calibration_board_frame_fixture(application):
 
 @pytest.fixture(name="calibration_board_and_aruco_markers_frame", scope="module")
 def calibration_board_and_aruco_markers_frame_fixture(application):
-    with zivid.Frame(
-        _testdata_dir() / "calibration_board_and_aruco_markers.zdf"
-    ) as frame:
+    with zivid.Frame(_testdata_dir() / "handeye" / "eth" / "img01.zdf") as frame:
         yield frame
 
 
@@ -149,6 +147,42 @@ def handeye_eth_poses_fixture():
 def handeye_eth_transform_fixture():
     path = _testdata_dir() / "handeye" / "eth" / "eth_transform.csv"
     return np.loadtxt(str(path), delimiter=",")
+
+
+@pytest.fixture(name="handeye_marker_eth_transform", scope="function")
+def handeye_marker_eth_transform_fixture():
+    path = _testdata_dir() / "handeye" / "eth" / "eth_transform_marker.csv"
+    return np.loadtxt(str(path), delimiter=",")
+
+
+@pytest.fixture(name="markers_2d_corners", scope="function")
+def markers_2d_corners_fixture():
+    path = _testdata_dir() / "marker_detection"
+    corners = {
+        int(file.stem.split("_")[-1]): np.loadtxt(file, delimiter=",")
+        for file in sorted(path.glob("expected_2d_corners_*.csv"))
+    }
+    return corners
+
+
+@pytest.fixture(name="markers_3d_corners", scope="function")
+def markers_3d_corners_fixture():
+    path = _testdata_dir() / "marker_detection"
+    corners = {
+        int(file.stem.split("_")[-1]): np.loadtxt(file, delimiter=",")
+        for file in sorted(path.glob("expected_3d_corners_*.csv"))
+    }
+    return corners
+
+
+@pytest.fixture(name="markers_poses", scope="function")
+def markers_poses_fixture():
+    path = _testdata_dir() / "marker_detection"
+    poses = {
+        int(file.stem.split("_")[-1]): np.loadtxt(file, delimiter=",")
+        for file in sorted(path.glob("expected_poses_*.csv"))
+    }
+    return poses
 
 
 @pytest.fixture(name="image_2d_rgba", scope="function")
