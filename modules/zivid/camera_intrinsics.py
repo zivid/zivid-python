@@ -1,10 +1,13 @@
 """Auto generated, do not edit."""
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
 
 class CameraIntrinsics:
+
     class CameraMatrix:
+
         def __init__(
             self,
             cx=_zivid.CameraIntrinsics.CameraMatrix.CX().value,
@@ -12,6 +15,7 @@ class CameraIntrinsics:
             fx=_zivid.CameraIntrinsics.CameraMatrix.FX().value,
             fy=_zivid.CameraIntrinsics.CameraMatrix.FY().value,
         ):
+
             if isinstance(
                 cx,
                 (
@@ -170,6 +174,7 @@ class CameraIntrinsics:
             return str(_to_internal_camera_intrinsics_camera_matrix(self))
 
     class Distortion:
+
         def __init__(
             self,
             k1=_zivid.CameraIntrinsics.Distortion.K1().value,
@@ -178,6 +183,7 @@ class CameraIntrinsics:
             p1=_zivid.CameraIntrinsics.Distortion.P1().value,
             p2=_zivid.CameraIntrinsics.Distortion.P2().value,
         ):
+
             if isinstance(
                 k1,
                 (
@@ -377,6 +383,7 @@ class CameraIntrinsics:
         camera_matrix=None,
         distortion=None,
     ):
+
         if camera_matrix is None:
             camera_matrix = self.CameraMatrix()
         if not isinstance(camera_matrix, self.CameraMatrix):

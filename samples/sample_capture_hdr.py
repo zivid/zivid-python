@@ -1,4 +1,5 @@
 """HDR capture sample."""
+
 from zivid import Application, Settings
 
 

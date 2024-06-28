@@ -21,7 +21,7 @@ jobs:
               --volume $PWD:/host \
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
-              ubuntu:23.10  \
+              ubuntu:24.04  \
               bash -c "./setup.sh && ./install-sdk.sh && ./build.sh && ./lint.sh"
       - name: Notify Teams
         if: ${{ failure() && github.ref == 'refs/heads/master' }}
@@ -102,10 +102,10 @@ jobs:
         os:
           - ubuntu:20.04
           - ubuntu:22.04
-          - ubuntu:23.04
           - ubuntu:23.10
-          - fedora:37
-          - fedora:38
+          - ubuntu:24.04
+          - fedora:39
+          - fedora:40
     steps:
       - name: Check out code
         uses: actions/checkout@v4

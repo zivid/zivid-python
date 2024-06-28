@@ -1,4 +1,5 @@
 """Contains the Capture Assistant functionality."""
+
 import _zivid
 
 from zivid._suggest_settings_parameters import (  # pylint: disable=unused-import

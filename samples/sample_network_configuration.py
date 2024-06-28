@@ -1,4 +1,5 @@
 """Sample demonstrating network configuration of a Zivid camera."""
+
 import zivid
 
 

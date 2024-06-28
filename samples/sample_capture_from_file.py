@@ -1,4 +1,5 @@
 """File camera capture sample."""
+
 from zivid import Application, Settings
 
 

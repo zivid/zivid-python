@@ -479,18 +479,20 @@ def _create_class(node_data: NodeData, base_type: str, is_root: bool) -> str:
             _create_str_special_member_function(node_data, base_type=base_type)
         ),
         get_set_properties=_indent(_create_properties(node_data, base_type=base_type)),
-        save_load_functions=_indent(
-            _create_save_load_functions(node_data, base_type=base_type)
-        )
-        if is_root
-        else "",
-        serialize_and_from_serialized_functions=_indent(
-            _create_serialize_and_from_serialized_functions(
-                node_data, base_type=base_type
+        save_load_functions=(
+            _indent(_create_save_load_functions(node_data, base_type=base_type))
+            if is_root
+            else ""
+        ),
+        serialize_and_from_serialized_functions=(
+            _indent(
+                _create_serialize_and_from_serialized_functions(
+                    node_data, base_type=base_type
+                )
             )
-        )
-        if is_root
-        else "",
+            if is_root
+            else ""
+        ),
     )
 
 

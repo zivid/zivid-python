@@ -1,11 +1,14 @@
 """Auto generated, do not edit."""
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import datetime
 import _zivid
 
 
 class SuggestSettingsParameters:
+
     class AmbientLightFrequency:
+
         hz50 = "hz50"
         hz60 = "hz60"
         none = "none"
@@ -25,6 +28,7 @@ class SuggestSettingsParameters:
         ambient_light_frequency=_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency().value,
         max_capture_time=_zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime().value,
     ):
+
         if isinstance(
             ambient_light_frequency,
             _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum,

@@ -1,4 +1,5 @@
 """Capture sample."""
+
 import datetime
 from zivid import Application, Settings
 

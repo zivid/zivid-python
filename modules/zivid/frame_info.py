@@ -1,15 +1,19 @@
 """Auto generated, do not edit."""
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import datetime
 import _zivid
 
 
 class FrameInfo:
+
     class SoftwareVersion:
+
         def __init__(
             self,
             core=_zivid.FrameInfo.SoftwareVersion.Core().value,
         ):
+
             if isinstance(core, (str,)):
                 self._core = _zivid.FrameInfo.SoftwareVersion.Core(core)
             else:
@@ -43,11 +47,14 @@ class FrameInfo:
             return str(_to_internal_frame_info_software_version(self))
 
     class SystemInfo:
+
         class CPU:
+
             def __init__(
                 self,
                 model=_zivid.FrameInfo.SystemInfo.CPU.Model().value,
             ):
+
                 if isinstance(model, (str,)):
                     self._model = _zivid.FrameInfo.SystemInfo.CPU.Model(model)
                 else:
@@ -81,11 +88,13 @@ class FrameInfo:
                 return str(_to_internal_frame_info_system_info_cpu(self))
 
         class ComputeDevice:
+
             def __init__(
                 self,
                 model=_zivid.FrameInfo.SystemInfo.ComputeDevice.Model().value,
                 vendor=_zivid.FrameInfo.SystemInfo.ComputeDevice.Vendor().value,
             ):
+
                 if isinstance(model, (str,)):
                     self._model = _zivid.FrameInfo.SystemInfo.ComputeDevice.Model(model)
                 else:
@@ -152,6 +161,7 @@ class FrameInfo:
             cpu=None,
             compute_device=None,
         ):
+
             if isinstance(operating_system, (str,)):
                 self._operating_system = _zivid.FrameInfo.SystemInfo.OperatingSystem(
                     operating_system
@@ -232,6 +242,7 @@ class FrameInfo:
         software_version=None,
         system_info=None,
     ):
+
         if isinstance(time_stamp, (datetime.datetime,)):
             self._time_stamp = _zivid.FrameInfo.TimeStamp(time_stamp)
         else:

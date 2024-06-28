@@ -4,50 +4,55 @@
 #
 #    pip-compile continuous-integration/python-requirements/build.in
 #
-certifi==2023.5.7
+certifi==2024.6.2
     # via requests
-charset-normalizer==3.1.0
+charset-normalizer==3.3.2
     # via requests
-cmake==3.26.3
+cmake==3.29.6
     # via -r continuous-integration/python-requirements/build.in
 colorama==0.4.6
     # via conan
-conan==2.3.2
+conan==2.4.1
     # via -r continuous-integration/python-requirements/build.in
 distro==1.8.0
-    # via
-    #   conan
-    #   scikit-build
-fasteners==0.18
-    # via conan
-idna==3.4
-    # via requests
-jinja2==3.1.2
-    # via conan
-markupsafe==2.1.2
-    # via jinja2
-ninja==1.11.1
-    # via -r continuous-integration/python-requirements/build.in
-packaging==23.1
     # via scikit-build
+fasteners==0.19
+    # via conan
+idna==3.7
+    # via requests
+jinja2==3.1.4
+    # via conan
+markupsafe==2.1.5
+    # via jinja2
+ninja==1.11.1.1
+    # via -r continuous-integration/python-requirements/build.in
+packaging==24.0
+    # via
+    #   -r continuous-integration/python-requirements/build.in
+    #   scikit-build
 patch-ng==1.17.4
     # via conan
-python-dateutil==2.8.2
+python-dateutil==2.9.0.post0
     # via conan
 pyyaml==6.0.1
     # via conan
-requests==2.30.0
-    # via conan
-scikit-build==0.17.3
+requests==2.31.0
+    # via
+    #   -r continuous-integration/python-requirements/build.in
+    #   conan
+scikit-build==0.18.0
     # via -r continuous-integration/python-requirements/build.in
 six==1.16.0
     # via python-dateutil
-urllib3==1.26.15
+urllib3==1.26.19
     # via
+    #   -r continuous-integration/python-requirements/build.in
     #   conan
     #   requests
-wheel==0.40.0
-    # via scikit-build
+wheel==0.42.0
+    # via
+    #   -r continuous-integration/python-requirements/build.in
+    #   scikit-build
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

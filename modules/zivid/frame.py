@@ -1,4 +1,5 @@
 """Contains the Frame class."""
+
 from pathlib import Path
 
 import _zivid

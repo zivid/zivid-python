@@ -1,4 +1,5 @@
 """Presets sample."""
+
 from zivid import Application
 from zivid.presets import categories
 
