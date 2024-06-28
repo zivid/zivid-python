@@ -2,3 +2,7 @@ scikit-build
 cmake
 ninja
 conan>=2,<3
+packaging==24.0  # TODO: remove pinned transitive dependency when Python 3.7 compatibility is dropped
+wheel==0.42.0  # TODO: remove pinned transitive dependency when Python 3.7 compatibility is dropped
+requests~=2.31.0  # TODO: remove pinned transitive dependency when Python 3.7 compatibility is dropped
+urllib3<1.27  # TODO: remove pinned transitive dependency when Python 3.7 compatibility is dropped

@@ -3,6 +3,7 @@
 This module should not be imported directly by end-user, but rather accessed through
 the zivid.calibration module.
 """
+
 import _zivid
 from zivid.camera import Camera
 from zivid.frame import Frame

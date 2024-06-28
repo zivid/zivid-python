@@ -1,4 +1,5 @@
 """Contains Application class."""
+
 import _zivid
 from zivid.camera import Camera
 

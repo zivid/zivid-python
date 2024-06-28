@@ -1,4 +1,5 @@
 """Contains the Preset and Category classes."""
+
 import _zivid
 
 from zivid.settings import _to_settings

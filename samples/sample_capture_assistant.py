@@ -1,4 +1,5 @@
 """Capture Assistant sample."""
+
 import datetime
 import zivid
 from zivid.capture_assistant import SuggestSettingsParameters

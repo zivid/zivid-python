@@ -1,4 +1,5 @@
 """Get version information for the library."""
+
 import _zivid
 
 

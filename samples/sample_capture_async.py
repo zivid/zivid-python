@@ -1,4 +1,5 @@
 """Sample demonstrating how to capture with multiple cameras at the same time."""
+
 import concurrent.futures
 import datetime
 import time
@@ -50,14 +51,14 @@ def _main():
     _capture_async(cameras)
     end = time.monotonic()
     print(
-        f"Time taken to capture asynchronously from {len(cameras)} camera(s): {end-start} seconds"
+        f"Time taken to capture asynchronously from {len(cameras)} camera(s): {end - start} seconds"
     )
 
     start = time.monotonic()
     _capture_sync(cameras)
     end = time.monotonic()
     print(
-        f"Time taken to capture synchronously from {len(cameras)} camera(s): {end-start} seconds"
+        f"Time taken to capture synchronously from {len(cameras)} camera(s): {end - start} seconds"
     )
 
     for camera in cameras:

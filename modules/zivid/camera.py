@@ -1,4 +1,5 @@
 """Contains Camera class."""
+
 import _zivid
 from zivid.camera_info import _to_camera_info
 from zivid.camera_state import _to_camera_state

@@ -1,4 +1,5 @@
 """Print version information for Python, zivid-python and Zivid SDK."""
+
 import platform
 import zivid
 

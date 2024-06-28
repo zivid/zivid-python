@@ -1,15 +1,20 @@
 """Auto generated, do not edit."""
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
 
 class CameraState:
+
     class Network:
+
         class IPV4:
+
             def __init__(
                 self,
                 address=_zivid.CameraState.Network.IPV4.Address().value,
             ):
+
                 if isinstance(address, (str,)):
                     self._address = _zivid.CameraState.Network.IPV4.Address(address)
                 else:
@@ -46,6 +51,7 @@ class CameraState:
             self,
             ipv4=None,
         ):
+
             if ipv4 is None:
                 ipv4 = self.IPV4()
             if not isinstance(ipv4, self.IPV4):
@@ -71,6 +77,7 @@ class CameraState:
             return str(_to_internal_camera_state_network(self))
 
     class Temperature:
+
         def __init__(
             self,
             dmd=_zivid.CameraState.Temperature.DMD().value,
@@ -79,6 +86,7 @@ class CameraState:
             lens=_zivid.CameraState.Temperature.Lens().value,
             pcb=_zivid.CameraState.Temperature.PCB().value,
         ):
+
             if isinstance(
                 dmd,
                 (
@@ -274,6 +282,7 @@ class CameraState:
             return str(_to_internal_camera_state_temperature(self))
 
     class InaccessibleReason:
+
         ipConflictWithAnotherCamera = "ipConflictWithAnotherCamera"
         ipConflictWithLocalNetworkAdapter = "ipConflictWithLocalNetworkAdapter"
         ipInMultipleLocalSubnets = "ipInMultipleLocalSubnets"
@@ -291,6 +300,7 @@ class CameraState:
             return list(cls._valid_values.keys())
 
     class Status:
+
         applyingNetworkConfiguration = "applyingNetworkConfiguration"
         available = "available"
         busy = "busy"
@@ -328,6 +338,7 @@ class CameraState:
         network=None,
         temperature=None,
     ):
+
         if isinstance(available, (bool,)):
             self._available = _zivid.CameraState.Available(available)
         else:

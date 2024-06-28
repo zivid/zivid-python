@@ -1,4 +1,5 @@
 """Contains functions for checking and updating camera firmware."""
+
 import _zivid
 
 

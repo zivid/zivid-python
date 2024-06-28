@@ -1,4 +1,5 @@
 """Capture sample 2D."""
+
 import datetime
 from zivid import Application, Settings2D
 

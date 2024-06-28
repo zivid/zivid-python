@@ -1,4 +1,5 @@
 """Contains the PointCloud class."""
+
 import numpy
 
 import _zivid

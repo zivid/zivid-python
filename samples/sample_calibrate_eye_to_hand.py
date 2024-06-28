@@ -1,4 +1,5 @@
 """Hand-eye calibration sample."""
+
 from pathlib import Path
 import datetime
 import tempfile

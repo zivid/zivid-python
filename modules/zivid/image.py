@@ -1,4 +1,5 @@
 """Contains a the Image class."""
+
 import numpy
 
 import _zivid

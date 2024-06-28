@@ -1,15 +1,19 @@
 """Auto generated, do not edit."""
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
 
 class CameraInfo:
+
     class Revision:
+
         def __init__(
             self,
             major=_zivid.CameraInfo.Revision.Major().value,
             minor=_zivid.CameraInfo.Revision.Minor().value,
         ):
+
             if isinstance(major, (int,)):
                 self._major = _zivid.CameraInfo.Revision.Major(major)
             else:
@@ -67,10 +71,12 @@ class CameraInfo:
             return str(_to_internal_camera_info_revision(self))
 
     class UserData:
+
         def __init__(
             self,
             max_size_bytes=_zivid.CameraInfo.UserData.MaxSizeBytes().value,
         ):
+
             if isinstance(max_size_bytes, (int,)):
                 self._max_size_bytes = _zivid.CameraInfo.UserData.MaxSizeBytes(
                     max_size_bytes
@@ -106,6 +112,7 @@ class CameraInfo:
             return str(_to_internal_camera_info_user_data(self))
 
     class Model:
+
         zivid2PlusL110 = "zivid2PlusL110"
         zivid2PlusM130 = "zivid2PlusM130"
         zivid2PlusM60 = "zivid2PlusM60"
@@ -140,6 +147,7 @@ class CameraInfo:
         revision=None,
         user_data=None,
     ):
+
         if isinstance(firmware_version, (str,)):
             self._firmware_version = _zivid.CameraInfo.FirmwareVersion(firmware_version)
         else:

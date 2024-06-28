@@ -1,4 +1,5 @@
 """Sample demonstrating in-field verification (experimental)."""
+
 import zivid
 
 from zivid.experimental.calibration import (
@@ -31,7 +32,7 @@ def _main():
             )
         camera_verification = verify_camera(infield_input)
         print(
-            f"Local dimension trueness: {camera_verification.local_dimension_trueness()*100:.3f}%"
+            f"Local dimension trueness: {camera_verification.local_dimension_trueness() * 100:.3f}%"
         )
 
 

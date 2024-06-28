@@ -1,11 +1,15 @@
 """Auto generated, do not edit."""
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
 
 class NetworkConfiguration:
+
     class IPV4:
+
         class Mode:
+
             dhcp = "dhcp"
             manual = "manual"
 
@@ -24,6 +28,7 @@ class NetworkConfiguration:
             mode=_zivid.NetworkConfiguration.IPV4.Mode().value,
             subnet_mask=_zivid.NetworkConfiguration.IPV4.SubnetMask().value,
         ):
+
             if isinstance(address, (str,)):
                 self._address = _zivid.NetworkConfiguration.IPV4.Address(address)
             else:
@@ -127,6 +132,7 @@ class NetworkConfiguration:
         self,
         ipv4=None,
     ):
+
         if ipv4 is None:
             ipv4 = self.IPV4()
         if not isinstance(ipv4, self.IPV4):

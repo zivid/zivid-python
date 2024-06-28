@@ -1,4 +1,5 @@
 """Query module version."""
+
 import sys
 
 

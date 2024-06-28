@@ -1,4 +1,5 @@
 """Sample demonstrating how to project an image onto a point in 3D space."""
+
 from datetime import timedelta
 
 from zivid import Application, Settings, Settings2D

@@ -1,4 +1,5 @@
 """Auto generated, do not edit."""
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import datetime
 import collections.abc
@@ -6,7 +7,9 @@ import _zivid
 
 
 class Settings2D:
+
     class Acquisition:
+
         def __init__(
             self,
             aperture=_zivid.Settings2D.Acquisition.Aperture().value,
@@ -14,6 +17,7 @@ class Settings2D:
             exposure_time=_zivid.Settings2D.Acquisition.ExposureTime().value,
             gain=_zivid.Settings2D.Acquisition.Gain().value,
         ):
+
             if (
                 isinstance(
                     aperture,
@@ -183,14 +187,18 @@ class Settings2D:
             return str(_to_internal_settings2d_acquisition(self))
 
     class Processing:
+
         class Color:
+
             class Balance:
+
                 def __init__(
                     self,
                     blue=_zivid.Settings2D.Processing.Color.Balance.Blue().value,
                     green=_zivid.Settings2D.Processing.Color.Balance.Green().value,
                     red=_zivid.Settings2D.Processing.Color.Balance.Red().value,
                 ):
+
                     if (
                         isinstance(
                             blue,
@@ -344,6 +352,7 @@ class Settings2D:
                 gamma=_zivid.Settings2D.Processing.Color.Gamma().value,
                 balance=None,
             ):
+
                 if (
                     isinstance(
                         gamma,
@@ -418,6 +427,7 @@ class Settings2D:
             self,
             color=None,
         ):
+
             if color is None:
                 color = self.Color()
             if not isinstance(color, self.Color):
@@ -443,7 +453,9 @@ class Settings2D:
             return str(_to_internal_settings2d_processing(self))
 
     class Sampling:
+
         class Color:
+
             grayscale = "grayscale"
             rgb = "rgb"
 
@@ -457,6 +469,7 @@ class Settings2D:
                 return list(cls._valid_values.keys())
 
         class Pixel:
+
             all = "all"
             blueSubsample2x2 = "blueSubsample2x2"
             blueSubsample4x4 = "blueSubsample4x4"
@@ -480,6 +493,7 @@ class Settings2D:
             color=_zivid.Settings2D.Sampling.Color().value,
             pixel=_zivid.Settings2D.Sampling.Pixel().value,
         ):
+
             if (
                 isinstance(color, _zivid.Settings2D.Sampling.Color.enum)
                 or color is None
@@ -580,6 +594,7 @@ class Settings2D:
         processing=None,
         sampling=None,
     ):
+
         if acquisitions is None:
             self._acquisitions = []
         elif isinstance(acquisitions, (collections.abc.Iterable,)):
