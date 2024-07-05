@@ -125,6 +125,9 @@ class MarkerShape:
     def pose(self):
         """Get 3D pose of the marker.
 
+        The returned pose will be positioned at the center of the marker, and have an orientation such that its z-axis
+        points perpendicularly into the face of the marker.
+
         Returns:
             The Pose of the marker center (4x4 transformation matrix)
         """
