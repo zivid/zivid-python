@@ -4,15 +4,15 @@
 #
 #    pip-compile continuous-integration/python-requirements/setup.in
 #
-certifi==2024.6.2
+certifi==2024.7.4
     # via requests
 charset-normalizer==3.3.2
     # via requests
 idna==3.7
     # via requests
 requests==2.31.0
-    # via -r continuous-integration/python-requirements/setup.in
+    # via -r setup.in
 urllib3==2.0.7
     # via
-    #   -r continuous-integration/python-requirements/setup.in
+    #   -r setup.in
     #   requests

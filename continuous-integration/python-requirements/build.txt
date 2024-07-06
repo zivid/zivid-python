@@ -4,18 +4,20 @@
 #
 #    pip-compile continuous-integration/python-requirements/build.in
 #
-certifi==2024.6.2
+certifi==2024.7.4
     # via requests
 charset-normalizer==3.3.2
     # via requests
 cmake==3.29.6
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 colorama==0.4.6
     # via conan
 conan==2.4.1
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 distro==1.8.0
-    # via scikit-build
+    # via
+    #   conan
+    #   scikit-build
 fasteners==0.19
     # via conan
 idna==3.7
@@ -25,10 +27,10 @@ jinja2==3.1.4
 markupsafe==2.1.5
     # via jinja2
 ninja==1.11.1.1
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 packaging==24.0
     # via
-    #   -r continuous-integration/python-requirements/build.in
+    #   -r build.in
     #   scikit-build
 patch-ng==1.17.4
     # via conan
@@ -38,20 +40,20 @@ pyyaml==6.0.1
     # via conan
 requests==2.31.0
     # via
-    #   -r continuous-integration/python-requirements/build.in
+    #   -r build.in
     #   conan
 scikit-build==0.18.0
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 six==1.16.0
     # via python-dateutil
 urllib3==1.26.19
     # via
-    #   -r continuous-integration/python-requirements/build.in
+    #   -r build.in
     #   conan
     #   requests
 wheel==0.42.0
     # via
-    #   -r continuous-integration/python-requirements/build.in
+    #   -r build.in
     #   scikit-build
 
 # The following packages are considered to be unsafe in a requirements file:
