@@ -4,39 +4,37 @@
 #
 #    pip-compile continuous-integration/python-requirements/test.in
 #
-certifi==2024.6.2
+certifi==2024.7.4
     # via requests
 charset-normalizer==3.3.2
     # via requests
-colorama==0.4.6
-    # via pytest
 idna==3.7
     # via requests
 iniconfig==2.0.0
     # via pytest
 packaging==24.0
     # via
-    #   -r continuous-integration/python-requirements/test.in
+    #   -r test.in
     #   pytest
 pluggy==1.2.0
     # via
-    #   -r continuous-integration/python-requirements/test.in
+    #   -r test.in
     #   pytest
 pytest==7.4.4
     # via
-    #   -r continuous-integration/python-requirements/test.in
+    #   -r test.in
     #   pytest-helpers-namespace
     #   pytest-randomly
     #   pytest-timeout
 pytest-helpers-namespace==2021.12.29
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r test.in
 pytest-randomly==3.12.0
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r test.in
 pytest-timeout==2.3.1
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r test.in
 requests==2.31.0
-    # via -r continuous-integration/python-requirements/test.in
+    # via -r test.in
 urllib3==2.0.7
     # via
-    #   -r continuous-integration/python-requirements/test.in
+    #   -r test.in
     #   requests
