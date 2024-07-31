@@ -109,7 +109,12 @@ class HandEyeResidual:
 
 
 class HandEyeOutput:
-    """Class representing the result of a hand-eye calibration process."""
+    """Class representing the result of a hand-eye calibration process.
+
+    For eye-in-hand, the computed pose represents camera pose in robot end-effector frame.
+
+    For eye-to-hand, the computed pose represents camera pose in robot base frame.
+    """
 
     def __init__(self, impl):
         """Initialize HandEyeOutput wrapper.
@@ -146,6 +151,8 @@ class HandEyeOutput:
 
         Returns:
             A 4x4 array representing a hand-eye transform
+            eye-in-hand: camera pose in robot end-effector frame
+            eye-to-hand: camera pose in robot base frame
         """
         return self.__impl.transform()
 
@@ -171,7 +178,7 @@ def calibrate_eye_in_hand(calibration_inputs):
         calibration_inputs: List of HandEyeInput
 
     Returns:
-        A HandEyeOutput instance containing the eye-in-hand transform
+        A HandEyeOutput instance containing the eye-in-hand transform (camera pose in robot end-effector frame)
     """
     return HandEyeOutput(
         _zivid.calibration.calibrate_eye_in_hand(
@@ -190,7 +197,7 @@ def calibrate_eye_to_hand(calibration_inputs):
         calibration_inputs: List of HandEyeInput
 
     Returns:
-        A HandEyeOutput instance containing the eye-to-hand transform
+        A HandEyeOutput instance containing the eye-to-hand transform (camera pose in robot base frame)
     """
     return HandEyeOutput(
         _zivid.calibration.calibrate_eye_to_hand(
