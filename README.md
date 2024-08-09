@@ -25,22 +25,6 @@ Zivid Python is the official Python package for Zivid 3D cameras. Read more abou
 
 ### Installing official version from PyPI using PIP
 
-> [!IMPORTANT]
-> We are currently unable to upload new versions of Zivid Python to PyPI and are waiting for a resolution from the PyPI administrators.
-> In the meantime, you can download the latest version of Zivid Python from the [releases page](https://github.com/zivid/zivid-python/releases) and install it using pip.
-> 
-> For example, to build and install version 2.13.1, use the following command:
-> ```bash
-> pip install https://github.com/zivid/zivid-python/releases/download/v2.13.1.2.13.1/zivid-2.13.1.2.13.1.tar.gz
-> ```
-> 
-> On Windows we also provide a pre-built wheel. To install it, find the wheel corresponding to your Python version and install it using pip.
-> For example, to install the wheel for Python 3.12:
-> ```bash
-> pip install https://github.com/zivid/zivid-python/releases/download/v2.13.1.2.13.1/zivid-2.13.1.2.13.1-cp312-cp312-win_amd64.whl
-> ```
-
-
 After having installed the latest Zivid SDK, the easiest way to install Zivid Python is to use PIP to fetch the latest official version from PyPI:
 
     pip install zivid
