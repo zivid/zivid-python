@@ -4,11 +4,11 @@
 #
 #    pip-compile continuous-integration/python-requirements/lint.in
 #
-astroid==3.2.2
+astroid==3.2.4
     # via pylint
-black==24.4.2
+black==24.8.0
     # via -r continuous-integration/python-requirements/lint.in
-certifi==2024.6.2
+certifi==2024.8.30
     # via requests
 charset-normalizer==3.3.2
     # via requests
@@ -20,13 +20,13 @@ dill==0.3.8
     # via pylint
 distro==1.9.0
     # via scikit-build
-flake8==7.1.0
+flake8==7.1.1
     # via
     #   -r continuous-integration/python-requirements/lint.in
     #   flake8-docstrings
 flake8-docstrings==1.7.0
     # via -r continuous-integration/python-requirements/lint.in
-idna==3.7
+idna==3.8
     # via requests
 inflection==0.5.1
     # via -r continuous-integration/python-requirements/lint.in
@@ -47,33 +47,33 @@ packaging==24.1
     #   scikit-build
 pathspec==0.12.1
     # via black
-platformdirs==4.2.2
+platformdirs==4.3.2
     # via
     #   black
     #   pylint
 pluggy==1.5.0
     # via pytest
-pycodestyle==2.12.0
+pycodestyle==2.12.1
     # via flake8
 pydocstyle==6.3.0
     # via flake8-docstrings
 pyflakes==3.2.0
     # via flake8
-pylint==3.2.4
+pylint==3.2.7
     # via -r continuous-integration/python-requirements/lint.in
-pytest==8.2.2
+pytest==8.3.2
     # via -r continuous-integration/python-requirements/lint.in
 requests==2.32.3
     # via -r continuous-integration/python-requirements/lint.in
-scikit-build==0.18.0
+scikit-build==0.18.1
     # via -r continuous-integration/python-requirements/lint.in
 snowballstemmer==2.2.0
     # via pydocstyle
-tomlkit==0.12.5
+tomlkit==0.13.2
     # via pylint
 urllib3==2.2.2
     # via requests
-wheel==0.43.0
+wheel==0.44.0
     # via scikit-build
 
 # The following packages are considered to be unsafe in a requirements file:
