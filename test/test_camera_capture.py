@@ -16,6 +16,8 @@ def test_capture_2d_3d_one_2d_and_one_3d(shared_file_camera):
         assert len(frame.settings.acquisitions) == 1
         assert frame.settings.color
         assert len(frame.settings.color.acquisitions) == 1
+        assert frame.frame_2d()
+        assert isinstance(frame.frame_2d(), zivid.Frame2D)
 
 
 def test_capture_2d_3d_two_2d_and_one_3d(shared_file_camera):
@@ -33,6 +35,8 @@ def test_capture_2d_3d_two_2d_and_one_3d(shared_file_camera):
         assert len(frame.settings.acquisitions) == 1
         assert frame.settings.color
         assert len(frame.settings.color.acquisitions) == 2
+        assert frame.frame_2d()
+        assert isinstance(frame.frame_2d(), zivid.Frame2D)
 
 
 def test_capture_2d_3d_one_2d_and_two_3d(shared_file_camera):
@@ -50,6 +54,8 @@ def test_capture_2d_3d_one_2d_and_two_3d(shared_file_camera):
         assert len(frame.settings.acquisitions) == 2
         assert frame.settings.color
         assert len(frame.settings.color.acquisitions) == 1
+        assert frame.frame_2d()
+        assert isinstance(frame.frame_2d(), zivid.Frame2D)
 
 
 def test_capture_2d_3d_two_2d_and_two_3d(shared_file_camera):
@@ -67,6 +73,8 @@ def test_capture_2d_3d_two_2d_and_two_3d(shared_file_camera):
         assert len(frame.settings.acquisitions) == 2
         assert frame.settings.color
         assert len(frame.settings.color.acquisitions) == 2
+        assert frame.frame_2d()
+        assert isinstance(frame.frame_2d(), zivid.Frame2D)
 
 
 def test_capture_3d_one_acquisition(shared_file_camera):
@@ -79,6 +87,7 @@ def test_capture_3d_one_acquisition(shared_file_camera):
         assert isinstance(frame, zivid.frame.Frame)
         assert len(frame.settings.acquisitions) == 1
         assert frame.settings.color is None
+        assert frame.frame_2d() is None
 
 
 def test_capture_2d_with_settings_2d(shared_file_camera):
