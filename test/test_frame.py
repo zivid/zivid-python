@@ -19,6 +19,14 @@ def test_point_cloud(frame):
     assert isinstance(point_cloud, zivid.PointCloud)
 
 
+def test_frame2d(frame):
+    import zivid
+
+    frame2d = frame.frame2d
+    assert frame2d
+    assert isinstance(frame2d, zivid.Frame2D)
+
+
 def test_path_init(application, frame_file):
     from pathlib import Path
     import zivid
