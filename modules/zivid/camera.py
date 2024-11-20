@@ -11,7 +11,7 @@ from zivid.network_configuration import (
     _to_network_configuration,
 )
 from zivid.settings import Settings, _to_internal_settings
-from zivid.settings_2d import Settings2D, _to_internal_settings2d
+from zivid.settings2d import Settings2D, _to_internal_settings2d
 
 
 class Camera:

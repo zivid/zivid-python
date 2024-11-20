@@ -6,6 +6,8 @@ def test_default_settings(application):
 
     settings = zivid.Settings()
 
+    assert settings.color is None
+
     assert isinstance(settings.acquisitions, list)
     assert len(settings.acquisitions) == 0
     assert settings.engine is None
@@ -126,6 +128,33 @@ def test_default_settings(application):
     assert settings.region_of_interest.box.point_b is None
     assert settings.region_of_interest.depth.enabled is None
     assert settings.region_of_interest.depth.range is None
+
+
+def test_set_color_settings():
+    from zivid import Settings, Settings2D
+
+    settings = Settings()
+    assert settings.color is None
+
+    settings.color = Settings2D()
+    assert settings.color is not None
+    assert isinstance(settings.color, Settings2D)
+    assert settings.color == Settings2D()
+
+    settings = Settings(color=Settings2D())
+    assert settings.color is not None
+    assert isinstance(settings.color, Settings2D)
+    assert settings.color == Settings2D()
+
+    settings = Settings(color=Settings2D(acquisitions=(Settings2D.Acquisition(),)))
+    assert settings.color is not None
+    assert isinstance(settings.color, Settings2D)
+    assert len(settings.color.acquisitions) == 1
+
+    settings = Settings()
+    settings.color = Settings2D()
+    settings.color.acquisitions.append(Settings2D.Acquisition())
+    assert len(settings.color.acquisitions) == 1
 
 
 def test_set_acquisition_list():

@@ -3,6 +3,7 @@
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import datetime
 import collections.abc
+import zivid.settings2d
 import _zivid
 
 
@@ -2707,7 +2708,7 @@ class Settings:
     def __init__(
         self,
         acquisitions=None,
-        color=_zivid.Settings.Color().value,
+        color=None,
         engine=_zivid.Settings.Engine().value,
         diagnostics=None,
         processing=None,
@@ -2733,11 +2734,11 @@ class Settings:
                 )
             )
 
-        if isinstance(color, _zivid.Settings2D) or color is None:
-            self._color = _zivid.Settings.Color(color)
+        if isinstance(color, zivid.settings2d.Settings2D) or color is None:
+            self._color = color
         else:
             raise TypeError(
-                "Unsupported type, expected: _zivid.Settings2D or None, got {value_type}".format(
+                "Unsupported type, expected: zivid.settings2d.Settings2D or None, got {value_type}".format(
                     value_type=type(color)
                 )
             )
@@ -2785,7 +2786,7 @@ class Settings:
 
     @property
     def color(self):
-        return self._color.value
+        return self._color
 
     @property
     def engine(self):
@@ -2827,11 +2828,11 @@ class Settings:
 
     @color.setter
     def color(self, value):
-        if isinstance(value, _zivid.Settings2D) or value is None:
-            self._color = _zivid.Settings.Color(value)
+        if isinstance(value, zivid.settings2d.Settings2D) or value is None:
+            self._color = value
         else:
             raise TypeError(
-                "Unsupported type, expected: zivid.Settings or None, got {value_type}".format(
+                "Unsupported type, expected: zivid.settings2d.Settings2D or None, got {value_type}".format(
                     value_type=type(value)
                 )
             )
@@ -3159,7 +3160,11 @@ def _to_settings(internal_settings):
             internal_settings.region_of_interest
         ),
         sampling=_to_settings_sampling(internal_settings.sampling),
-        color=internal_settings.color.value,
+        color=(
+            zivid.settings2d._to_settings2d(internal_settings.color.value)
+            if internal_settings.color.value is not None
+            else None
+        ),
         engine=internal_settings.engine.value,
     )
 
@@ -3556,7 +3561,11 @@ def _to_internal_settings(settings):
         temp_acquisitions.append(_to_internal_settings_acquisition(value))
     internal_settings.acquisitions = temp_acquisitions
 
-    internal_settings.color = _zivid.Settings.Color(settings.color)
+    internal_settings.color = _zivid.Settings.Color(
+        zivid.settings2d._to_internal_settings2d(settings.color)
+        if settings.color is not None
+        else None
+    )
     internal_settings.engine = _zivid.Settings.Engine(settings._engine.value)
 
     internal_settings.diagnostics = _to_internal_settings_diagnostics(

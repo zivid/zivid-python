@@ -1,7 +1,7 @@
 """Contains the Frame class."""
 
 import _zivid
-from zivid.settings_2d import _to_settings2d
+from zivid.settings2d import _to_settings2d
 from zivid.camera_info import _to_camera_info
 from zivid.camera_state import _to_camera_state
 from zivid.frame_info import _to_frame_info

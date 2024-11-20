@@ -823,8 +823,12 @@ def _generate_datamodel_frontend(
 
 def generate_all_datamodels(dest_dir: Path) -> None:
     for internal_class, filename, extra_imports in [
-        (_zivid.Settings, "settings.py", ["datetime", "collections.abc"]),
-        (_zivid.Settings2D, "settings_2d.py", ["datetime", "collections.abc"]),
+        (_zivid.Settings2D, "settings2d.py", ["datetime", "collections.abc"]),
+        (
+            _zivid.Settings,
+            "settings.py",
+            ["datetime", "collections.abc", "zivid.settings2d"],
+        ),
         (_zivid.CameraInfo, "camera_info.py", []),
         (_zivid.CameraState, "camera_state.py", ["collections.abc"]),
         (_zivid.FrameInfo, "frame_info.py", ["datetime"]),

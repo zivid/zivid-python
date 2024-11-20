@@ -2,7 +2,7 @@
 
 import _zivid
 from zivid.frame_2d import Frame2D
-from zivid.settings_2d import Settings2D, _to_internal_settings2d
+from zivid.settings2d import Settings2D, _to_internal_settings2d
 
 
 class ProjectedImage:

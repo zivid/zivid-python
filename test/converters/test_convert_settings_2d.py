@@ -1,7 +1,7 @@
 def test_to_internal_settings_to_settings_modified():
     import datetime
     from zivid import Settings2D
-    from zivid.settings_2d import _to_settings2d, _to_internal_settings2d
+    from zivid.settings2d import _to_settings2d, _to_internal_settings2d
 
     modified_settings = Settings2D(
         acquisitions=[
@@ -17,7 +17,7 @@ def test_to_internal_settings_to_settings_modified():
 
 def test_to_internal_settings_to_settings_default():
     from zivid import Settings2D
-    from zivid.settings_2d import _to_settings2d, _to_internal_settings2d
+    from zivid.settings2d import _to_settings2d, _to_internal_settings2d
 
     default_settings = Settings2D()
     converted_settings = _to_settings2d(_to_internal_settings2d(default_settings))
