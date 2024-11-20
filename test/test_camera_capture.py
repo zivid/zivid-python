@@ -13,6 +13,8 @@ def test_capture2d3d_one_2d_and_one_3d(shared_file_camera):
     with shared_file_camera.capture2d3d(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
+        assert frame.frame2d
+        assert isinstance(frame.frame2d, zivid.Frame2D)
 
 
 def test_capture2d3d_two_2d_and_one_3d(shared_file_camera):
@@ -27,6 +29,8 @@ def test_capture2d3d_two_2d_and_one_3d(shared_file_camera):
     with shared_file_camera.capture2d3d(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
+        assert frame.frame2d
+        assert isinstance(frame.frame2d, zivid.Frame2D)
 
 
 def test_capture2d3d_one_2d_and_two_3d(shared_file_camera):
@@ -41,6 +45,8 @@ def test_capture2d3d_one_2d_and_two_3d(shared_file_camera):
     with shared_file_camera.capture2d3d(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
+        assert frame.frame2d
+        assert isinstance(frame.frame2d, zivid.Frame2D)
 
 
 def test_capture2d3d_two_2d_and_two_3d(shared_file_camera):
@@ -55,6 +61,8 @@ def test_capture2d3d_two_2d_and_two_3d(shared_file_camera):
     with shared_file_camera.capture2d3d(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
+        assert frame.frame2d
+        assert isinstance(frame.frame2d, zivid.Frame2D)
 
 
 def test_capture3d_one_acquisition(shared_file_camera):
@@ -65,6 +73,7 @@ def test_capture3d_one_acquisition(shared_file_camera):
     with shared_file_camera.capture3d(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
+        assert frame.frame2d is None
 
 
 def test_capture2d_with_settings2d(shared_file_camera):
