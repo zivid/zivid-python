@@ -145,6 +145,9 @@ namespace ZividPython
             static constexpr const char *value{ TypeName<T>::value };
         };
 
+        template<typename DM, typename Dest, typename Node>
+        void findAndWrapUninstantiatedNodesInDataModel(Dest &dest, const Node &node);
+
         template<bool isRoot, typename Dest, typename Target>
         py::class_<Target> wrapDataModel(Dest &dest, const Target &target, const bool uninstantiatedNode = false)
         {
@@ -172,12 +175,7 @@ namespace ZividPython
 
             if constexpr(Target::nodeType == Zivid::DataModel::NodeType::group)
             {
-                // TODO: Workaround for no API to access uninstansiated nodes.
-                // This generator should work on types and not instances.
-                if constexpr(std::is_same_v<Target, Zivid::Settings> || std::is_same_v<Target, Zivid::Settings2D>)
-                {
-                    wrapDataModel<false>(pyClass, typename Target::Acquisition{}, true);
-                }
+                findAndWrapUninstantiatedNodesInDataModel<Target>(pyClass, target);
 
                 target.forEach([&](const auto &member) {
                     wrapDataModel<false>(pyClass, member);
@@ -291,6 +289,64 @@ namespace ZividPython
                 static_assert(DependentFalse<Target>::value, "Target NodeType is unsupported");
             }
             return pyClass;
+        }
+
+        constexpr bool isDirectChild(const std::string_view parent, const std::string_view child)
+        {
+            // Top-level nodes are always direct children of the root
+            if(parent.empty() && child.find('/') == std::string::npos)
+            {
+                return true;
+            }
+            if(child.size() <= parent.size())
+            {
+                return false;
+            }
+            if(child.compare(0, parent.size(), parent) != 0)
+            {
+                return false;
+            }
+            // Ensure there are no additional path components
+            const auto remainingPath = child.substr(parent.size());
+            return remainingPath.find('/') == 0 && remainingPath.find('/', 1) == std::string::npos;
+        }
+
+        static_assert(isDirectChild("", "TopLevel") == true);
+        static_assert(isDirectChild("", "TopLevel/WithChild") == false);
+        static_assert(isDirectChild("TopLevel", "TopLevel/WithChild") == true);
+        static_assert(isDirectChild("TopLevel", "TopLevel/WithChild/GrandChild") == false);
+
+        template<typename DM, typename PyDest, typename Node>
+        void findAndWrapUninstantiatedNodesInDataModel(PyDest &dest, const Node &node)
+        {
+            node.forEach([&](const auto &member) {
+                using MemberType = std::remove_cv_t<std::remove_reference_t<decltype(member)>>;
+
+                if constexpr(MemberType::nodeType == Zivid::DataModel::NodeType::group)
+                {
+                    findAndWrapUninstantiatedNodesInDataModel<DM>(dest, member);
+                }
+                else if constexpr(MemberType::nodeType == Zivid::DataModel::NodeType::leafDataModelList)
+                {
+                    using ValueTypeContained = typename MemberType::ValueType::value_type;
+
+                    // Sanity check
+                    static_assert(Zivid::DataModel::IsDataModelType<ValueTypeContained>::value);
+
+                    if constexpr(Zivid::Detail::TypeTraits::IsInTuple<ValueTypeContained,
+                                                                      typename DM::Descendants>::value)
+                    {
+                        // This node is instantiated.
+                        return;
+                    }
+
+                    // Check via path that the contained type is a direct child of the dest
+                    if constexpr(isDirectChild(DM::path, ValueTypeContained::path))
+                    {
+                        wrapDataModel<false>(dest, ValueTypeContained{}, true);
+                    }
+                }
+            });
         }
     } // namespace Detail
 
