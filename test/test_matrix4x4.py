@@ -312,3 +312,8 @@ def test_implicit_convert_to_numpy():
     pose2 = zivid.calibration.Pose(numpy.array(sample))
 
     assert_all_equal_2d(zivid.Matrix4x4(pose1.to_matrix()), pose2.to_matrix())
+
+
+def test_identity():
+    identity = zivid.Matrix4x4.identity()
+    assert numpy.array_equal(identity, numpy.identity(4, dtype=numpy.float32))

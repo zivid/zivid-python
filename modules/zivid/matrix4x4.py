@@ -57,6 +57,16 @@ class Matrix4x4(_zivid.Matrix4x4):
         """
         super().save(str(file_path))
 
+    @staticmethod
+    def identity():
+        """
+        Return the identity matrix.
+
+        Returns:
+            A new matrix, holding the identity matrix.
+        """
+        return Matrix4x4(_zivid.Matrix4x4.identity())
+
     def __getitem__(self, indexes):
         """
         Access specified element with bounds checking.
