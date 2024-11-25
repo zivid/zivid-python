@@ -4,6 +4,6 @@
 requires = [
     "cmake>=3.24.0",
     "conan>=2,<3",
-    "ninja",
+    "ninja<=1.11.1.1",
     "scikit-build",
     ]
