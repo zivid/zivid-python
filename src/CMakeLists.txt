@@ -12,6 +12,7 @@ set(SOURCES
     InfieldCorrection/InfieldCorrection.cpp
     NodeType.cpp
     PixelMapping.cpp
+    PointCloudExport.cpp
     Projection.cpp
     Presets.cpp
     ReleasableArray2D.cpp
