@@ -66,6 +66,7 @@ try:
         infield_correction,
         Matrix4x4,
         NetworkConfiguration,
+        SceneConditions,
         data_model,
         PixelMapping,
         projection,

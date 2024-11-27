@@ -1,10 +1,13 @@
 #pragma once
 
 #include <Zivid/Camera.h>
+
 #include <ZividPython/Releasable.h>
 #include <ZividPython/ReleasableFrame.h>
 #include <ZividPython/ReleasableFrame2D.h>
 #include <ZividPython/Wrappers.h>
+
+#include <Zivid/SceneConditions.h>
 
 namespace ZividPython
 {
@@ -27,6 +30,7 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_1_ARGS(applyNetworkConfiguration,
                                     const Zivid::NetworkConfiguration &,
                                     networkConfiguration)
+        ZIVID_PYTHON_FORWARD_0_ARGS(measureSceneConditions)
     };
 
     void wrapClass(pybind11::class_<ReleasableCamera> pyClass);

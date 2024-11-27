@@ -104,3 +104,23 @@ def test_state(shared_file_camera):
     state = shared_file_camera.state
     assert state
     assert isinstance(state, zivid.CameraState)
+
+
+@pytest.mark.physical_camera
+def test_measure_scene_conditions(physical_camera):
+    from zivid import SceneConditions
+
+    scene_conditions = physical_camera.measure_scene_conditions()
+    assert scene_conditions
+    assert isinstance(scene_conditions, SceneConditions)
+    assert (
+        scene_conditions.ambient_light.flicker_classification
+        in SceneConditions.AmbientLight.FlickerClassification.valid_values()
+    )
+
+
+def test_measure_scene_conditions_fails_with_file_camera(file_camera):
+    with pytest.raises(
+        RuntimeError, match="This camera cannot measure surrounding conditions"
+    ):
+        file_camera.measure_scene_conditions()

@@ -25,3 +25,4 @@ from zivid.camera_info import CameraInfo
 from zivid.camera_intrinsics import CameraIntrinsics
 from zivid.matrix4x4 import Matrix4x4
 from zivid.network_configuration import NetworkConfiguration
+from zivid.scene_conditions import SceneConditions
