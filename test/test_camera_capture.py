@@ -1,6 +1,92 @@
 import pytest
 
 
+def test_capture2d3d_one_2d_and_one_3d(shared_file_camera):
+    import zivid
+
+    acquisitions3d = [zivid.Settings.Acquisition()]
+    acquisitions2d = [zivid.Settings2D.Acquisition()]
+    settings = zivid.Settings(
+        acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d)
+    )
+
+    with shared_file_camera.capture2d3d(settings) as frame:
+        assert frame
+        assert isinstance(frame, zivid.frame.Frame)
+
+
+def test_capture2d3d_two_2d_and_one_3d(shared_file_camera):
+    import zivid
+
+    acquisitions3d = [zivid.Settings.Acquisition()]
+    acquisitions2d = [zivid.Settings2D.Acquisition(), zivid.Settings2D.Acquisition()]
+    settings = zivid.Settings(
+        acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d)
+    )
+
+    with shared_file_camera.capture2d3d(settings) as frame:
+        assert frame
+        assert isinstance(frame, zivid.frame.Frame)
+
+
+def test_capture2d3d_one_2d_and_two_3d(shared_file_camera):
+    import zivid
+
+    acquisitions3d = [zivid.Settings.Acquisition(), zivid.Settings.Acquisition()]
+    acquisitions2d = [zivid.Settings2D.Acquisition()]
+    settings = zivid.Settings(
+        acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d)
+    )
+
+    with shared_file_camera.capture2d3d(settings) as frame:
+        assert frame
+        assert isinstance(frame, zivid.frame.Frame)
+
+
+def test_capture2d3d_two_2d_and_two_3d(shared_file_camera):
+    import zivid
+
+    acquisitions3d = [zivid.Settings.Acquisition(), zivid.Settings.Acquisition()]
+    acquisitions2d = [zivid.Settings2D.Acquisition(), zivid.Settings2D.Acquisition()]
+    settings = zivid.Settings(
+        acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d)
+    )
+
+    with shared_file_camera.capture2d3d(settings) as frame:
+        assert frame
+        assert isinstance(frame, zivid.frame.Frame)
+
+
+def test_capture3d_one_acquisition(shared_file_camera):
+    import zivid
+
+    acquisitions = [zivid.Settings.Acquisition()]
+    settings = zivid.Settings(acquisitions=acquisitions)
+    with shared_file_camera.capture3d(settings) as frame:
+        assert frame
+        assert isinstance(frame, zivid.frame.Frame)
+
+
+def test_capture2d_with_settings2d(shared_file_camera):
+    import zivid
+
+    acquisitions = [zivid.Settings2D.Acquisition()]
+    settings = zivid.Settings2D(acquisitions=acquisitions)
+    with shared_file_camera.capture2d(settings) as frame:
+        assert frame
+        assert isinstance(frame, zivid.Frame2D)
+
+
+def test_capture2d_with_settings(shared_file_camera):
+    import zivid
+
+    acquisitions = [zivid.Settings2D.Acquisition()]
+    settings = zivid.Settings(color=zivid.Settings2D(acquisitions=acquisitions))
+    with shared_file_camera.capture2d(settings) as frame:
+        assert frame
+        assert isinstance(frame, zivid.Frame2D)
+
+
 def test_one_acquisition_in_list(shared_file_camera):
     import zivid
 
