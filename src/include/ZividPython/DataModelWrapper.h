@@ -145,6 +145,40 @@ namespace ZividPython
             static constexpr const char *value{ TypeName<T>::value };
         };
 
+        template<typename T>
+        struct TypeName<T, std::enable_if_t<Zivid::DataModel::IsDataModelRoot<T>::value>>
+        {
+        private:
+            class Helper
+            {
+                static constexpr auto concatenate() {
+                    constexpr auto prefix{ "_zivid." };
+                    constexpr size_t prefixLength{ std::char_traits<char>::length(prefix) };
+                    constexpr size_t nameLength{ std::char_traits<char>::length(T::name) };
+
+                    std::array<char, prefixLength + nameLength + 1> result{ '\0' };
+
+                    // TODO: Switch to std::copy_n when we can switch to C++20 and drop support for GCC 9.
+                    for(size_t i = 0; i < prefixLength; ++i)
+                    {
+                        result[i] = prefix[i];
+                    }
+                    for(size_t i = 0; i < nameLength; ++i)
+                    {
+                        result[prefixLength + i] = T::name[i];
+                    }
+
+                    return result;
+                }
+
+            public:
+                static constexpr auto data{ concatenate() };
+            };
+
+        public:
+            static constexpr const char *value = Helper::data.data();
+        };
+
         template<bool isRoot, typename Dest, typename Target>
         py::class_<Target> wrapDataModel(Dest &dest, const Target &target, const bool uninstantiatedNode = false)
         {
