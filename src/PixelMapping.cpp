@@ -1,5 +1,3 @@
-#pragma once
-
 #include <Zivid/Experimental/PixelMapping.h>
 
 #include <pybind11/pybind11.h>
