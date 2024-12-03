@@ -39,31 +39,6 @@ def test_handeye_input(checkerboard_frames, transform):
     assert detection_result_returned.valid() == detection_result.valid()
 
 
-def _check_handeye_output(inputs, handeye_output, expected_transform):
-    assert isinstance(handeye_output, zivid.calibration.HandEyeOutput)
-    assert handeye_output.valid()
-    assert bool(handeye_output)
-    assert str(handeye_output)
-
-    # Check returned transform
-    transform_returned = handeye_output.transform()
-    assert isinstance(transform_returned, np.ndarray)
-    assert transform_returned.shape == (4, 4)
-    np.testing.assert_allclose(transform_returned, expected_transform, rtol=1e-5)
-
-    # Check returned residuals
-    residuals_returned = handeye_output.residuals()
-    assert isinstance(residuals_returned, list)
-    assert len(residuals_returned) == len(inputs)
-    for residual in residuals_returned:
-        assert isinstance(residual, zivid.calibration.HandEyeResidual)
-        assert str(residual)
-        assert isinstance(residual.translation(), float)
-        assert residual.translation() >= 0.0
-        assert isinstance(residual.rotation(), float)
-        assert residual.rotation() >= 0.0
-
-
 def test_eyetohand_calibration(
     handeye_eth_frames, handeye_eth_poses, handeye_eth_transform
 ):
@@ -79,7 +54,7 @@ def test_eyetohand_calibration(
 
     # Perform eye-to-hand calibration
     handeye_output = zivid.calibration.calibrate_eye_to_hand(inputs)
-    _check_handeye_output(inputs, handeye_output, handeye_eth_transform)
+    pytest.helpers.check_handeye_output(inputs, handeye_output, handeye_eth_transform)
 
 
 def test_marker_eyetohand_calibration(
@@ -99,7 +74,9 @@ def test_marker_eyetohand_calibration(
 
     # Perform eye-to-hand calibration
     handeye_output = zivid.calibration.calibrate_eye_to_hand(inputs)
-    _check_handeye_output(inputs, handeye_output, handeye_marker_eth_transform)
+    pytest.helpers.check_handeye_output(
+        inputs, handeye_output, handeye_marker_eth_transform
+    )
 
 
 def test_eyetohand_calibration_save_load(handeye_eth_frames, handeye_eth_poses):
