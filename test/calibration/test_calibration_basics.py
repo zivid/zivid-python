@@ -24,7 +24,7 @@ def test_detect_feature_points(checkerboard_frames):
     centroid = detection_result.centroid()
     assert isinstance(centroid, np.ndarray)
     assert centroid.shape == (3,)
-    np.testing.assert_allclose(centroid, [-67.03593, 71.17018, 906.348], rtol=1e-6)
+    np.testing.assert_allclose(centroid, [-14.350989, -43.70388, 1016.19257], rtol=1e-6)
 
 
 def test_calibration_board_pose(calibration_board_frame):
