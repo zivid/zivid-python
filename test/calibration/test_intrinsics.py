@@ -26,7 +26,7 @@ def test_intrinsics(shared_file_camera):
 
 def test_intrinsics_with_settings_2d(shared_file_camera):
     from zivid.experimental.calibration import intrinsics
-    from zivid.settings_2d import Settings2D
+    from zivid.settings2d import Settings2D
 
     camera_intrinsics = intrinsics(
         camera=shared_file_camera,

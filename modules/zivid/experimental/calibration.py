@@ -7,7 +7,7 @@ from zivid.camera import Camera
 from zivid.camera_intrinsics import _to_camera_intrinsics
 from zivid.frame import Frame
 from zivid.settings import Settings, _to_internal_settings
-from zivid.settings_2d import Settings2D, _to_internal_settings2d
+from zivid.settings2d import Settings2D, _to_internal_settings2d
 
 
 def intrinsics(camera, settings=None):
