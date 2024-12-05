@@ -1,7 +1,7 @@
 """Capture sample."""
 
 import datetime
-from zivid import Application, Settings
+from zivid import Application, Settings, Settings2D
 
 
 def _main():
@@ -14,7 +14,14 @@ def _main():
         settings.processing.filters.outlier.removal.enabled = True
         settings.processing.filters.outlier.removal.threshold = 5.0
 
-        with camera.capture(settings) as frame:
+        settings.color = Settings2D()
+        settings.color.acquisitions.append(Settings2D.Acquisition())
+        settings.color.acquisitions[0].aperture = 5.6
+        settings.color.acquisitions[0].exposure_time = datetime.timedelta(
+            microseconds=8333
+        )
+
+        with camera.capture_2d_3d(settings) as frame:
             frame.save("result.zdf")
 
 

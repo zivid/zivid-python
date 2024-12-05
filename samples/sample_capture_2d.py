@@ -14,7 +14,7 @@ def _main():
             microseconds=10000
         )
 
-        with camera.capture(settings_2d) as frame_2d:
+        with camera.capture_2d(settings_2d) as frame_2d:
             image = frame_2d.image_rgba()
             image.save("result.png")
 

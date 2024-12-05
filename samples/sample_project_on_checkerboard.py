@@ -17,7 +17,9 @@ def _detect_checkerboard(camera):
     print("Detecting checkerboard...")
     settings = Settings()
     settings.acquisitions.append(Settings.Acquisition())
-    with camera.capture(settings) as frame:
+    settings.color = Settings2D()
+    settings.color.acquisitions.append(Settings2D.Acquisition())
+    with camera.capture_2d_3d(settings) as frame:
         detection_result = detect_feature_points(frame.point_cloud())
         if not detection_result.valid():
             raise RuntimeError("Failed to detect checkerboard")
