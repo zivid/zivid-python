@@ -19,7 +19,7 @@ def _acquire_checkerboard_frame(camera):
     settings = zivid.capture_assistant.suggest_settings(
         camera, suggest_settings_parameters
     )
-    return camera.capture(settings)
+    return camera.capture2d3d(settings)
 
 
 def _enter_robot_pose(index):
