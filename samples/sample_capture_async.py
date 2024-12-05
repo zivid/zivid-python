@@ -9,7 +9,7 @@ import zivid
 
 def _capture_sync(cameras: list[zivid.Camera]) -> list[zivid.Frame]:
     return [
-        camera.capture(
+        camera.capture3d(
             zivid.Settings(
                 acquisitions=[
                     zivid.Settings.Acquisition(
