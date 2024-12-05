@@ -1,12 +1,219 @@
 """Auto generated, do not edit."""
 
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
+import collections.abc
 import _zivid
 
 
 class CameraState:
 
     class Network:
+
+        class LocalInterface:
+
+            class IPV4:
+
+                class Subnet:
+
+                    def __init__(
+                        self,
+                        address=_zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address().value,
+                        mask=_zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask().value,
+                    ):
+
+                        if isinstance(address, (str,)):
+                            self._address = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address(
+                                address
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (str,), got {value_type}".format(
+                                    value_type=type(address)
+                                )
+                            )
+
+                        if isinstance(mask, (str,)):
+                            self._mask = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask(
+                                mask
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (str,), got {value_type}".format(
+                                    value_type=type(mask)
+                                )
+                            )
+
+                    @property
+                    def address(self):
+                        return self._address.value
+
+                    @property
+                    def mask(self):
+                        return self._mask.value
+
+                    @address.setter
+                    def address(self, value):
+                        if isinstance(value, (str,)):
+                            self._address = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: str, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
+
+                    @mask.setter
+                    def mask(self, value):
+                        if isinstance(value, (str,)):
+                            self._mask = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: str, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
+
+                    def __eq__(self, other):
+                        if (
+                            self._address == other._address
+                            and self._mask == other._mask
+                        ):
+                            return True
+                        return False
+
+                    def __str__(self):
+                        return str(
+                            _to_internal_camera_state_network_local_interface_ipv4_subnet(
+                                self
+                            )
+                        )
+
+                def __init__(
+                    self,
+                    subnets=None,
+                ):
+
+                    if subnets is None:
+                        self._subnets = []
+                    elif isinstance(subnets, (collections.abc.Iterable,)):
+                        self._subnets = []
+                        for item in subnets:
+                            if isinstance(item, self.Subnet):
+                                self._subnets.append(item)
+                            else:
+                                raise TypeError(
+                                    "Unsupported type {item_type}".format(
+                                        item_type=type(item)
+                                    )
+                                )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: (collections.abc.Iterable,) or None, got {value_type}".format(
+                                value_type=type(subnets)
+                            )
+                        )
+
+                @property
+                def subnets(self):
+                    return self._subnets
+
+                @subnets.setter
+                def subnets(self, value):
+                    if not isinstance(value, (collections.abc.Iterable,)):
+                        raise TypeError(
+                            "Unsupported type {value}".format(value=type(value))
+                        )
+                    self._subnets = []
+                    for item in value:
+                        if isinstance(item, self.Subnet):
+                            self._subnets.append(item)
+                        else:
+                            raise TypeError(
+                                "Unsupported type {item_type}".format(
+                                    item_type=type(item)
+                                )
+                            )
+
+                def __eq__(self, other):
+                    if self._subnets == other._subnets:
+                        return True
+                    return False
+
+                def __str__(self):
+                    return str(
+                        _to_internal_camera_state_network_local_interface_ipv4(self)
+                    )
+
+            def __init__(
+                self,
+                interface_name=_zivid.CameraState.Network.LocalInterface.InterfaceName().value,
+                ipv4=None,
+            ):
+
+                if isinstance(interface_name, (str,)):
+                    self._interface_name = (
+                        _zivid.CameraState.Network.LocalInterface.InterfaceName(
+                            interface_name
+                        )
+                    )
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: (str,), got {value_type}".format(
+                            value_type=type(interface_name)
+                        )
+                    )
+
+                if ipv4 is None:
+                    ipv4 = self.IPV4()
+                if not isinstance(ipv4, self.IPV4):
+                    raise TypeError(
+                        "Unsupported type: {value}".format(value=type(ipv4))
+                    )
+                self._ipv4 = ipv4
+
+            @property
+            def interface_name(self):
+                return self._interface_name.value
+
+            @property
+            def ipv4(self):
+                return self._ipv4
+
+            @interface_name.setter
+            def interface_name(self, value):
+                if isinstance(value, (str,)):
+                    self._interface_name = (
+                        _zivid.CameraState.Network.LocalInterface.InterfaceName(value)
+                    )
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: str, got {value_type}".format(
+                            value_type=type(value)
+                        )
+                    )
+
+            @ipv4.setter
+            def ipv4(self, value):
+                if not isinstance(value, self.IPV4):
+                    raise TypeError(
+                        "Unsupported type {value}".format(value=type(value))
+                    )
+                self._ipv4 = value
+
+            def __eq__(self, other):
+                if (
+                    self._interface_name == other._interface_name
+                    and self._ipv4 == other._ipv4
+                ):
+                    return True
+                return False
+
+            def __str__(self):
+                return str(_to_internal_camera_state_network_local_interface(self))
 
         class IPV4:
 
@@ -49,8 +256,27 @@ class CameraState:
 
         def __init__(
             self,
+            local_interfaces=None,
             ipv4=None,
         ):
+
+            if local_interfaces is None:
+                self._local_interfaces = []
+            elif isinstance(local_interfaces, (collections.abc.Iterable,)):
+                self._local_interfaces = []
+                for item in local_interfaces:
+                    if isinstance(item, self.LocalInterface):
+                        self._local_interfaces.append(item)
+                    else:
+                        raise TypeError(
+                            "Unsupported type {item_type}".format(item_type=type(item))
+                        )
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (collections.abc.Iterable,) or None, got {value_type}".format(
+                        value_type=type(local_interfaces)
+                    )
+                )
 
             if ipv4 is None:
                 ipv4 = self.IPV4()
@@ -59,8 +285,25 @@ class CameraState:
             self._ipv4 = ipv4
 
         @property
+        def local_interfaces(self):
+            return self._local_interfaces
+
+        @property
         def ipv4(self):
             return self._ipv4
+
+        @local_interfaces.setter
+        def local_interfaces(self, value):
+            if not isinstance(value, (collections.abc.Iterable,)):
+                raise TypeError("Unsupported type {value}".format(value=type(value)))
+            self._local_interfaces = []
+            for item in value:
+                if isinstance(item, self.LocalInterface):
+                    self._local_interfaces.append(item)
+                else:
+                    raise TypeError(
+                        "Unsupported type {item_type}".format(item_type=type(item))
+                    )
 
         @ipv4.setter
         def ipv4(self, value):
@@ -69,7 +312,10 @@ class CameraState:
             self._ipv4 = value
 
         def __eq__(self, other):
-            if self._ipv4 == other._ipv4:
+            if (
+                self._local_interfaces == other._local_interfaces
+                and self._ipv4 == other._ipv4
+            ):
                 return True
             return False
 
@@ -529,6 +775,31 @@ class CameraState:
         return str(_to_internal_camera_state(self))
 
 
+def _to_camera_state_network_local_interface_ipv4_subnet(internal_subnet):
+    return CameraState.Network.LocalInterface.IPV4.Subnet(
+        address=internal_subnet.address.value,
+        mask=internal_subnet.mask.value,
+    )
+
+
+def _to_camera_state_network_local_interface_ipv4(internal_ipv4):
+    return CameraState.Network.LocalInterface.IPV4(
+        subnets=[
+            _to_camera_state_network_local_interface_ipv4_subnet(value)
+            for value in internal_ipv4.subnets.value
+        ],
+    )
+
+
+def _to_camera_state_network_local_interface(internal_local_interface):
+    return CameraState.Network.LocalInterface(
+        ipv4=_to_camera_state_network_local_interface_ipv4(
+            internal_local_interface.ipv4
+        ),
+        interface_name=internal_local_interface.interface_name.value,
+    )
+
+
 def _to_camera_state_network_ipv4(internal_ipv4):
     return CameraState.Network.IPV4(
         address=internal_ipv4.address.value,
@@ -537,6 +808,10 @@ def _to_camera_state_network_ipv4(internal_ipv4):
 
 def _to_camera_state_network(internal_network):
     return CameraState.Network(
+        local_interfaces=[
+            _to_camera_state_network_local_interface(value)
+            for value in internal_network.local_interfaces.value
+        ],
         ipv4=_to_camera_state_network_ipv4(internal_network.ipv4),
     )
 
@@ -562,6 +837,47 @@ def _to_camera_state(internal_camera_state):
     )
 
 
+def _to_internal_camera_state_network_local_interface_ipv4_subnet(subnet):
+    internal_subnet = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet()
+
+    internal_subnet.address = (
+        _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address(subnet.address)
+    )
+    internal_subnet.mask = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask(
+        subnet.mask
+    )
+
+    return internal_subnet
+
+
+def _to_internal_camera_state_network_local_interface_ipv4(ipv4):
+    internal_ipv4 = _zivid.CameraState.Network.LocalInterface.IPV4()
+
+    temp_subnets = _zivid.CameraState.Network.LocalInterface.IPV4.Subnets()
+    for value in ipv4.subnets:
+        temp_subnets.append(
+            _to_internal_camera_state_network_local_interface_ipv4_subnet(value)
+        )
+    internal_ipv4.subnets = temp_subnets
+
+    return internal_ipv4
+
+
+def _to_internal_camera_state_network_local_interface(local_interface):
+    internal_local_interface = _zivid.CameraState.Network.LocalInterface()
+
+    internal_local_interface.interface_name = (
+        _zivid.CameraState.Network.LocalInterface.InterfaceName(
+            local_interface.interface_name
+        )
+    )
+
+    internal_local_interface.ipv4 = (
+        _to_internal_camera_state_network_local_interface_ipv4(local_interface.ipv4)
+    )
+    return internal_local_interface
+
+
 def _to_internal_camera_state_network_ipv4(ipv4):
     internal_ipv4 = _zivid.CameraState.Network.IPV4()
 
@@ -572,6 +888,13 @@ def _to_internal_camera_state_network_ipv4(ipv4):
 
 def _to_internal_camera_state_network(network):
     internal_network = _zivid.CameraState.Network()
+
+    temp_local_interfaces = _zivid.CameraState.Network.LocalInterfaces()
+    for value in network.local_interfaces:
+        temp_local_interfaces.append(
+            _to_internal_camera_state_network_local_interface(value)
+        )
+    internal_network.local_interfaces = temp_local_interfaces
 
     internal_network.ipv4 = _to_internal_camera_state_network_ipv4(network.ipv4)
     return internal_network
