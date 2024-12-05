@@ -7,6 +7,75 @@ import _zivid
 
 class FrameInfo:
 
+    class Metrics:
+
+        def __init__(
+            self,
+            acquisition_time=_zivid.FrameInfo.Metrics.AcquisitionTime().value,
+            capture_time=_zivid.FrameInfo.Metrics.CaptureTime().value,
+        ):
+
+            if isinstance(acquisition_time, (datetime.timedelta,)):
+                self._acquisition_time = _zivid.FrameInfo.Metrics.AcquisitionTime(
+                    acquisition_time
+                )
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (datetime.timedelta,), got {value_type}".format(
+                        value_type=type(acquisition_time)
+                    )
+                )
+
+            if isinstance(capture_time, (datetime.timedelta,)):
+                self._capture_time = _zivid.FrameInfo.Metrics.CaptureTime(capture_time)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (datetime.timedelta,), got {value_type}".format(
+                        value_type=type(capture_time)
+                    )
+                )
+
+        @property
+        def acquisition_time(self):
+            return self._acquisition_time.value
+
+        @property
+        def capture_time(self):
+            return self._capture_time.value
+
+        @acquisition_time.setter
+        def acquisition_time(self, value):
+            if isinstance(value, (datetime.timedelta,)):
+                self._acquisition_time = _zivid.FrameInfo.Metrics.AcquisitionTime(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: datetime.timedelta, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
+
+        @capture_time.setter
+        def capture_time(self, value):
+            if isinstance(value, (datetime.timedelta,)):
+                self._capture_time = _zivid.FrameInfo.Metrics.CaptureTime(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: datetime.timedelta, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
+
+        def __eq__(self, other):
+            if (
+                self._acquisition_time == other._acquisition_time
+                and self._capture_time == other._capture_time
+            ):
+                return True
+            return False
+
+        def __str__(self):
+            return str(_to_internal_frame_info_metrics(self))
+
     class SoftwareVersion:
 
         def __init__(
@@ -239,6 +308,7 @@ class FrameInfo:
     def __init__(
         self,
         time_stamp=_zivid.FrameInfo.TimeStamp().value,
+        metrics=None,
         software_version=None,
         system_info=None,
     ):
@@ -251,6 +321,12 @@ class FrameInfo:
                     value_type=type(time_stamp)
                 )
             )
+
+        if metrics is None:
+            metrics = self.Metrics()
+        if not isinstance(metrics, self.Metrics):
+            raise TypeError("Unsupported type: {value}".format(value=type(metrics)))
+        self._metrics = metrics
 
         if software_version is None:
             software_version = self.SoftwareVersion()
@@ -271,6 +347,10 @@ class FrameInfo:
         return self._time_stamp.value
 
     @property
+    def metrics(self):
+        return self._metrics
+
+    @property
     def software_version(self):
         return self._software_version
 
@@ -288,6 +368,12 @@ class FrameInfo:
                     value_type=type(value)
                 )
             )
+
+    @metrics.setter
+    def metrics(self, value):
+        if not isinstance(value, self.Metrics):
+            raise TypeError("Unsupported type {value}".format(value=type(value)))
+        self._metrics = value
 
     @software_version.setter
     def software_version(self, value):
@@ -318,6 +404,7 @@ class FrameInfo:
     def __eq__(self, other):
         if (
             self._time_stamp == other._time_stamp
+            and self._metrics == other._metrics
             and self._software_version == other._software_version
             and self._system_info == other._system_info
         ):
@@ -326,6 +413,13 @@ class FrameInfo:
 
     def __str__(self):
         return str(_to_internal_frame_info(self))
+
+
+def _to_frame_info_metrics(internal_metrics):
+    return FrameInfo.Metrics(
+        acquisition_time=internal_metrics.acquisition_time.value,
+        capture_time=internal_metrics.capture_time.value,
+    )
 
 
 def _to_frame_info_software_version(internal_software_version):
@@ -359,12 +453,26 @@ def _to_frame_info_system_info(internal_system_info):
 
 def _to_frame_info(internal_frame_info):
     return FrameInfo(
+        metrics=_to_frame_info_metrics(internal_frame_info.metrics),
         software_version=_to_frame_info_software_version(
             internal_frame_info.software_version
         ),
         system_info=_to_frame_info_system_info(internal_frame_info.system_info),
         time_stamp=internal_frame_info.time_stamp.value,
     )
+
+
+def _to_internal_frame_info_metrics(metrics):
+    internal_metrics = _zivid.FrameInfo.Metrics()
+
+    internal_metrics.acquisition_time = _zivid.FrameInfo.Metrics.AcquisitionTime(
+        metrics.acquisition_time
+    )
+    internal_metrics.capture_time = _zivid.FrameInfo.Metrics.CaptureTime(
+        metrics.capture_time
+    )
+
+    return internal_metrics
 
 
 def _to_internal_frame_info_software_version(software_version):
@@ -417,6 +525,7 @@ def _to_internal_frame_info(frame_info):
 
     internal_frame_info.time_stamp = _zivid.FrameInfo.TimeStamp(frame_info.time_stamp)
 
+    internal_frame_info.metrics = _to_internal_frame_info_metrics(frame_info.metrics)
     internal_frame_info.software_version = _to_internal_frame_info_software_version(
         frame_info.software_version
     )

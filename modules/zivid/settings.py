@@ -2575,6 +2575,8 @@ class Settings:
             all = "all"
             blueSubsample2x2 = "blueSubsample2x2"
             blueSubsample4x4 = "blueSubsample4x4"
+            by2x2 = "by2x2"
+            by4x4 = "by4x4"
             redSubsample2x2 = "redSubsample2x2"
             redSubsample4x4 = "redSubsample4x4"
 
@@ -2582,6 +2584,8 @@ class Settings:
                 "all": _zivid.Settings.Sampling.Pixel.all,
                 "blueSubsample2x2": _zivid.Settings.Sampling.Pixel.blueSubsample2x2,
                 "blueSubsample4x4": _zivid.Settings.Sampling.Pixel.blueSubsample4x4,
+                "by2x2": _zivid.Settings.Sampling.Pixel.by2x2,
+                "by4x4": _zivid.Settings.Sampling.Pixel.by4x4,
                 "redSubsample2x2": _zivid.Settings.Sampling.Pixel.redSubsample2x2,
                 "redSubsample4x4": _zivid.Settings.Sampling.Pixel.redSubsample4x4,
             }
@@ -2686,11 +2690,13 @@ class Settings:
 
         omni = "omni"
         phase = "phase"
+        sage = "sage"
         stripe = "stripe"
 
         _valid_values = {
             "omni": _zivid.Settings.Engine.omni,
             "phase": _zivid.Settings.Engine.phase,
+            "sage": _zivid.Settings.Engine.sage,
             "stripe": _zivid.Settings.Engine.stripe,
         }
 
@@ -2701,6 +2707,7 @@ class Settings:
     def __init__(
         self,
         acquisitions=None,
+        color=_zivid.Settings.Color().value,
         engine=_zivid.Settings.Engine().value,
         diagnostics=None,
         processing=None,
@@ -2723,6 +2730,15 @@ class Settings:
             raise TypeError(
                 "Unsupported type, expected: (collections.abc.Iterable,) or None, got {value_type}".format(
                     value_type=type(acquisitions)
+                )
+            )
+
+        if isinstance(color, _zivid.Settings2D) or color is None:
+            self._color = _zivid.Settings.Color(color)
+        else:
+            raise TypeError(
+                "Unsupported type, expected: _zivid.Settings2D or None, got {value_type}".format(
+                    value_type=type(color)
                 )
             )
 
@@ -2768,6 +2784,10 @@ class Settings:
         return self._acquisitions
 
     @property
+    def color(self):
+        return self._color.value
+
+    @property
     def engine(self):
         if self._engine.value is None:
             return None
@@ -2804,6 +2824,17 @@ class Settings:
                 raise TypeError(
                     "Unsupported type {item_type}".format(item_type=type(item))
                 )
+
+    @color.setter
+    def color(self, value):
+        if isinstance(value, _zivid.Settings2D) or value is None:
+            self._color = _zivid.Settings.Color(value)
+        else:
+            raise TypeError(
+                "Unsupported type, expected: zivid.Settings or None, got {value_type}".format(
+                    value_type=type(value)
+                )
+            )
 
     @engine.setter
     def engine(self, value):
@@ -2859,6 +2890,7 @@ class Settings:
     def __eq__(self, other):
         if (
             self._acquisitions == other._acquisitions
+            and self._color == other._color
             and self._engine == other._engine
             and self._diagnostics == other._diagnostics
             and self._processing == other._processing
@@ -3127,6 +3159,7 @@ def _to_settings(internal_settings):
             internal_settings.region_of_interest
         ),
         sampling=_to_settings_sampling(internal_settings.sampling),
+        color=internal_settings.color.value,
         engine=internal_settings.engine.value,
     )
 
@@ -3523,6 +3556,7 @@ def _to_internal_settings(settings):
         temp_acquisitions.append(_to_internal_settings_acquisition(value))
     internal_settings.acquisitions = temp_acquisitions
 
+    internal_settings.color = _zivid.Settings.Color(settings.color)
     internal_settings.engine = _zivid.Settings.Engine(settings._engine.value)
 
     internal_settings.diagnostics = _to_internal_settings_diagnostics(

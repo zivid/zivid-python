@@ -735,7 +735,7 @@ def generate_all_datamodels(dest_dir: Path) -> None:
         (_zivid.Settings, "settings.py", ["datetime", "collections.abc"]),
         (_zivid.Settings2D, "settings_2d.py", ["datetime", "collections.abc"]),
         (_zivid.CameraInfo, "camera_info.py", []),
-        (_zivid.CameraState, "camera_state.py", []),
+        (_zivid.CameraState, "camera_state.py", ["collections.abc"]),
         (_zivid.FrameInfo, "frame_info.py", ["datetime"]),
         (
             _zivid.capture_assistant.SuggestSettingsParameters,

@@ -347,10 +347,101 @@ class Settings2D:
                 def __str__(self):
                     return str(_to_internal_settings2d_processing_color_balance(self))
 
+            class Experimental:
+
+                class Mode:
+
+                    automatic = "automatic"
+                    toneMapping = "toneMapping"
+
+                    _valid_values = {
+                        "automatic": _zivid.Settings2D.Processing.Color.Experimental.Mode.automatic,
+                        "toneMapping": _zivid.Settings2D.Processing.Color.Experimental.Mode.toneMapping,
+                    }
+
+                    @classmethod
+                    def valid_values(cls):
+                        return list(cls._valid_values.keys())
+
+                def __init__(
+                    self,
+                    mode=_zivid.Settings2D.Processing.Color.Experimental.Mode().value,
+                ):
+
+                    if (
+                        isinstance(
+                            mode,
+                            _zivid.Settings2D.Processing.Color.Experimental.Mode.enum,
+                        )
+                        or mode is None
+                    ):
+                        self._mode = (
+                            _zivid.Settings2D.Processing.Color.Experimental.Mode(mode)
+                        )
+                    elif isinstance(mode, str):
+                        self._mode = (
+                            _zivid.Settings2D.Processing.Color.Experimental.Mode(
+                                self.Mode._valid_values[mode]
+                            )
+                        )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: str or None, got {value_type}".format(
+                                value_type=type(mode)
+                            )
+                        )
+
+                @property
+                def mode(self):
+                    if self._mode.value is None:
+                        return None
+                    for key, internal_value in self.Mode._valid_values.items():
+                        if internal_value == self._mode.value:
+                            return key
+                    raise ValueError(
+                        "Unsupported value {value}".format(value=self._mode)
+                    )
+
+                @mode.setter
+                def mode(self, value):
+                    if isinstance(value, str):
+                        self._mode = (
+                            _zivid.Settings2D.Processing.Color.Experimental.Mode(
+                                self.Mode._valid_values[value]
+                            )
+                        )
+                    elif (
+                        isinstance(
+                            value,
+                            _zivid.Settings2D.Processing.Color.Experimental.Mode.enum,
+                        )
+                        or value is None
+                    ):
+                        self._mode = (
+                            _zivid.Settings2D.Processing.Color.Experimental.Mode(value)
+                        )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: str or None, got {value_type}".format(
+                                value_type=type(value)
+                            )
+                        )
+
+                def __eq__(self, other):
+                    if self._mode == other._mode:
+                        return True
+                    return False
+
+                def __str__(self):
+                    return str(
+                        _to_internal_settings2d_processing_color_experimental(self)
+                    )
+
             def __init__(
                 self,
                 gamma=_zivid.Settings2D.Processing.Color.Gamma().value,
                 balance=None,
+                experimental=None,
             ):
 
                 if (
@@ -379,6 +470,14 @@ class Settings2D:
                     )
                 self._balance = balance
 
+                if experimental is None:
+                    experimental = self.Experimental()
+                if not isinstance(experimental, self.Experimental):
+                    raise TypeError(
+                        "Unsupported type: {value}".format(value=type(experimental))
+                    )
+                self._experimental = experimental
+
             @property
             def gamma(self):
                 return self._gamma.value
@@ -386,6 +485,10 @@ class Settings2D:
             @property
             def balance(self):
                 return self._balance
+
+            @property
+            def experimental(self):
+                return self._experimental
 
             @gamma.setter
             def gamma(self, value):
@@ -415,8 +518,20 @@ class Settings2D:
                     )
                 self._balance = value
 
+            @experimental.setter
+            def experimental(self, value):
+                if not isinstance(value, self.Experimental):
+                    raise TypeError(
+                        "Unsupported type {value}".format(value=type(value))
+                    )
+                self._experimental = value
+
             def __eq__(self, other):
-                if self._gamma == other._gamma and self._balance == other._balance:
+                if (
+                    self._gamma == other._gamma
+                    and self._balance == other._balance
+                    and self._experimental == other._experimental
+                ):
                     return True
                 return False
 
@@ -473,6 +588,8 @@ class Settings2D:
             all = "all"
             blueSubsample2x2 = "blueSubsample2x2"
             blueSubsample4x4 = "blueSubsample4x4"
+            by2x2 = "by2x2"
+            by4x4 = "by4x4"
             redSubsample2x2 = "redSubsample2x2"
             redSubsample4x4 = "redSubsample4x4"
 
@@ -480,6 +597,8 @@ class Settings2D:
                 "all": _zivid.Settings2D.Sampling.Pixel.all,
                 "blueSubsample2x2": _zivid.Settings2D.Sampling.Pixel.blueSubsample2x2,
                 "blueSubsample4x4": _zivid.Settings2D.Sampling.Pixel.blueSubsample4x4,
+                "by2x2": _zivid.Settings2D.Sampling.Pixel.by2x2,
+                "by4x4": _zivid.Settings2D.Sampling.Pixel.by4x4,
                 "redSubsample2x2": _zivid.Settings2D.Sampling.Pixel.redSubsample2x2,
                 "redSubsample4x4": _zivid.Settings2D.Sampling.Pixel.redSubsample4x4,
             }
@@ -706,9 +825,18 @@ def _to_settings2d_processing_color_balance(internal_balance):
     )
 
 
+def _to_settings2d_processing_color_experimental(internal_experimental):
+    return Settings2D.Processing.Color.Experimental(
+        mode=internal_experimental.mode.value,
+    )
+
+
 def _to_settings2d_processing_color(internal_color):
     return Settings2D.Processing.Color(
         balance=_to_settings2d_processing_color_balance(internal_color.balance),
+        experimental=_to_settings2d_processing_color_experimental(
+            internal_color.experimental
+        ),
         gamma=internal_color.gamma.value,
     )
 
@@ -768,6 +896,16 @@ def _to_internal_settings2d_processing_color_balance(balance):
     return internal_balance
 
 
+def _to_internal_settings2d_processing_color_experimental(experimental):
+    internal_experimental = _zivid.Settings2D.Processing.Color.Experimental()
+
+    internal_experimental.mode = _zivid.Settings2D.Processing.Color.Experimental.Mode(
+        experimental._mode.value
+    )
+
+    return internal_experimental
+
+
 def _to_internal_settings2d_processing_color(color):
     internal_color = _zivid.Settings2D.Processing.Color()
 
@@ -775,6 +913,9 @@ def _to_internal_settings2d_processing_color(color):
 
     internal_color.balance = _to_internal_settings2d_processing_color_balance(
         color.balance
+    )
+    internal_color.experimental = _to_internal_settings2d_processing_color_experimental(
+        color.experimental
     )
     return internal_color
 
