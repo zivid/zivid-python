@@ -65,57 +65,72 @@ this option is considered experimental/unofficial.
 ### Point cloud capture
 
 To quickly capture a point cloud using default settings, run the following code:
-
-    import zivid
-    app = zivid.Application()
-    camera = app.connect_camera()
-    settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
-    frame = camera.capture(settings)
-    frame.save("result.zdf")
+```python
+import zivid
+app = zivid.Application()
+camera = app.connect_camera()
+settings = zivid.Settings(
+    acquisitions=[zivid.Settings.Acquisition()],
+    color=zivid.Settings2D(acquisitions=[zivid.Settings2D.Acquisition()]),
+)
+frame = camera.capture_2d_3d(settings)
+frame.save("result.zdf")
+```
 
 Instead of using the API to define capture settings, it is also possible to load them from YML files that
 have been exported from [Zivid Studio][zivid-studio-guide-url] or downloaded from the Zivid Knowledge Base
 [settings library][zivid-two-standard-settings-url]. This can be done by providing the filesystem path to
 such a file, for example:
 
-    settings = Settings.load("ZividTwo_Settings_2xHDR_Normal.yml")
-    frame = camera.capture(settings)
+```python
+settings = Settings.load("ZividTwo_Settings_2xHDR_Normal.yml")
+frame = camera.capture_2d_3d(settings)
+```
 
 ### Point cloud data access
 
 Data can easily be accessed in the form of Numpy arrays:
 
-    import zivid
-    app = zivid.Application()
-    camera = app.connect_camera()
-    settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
-    frame = camera.capture(settings)
-    xyz = frame.point_cloud().copy_data("xyz") # Get point coordinates as [Height,Width,3] float array
-    rgba = frame.point_cloud().copy_data("rgba") # Get point colors as [Height,Width,4] uint8 array
-    bgra = frame.point_cloud().copy_data("bgra") # Get point colors as [Height,Width,4] uint8 array
+```python
+import zivid
+app = zivid.Application()
+camera = app.connect_camera()
+settings = zivid.Settings(
+    acquisitions=[zivid.Settings.Acquisition()],
+    color=zivid.Settings2D(acquisitions=[zivid.Settings2D.Acquisition()]),
+)
+frame = camera.capture_2d_3d(settings)
+xyz = frame.point_cloud().copy_data("xyz") # Get point coordinates as [Height,Width,3] float array
+rgba = frame.point_cloud().copy_data("rgba") # Get point colors as [Height,Width,4] uint8 array
+bgra = frame.point_cloud().copy_data("bgra") # Get point colors as [Height,Width,4] uint8 array
+```
 
 ### Capture Assistant
 
 Instead of manually adjusting settings, the Capture Assistant may be used to find the optimal settings for your scene:
 
-    import zivid
-    app = zivid.Application()
-    camera = app.connect_camera()
-    capture_assistant_params = zivid.capture_assistant.SuggestSettingsParameters()
-    settings = zivid.capture_assistant.suggest_settings(camera, capture_assistant_params)
-    frame = camera.capture(settings)
-    frame.save("result.zdf")
+```python
+import zivid
+app = zivid.Application()
+camera = app.connect_camera()
+capture_assistant_params = zivid.capture_assistant.SuggestSettingsParameters()
+settings = zivid.capture_assistant.suggest_settings(camera, capture_assistant_params)
+frame = camera.capture_2d_3d(settings)
+frame.save("result.zdf")
+```
 
 ### Using camera emulation
 
 If you do not have a camera, you can use the `FileCameraZivid2M70.zfc` file in the [Sample Data][zivid-download-sampledata-url] to emulate a camera.
 
-    import zivid
-    app = zivid.Application()
-    camera = app.create_file_camera("path/to/FileCameraZivid2M70.zfc")
-    settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
-    frame = camera.capture(settings)
-    frame.save("result.zdf")
+```python
+import zivid
+app = zivid.Application()
+camera = app.create_file_camera("path/to/FileCameraZivid2M70.zfc")
+settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
+frame = camera.capture_3d(settings)
+frame.save("result.zdf")
+```
 
 ## Examples
 
