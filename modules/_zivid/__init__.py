@@ -54,6 +54,7 @@ try:
         Frame,
         FrameInfo,
         PointCloud,
+        point_cloud_export,
         Settings,
         version,
         Settings2D,

@@ -22,6 +22,8 @@
 #include <ZividPython/Version.h>
 #include <ZividPython/Wrapper.h>
 
+#include <Zivid/Experimental/PointCloudExport.h>
+#include <ZividPython/PointCloudExport.h>
 #include <pybind11/pybind11.h>
 
 ZIVID_PYTHON_MODULE // NOLINT
@@ -74,4 +76,7 @@ ZIVID_PYTHON_MODULE // NOLINT
 
     using PixelMapping = Zivid::Experimental::PixelMapping;
     ZIVID_PYTHON_WRAP_CLASS(module, PixelMapping);
+
+    namespace PointCloudExport = Zivid::Experimental::PointCloudExport;
+    ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, PointCloudExport);
 }
