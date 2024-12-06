@@ -4,4 +4,5 @@ zivid-{version}-cp39-cp39-win_amd64.whl
 zivid-{version}-cp310-cp310-win_amd64.whl
 zivid-{version}-cp311-cp311-win_amd64.whl
 zivid-{version}-cp312-cp312-win_amd64.whl
+zivid-{version}-cp313-cp313-win_amd64.whl
 zivid-{version}.tar.gz
