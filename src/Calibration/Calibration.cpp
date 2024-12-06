@@ -3,6 +3,7 @@
 #include <Zivid/Calibration/MultiCamera.h>
 #include <Zivid/Calibration/Pose.h>
 #include <Zivid/Experimental/Calibration.h>
+#include <Zivid/Experimental/Calibration/HandEyeLowDOF.h>
 #include <Zivid/PointCloud.h>
 
 #include <ZividPython/Calibration/Detector.h>
@@ -25,6 +26,7 @@ namespace ZividPython::Calibration
     void wrapAsSubmodule(py::module &dest)
     {
         using namespace Zivid::Calibration;
+        using namespace Zivid::Experimental::Calibration::HandEyeLowDOF;
 
         ZIVID_PYTHON_WRAP_CLASS(dest, Pose);
         ZIVID_PYTHON_WRAP_CLASS(dest, HandEyeOutput);
@@ -34,6 +36,11 @@ namespace ZividPython::Calibration
         ZIVID_PYTHON_WRAP_CLASS(dest, MarkerDictionary);
         ZIVID_PYTHON_WRAP_CLASS(dest, DetectionResultFiducialMarkers);
         ZIVID_PYTHON_WRAP_CLASS(dest, HandEyeResidual);
+
+        ZIVID_PYTHON_WRAP_CLASS(dest, FixedPlacementOfFiducialMarker);
+        ZIVID_PYTHON_WRAP_CLASS(dest, FixedPlacementOfFiducialMarkers);
+        ZIVID_PYTHON_WRAP_CLASS(dest, FixedPlacementOfCalibrationBoard);
+        ZIVID_PYTHON_WRAP_CLASS(dest, FixedPlacementOfCalibrationObjects);
 
         ZIVID_PYTHON_WRAP_CLASS(dest, MultiCameraResidual);
         ZIVID_PYTHON_WRAP_CLASS(dest, MultiCameraOutput);
@@ -62,6 +69,20 @@ namespace ZividPython::Calibration
                  })
             .def("calibrate_eye_in_hand", &Zivid::Calibration::calibrateEyeInHand)
             .def("calibrate_eye_to_hand", &Zivid::Calibration::calibrateEyeToHand)
+            .def(
+                "calibrate_eye_in_hand_low_dof",
+                [](const std::vector<HandEyeInput> &inputs, const FixedPlacementOfCalibrationObjects &fixedObjects) {
+                    return Zivid::Experimental::Calibration::calibrateEyeInHandLowDOF(inputs, fixedObjects);
+                },
+                py::arg("inputs"),
+                py::arg("fixed_objects"))
+            .def(
+                "calibrate_eye_to_hand_low_dof",
+                [](const std::vector<HandEyeInput> &inputs, const FixedPlacementOfCalibrationObjects &fixedObjects) {
+                    return Zivid::Experimental::Calibration::calibrateEyeToHandLowDOF(inputs, fixedObjects);
+                },
+                py::arg("inputs"),
+                py::arg("fixed_objects"))
             .def("calibrate_multi_camera", &Zivid::Calibration::calibrateMultiCamera)
             .def(
                 "intrinsics",

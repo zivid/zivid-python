@@ -155,6 +155,57 @@ def handeye_marker_eth_transform_fixture():
     return np.loadtxt(str(path), delimiter=",")
 
 
+@pytest.fixture(name="handeye_eth_low_dof_markers_transform", scope="function")
+def handeye_eth_low_dof_markers_transform_fixture():
+    path = (
+        _testdata_dir()
+        / "handeye"
+        / "eth"
+        / "low_dof"
+        / "eth_low_dof_transform_marker.csv"
+    )
+    return np.loadtxt(str(path), delimiter=",")
+
+
+@pytest.fixture(name="handeye_eth_low_dof_transform", scope="function")
+def handeye_eth_low_dof_transform_fixture():
+    path = _testdata_dir() / "handeye" / "eth" / "low_dof" / "eth_low_dof_transform.csv"
+    return np.loadtxt(str(path), delimiter=",")
+
+
+@pytest.fixture(
+    name="handeye_eth_low_dof_fixed_calibration_board_pose", scope="function"
+)
+def handeye_eth_low_dof_fixed_calibration_board_pose_fixture():
+    path = (
+        _testdata_dir()
+        / "handeye"
+        / "eth"
+        / "low_dof"
+        / "eth_low_dof_fixed_calibration_board_pose.csv"
+    )
+    return np.loadtxt(str(path), delimiter=",")
+
+
+@pytest.fixture(
+    name="handeye_eth_low_dof_fixed_markers_id_position_list", scope="function"
+)
+def handeye_eth_low_dof_fixed_markers_id_position_list_fixture():
+    markers_id_position_list = []
+    for i in range(1, 5):
+        path = (
+            _testdata_dir()
+            / "handeye"
+            / "eth"
+            / "low_dof"
+            / f"eth_low_dof_fixed_marker_id_{i}.csv"
+        )
+        pose = np.loadtxt(str(path), delimiter=",")
+        position = pose[:3, 3]
+        markers_id_position_list.append((i, position))
+    return markers_id_position_list
+
+
 @pytest.fixture(name="markers_2d_corners", scope="function")
 def markers_2d_corners_fixture():
     path = _testdata_dir() / "marker_detection"
@@ -274,6 +325,32 @@ def equality_tester(settings_type, value_collection_1, value_collection_2):
     instance_3 = settings_type(*value_collection_2)
     assert instance_1 != instance_3
     assert instance_3 != instance_2
+
+
+@pytest.helpers.register
+def check_handeye_output(inputs, handeye_output, expected_transform):
+    assert isinstance(handeye_output, zivid.calibration.HandEyeOutput)
+    assert handeye_output.valid()
+    assert bool(handeye_output)
+    assert str(handeye_output)
+
+    # Check returned transform
+    transform_returned = handeye_output.transform()
+    assert isinstance(transform_returned, np.ndarray)
+    assert transform_returned.shape == (4, 4)
+    np.testing.assert_allclose(transform_returned, expected_transform, rtol=1e-5)
+
+    # Check returned residuals
+    residuals_returned = handeye_output.residuals()
+    assert isinstance(residuals_returned, list)
+    assert len(residuals_returned) == len(inputs)
+    for residual in residuals_returned:
+        assert isinstance(residual, zivid.calibration.HandEyeResidual)
+        assert str(residual)
+        assert isinstance(residual.translation(), float)
+        assert residual.translation() >= 0.0
+        assert isinstance(residual.rotation(), float)
+        assert residual.rotation() >= 0.0
 
 
 class Cd:

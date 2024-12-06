@@ -1,5 +1,6 @@
 #include <Zivid/Calibration/HandEye.h>
 
+#include <ZividPython/Calibration/Detector.h>
 #include <ZividPython/Calibration/HandEye.h>
 #include <ZividPython/Matrix.h>
 
@@ -35,5 +36,38 @@ namespace ZividPython
                      return Conversion::toPy(handEyeInput.robotPose().toMatrix());
                  })
             .def("detection_result", &Zivid::Calibration::HandEyeInput::detectionResult);
+    }
+
+    void wrapClass(
+        pybind11::class_<Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfFiducialMarker> pyClass)
+    {
+        using T = Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfFiducialMarker;
+        pyClass.def(py::init<int, const Zivid::PointXYZ &>())
+            .def_property_readonly("id", &T::id)
+            .def_property_readonly("position", &T::position);
+    }
+
+    void wrapClass(
+        pybind11::class_<Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfFiducialMarkers> pyClass)
+    {
+        using T = Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfFiducialMarkers;
+        pyClass.def(
+            py::init<const Zivid::Calibration::MarkerDictionary &,
+                     const std::vector<Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfFiducialMarker>
+                         &>());
+    }
+
+    void wrapClass(
+        pybind11::class_<Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfCalibrationBoard> pyClass)
+    {
+        pyClass.def(py::init<const Zivid::PointXYZ &>()).def(py::init<const Zivid::Calibration::Pose &>());
+    }
+
+    void wrapClass(
+        pybind11::class_<Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfCalibrationObjects> pyClass)
+    {
+        pyClass
+            .def(py::init<const Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfFiducialMarkers &>())
+            .def(py::init<const Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfCalibrationBoard &>());
     }
 } // namespace ZividPython
