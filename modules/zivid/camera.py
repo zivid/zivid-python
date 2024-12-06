@@ -10,6 +10,7 @@ from zivid.network_configuration import (
     _to_internal_network_configuration,
     _to_network_configuration,
 )
+from zivid.scene_conditions import _to_scene_conditions
 from zivid.settings import Settings, _to_internal_settings
 from zivid.settings2d import Settings2D, _to_internal_settings2d
 
@@ -176,6 +177,21 @@ class Camera:
             pass
         else:
             impl.release()
+
+    def measure_scene_conditions(self):
+        """Measure and analyze the conditions of the scene.
+
+        The returned value will report if noticeable ambient light flicker indicative of a 50 Hz or 60 Hz power grid
+        was detected. If light flicker is detected in the scene, it is recommended to use capture settings that are
+        optimized for that power grid frequency.
+
+        `measure_scene_conditions` will raise a RuntimeException if the camera status (see `CameraState.Status`) is not
+        "connected".
+
+        Returns:
+            The current scene conditions.
+        """
+        return _to_scene_conditions(self.__impl.measure_scene_conditions())
 
     def __enter__(self):
         return self

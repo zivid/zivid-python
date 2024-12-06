@@ -31,3 +31,4 @@ per-file-ignores =
     camera_intrinsics.py:D101,D102,D106,D107
     frame_info.py:D101,D102,D106,D107
     network_configuration.py:D101,D102,D106,D107
+    scene_conditions.py:D101,D102,D106,D107
