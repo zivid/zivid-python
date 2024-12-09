@@ -28,7 +28,7 @@ def _main():
         ]
 
         print("Capturing point cloud with preset '{}' ...".format(chosen_preset.name))
-        with camera.capture(chosen_preset.settings) as frame:
+        with camera.capture_2d_3d(chosen_preset.settings) as frame:
             frame.save("result.zdf")
 
         settings_file = chosen_preset.name + ".yml"

@@ -48,8 +48,124 @@ class Camera:
     def __eq__(self, other):
         return self.__impl == other._Camera__impl
 
+    def capture_2d_3d(self, settings):
+        """Capture a 2D+3D frame.
+
+        This method captures both a 3D point cloud and a 2D color image. Use this method when you want to capture
+        colored point clouds. This method will throw if `Settings.color` is not set. Use `capture_3d` for capturing a 3D
+        point cloud without a 2D color image.
+
+        These remarks below apply for all capture functions:
+
+        This method returns right after the acquisition of the images is complete, and the camera has stopped projecting
+        patterns. Therefore, after this method has returned, the camera can be moved, or objects in the scene can be
+        moved, or a capture from another camera with overlapping field of view can be triggered, without affecting the
+        point cloud.
+
+        When this method returns, there is still remaining data to transfer from the camera to the PC, and the
+        processing of the final point cloud is not completed. Transfer and processing of the point cloud will continue
+        in the background. When you call a method on the returned `Frame` object that requires the capture to be
+        finished, for example `Frame.point_cloud`, that method will block until the processing is finished and the point
+        cloud is available. If an exception occurs after the acquisition of images is complete (during transfer or
+        processing of the capture), then that exception is instead thrown when you access the `Frame` object.
+
+        The capture functions can be invoked back-to-back, for doing rapid back-to-back acquisition of multiple (2D or
+        3D) captures on the same camera. This is for example useful if you want to do one high-resolution 2D capture
+        followed by a lower-resolution 3D capture. The acquisition of the next capture will begin quickly after
+        acquisition of the previous capture completed, even when there is remaining transfer and processing for the
+        first capture. This allows pipelining several 2D and/or 3D captures, by doing acquisition in parallel with data
+        transfer and processing.
+
+        Note: There can be maximum of two in-progress uncompleted 3D (or 2D+3D) captures simultaneously per Zivid
+        camera. If you invoke `capture_2d_3d` or `capture_3d` when there are two uncompleted 3D captures in-progress,
+        then the capture will not start until the first of the in-progress 3D captures has finished all transfer and
+        processing. There is a similar limit of maximum two in-process 2D captures per camera.
+
+        Capture functions can also be called on multiple cameras simultaneously. However, if the cameras have
+        overlapping field-of-view then you need to take consideration and sequence the capture calls to avoid the
+        captures interfering with each other.
+
+        Args:
+            settings: Settings to use for the capture.
+
+        Returns:
+            A frame containing a 3D point cloud, a 2D color image, and metadata.
+
+        Raises:
+            TypeError: If the settings argument is not a Settings instance.
+        """
+        if not isinstance(settings, Settings):
+            raise TypeError(
+                "Unsupported type for argument settings. Got {}, expected {}.".format(
+                    type(settings), Settings.__name__
+                )
+            )
+        return Frame(self.__impl.capture_2d_3d(_to_internal_settings(settings)))
+
+    def capture_3d(self, settings):
+        """Capture a single 3D frame.
+
+        This method is used to capture a 3D frame without a 2D color image. It ignores all color settings in the input
+        settings. See `capture_2d_3d` for capturing a 2D+3D frame.
+
+        This method returns right after the acquisition of the images is complete, and the camera has stopped projecting
+        patterns. For more information, see the remarks section of `capture_2d_3d` above. Those remarks apply for both
+        2D, 3D, and 2D+3D captures.
+
+        Args:
+            settings: Settings to use for the capture.
+
+        Returns:
+            A frame containing a 3D point cloud and metadata.
+
+        Raises:
+            TypeError: If the settings argument is not a Settings
+        """
+        if not isinstance(settings, Settings):
+            raise TypeError(
+                "Unsupported type for argument settings. Got {}, expected {}.".format(
+                    type(settings), Settings.__name__
+                )
+            )
+        return Frame(self.__impl.capture_3d(_to_internal_settings(settings)))
+
+    def capture_2d(self, settings):
+        """Capture a single 2D frame.
+
+        This method returns right after the acquisition of the images is complete, and the camera has stopped projecting
+        patterns. For more information, see the remarks section of `capture_2d_3d` above. Those remarks apply for both
+        2D, 3D, and 2D+3D captures.
+
+        Args:
+            settings: Settings to use for the capture. Can be either a Settings2D instance or a Settings instance.
+                      If a Settings instance is provided, only the Settings.color part is used. An exception is thrown
+                      if the Settings.color part is not set.
+
+        Returns:
+            A Frame2D containing a 2D image and metadata
+
+        Raises:
+            TypeError: If the settings argument is not a Settings2D or a Settings.
+        """
+        if isinstance(settings, Settings2D):
+            return Frame2D(self.__impl.capture_2d(_to_internal_settings2d(settings)))
+        if isinstance(settings, Settings):
+            return Frame2D(self.__impl.capture_2d(_to_internal_settings(settings)))
+        raise TypeError(
+            "Unsupported settings type, expected: {expected_types}, got: {value_type}".format(
+                expected_types=" or ".join([Settings.__name__, Settings2D.__name__]),
+                value_type=type(settings),
+            )
+        )
+
     def capture(self, settings):
         """Capture a single frame or a single 2D frame.
+
+        This method is deprecated as of SDK 2.14, and will be removed in the next SDK major version (3.0). Use
+        `capture_2d_3d` instead for capturing 2D+3D frames, use `capture_3d` for capturing 3D frames without a 2D color
+        image, or use `capture_2d` for capturing a 2D color image only.
+
+        This method shares the common remarks about capture functions as found under `capture_2d_3d`.
 
         Args:
             settings: Settings to be used to capture. Can be either a Settings or Settings2D instance
@@ -64,7 +180,12 @@ class Camera:
             return Frame(self.__impl.capture(_to_internal_settings(settings)))
         if isinstance(settings, Settings2D):
             return Frame2D(self.__impl.capture(_to_internal_settings2d(settings)))
-        raise TypeError("Unsupported settings type: {}".format(type(settings)))
+        raise TypeError(
+            "Unsupported settings type, expected: {expected_types}, got: {value_type}".format(
+                expected_types=" or ".join([Settings.__name__, Settings2D.__name__]),
+                value_type=type(settings),
+            )
+        )
 
     @property
     def info(self):
