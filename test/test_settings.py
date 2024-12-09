@@ -131,30 +131,49 @@ def test_default_settings(application):
 
 
 def test_set_color_settings():
+    # pylint: disable=protected-access
+
     from zivid import Settings, Settings2D
+    from zivid.settings import _to_settings, _to_internal_settings
 
     settings = Settings()
     assert settings.color is None
+
+    to_cpp_and_back = _to_settings(_to_internal_settings(settings))
+    assert to_cpp_and_back.color is None
+    assert to_cpp_and_back == settings
 
     settings.color = Settings2D()
     assert settings.color is not None
     assert isinstance(settings.color, Settings2D)
     assert settings.color == Settings2D()
+    to_cpp_and_back = _to_settings(_to_internal_settings(settings))
+    assert to_cpp_and_back.color is not None
+    assert to_cpp_and_back == settings
 
     settings = Settings(color=Settings2D())
     assert settings.color is not None
     assert isinstance(settings.color, Settings2D)
     assert settings.color == Settings2D()
+    to_cpp_and_back = _to_settings(_to_internal_settings(settings))
+    assert to_cpp_and_back.color is not None
+    assert to_cpp_and_back == settings
 
     settings = Settings(color=Settings2D(acquisitions=(Settings2D.Acquisition(),)))
     assert settings.color is not None
     assert isinstance(settings.color, Settings2D)
     assert len(settings.color.acquisitions) == 1
+    to_cpp_and_back = _to_settings(_to_internal_settings(settings))
+    assert to_cpp_and_back.color is not None
+    assert to_cpp_and_back == settings
 
     settings = Settings()
     settings.color = Settings2D()
     settings.color.acquisitions.append(Settings2D.Acquisition())
     assert len(settings.color.acquisitions) == 1
+    to_cpp_and_back = _to_settings(_to_internal_settings(settings))
+    assert len(to_cpp_and_back.color.acquisitions) == 1
+    assert to_cpp_and_back == settings
 
 
 def test_set_acquisition_list():
