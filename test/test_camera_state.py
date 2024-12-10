@@ -100,3 +100,47 @@ def test_not_equal_temperature():
     temperature2 = CameraState.Temperature(dmd=44)
 
     assert temperature1 != temperature2
+
+
+def test_network_file_camera(shared_file_camera):
+    from zivid.camera_state import CameraState
+
+    assert isinstance(shared_file_camera.state.network, CameraState.Network)
+    assert isinstance(shared_file_camera.state.network.ipv4, CameraState.Network.IPV4)
+    assert isinstance(shared_file_camera.state.network.ipv4.address, str)
+    assert shared_file_camera.state.network.ipv4.address == ""
+
+    assert isinstance(shared_file_camera.state.network.local_interfaces, list)
+    assert len(shared_file_camera.state.network.local_interfaces) == 0
+
+
+@pytest.mark.physical_camera
+def test_network(physical_camera):
+    from zivid.camera_state import CameraState
+
+    assert isinstance(physical_camera.state.network, CameraState.Network)
+    assert isinstance(physical_camera.state.network.ipv4, CameraState.Network.IPV4)
+    assert isinstance(physical_camera.state.network.ipv4.address, str)
+    assert physical_camera.state.network.ipv4.address != ""
+
+    assert isinstance(physical_camera.state.network.local_interfaces, list)
+    assert all(
+        isinstance(interface, CameraState.Network.LocalInterface)
+        for interface in physical_camera.state.network.local_interfaces
+    )
+
+    for interface in physical_camera.state.network.local_interfaces:
+        assert isinstance(interface.interface_name, str)
+        assert interface.interface_name != ""
+        assert isinstance(interface.ipv4, CameraState.Network.LocalInterface.IPV4)
+        assert isinstance(interface.ipv4.subnets, list)
+        assert all(
+            isinstance(subnet, CameraState.Network.LocalInterface.IPV4.Subnet)
+            for subnet in interface.ipv4.subnets
+        )
+
+        for subnet in interface.ipv4.subnets:
+            assert isinstance(subnet.address, str)
+            assert subnet.address != ""
+            assert isinstance(subnet.mask, str)
+            assert subnet.mask != ""
