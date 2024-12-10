@@ -12,6 +12,13 @@ class PointCloud:
     An instance of this class is a handle to a point cloud stored on the compute device memory.
     Use the method copy_data to copy point cloud data from the compute device to a numpy
     array in host memory. Several formats are available.
+
+    If the point cloud is the result of a 2D+3D capture, the RGB colors will be set from the captured 2D color image.
+    If different pixel sampling (resolution) settings for 2D and 3D were used, or if the point cloud is upsampled or
+    downsampled, then the RGB colors will be resampled to correspond 1:1 with the 3D point cloud resolution.
+    To get the original resolution 2D color image from the 2D+3D capture, see the frame_2d method of the Frame class.
+
+    If the point cloud is the result of a 3D-only capture, the RGB colors will be set to a uniform default color.
     """
 
     class Downsampling:  # pylint: disable=too-few-public-methods
@@ -153,6 +160,31 @@ class PointCloud:
     def downsample(self, downsampling):
         """Downsample the point cloud in-place.
 
+        Downsampling is used to reduce the number of points in the point cloud. Downsampling is performed
+        by combining a 2x2, 3x3 or 4x4 region of pixels in the original point cloud to one pixel in the
+        new point cloud. A downsampling factor of 2x2 will reduce width and height each to half, and thus
+        the overall number of points to 1/4. 3x3 downsampling reduces width and height each to 1/3, and
+        the overall number of points to 1/9, and so on.
+
+        X, Y and Z coordinates are downsampled by computing the SNR^2 weighted average of each point in
+        the corresponding NxN region in the original point cloud, ignoring invalid (NaN) points. Color is
+        downsampled by computing the average value for each color channel in the NxN region. SNR value is
+        downsampled by computing the square root of the sum of SNR^2 of each valid (non-NaN) point in the
+        NxN region. If all points in the NxN region are invalid (NaN), the downsampled SNR is set to the
+        max SNR in the region.
+
+        As an alternative to using this method, downsampling may also be specified up-front when capturing
+        by using Settings/Processing/Resampling.
+
+        Downsampling is performed on the compute device. The point cloud is modified in-place. Use
+        "downsampled" if you want to downsample to a new PointCloud instance. Downsampling
+        can be repeated multiple times to further reduce the size of the point cloud, if desired.
+
+        Note that the width or height of the point cloud is not required to divide evenly by the
+        downsampling factor (2, 3 or 4). The new width and height equals the original width and height
+        divided by the downsampling factor, rounded down. In this case the remaining columns at the right
+        and/or rows at the bottom of the original point cloud are ignored.
+
         Args:
             downsampling: One of the strings in PointCloud.Downsample.valid_values()
 
@@ -169,6 +201,9 @@ class PointCloud:
 
     def downsampled(self, downsampling):
         """Get a downsampled copy of the point cloud.
+
+        This method is identical to "downsample", except the downsampled point cloud is
+        returned as a new PointCloud instance. The current point cloud is not modified.
 
         Args:
             downsampling: One of the strings in PointCloud.Downsample.valid_values()
