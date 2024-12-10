@@ -237,7 +237,7 @@ def test_eye_in_hand_low_dof_calibration_with_eye_to_hand_data(
         )
 
     calibration_board_pose = zivid.calibration.Pose(
-        np.linalg.inv(handeye_eth_low_dof_fixed_calibration_board_pose)
+        handeye_eth_low_dof_fixed_calibration_board_pose
     )
     fixed_calibration_board = (
         zivid.experimental.hand_eye_low_dof.FixedPlacementOfCalibrationBoard(
@@ -251,6 +251,6 @@ def test_eye_in_hand_low_dof_calibration_with_eye_to_hand_data(
     )
 
     with pytest.raises(RuntimeError):
-        _ = zivid.experimental.hand_eye_low_dof.calibrate_eye_to_hand_low_dof(
+        _ = zivid.experimental.hand_eye_low_dof.calibrate_eye_in_hand_low_dof(
             inputs, fixed_objects
         )
