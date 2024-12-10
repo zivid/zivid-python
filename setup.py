@@ -81,7 +81,13 @@ def _check_cpp17_compiler():
     try:
         run_process(("cmake", "--version"))
     except Exception as ex:
-        raise RuntimeError(_make_message_box("!! CMake not found !!")) from ex
+        raise RuntimeError(
+            _make_message_box(
+                "!! CMake not found !!",
+                "Ensure PIP is updated to the latest version to handle build dependencies automatically,",
+                "or install CMake and Ninja manually.",
+            )
+        ) from ex
     with tempfile.TemporaryDirectory(prefix="zivid-python-build-") as temp_dir:
         with (Path(temp_dir) / "lib.cpp").open("w") as lib_cpp:
             # MSVC does not report itself as C++17, on Windoes we have to rely on the CMAKE_CXX_STANDARD test below
