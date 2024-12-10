@@ -3,6 +3,7 @@
 import numpy
 
 import _zivid
+from zivid.image import Image
 
 
 class PointCloud:
@@ -101,6 +102,39 @@ class PointCloud:
                 )
             ) from ex
         return numpy.array(data_format_class(self.__impl))
+
+    def copy_image(self, data_format):
+        """Copy the point cloud colors as 8-bit image in input format.
+
+        Supported data formats:
+        rgba:       Image(Height,Width,4) of uint8
+        bgra:       Image(Height,Width,4) of uint8
+        srgb:       Image(Height,Width,4) of uint8
+
+        Args:
+            data_format: A string specifying the image data format
+
+        Returns:
+            An image instance containing color data
+
+        Raises:
+            ValueError: if the requested data format does not exist
+        """
+        self.__impl.assert_not_released()
+
+        supported_color_formats = ["rgba", "bgra", "srgb"]
+
+        if data_format == "rgba":
+            return Image(self.__impl.copy_image_rgba())
+        if data_format == "bgra":
+            return Image(self.__impl.copy_image_bgra())
+        if data_format == "srgb":
+            return Image(self.__impl.copy_image_srgb())
+        raise ValueError(
+            "Unsupported color format: {data_format}. Supported formats: {all_formats}".format(
+                data_format=data_format, all_formats=supported_color_formats
+            )
+        )
 
     def transform(self, matrix):
         """Transform the point cloud in-place by a 4x4 transformation matrix.

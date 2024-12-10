@@ -103,6 +103,41 @@ def test_point_cloud_rgba(point_cloud):
     np.testing.assert_array_equal(bgra[:, :, 3], rgba[:, :, 3])
 
 
+def test_point_cloud_copy_image(point_cloud):
+    import numpy as np
+    import zivid
+
+    image_rgba = point_cloud.copy_image("rgba")
+    assert isinstance(image_rgba, zivid.Image)
+    assert image_rgba.height == point_cloud.height
+    assert image_rgba.width == point_cloud.width
+
+    image_bgra = point_cloud.copy_image("bgra")
+    assert isinstance(image_bgra, zivid.Image)
+    assert image_bgra.height == point_cloud.height
+    assert image_bgra.width == point_cloud.width
+
+    image_srgb = point_cloud.copy_image("srgb")
+    assert isinstance(image_srgb, zivid.Image)
+    assert image_srgb.height == point_cloud.height
+    assert image_srgb.width == point_cloud.width
+
+    rgba = point_cloud.copy_data("rgba")
+    np.testing.assert_array_equal(image_rgba.copy_data(), rgba)
+
+    bgra = point_cloud.copy_data("bgra")
+    np.testing.assert_array_equal(image_bgra.copy_data(), bgra)
+
+    srgb = point_cloud.copy_data("srgb")
+    np.testing.assert_array_equal(image_srgb.copy_data(), srgb)
+
+    # Check errors when argument is wrong or missing
+    with pytest.raises(ValueError):
+        point_cloud.copy_image("bogus-format")
+    with pytest.raises(TypeError):
+        point_cloud.copy_image()
+
+
 def test_point_cloud_normals(point_cloud):
     import numpy as np
 

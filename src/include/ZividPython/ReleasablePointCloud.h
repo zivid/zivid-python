@@ -2,6 +2,7 @@
 
 #include <Zivid/PointCloud.h>
 #include <ZividPython/Releasable.h>
+#include <ZividPython/ReleasableImage.h>
 #include <ZividPython/Wrappers.h>
 
 namespace ZividPython
@@ -19,6 +20,9 @@ namespace ZividPython
                                                 downsampled,
                                                 Zivid::PointCloud::Downsampling,
                                                 downsampling)
+        ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageRGBA, copyImageRGBA)
+        ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageBGRA, copyImageBGRA)
+        ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageSRGB, copyImageSRGB)
     };
 
     void wrapClass(pybind11::class_<ReleasablePointCloud> pyClass);
