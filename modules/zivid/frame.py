@@ -8,6 +8,7 @@ from zivid.camera_info import _to_camera_info
 from zivid.camera_state import _to_camera_state
 from zivid.frame_info import _to_frame_info
 from zivid.point_cloud import PointCloud
+from zivid.frame_2d import Frame2D
 
 
 class Frame:
@@ -51,6 +52,36 @@ class Frame:
             A PointCloud instance
         """
         return PointCloud(self.__impl.point_cloud())
+
+    def frame_2d(self):
+        """Get 2D frame from 2D+3D frame.
+
+        If the frame is the result of a 2D+3D capture, this method returns the 2D frame contained in the 2D+3D frame. In
+        the case of a 3D-only capture, this method returns None.
+
+        If the frame was captured by an SDK version prior to 2.14.0, then this method will return None.
+
+        If the 2D frame is not yet available because the capture is still in-progress, then this method will block until
+        acquisition of the entire 2D+3D capture is done. If you need to access the 2D frame before the 3D acquisition
+        has finished, then it is required to do separate 2D and 3D captures.
+
+        In a 2D+3D capture, the 2D color image and 3D point cloud may have different resolutions depending on the pixel
+        sampling settings used. The 2D pixel sampling setting determines the resolution of the 2D color image whereas
+        the 3D pixel sampling setting and the resampling setting determines the resolution of the 3D point cloud. The 2D
+        color image returned in this 2D frame will always have the same resolution as the 2D color image that was
+        captured. On the other hand, the point cloud colors will be sampled from the 2D color image to match the
+        resolution of the 3D point cloud. The point cloud colors will always have a 1:1 correspondence with the 3D point
+        cloud resolution. See `PointCloud` for more information.
+
+        Returns:
+            A Frame instance containing the 2D frame, or None if the frame was captured without 2D color or by an SDK
+            version prior to 2.14.0.
+        """
+        return (
+            Frame2D(self.__impl.frame_2d())
+            if self.__impl.frame_2d() is not None
+            else None
+        )
 
     def save(self, file_path):
         """Save the frame to file. The file type is determined from the file extension.
