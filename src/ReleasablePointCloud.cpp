@@ -1,7 +1,7 @@
+#include <ZividPython/Matrix.h>
 #include <ZividPython/ReleasablePointCloud.h>
 
 #include <Zivid/PointCloud.h>
-#include <ZividPython/Matrix.h>
 
 #include <pybind11/pybind11.h>
 
@@ -22,9 +22,13 @@ namespace ZividPython
                  [](ReleasablePointCloud &pointCloud, Zivid::PointCloud::Downsampling downsampling) {
                      pointCloud.downsample(downsampling);
                  })
-            .def("downsampled", [](ReleasablePointCloud &pointCloud, Zivid::PointCloud::Downsampling downsampling) {
-                return pointCloud.downsampled(downsampling);
-            });
+            .def("downsampled",
+                 [](ReleasablePointCloud &pointCloud, Zivid::PointCloud::Downsampling downsampling) {
+                     return pointCloud.downsampled(downsampling);
+                 })
+            .def("copy_image_rgba", &ReleasablePointCloud::copyImageRGBA)
+            .def("copy_image_bgra", &ReleasablePointCloud::copyImageBGRA)
+            .def("copy_image_srgb", &ReleasablePointCloud::copyImageSRGB);
 
         py::enum_<Zivid::PointCloud::Downsampling>{ pyClass, "Downsampling" }
             .value("by2x2", Zivid::PointCloud::Downsampling::by2x2)
