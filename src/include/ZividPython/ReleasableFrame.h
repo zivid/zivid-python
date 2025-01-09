@@ -18,6 +18,8 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasablePointCloud, pointCloud)
         std::optional<ReleasableFrame2D> frame2D()
         {
+            pybind11::gil_scoped_release gilLock;
+
             auto frame = impl().frame2D();
             if(!frame.has_value())
             {

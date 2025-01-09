@@ -25,7 +25,7 @@
 #define ZIVID_PYTHON_FORWARD_0_ARGS(functionName)                                                                      \
     decltype(auto) functionName()                                                                                      \
     {                                                                                                                  \
-        return impl().functionName();                                                                                  \
+        return WITH_GIL_UNLOCKED(impl().functionName());                                                               \
     }
 
 #define ZIVID_PYTHON_FORWARD_0_ARGS_TEMPLATE_1_ARG(functionName, returnTypeTypename)                                   \
@@ -37,7 +37,7 @@
 #define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(returnType, functionName)                                              \
     auto functionName()                                                                                                \
     {                                                                                                                  \
-        return returnType{ impl().functionName() };                                                                    \
+        return returnType{ WITH_GIL_UNLOCKED(impl().functionName()) };                                                 \
     }
 
 #define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_CONTAINER_RETURN(container, returnType, functionName)                         \
@@ -83,7 +83,7 @@
     template<typename Releaseable>                                                                                     \
     bool operator op(const Releaseable &other) const                                                                   \
     {                                                                                                                  \
-        return impl() op other.impl();                                                                                 \
+        return WITH_GIL_UNLOCKED(impl() op other.impl());                                                              \
     }
 
 namespace ZividPython
