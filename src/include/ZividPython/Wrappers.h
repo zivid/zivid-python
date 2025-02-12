@@ -56,6 +56,7 @@ namespace ZividPython
             return ss.str();
         }
     } // namespace
+
     enum class WrapType
     {
         normal,
@@ -63,15 +64,10 @@ namespace ZividPython
         singleton,
     };
 
-    template<typename Source, WrapType wrapType, typename WrapFunction, typename... Tags>
-    void wrapClass(const pybind11::module &dest,
-                   const WrapFunction &wrapFunction,
-                   const char *exposedName,
-                   Tags... tags)
+    template<typename Source, typename PyClass, WrapType wrapType>
+    void addCommonClassDefs(PyClass &pyClass, const pybind11::module &dest, const char *exposedName)
     {
-        auto pyClass = pybind11::class_<Source>{ dest, exposedName, tags... }
-                           .def("to_string", &Source::toString)
-                           .def("__repr__", &Source::toString);
+        pyClass.def("to_string", &Source::toString).def("__repr__", &Source::toString);
 
         if constexpr(is_detected<bool_t, Source>::value)
         {
@@ -89,6 +85,27 @@ namespace ZividPython
             // https://pybind11.readthedocs.io/en/stable/advanced/misc.html#module-destructors
             dest.attr(exposedName).attr("_cleanup") = pybind11::capsule([] { Source::release(); });
         }
+    }
+
+    template<typename Source, WrapType wrapType, typename WrapFunction, typename... Tags>
+    void wrapClass(const pybind11::module &dest,
+                   const WrapFunction &wrapFunction,
+                   const char *exposedName,
+                   Tags... tags)
+    {
+        auto pyClass = pybind11::class_<Source>{ dest, exposedName, tags... };
+        addCommonClassDefs<Source, decltype(pyClass), wrapType>(pyClass, dest, exposedName);
+        wrapFunction(pyClass);
+    }
+
+    template<typename Source, WrapType wrapType, typename WrapFunction, typename... Tags>
+    void wrapSharedPtrClass(const pybind11::module &dest,
+                            const WrapFunction &wrapFunction,
+                            const char *exposedName,
+                            Tags... tags)
+    {
+        auto pyClass = pybind11::class_<Source, std::shared_ptr<Source>>{ dest, exposedName, tags... };
+        addCommonClassDefs<Source, decltype(pyClass), wrapType>(pyClass, dest, exposedName);
         wrapFunction(pyClass);
     }
 
@@ -132,6 +149,14 @@ namespace ZividPython
     ZividPython::wrapClass<ZividPython::Releasable##name, ZividPython::WrapType::releasable>(                          \
         dest, static_cast<void (*)(pybind11::class_<ZividPython::Releasable##name>)>(ZividPython::wrapClass), #name)
 
+#define ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE_WITH_SHARED_PTR(dest, name)                                              \
+    ZividPython::wrapSharedPtrClass<ZividPython::Releasable##name, ZividPython::WrapType::releasable>(                 \
+        dest,                                                                                                          \
+        static_cast<void (*)(                                                                                          \
+            pybind11::class_<ZividPython::Releasable##name, std::shared_ptr<ZividPython::Releasable##name>>)>(         \
+            ZividPython::wrapClass),                                                                                   \
+        #name)
+
 #define ZIVID_PYTHON_WRAP_CLASS_AS_SINGLETON(dest, name)                                                               \
     ZividPython::wrapClass<ZividPython::Singleton##name, ZividPython::WrapType::singleton>(                            \
         dest, static_cast<void (*)(pybind11::class_<ZividPython::Singleton##name>)>(ZividPython::wrapClass), #name);
@@ -140,6 +165,15 @@ namespace ZividPython
     ZividPython::wrapClass<ZividPython::Releasable##name, ZividPython::WrapType::releasable>(                          \
         dest,                                                                                                          \
         static_cast<void (*)(pybind11::class_<ZividPython::Releasable##name>)>(ZividPython::wrapClass),                \
+        #name,                                                                                                         \
+        pybind11::buffer_protocol())
+
+#define ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE_WITH_SHARED_PTR(dest, name)                                       \
+    ZividPython::wrapSharedPtrClass<ZividPython::Releasable##name, ZividPython::WrapType::releasable>(                 \
+        dest,                                                                                                          \
+        static_cast<void (*)(                                                                                          \
+            pybind11::class_<ZividPython::Releasable##name, std::shared_ptr<ZividPython::Releasable##name>>)>(         \
+            ZividPython::wrapClass),                                                                                   \
         #name,                                                                                                         \
         pybind11::buffer_protocol())
 
