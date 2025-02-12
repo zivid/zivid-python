@@ -22,9 +22,11 @@ def test_point_cloud(frame):
 def test_frame_2d(frame):
     import zivid
 
-    frame_2d = frame.frame_2d()
-    assert frame_2d
-    assert isinstance(frame_2d, zivid.Frame2D)
+    with frame.frame_2d() as frame_2d:
+        assert frame_2d
+        assert isinstance(frame_2d, zivid.Frame2D)
+    with pytest.raises(RuntimeError):
+        frame_2d.image_rgba()
 
 
 def test_path_init(application, frame_file):
@@ -60,8 +62,18 @@ def test_context_manager(application, frame_file):
 
     with zivid.frame.Frame(frame_file) as frame:
         frame.point_cloud()
+        frame_2d = frame.frame_2d()
+        point_cloud = frame.point_cloud()
+    # After exiting the context manager, the frame should be released
+    # and so accessing the point cloud should raise an exception
     with pytest.raises(RuntimeError):
         frame.point_cloud()
+    with pytest.raises(RuntimeError):
+        # Check that the point cloud is released by the parent frame
+        point_cloud.copy_image("rgba")
+    with pytest.raises(RuntimeError):
+        # Check that the frame_2d is released by the parent frame
+        frame_2d.image_rgba()
 
 
 def test_to_string(frame):

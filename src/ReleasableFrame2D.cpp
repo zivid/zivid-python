@@ -6,7 +6,7 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
-    void wrapClass(pybind11::class_<ReleasableFrame2D> pyClass)
+    void wrapClass(pybind11::class_<ReleasableFrame2D, std::shared_ptr<ReleasableFrame2D>> pyClass)
     {
         pyClass.def_property_readonly("settings", &ReleasableFrame2D::settings)
             .def_property_readonly("state", &ReleasableFrame2D::state)

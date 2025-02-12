@@ -23,5 +23,5 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS(cameraInfo)
     };
 
-    void wrapClass(pybind11::class_<ReleasableFrame2D> pyClass);
+    void wrapClass(pybind11::class_<ReleasableFrame2D, std::shared_ptr<ReleasableFrame2D>> pyClass);
 } // namespace ZividPython
