@@ -73,6 +73,8 @@ class Frame:
         resolution of the 3D point cloud. The point cloud colors will always have a 1:1 correspondence with the 3D point
         cloud resolution. See `PointCloud` for more information.
 
+        The 2D frame returned by this method will be automatically released when the parent 2D+3D frame is released.
+
         Returns:
             A Frame instance containing the 2D frame, or None if the frame was captured without 2D color or by an SDK
             version prior to 2.14.0.
