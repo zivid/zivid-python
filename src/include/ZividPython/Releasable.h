@@ -97,6 +97,8 @@ namespace ZividPython
             : m_impl{ std::make_optional<T>(std::forward<Args>(args)...) }
         {}
 
+        virtual ~Releasable() = default;
+
         decltype(auto) toString() const
         {
             return impl().toString();
@@ -114,7 +116,7 @@ namespace ZividPython
             return m_impl.value();
         }
 
-        void release()
+        virtual void release()
         {
             m_impl.reset();
         }
@@ -125,6 +127,12 @@ namespace ZividPython
         {
             std::ignore = impl();
         }
+
+    protected:
+        Releasable(const Releasable&) = default;
+        Releasable& operator=(const Releasable&) = default;
+        Releasable(Releasable&&) = default;
+        Releasable& operator=(Releasable&&) = default;
 
     private:
         std::optional<T> m_impl{ std::make_optional<T>() };
