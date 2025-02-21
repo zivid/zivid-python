@@ -9,7 +9,7 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
-    void wrapClass(pybind11::class_<ReleasablePointCloud> pyClass)
+    void wrapClass(pybind11::class_<ReleasablePointCloud, std::shared_ptr<ReleasablePointCloud>> pyClass)
     {
         pyClass.def(py::init<>())
             .def("width", &ReleasablePointCloud::width)
