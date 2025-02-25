@@ -253,3 +253,6 @@ class PointCloud:
 
     def __del__(self):
         self.release()
+
+    def __copy__(self):
+        return PointCloud(self.__impl.__copy__())
