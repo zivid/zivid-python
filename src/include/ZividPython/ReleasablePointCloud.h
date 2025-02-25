@@ -12,6 +12,8 @@ namespace ZividPython
     public:
         using Releasable<Zivid::PointCloud>::Releasable;
 
+        ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(ReleasablePointCloud)
+
         ZIVID_PYTHON_FORWARD_0_ARGS(width)
         ZIVID_PYTHON_FORWARD_0_ARGS(height)
         ZIVID_PYTHON_FORWARD_1_ARGS(transform, const Zivid::Matrix4x4 &, matrix)

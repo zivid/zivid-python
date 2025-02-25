@@ -74,6 +74,11 @@ namespace ZividPython
             pyClass.def("__bool__", &Source::operator bool);
         }
 
+        if constexpr(std::is_copy_constructible_v<Source>)
+        {
+            pyClass.def("__copy__", [](const Source &self) { return Source{ self }; });
+        }
+
         if constexpr(WrapType::releasable == wrapType)
         {
             pyClass.def("release", &Source::release).def("assert_not_released", &Source::assertNotReleased);

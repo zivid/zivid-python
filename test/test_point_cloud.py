@@ -359,3 +359,15 @@ def test_illegal_init(application):
 
     with pytest.raises(TypeError):
         zivid.PointCloud(123)
+
+
+def test_copy_point_cloud(frame):
+    import copy
+    import zivid
+
+    with frame.point_cloud() as point_cloud:
+        with copy.copy(point_cloud) as point_cloud_copy:
+            assert isinstance(point_cloud_copy, zivid.PointCloud)
+            assert point_cloud_copy is not point_cloud
+            assert point_cloud_copy.height == point_cloud.height
+            assert point_cloud_copy.width == point_cloud.width

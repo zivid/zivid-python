@@ -123,3 +123,15 @@ def test_release(frame):
     frame.release()
     with pytest.raises(RuntimeError):
         frame.point_cloud()
+
+
+def test_copy(frame):
+    import copy
+
+    frame_copy = copy.copy(frame)
+    assert frame_copy
+    assert frame_copy is not frame
+    assert isinstance(frame_copy, type(frame))
+
+    frame.release()
+    assert isinstance(frame_copy.point_cloud(), zivid.PointCloud)

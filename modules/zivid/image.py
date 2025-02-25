@@ -124,3 +124,6 @@ class Image:
 
     def __del__(self):
         self.release()
+
+    def __copy__(self):
+        return Image(self.__impl.__copy__())

@@ -13,8 +13,15 @@ namespace ZividPython
     public:
         using Releasable::Releasable;
 
+        ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(ReleasableFrame)
+
         void release() override
         {
+            if(m_pointCloud != nullptr)
+            {
+                m_pointCloud->release();
+                m_pointCloud = nullptr;
+            }
             if(m_frame2D != nullptr)
             {
                 m_frame2D->release();

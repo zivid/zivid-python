@@ -114,3 +114,6 @@ class Frame2D:
 
     def __del__(self):
         self.release()
+
+    def __copy__(self):
+        return Frame2D(self.__impl.__copy__())

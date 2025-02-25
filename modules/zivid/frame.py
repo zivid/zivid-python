@@ -49,6 +49,8 @@ class Frame:
         retrieve point cloud data on various formats.
 
         The point cloud returned by this method will be automatically released when the parent frame is released.
+        You should make a shallow copy using `copy.copy` function from the `copy` module if you want to use the point
+        cloud after the frame has been released.
 
         Returns:
             A PointCloud instance
@@ -76,6 +78,8 @@ class Frame:
         cloud resolution. See `PointCloud` for more information.
 
         The 2D frame returned by this method will be automatically released when the parent 2D+3D frame is released.
+        You should make a shallow copy using the `copy.copy` function from the `copy` module if you want to use the 2D
+        frame after the frame has been released.
 
         Returns:
             A Frame instance containing the 2D frame, or None if the frame was captured without 2D color or by an SDK
@@ -157,3 +161,6 @@ class Frame:
 
     def __del__(self):
         self.release()
+
+    def __copy__(self):
+        return Frame(self.__impl.__copy__())

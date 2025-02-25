@@ -86,16 +86,26 @@
         return WITH_GIL_UNLOCKED(impl() op other.impl());                                                              \
     }
 
+#define ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(className)                                                                    \
+    className(const className &other)                                                                                   \
+        : Releasable{ other }                                                                                          \
+    {}
+
 namespace ZividPython
 {
     template<typename T>
     class Releasable
     {
     public:
-        template<typename... Args>
+        template<typename... Args, std::enable_if_t<std::is_constructible_v<T, Args...>, int> = 0>
         explicit Releasable(Args &&...args)
             : m_impl{ std::make_optional<T>(std::forward<Args>(args)...) }
         {}
+
+        Releasable(const Releasable &) = default;
+        Releasable &operator=(const Releasable &) = default;
+        Releasable(Releasable &&) = default;
+        Releasable &operator=(Releasable &&) = default;
 
         virtual ~Releasable() = default;
 
@@ -133,12 +143,6 @@ namespace ZividPython
             std::ignore = impl();
         }
 
-    protected:
-        Releasable(const Releasable&) = default;
-        Releasable& operator=(const Releasable&) = default;
-        Releasable(Releasable&&) = default;
-        Releasable& operator=(Releasable&&) = default;
-
     private:
         std::optional<T> m_impl{ std::make_optional<T>() };
     };
@@ -147,7 +151,7 @@ namespace ZividPython
     class Singleton
     {
     public:
-        template<typename... Args, typename std::enable_if_t<(std::is_constructible_v<T, Args...>), int> = 0>
+        template<typename... Args, std::enable_if_t<(std::is_constructible_v<T, Args...>), int> = 0>
         Singleton(Args &&...args)
         {
             // Keep the singleton alive forever to avoid races with
