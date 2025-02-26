@@ -16,22 +16,10 @@
         return __VA_ARGS__;                                                                                            \
     }()
 
-#define ZIVID_PYTHON_FORWARD_0_ARGS_TEMPLATE_1_ARG_WRAP_RETURN(returnType, functionName, returnTypeTypename)           \
-    auto functionName()                                                                                                \
-    {                                                                                                                  \
-        return returnType{ WITH_GIL_UNLOCKED(impl().functionName<returnTypeTypename>()) };                             \
-    }
-
 #define ZIVID_PYTHON_FORWARD_0_ARGS(functionName)                                                                      \
     decltype(auto) functionName()                                                                                      \
     {                                                                                                                  \
         return WITH_GIL_UNLOCKED(impl().functionName());                                                               \
-    }
-
-#define ZIVID_PYTHON_FORWARD_0_ARGS_TEMPLATE_1_ARG(functionName, returnTypeTypename)                                   \
-    decltype(auto) functionName()                                                                                      \
-    {                                                                                                                  \
-        return WITH_GIL_UNLOCKED(impl().functionName<returnTypeTypename>());                                           \
     }
 
 #define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(returnType, functionName)                                              \
