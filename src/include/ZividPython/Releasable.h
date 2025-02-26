@@ -16,20 +16,20 @@
         return __VA_ARGS__;                                                                                            \
     }()
 
-#define ZIVID_PYTHON_FORWARD_0_ARGS(functionName)                                                                      \
-    decltype(auto) functionName()                                                                                      \
+#define ZIVID_PYTHON_FORWARD_0_ARGS(functionName, ...)                                                                 \
+    decltype(auto) functionName() __VA_ARGS__                                                                          \
     {                                                                                                                  \
         return WITH_GIL_UNLOCKED(impl().functionName());                                                               \
     }
 
-#define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(returnType, functionName)                                              \
-    auto functionName()                                                                                                \
+#define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(returnType, functionName, ...)                                         \
+    auto functionName() __VA_ARGS__                                                                                    \
     {                                                                                                                  \
         return returnType{ WITH_GIL_UNLOCKED(impl().functionName()) };                                                 \
     }
 
-#define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_CONTAINER_RETURN(container, returnType, functionName)                         \
-    auto functionName()                                                                                                \
+#define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_CONTAINER_RETURN(container, returnType, functionName, ...)                    \
+    auto functionName() __VA_ARGS__                                                                                    \
     {                                                                                                                  \
         auto nativeContainer = WITH_GIL_UNLOCKED(impl().functionName());                                               \
         container<returnType> returnContainer;                                                                         \
@@ -43,26 +43,26 @@
         return returnContainer;                                                                                        \
     }
 
-#define ZIVID_PYTHON_FORWARD_1_ARGS(functionName, arg1Type, arg1Name)                                                  \
-    decltype(auto) functionName(arg1Type arg1Name)                                                                     \
+#define ZIVID_PYTHON_FORWARD_1_ARGS(functionName, arg1Type, arg1Name, ...)                                             \
+    decltype(auto) functionName(arg1Type arg1Name) __VA_ARGS__                                                         \
     {                                                                                                                  \
         return WITH_GIL_UNLOCKED(impl().functionName(arg1Name));                                                       \
     }
 
-#define ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(returnType, functionName, arg1Type, arg1Name)                          \
-    auto functionName(arg1Type arg1Name)                                                                               \
+#define ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(returnType, functionName, arg1Type, arg1Name, ...)                     \
+    auto functionName(arg1Type arg1Name) __VA_ARGS__                                                                   \
     {                                                                                                                  \
         return returnType{ WITH_GIL_UNLOCKED(impl().functionName(arg1Name)) };                                         \
     }
 
-#define ZIVID_PYTHON_FORWARD_2_ARGS(functionName, arg1Type, arg1Name, arg2Type, arg2Name)                              \
-    decltype(auto) functionName(arg1Type arg1Name, arg2Type arg2Name)                                                  \
+#define ZIVID_PYTHON_FORWARD_2_ARGS(functionName, arg1Type, arg1Name, arg2Type, arg2Name, ...)                         \
+    decltype(auto) functionName(arg1Type arg1Name, arg2Type arg2Name) __VA_ARGS__                                      \
     {                                                                                                                  \
         return WITH_GIL_UNLOCKED(impl().functionName(arg1Name, arg2Name));                                             \
     }
 
-#define ZIVID_PYTHON_FORWARD_2_ARGS_WRAP_RETURN(returnType, functionName, arg1Type, arg1Name, arg2Type, arg2Name)      \
-    auto functionName(arg1Type arg1Name, arg2Type arg2Name)                                                            \
+#define ZIVID_PYTHON_FORWARD_2_ARGS_WRAP_RETURN(returnType, functionName, arg1Type, arg1Name, arg2Type, arg2Name, ...) \
+    auto functionName(arg1Type arg1Name, arg2Type arg2Name) __VA_ARGS__                                                \
     {                                                                                                                  \
         return returnType{ WITH_GIL_UNLOCKED(impl().functionName(arg1Name, arg2Name)) };                               \
     }
@@ -74,8 +74,8 @@
         return WITH_GIL_UNLOCKED(impl() op other.impl());                                                              \
     }
 
-#define ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(className)                                                                    \
-    className(const className &other)                                                                                   \
+#define ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(className)                                                                   \
+    className(const className &other)                                                                                  \
         : Releasable{ other }                                                                                          \
     {}
 
