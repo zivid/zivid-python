@@ -153,6 +153,23 @@ class Frame:
         else:
             impl.release()
 
+    def clone(self):
+        """Get a clone of the frame.
+
+        The clone will include a copy of all the point cloud data on the compute device memory. This means that the
+        returned frame will not be affected by subsequent modifications on the original frame or point cloud.
+
+        This function incurs a performance cost due to the copying of the compute device memory. When performance is
+        important we recommend to avoid using this method, and instead modify the existing frame or point cloud.
+
+        This method is equivalent to calling `copy.deepcopy` on the frame. You can obtain a shallow copy that does
+        not copy the underlying data by using `copy.copy` on the frame instead.
+
+        Returns:
+            A Frame instance
+        """
+        return Frame(self.__impl.clone())
+
     def __enter__(self):
         return self
 
@@ -164,3 +181,6 @@ class Frame:
 
     def __copy__(self):
         return Frame(self.__impl.__copy__())
+
+    def __deepcopy__(self, memodict):
+        return Frame(self.__impl.__deepcopy__(memodict))

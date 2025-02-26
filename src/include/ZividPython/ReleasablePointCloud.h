@@ -25,6 +25,7 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageRGBA, copyImageRGBA)
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageBGRA, copyImageBGRA)
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageSRGB, copyImageSRGB)
+        ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasablePointCloud, clone, const);
     };
 
     void wrapClass(pybind11::class_<ReleasablePointCloud, std::shared_ptr<ReleasablePointCloud>> pyClass);
