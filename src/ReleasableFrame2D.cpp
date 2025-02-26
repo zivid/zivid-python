@@ -6,7 +6,7 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
-    void wrapClass(pybind11::class_<ReleasableFrame2D> pyClass)
+    void wrapClass(pybind11::class_<ReleasableFrame2D, std::shared_ptr<ReleasableFrame2D>> pyClass)
     {
         pyClass.def_property_readonly("settings", &ReleasableFrame2D::settings)
             .def_property_readonly("state", &ReleasableFrame2D::state)
@@ -14,6 +14,7 @@ namespace ZividPython
             .def_property_readonly("camera_info", &ReleasableFrame2D::cameraInfo)
             .def("image_rgba", &ReleasableFrame2D::imageRGBA)
             .def("image_bgra", &ReleasableFrame2D::imageBGRA)
-            .def("image_srgb", &ReleasableFrame2D::imageSRGB);
+            .def("image_srgb", &ReleasableFrame2D::imageSRGB)
+            .def("clone", &ReleasableFrame2D::clone);
     }
 } // namespace ZividPython

@@ -63,3 +63,16 @@ def test_load(frame_2d: zivid.Frame2D):
 
             with pytest.raises(ValueError):
                 zivid.Image.load(image_file, "rgb")
+
+
+def test_copy(frame_2d: zivid.Frame2D):
+    import copy
+
+    with frame_2d.image_rgba() as image_2d:
+        with copy.copy(image_2d) as copied_image:
+            assert copied_image is not None
+            assert isinstance(copied_image, zivid.Image)
+            assert copied_image is not image_2d
+            np.testing.assert_array_equal(
+                image_2d.copy_data(), copied_image.copy_data()
+            )

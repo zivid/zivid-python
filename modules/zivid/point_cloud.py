@@ -143,6 +143,24 @@ class PointCloud:
             )
         )
 
+    def clone(self):
+        """Get a clone of the point cloud.
+
+        The clone will include a copy of all the point cloud data on the compute device memory. This means that the
+        returned point cloud will not be affected by subsequent modifications (such as transform or downsample) on the
+        original point cloud.
+
+        This function incurs a performance cost due to the copying of the compute device memory. When performance is
+        important we recommend to avoid using this method, and instead modify the existing point cloud.
+
+        This method is equivalent to calling `copy.deepcopy` on the point cloud. You can obtain a shallow copy that does
+        not copy the underlying data by using `copy.copy` on the point cloud instead.
+
+        Returns:
+            A new PointCloud instance
+        """
+        return PointCloud(self.__impl.clone())
+
     def transform(self, matrix):
         """Transform the point cloud in-place by a 4x4 transformation matrix.
 
@@ -253,3 +271,9 @@ class PointCloud:
 
     def __del__(self):
         self.release()
+
+    def __copy__(self):
+        return PointCloud(self.__impl.__copy__())
+
+    def __deepcopy__(self, memodict):
+        return PointCloud(self.__impl.__deepcopy__(memodict))

@@ -48,6 +48,10 @@ class Frame:
         See documentation/functions of zivid.PointCloud for instructions on how to
         retrieve point cloud data on various formats.
 
+        The point cloud returned by this method will be automatically released when the parent frame is released.
+        You should make a shallow copy using `copy.copy` function from the `copy` module if you want to use the point
+        cloud after the frame has been released.
+
         Returns:
             A PointCloud instance
         """
@@ -72,6 +76,10 @@ class Frame:
         captured. On the other hand, the point cloud colors will be sampled from the 2D color image to match the
         resolution of the 3D point cloud. The point cloud colors will always have a 1:1 correspondence with the 3D point
         cloud resolution. See `PointCloud` for more information.
+
+        The 2D frame returned by this method will be automatically released when the parent 2D+3D frame is released.
+        You should make a shallow copy using the `copy.copy` function from the `copy` module if you want to use the 2D
+        frame after the frame has been released.
 
         Returns:
             A Frame instance containing the 2D frame, or None if the frame was captured without 2D color or by an SDK
@@ -145,6 +153,23 @@ class Frame:
         else:
             impl.release()
 
+    def clone(self):
+        """Get a clone of the frame.
+
+        The clone will include a copy of all the point cloud data on the compute device memory. This means that the
+        returned frame will not be affected by subsequent modifications on the original frame or point cloud.
+
+        This function incurs a performance cost due to the copying of the compute device memory. When performance is
+        important we recommend to avoid using this method, and instead modify the existing frame or point cloud.
+
+        This method is equivalent to calling `copy.deepcopy` on the frame. You can obtain a shallow copy that does
+        not copy the underlying data by using `copy.copy` on the frame instead.
+
+        Returns:
+            A Frame instance
+        """
+        return Frame(self.__impl.clone())
+
     def __enter__(self):
         return self
 
@@ -153,3 +178,9 @@ class Frame:
 
     def __del__(self):
         self.release()
+
+    def __copy__(self):
+        return Frame(self.__impl.__copy__())
+
+    def __deepcopy__(self, memodict):
+        return Frame(self.__impl.__deepcopy__(memodict))

@@ -106,6 +106,22 @@ class Frame2D:
         else:
             impl.release()
 
+    def clone(self):
+        """Get a clone of the frame.
+
+        The clone will include a copy of all the frame data.
+
+        This function incurs a performance cost due to the copying of the data. When performance is important we
+        recommend to avoid using this method, and instead modify the existing frame.
+
+        This method is equivalent to calling `copy.deepcopy` on the frame. You can obtain a shallow copy that does
+        not copy the underlying data by using `copy.copy` on the frame instead.
+
+        Returns:
+            A Frame2D instance
+        """
+        return Frame2D(self.__impl.clone())
+
     def __enter__(self):
         return self
 
@@ -114,3 +130,9 @@ class Frame2D:
 
     def __del__(self):
         self.release()
+
+    def __copy__(self):
+        return Frame2D(self.__impl.__copy__())
+
+    def __deepcopy__(self, memodict):
+        return Frame2D(self.__impl.__deepcopy__(memodict))

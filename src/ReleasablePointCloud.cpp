@@ -9,7 +9,7 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
-    void wrapClass(pybind11::class_<ReleasablePointCloud> pyClass)
+    void wrapClass(pybind11::class_<ReleasablePointCloud, std::shared_ptr<ReleasablePointCloud>> pyClass)
     {
         pyClass.def(py::init<>())
             .def("width", &ReleasablePointCloud::width)
@@ -28,7 +28,8 @@ namespace ZividPython
                  })
             .def("copy_image_rgba", &ReleasablePointCloud::copyImageRGBA)
             .def("copy_image_bgra", &ReleasablePointCloud::copyImageBGRA)
-            .def("copy_image_srgb", &ReleasablePointCloud::copyImageSRGB);
+            .def("copy_image_srgb", &ReleasablePointCloud::copyImageSRGB)
+            .def("clone", &ReleasablePointCloud::clone);
 
         py::enum_<Zivid::PointCloud::Downsampling>{ pyClass, "Downsampling" }
             .value("by2x2", Zivid::PointCloud::Downsampling::by2x2)

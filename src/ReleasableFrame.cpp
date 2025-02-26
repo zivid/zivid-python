@@ -17,6 +17,7 @@ namespace ZividPython
             .def_property_readonly("info", &ReleasableFrame::info)
             .def_property_readonly("camera_info", &ReleasableFrame::cameraInfo)
             .def("point_cloud", &ReleasableFrame::pointCloud)
-            .def("frame_2d", &ReleasableFrame::frame2D);
+            .def("frame_2d", &ReleasableFrame::frame2D)
+            .def("clone", &ReleasableFrame::clone);
     }
 } // namespace ZividPython
