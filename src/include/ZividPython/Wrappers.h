@@ -22,6 +22,9 @@ namespace ZividPython
         template<typename T>
         using bool_t = decltype(static_cast<bool>(std::declval<T>()));
 
+        template<typename T>
+        using clone_t = decltype(std::declval<T>().clone());
+
         /// Inserts underscore on positive case flank and before negative case flank:
         /// ZividSDKVersion -> zivid_sdk_version
         std::string toSnakeCase(std::string_view upperCamelCase)
@@ -81,6 +84,12 @@ namespace ZividPython
         if constexpr(std::is_copy_constructible_v<Source>)
         {
             pyClass.def("__copy__", [](const Source &self) { return Source{ self }; });
+        }
+
+        // Add __deepcopy__ if Source has a clone method
+        if constexpr(is_detected<clone_t, Source>::value)
+        {
+            pyClass.def("__deepcopy__", [](const Source &self, const pybind11::dict &) { return self.clone(); });
         }
 
         if constexpr(WrapType::releasable == wrapType)

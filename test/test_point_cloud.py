@@ -361,13 +361,48 @@ def test_illegal_init(application):
         zivid.PointCloud(123)
 
 
-def test_copy_point_cloud(frame):
+def test_copy_point_cloud(frame, transform):
     import copy
     import zivid
+    from assertions import assert_point_clouds_equal
 
     with frame.point_cloud() as point_cloud:
         with copy.copy(point_cloud) as point_cloud_copy:
             assert isinstance(point_cloud_copy, zivid.PointCloud)
             assert point_cloud_copy is not point_cloud
-            assert point_cloud_copy.height == point_cloud.height
-            assert point_cloud_copy.width == point_cloud.width
+            assert_point_clouds_equal(point_cloud, point_cloud_copy)
+
+            point_cloud.transform(transform)
+            # shallow copy, transform should have affected both copies
+            assert_point_clouds_equal(point_cloud, point_cloud_copy)
+
+
+def test_deepcopy_point_cloud(frame, transform):
+    import copy
+    import zivid
+    from assertions import assert_point_clouds_equal, assert_point_clouds_not_equal
+
+    with frame.point_cloud() as point_cloud:
+        with copy.deepcopy(point_cloud) as point_cloud_copy:
+            assert isinstance(point_cloud_copy, zivid.PointCloud)
+            assert point_cloud_copy is not point_cloud
+            assert_point_clouds_equal(point_cloud, point_cloud_copy)
+
+            point_cloud.transform(transform)
+            # deep copy, transform should not have affected the copy
+            assert_point_clouds_not_equal(point_cloud, point_cloud_copy)
+
+
+def test_clone_point_cloud(frame, transform):
+    import zivid
+    from assertions import assert_point_clouds_equal, assert_point_clouds_not_equal
+
+    with frame.point_cloud() as point_cloud:
+        with point_cloud.clone() as point_cloud_clone:
+            assert isinstance(point_cloud_clone, zivid.PointCloud)
+            assert point_cloud_clone is not point_cloud
+            assert_point_clouds_equal(point_cloud, point_cloud_clone)
+
+            point_cloud.transform(transform)
+            # clone, transform should not have affected the clone
+            assert_point_clouds_not_equal(point_cloud, point_cloud_clone)

@@ -113,13 +113,57 @@ def test_release(frame):
         frame.point_cloud()
 
 
-def test_copy(frame):
+def test_copy(frame, transform):
+    import zivid
     import copy
+    from assertions import assert_point_clouds_equal
 
     frame_copy = copy.copy(frame)
     assert frame_copy
     assert frame_copy is not frame
     assert isinstance(frame_copy, type(frame))
 
+    assert_point_clouds_equal(frame.point_cloud(), frame_copy.point_cloud())
+    # shallow copy, point cloud transform should affect both
+    frame.point_cloud().transform(transform)
+    assert_point_clouds_equal(frame.point_cloud(), frame_copy.point_cloud())
+
     frame.release()
     assert isinstance(frame_copy.point_cloud(), zivid.PointCloud)
+
+
+def test_deepcopy(frame, transform):
+    import zivid
+    import copy
+    from assertions import assert_point_clouds_equal, assert_point_clouds_not_equal
+
+    frame_deepcopy = copy.deepcopy(frame)
+    assert frame_deepcopy
+    assert frame_deepcopy is not frame
+    assert isinstance(frame_deepcopy, type(frame))
+
+    assert_point_clouds_equal(frame.point_cloud(), frame_deepcopy.point_cloud())
+    # deep copy, point cloud transform should not affect both
+    frame.point_cloud().transform(transform)
+    assert_point_clouds_not_equal(frame.point_cloud(), frame_deepcopy.point_cloud())
+
+    frame.release()
+    assert isinstance(frame_deepcopy.point_cloud(), zivid.PointCloud)
+
+
+def test_clone(frame, transform):
+    import zivid
+    from assertions import assert_point_clouds_equal, assert_point_clouds_not_equal
+
+    frame_clone = frame.clone()
+    assert frame_clone
+    assert frame_clone is not frame
+    assert isinstance(frame_clone, type(frame))
+
+    assert_point_clouds_equal(frame.point_cloud(), frame_clone.point_cloud())
+    # clone, point cloud transform should not affect both
+    frame.point_cloud().transform(transform)
+    assert_point_clouds_not_equal(frame.point_cloud(), frame_clone.point_cloud())
+
+    frame.release()
+    assert isinstance(frame_clone.point_cloud(), zivid.PointCloud)
