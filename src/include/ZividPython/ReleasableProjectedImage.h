@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Zivid/Projection/ProjectedImage.h>
+#include <Zivid/Settings.h>
 #include <ZividPython/Releasable.h>
 #include <ZividPython/ReleasableFrame2D.h>
 #include <ZividPython/Wrappers.h>
@@ -15,6 +16,8 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS(stop)
         ZIVID_PYTHON_FORWARD_0_ARGS(active)
         ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableFrame2D, capture, const Zivid::Settings2D &, settings2D)
+        ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableFrame2D, capture2D, const Zivid::Settings2D &, settings2D)
+        ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableFrame2D, capture2D, const Zivid::Settings &, settings)
     };
 
     void wrapClass(pybind11::class_<ReleasableProjectedImage> pyClass);

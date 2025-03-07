@@ -10,6 +10,12 @@ namespace ZividPython
     {
         pyClass.def("stop", &ReleasableProjectedImage::stop)
             .def("active", &ReleasableProjectedImage::active)
-            .def("capture", &ReleasableProjectedImage::capture);
+            .def("capture", &ReleasableProjectedImage::capture)
+            .def("capture_2d",
+                 py::overload_cast<const Zivid::Settings2D &>(&ReleasableProjectedImage::capture2D),
+                 py::arg("settings_2d"))
+            .def("capture_2d",
+                 py::overload_cast<const Zivid::Settings &>(&ReleasableProjectedImage::capture2D),
+                 py::arg("settings"));
     }
 } // namespace ZividPython
