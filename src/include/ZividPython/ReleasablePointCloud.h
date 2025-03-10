@@ -24,7 +24,8 @@ namespace ZividPython
                                                 downsampling)
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageRGBA, copyImageRGBA)
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageBGRA, copyImageBGRA)
-        ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageSRGB, copyImageSRGB)
+        ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageRGBA_SRGB, copyImageRGBA_SRGB)
+        ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageBGRA_SRGB, copyImageBGRA_SRGB)
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasablePointCloud, clone, const);
     };
 

@@ -87,9 +87,14 @@ namespace ZividPython
         wrapImageClass<Zivid::ColorBGRA>(pyClass);
     }
 
-    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorSRGB>> pyClass)
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorRGBA_SRGB>> pyClass)
     {
-        wrapImageClass<Zivid::ColorSRGB>(pyClass);
+        wrapImageClass<Zivid::ColorRGBA_SRGB>(pyClass);
+    }
+
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorBGRA_SRGB>> pyClass)
+    {
+        wrapImageClass<Zivid::ColorBGRA_SRGB>(pyClass);
     }
 
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::NormalXYZ>> pyClass)
@@ -194,6 +199,66 @@ namespace ZividPython
         static_assert(offsetof(NativeColor, a) == offsetof(WrapperType, a) - offsetof(WrapperType, b));
 
         PYBIND11_NUMPY_DTYPE(WrapperType, x, y, z, b, g, r, a);
+        pyClass.def(py::init<>(&pointCloudDataCopier<NativeType>))
+            .def_buffer(pointCloudDataBuffer<NativeType, WrapperType, 1>);
+    }
+
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::PointXYZColorRGBA_SRGB>> pyClass)
+    {
+        using WrapperType = PointXYZColorRGBA;
+        using NativeType = Zivid::PointXYZColorRGBA_SRGB;
+        using NativePoint = decltype(NativeType::point);
+        using NativeColor = decltype(NativeType::color);
+        static_assert(std::is_same_v<decltype(WrapperType::x), decltype(NativePoint::x)>);
+        static_assert(std::is_same_v<decltype(WrapperType::y), decltype(NativePoint::y)>);
+        static_assert(std::is_same_v<decltype(WrapperType::z), decltype(NativePoint::z)>);
+        static_assert(std::is_same_v<decltype(WrapperType::r), decltype(NativeColor::r)>);
+        static_assert(std::is_same_v<decltype(WrapperType::g), decltype(NativeColor::g)>);
+        static_assert(std::is_same_v<decltype(WrapperType::b), decltype(NativeColor::b)>);
+        static_assert(std::is_same_v<decltype(WrapperType::a), decltype(NativeColor::a)>);
+        // Additional layout checks for composite types
+        static_assert(offsetof(NativeType, point) == offsetof(WrapperType, x));
+        static_assert(offsetof(NativeType, color) == offsetof(WrapperType, r));
+        static_assert(offsetof(NativePoint, x) == offsetof(WrapperType, x));
+        static_assert(offsetof(NativePoint, y) == offsetof(WrapperType, y));
+        static_assert(offsetof(NativePoint, z) == offsetof(WrapperType, z));
+        static_assert(offsetof(NativeColor, r) == 0);
+        static_assert(offsetof(NativeColor, g) == offsetof(WrapperType, g) - offsetof(WrapperType, r));
+        static_assert(offsetof(NativeColor, b) == offsetof(WrapperType, b) - offsetof(WrapperType, r));
+        static_assert(offsetof(NativeColor, a) == offsetof(WrapperType, a) - offsetof(WrapperType, r));
+
+        // Same DType as PointXYZColorRGBA
+        // PYBIND11_NUMPY_DTYPE(WrapperType, x, y, z, r, g, b, a);
+        pyClass.def(py::init<>(&pointCloudDataCopier<NativeType>))
+            .def_buffer(pointCloudDataBuffer<NativeType, WrapperType, 1>);
+    }
+
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::PointXYZColorBGRA_SRGB>> pyClass)
+    {
+        using WrapperType = PointXYZColorBGRA;
+        using NativeType = Zivid::PointXYZColorBGRA_SRGB;
+        using NativePoint = decltype(NativeType::point);
+        using NativeColor = decltype(NativeType::color);
+        static_assert(std::is_same_v<decltype(WrapperType::x), decltype(NativePoint::x)>);
+        static_assert(std::is_same_v<decltype(WrapperType::y), decltype(NativePoint::y)>);
+        static_assert(std::is_same_v<decltype(WrapperType::z), decltype(NativePoint::z)>);
+        static_assert(std::is_same_v<decltype(WrapperType::b), decltype(NativeColor::b)>);
+        static_assert(std::is_same_v<decltype(WrapperType::g), decltype(NativeColor::g)>);
+        static_assert(std::is_same_v<decltype(WrapperType::r), decltype(NativeColor::r)>);
+        static_assert(std::is_same_v<decltype(WrapperType::a), decltype(NativeColor::a)>);
+        // Additional layout checks for composite types
+        static_assert(offsetof(NativeType, point) == offsetof(WrapperType, x));
+        static_assert(offsetof(NativeType, color) == offsetof(WrapperType, b));
+        static_assert(offsetof(NativePoint, x) == offsetof(WrapperType, x));
+        static_assert(offsetof(NativePoint, y) == offsetof(WrapperType, y));
+        static_assert(offsetof(NativePoint, z) == offsetof(WrapperType, z));
+        static_assert(offsetof(NativeColor, b) == 0);
+        static_assert(offsetof(NativeColor, g) == offsetof(WrapperType, g) - offsetof(WrapperType, b));
+        static_assert(offsetof(NativeColor, r) == offsetof(WrapperType, r) - offsetof(WrapperType, b));
+        static_assert(offsetof(NativeColor, a) == offsetof(WrapperType, a) - offsetof(WrapperType, b));
+
+        // Same DType as PointXYZColorBGRA
+        // PYBIND11_NUMPY_DTYPE(WrapperType, x, y, z, b, g, r, a);
         pyClass.def(py::init<>(&pointCloudDataCopier<NativeType>))
             .def_buffer(pointCloudDataBuffer<NativeType, WrapperType, 1>);
     }

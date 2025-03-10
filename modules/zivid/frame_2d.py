@@ -53,13 +53,31 @@ class Frame2D:
         """
         return Image(self.__impl.image_bgra())
 
-    def image_srgb(self):
+    def image_rgba_srgb(self):
         """Get color (RGBA) image from the frame in the sRGB color space.
 
         Returns:
             An image instance containing RGBA data in sRGB color space
         """
-        return Image(self.__impl.image_srgb())
+        return Image(self.__impl.image_rgba_srgb())
+
+    def image_bgra_srgb(self):
+        """Get color (BGRA) image from the frame in the sRGB color space.
+
+        Returns:
+            An image instance containing BGRA data in sRGB color space
+        """
+        return Image(self.__impl.image_bgra_srgb())
+
+    def image_srgb(self):
+        """Get color (RGBA) image from the frame in the sRGB color space.
+
+        This method is deprecated. Use image_rgba_srgb() instead.
+
+        Returns:
+            An image instance containing RGBA data in sRGB color space
+        """
+        return Image(self.__impl.image_rgba_srgb())
 
     @property
     def settings(self):

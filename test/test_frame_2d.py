@@ -25,15 +25,37 @@ def test_image(frame_2d):
     assert image_bgra is not None
     assert isinstance(image_bgra, zivid.Image)
 
+    image_rgba_srgb = frame_2d.image_rgba_srgb()
+    assert image_rgba_srgb is not None
+    assert isinstance(image_rgba_srgb, zivid.Image)
+
+    image_bgra_srgb = frame_2d.image_bgra_srgb()
+    assert image_bgra_srgb is not None
+    assert isinstance(image_bgra_srgb, zivid.Image)
+
+    image_srgb = frame_2d.image_srgb()
+    assert image_srgb is not None
+    assert isinstance(image_srgb, zivid.Image)
+
+
+def test_deprecated_srgb(frame_2d):
+    image_rgba_srgb = frame_2d.image_rgba_srgb()
+    image_srgb = frame_2d.image_srgb()
+    np.testing.assert_array_equal(image_rgba_srgb.copy_data(), image_srgb.copy_data())
+
 
 def test_image_rgba_bgra_correspondence(frame_2d):
-    rgba = frame_2d.image_rgba().copy_data()
-    bgra = frame_2d.image_bgra().copy_data()
+    rgba_linear = frame_2d.image_rgba().copy_data()
+    bgra_linear = frame_2d.image_bgra().copy_data()
 
-    np.testing.assert_array_equal(bgra[:, :, 0], rgba[:, :, 2])
-    np.testing.assert_array_equal(bgra[:, :, 1], rgba[:, :, 1])
-    np.testing.assert_array_equal(bgra[:, :, 2], rgba[:, :, 0])
-    np.testing.assert_array_equal(bgra[:, :, 3], rgba[:, :, 3])
+    rgba_srgb = frame_2d.image_rgba_srgb().copy_data()
+    bgra_srgb = frame_2d.image_bgra_srgb().copy_data()
+
+    for rgba, bgra in [(rgba_linear, bgra_linear), (rgba_srgb, bgra_srgb)]:
+        np.testing.assert_array_equal(bgra[:, :, 0], rgba[:, :, 2])
+        np.testing.assert_array_equal(bgra[:, :, 1], rgba[:, :, 1])
+        np.testing.assert_array_equal(bgra[:, :, 2], rgba[:, :, 0])
+        np.testing.assert_array_equal(bgra[:, :, 3], rgba[:, :, 3])
 
 
 def test_state(frame_2d):

@@ -14,7 +14,8 @@ namespace ZividPython
             .def_property_readonly("camera_info", &ReleasableFrame2D::cameraInfo)
             .def("image_rgba", &ReleasableFrame2D::imageRGBA)
             .def("image_bgra", &ReleasableFrame2D::imageBGRA)
-            .def("image_srgb", &ReleasableFrame2D::imageSRGB)
+            .def("image_rgba_srgb", &ReleasableFrame2D::imageRGBA_SRGB)
+            .def("image_bgra_srgb", &ReleasableFrame2D::imageBGRA_SRGB)
             .def("clone", &ReleasableFrame2D::clone);
     }
 } // namespace ZividPython
