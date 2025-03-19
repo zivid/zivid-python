@@ -31,6 +31,32 @@ class ColorSpace:  # pylint: disable=too-few-public-methods
         )
 
 
+class IncludeNormals:  # pylint: disable=too-few-public-methods
+    """Include normals in point cloud."""
+
+    no = "no"
+    yes = "yes"
+
+    @staticmethod
+    def valid_values():
+        """Get valid values for including normals.
+
+        Returns:
+            List of valid values.
+        """
+        return [IncludeNormals.no, IncludeNormals.yes]
+
+    @classmethod
+    def _to_internal(cls, value):
+        if value == IncludeNormals.no:
+            return _zivid.point_cloud_export.IncludeNormals.no
+        if value == IncludeNormals.yes:
+            return _zivid.point_cloud_export.IncludeNormals.yes
+        raise ValueError(
+            "Invalid value '{}'. Valid values are: {}".format(value, cls.valid_values())
+        )
+
+
 class ZDF:  # pylint: disable=too-few-public-methods
     """Specification for saving frame in ZDF (*.zdf) format."""
 
@@ -89,13 +115,20 @@ class PLY:  # pylint: disable=too-few-public-methods
                 )
             )
 
-    def __init__(self, file_name, layout=Layout.ordered, color_space=ColorSpace.srgb):
+    def __init__(
+        self,
+        file_name,
+        layout=Layout.ordered,
+        color_space=ColorSpace.srgb,
+        include_normals=IncludeNormals.no,
+    ):
         """Create a PLY file format specification with file name.
 
         Args:
             file_name: File name.
             layout: Layout of point cloud. Default is ordered.
             color_space: Color space of point cloud. Default is sRGB.
+            include_normals: Include normals in point cloud. Default is no.
 
         Raises:
             TypeError: If file_name, layout, or color_space are not strings.
@@ -118,10 +151,17 @@ class PLY:  # pylint: disable=too-few-public-methods
                     type(color_space), str
                 )
             )
+        if not isinstance(include_normals, str):
+            raise TypeError(
+                "Unsupported type for argument include_normals. Got {}, expected {}".format(
+                    type(include_normals), str
+                )
+            )
         self.__impl = _zivid.point_cloud_export.file_format.PLY(
             file_name,
             PLY.Layout._to_internal(layout),
             ColorSpace._to_internal(color_space),
+            IncludeNormals._to_internal(include_normals),
         )
 
     def __str__(self):
@@ -174,12 +214,15 @@ class PCD:  # pylint: disable=too-few-public-methods
     https://pcl.readthedocs.io/projects/tutorials/en/latest/pcd_file_format.html#pcd-file-format.
     """
 
-    def __init__(self, file_name, color_space=ColorSpace.srgb):
+    def __init__(
+        self, file_name, color_space=ColorSpace.srgb, include_normals=IncludeNormals.no
+    ):
         """Create a PCD file format specification with file name.
 
         Args:
             file_name: File name.
             color_space: Color space of point cloud. Default is sRGB.
+            include_normals: Include normals in point cloud. Default is no.
 
         Raises:
             TypeError: If file_name or color_space are not strings.
@@ -196,9 +239,16 @@ class PCD:  # pylint: disable=too-few-public-methods
                     type(color_space), str
                 )
             )
+        if not isinstance(include_normals, str):
+            raise TypeError(
+                "Unsupported type for argument include_normals. Got {}, expected {}".format(
+                    type(include_normals), str
+                )
+            )
         self.__impl = _zivid.point_cloud_export.file_format.PCD(
             file_name,
             ColorSpace._to_internal(color_space),
+            IncludeNormals._to_internal(include_normals),
         )
 
     def __str__(self):
