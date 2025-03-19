@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-import
 from zivid._calibration.detector import (
+    CalibrationBoardDetectionStatus,
     DetectionResult,
     DetectionResultFiducialMarkers,
     MarkerShape,

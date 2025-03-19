@@ -10,6 +10,19 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
+
+    void wrapEnum(pybind11::enum_<Zivid::Calibration::CalibrationBoardDetectionStatus> pyEnum)
+    {
+        pyEnum.value("ok", Zivid::Calibration::CalibrationBoardDetectionStatus::ok)
+            .value("no_valid_fiducial_marker_detected",
+                   Zivid::Calibration::CalibrationBoardDetectionStatus::noValidFiducialMarkerDetected)
+            .value("multiple_valid_fiducial_markers_detected",
+                   Zivid::Calibration::CalibrationBoardDetectionStatus::multipleValidFiducialMarkersDetected)
+            .value("board_detection_failed", Zivid::Calibration::CalibrationBoardDetectionStatus::boardDetectionFailed)
+            .value("insufficient_3d_quality",
+                   Zivid::Calibration::CalibrationBoardDetectionStatus::insufficient3DQuality);
+    }
+
     void wrapClass(pybind11::class_<Zivid::Calibration::DetectionResult> pyClass)
     {
         pyClass.def("valid", &Zivid::Calibration::DetectionResult::valid)
@@ -17,7 +30,9 @@ namespace ZividPython
                  [](const Zivid::Calibration::DetectionResult &detectionResult) {
                      return Conversion::toPyVector(detectionResult.centroid());
                  })
-            .def("pose", &Zivid::Calibration::DetectionResult::pose);
+            .def("pose", &Zivid::Calibration::DetectionResult::pose)
+            .def("status", &Zivid::Calibration::DetectionResult::status)
+            .def("status_description", &Zivid::Calibration::DetectionResult::statusDescription);
     }
 
     void wrapClass(pybind11::class_<Zivid::Calibration::MarkerShape> pyClass)
