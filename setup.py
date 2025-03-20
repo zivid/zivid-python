@@ -14,7 +14,7 @@ def get_version():
 
 
 def _zivid_sdk_version():
-    return "2.14.2"
+    return "2.16.0"
 
 
 def _zivid_python_version():
@@ -47,9 +47,7 @@ def _make_message_box(*message):
     empty_line = "\n| " + " " * width + " |\n"
     message_lines = ["| " + line + " " * (width - len(line)) + " |" for line in message]
 
-    return (
-        "\n\n" + box_bar + "\n" + empty_line.join(message_lines) + "\n" + box_bar + "\n"
-    )
+    return "\n\n" + box_bar + "\n" + empty_line.join(message_lines) + "\n" + box_bar + "\n"
 
 
 def _check_dependency(module_name, package_hint=None):
@@ -72,9 +70,7 @@ def _check_cpp17_compiler():
             with subprocess.Popen(args, **kwargs) as process:
                 exit_code = process.wait()
                 if exit_code != 0:
-                    raise RuntimeError(
-                        "Wait failed with exit code {}".format(exit_code)
-                    )
+                    raise RuntimeError("Wait failed with exit code {}".format(exit_code))
         except Exception as ex:
             raise type(ex)("Process failed: '{}'.".format(" ".join(args))) from ex
 

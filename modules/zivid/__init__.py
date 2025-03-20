@@ -18,6 +18,7 @@ from zivid.frame_2d import Frame2D
 from zivid.frame_info import FrameInfo
 from zivid.image import Image
 from zivid.point_cloud import PointCloud
+from zivid.unorganized_point_cloud import UnorganizedPointCloud
 from zivid.sdk_version import SDKVersion
 from zivid.settings import Settings
 from zivid.settings2d import Settings2D

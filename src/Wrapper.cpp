@@ -17,6 +17,7 @@
 #include <ZividPython/ReleasableFrame.h>
 #include <ZividPython/ReleasableFrame2D.h>
 #include <ZividPython/ReleasablePointCloud.h>
+#include <ZividPython/ReleasableUnorganizedPointCloud.h>
 #include <ZividPython/ReleasableProjectedImage.h>
 #include <ZividPython/SingletonApplication.h>
 #include <ZividPython/Version.h>
@@ -55,6 +56,7 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, ImageBGRA);
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, ImageSRGB);
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, PointCloud);
+    ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, UnorganizedPointCloud);
 
     ZIVID_PYTHON_WRAP_ARRAY2D_BUFFER_AS_RELEASABLE(module, ColorRGBA);
     ZIVID_PYTHON_WRAP_ARRAY2D_BUFFER_AS_RELEASABLE(module, ColorBGRA);

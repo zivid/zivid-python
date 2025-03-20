@@ -6,11 +6,7 @@ import platform
 import sys
 from pathlib import Path
 
-if (
-    platform.system() == "Windows"
-    and sys.version_info.major == 3
-    and sys.version_info.minor >= 8
-):
+if platform.system() == "Windows" and sys.version_info.major == 3 and sys.version_info.minor >= 8:
     # Starting with Python 3.8, the .dll search mechanism has changed.
     # WinDLL has anew argument "winmode",
     # https://docs.python.org/3.8/library/ctypes.html
@@ -54,6 +50,7 @@ try:
         Frame,
         FrameInfo,
         PointCloud,
+        UnorganizedPointCloud,
         point_cloud_export,
         Settings,
         version,

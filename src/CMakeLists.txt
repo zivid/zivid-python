@@ -21,6 +21,7 @@ set(SOURCES
     ReleasableFrame2D.cpp
     ReleasableImage.cpp
     ReleasablePointCloud.cpp
+    ReleasableUnorganizedPointCloud.cpp
     ReleasableProjectedImage.cpp
     SingletonApplication.cpp
     Version.cpp

@@ -4,6 +4,7 @@ import numpy
 
 import _zivid
 from zivid.image import Image
+from zivid.unorganized_point_cloud import UnorganizedPointCloud
 
 
 class PointCloud:
@@ -56,9 +57,7 @@ class PointCloud:
         """
         if not isinstance(impl, _zivid.PointCloud):
             raise TypeError(
-                "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), _zivid.PointCloud
-                )
+                "Unsupported type for argument impl. Got {}, expected {}".format(type(impl), _zivid.PointCloud)
             )
         self.__impl = impl
 
@@ -191,11 +190,7 @@ class PointCloud:
         Returns:
             Reference to the same PointCloud instance (for chaining calls)
         """
-        internal_downsampling = (
-            PointCloud.Downsampling._valid_values[  # pylint: disable=protected-access
-                downsampling
-            ]
-        )
+        internal_downsampling = PointCloud.Downsampling._valid_values[downsampling]  # pylint: disable=protected-access
         self.__impl.downsample(internal_downsampling)
         return self
 
@@ -211,11 +206,7 @@ class PointCloud:
         Returns:
             A new PointCloud instance
         """
-        internal_downsampling = (
-            PointCloud.Downsampling._valid_values[  # pylint: disable=protected-access
-                downsampling
-            ]
-        )
+        internal_downsampling = PointCloud.Downsampling._valid_values[downsampling]  # pylint: disable=protected-access
         return PointCloud(self.__impl.downsampled(internal_downsampling))
 
     @property
@@ -235,6 +226,10 @@ class PointCloud:
             A positive integer
         """
         return self.__impl.width()
+
+    def to_unorganized_point_cloud(self):
+        """TODO: Docstring"""
+        return UnorganizedPointCloud(self.__impl.to_unorganized_point_cloud())
 
     def release(self):
         """Release the underlying resources."""
