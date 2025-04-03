@@ -32,7 +32,28 @@ namespace ZividPython
                  })
             .def("pose", &Zivid::Calibration::DetectionResult::pose)
             .def("status", &Zivid::Calibration::DetectionResult::status)
-            .def("status_description", &Zivid::Calibration::DetectionResult::statusDescription);
+            .def("status_description", &Zivid::Calibration::DetectionResult::statusDescription)
+            .def("feature_points",
+                 [](const Zivid::Calibration::DetectionResult &detectionResult) {
+                     const auto nativePoints = detectionResult.featurePoints();
+                     auto points = std::vector<Eigen::Vector3f>{};
+                     points.reserve(nativePoints.size());
+                     for(const auto &point : nativePoints)
+                     {
+                         points.emplace_back(Conversion::toPyVector(point));
+                     }
+                     return points;
+                 })
+            .def("feature_points_2d", [](const Zivid::Calibration::DetectionResult &detectionResult) {
+                const auto nativePoints = detectionResult.featurePoints2D();
+                auto points = std::vector<Eigen::Vector2f>{};
+                points.reserve(nativePoints.size());
+                for(const auto &point : nativePoints)
+                {
+                    points.emplace_back(Conversion::toPyVector(point));
+                }
+                return points;
+            });
     }
 
     void wrapClass(pybind11::class_<Zivid::Calibration::MarkerShape> pyClass)

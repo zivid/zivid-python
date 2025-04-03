@@ -101,6 +101,32 @@ class DetectionResult:
         """
         return self.__impl.status_description()
 
+    def feature_points(self):
+        """Get the detected feature points in camera-space.
+
+        Returns a 2D array of 3D coordinates representing the centers of the calibration
+        board squares. The element at index (0,0) corresponds to the physical top-left
+        corner of the board. The first index moves down the physical board, while the second
+        index moves to the right. If the valid() function returns false, an exception will
+        be thrown.
+
+        Returns:
+            Feature points.
+        """
+        return self.__impl.feature_points()
+
+    def feature_points_2d(self):
+        """Get the detected feature points in pixel-space.
+
+        Same as feature_points(), but with 2D coordinates instead of 3D coordinates. The points
+        are reported at subpixel accuracy. If the valid() function returns false, an exception
+        will be thrown.
+
+        Returns:
+            Feature points in 2D.
+        """
+        return self.__impl.feature_points_2d()
+
     def __bool__(self):
         return bool(self.__impl)
 
