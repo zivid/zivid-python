@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Zivid/PointCloud.h>
+#include <ZividPython/Matrix.h>
 #include <ZividPython/Releasable.h>
 #include <ZividPython/ReleasableImage.h>
 #include <ZividPython/Wrappers.h>
@@ -17,6 +18,10 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS(width)
         ZIVID_PYTHON_FORWARD_0_ARGS(height)
         ZIVID_PYTHON_FORWARD_1_ARGS(transform, const Zivid::Matrix4x4 &, matrix)
+        Eigen::Matrix<float, 4, 4, Eigen::RowMajor> transformationMatrix() const
+        {
+            return Conversion::toPy(WITH_GIL_UNLOCKED(impl().transformationMatrix()));
+        }
         ZIVID_PYTHON_FORWARD_1_ARGS(downsample, Zivid::PointCloud::Downsampling, downsampling)
         ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasablePointCloud,
                                                 downsampled,

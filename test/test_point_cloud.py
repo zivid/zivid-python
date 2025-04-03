@@ -1,9 +1,8 @@
+import numpy as np
 import pytest
 
 
 def test_point_cloud_copy_data(point_cloud):
-    import numpy as np
-
     # Copy all possible formats
     xyz = point_cloud.copy_data("xyz")
     xyzw = point_cloud.copy_data("xyzw")
@@ -34,8 +33,6 @@ def test_point_cloud_copy_data(point_cloud):
 
 
 def test_point_cloud_xyzw(point_cloud):
-    import numpy as np
-
     xyz = point_cloud.copy_data("xyz")
     xyzw = point_cloud.copy_data("xyzw")
     xyzrgba = point_cloud.copy_data("xyzrgba")
@@ -64,8 +61,6 @@ def test_point_cloud_xyzw(point_cloud):
 
 
 def test_point_cloud_rgba(point_cloud):
-    import numpy as np
-
     xyzrgba = point_cloud.copy_data("xyzrgba")
     xyzbgra = point_cloud.copy_data("xyzbgra")
     xyzrgba_srgb = point_cloud.copy_data("xyzbgra_srgb")
@@ -160,7 +155,6 @@ def test_point_cloud_rgba(point_cloud):
 
 
 def test_point_cloud_copy_image(point_cloud):
-    import numpy as np
     import zivid
 
     image_rgba = point_cloud.copy_image("rgba")
@@ -195,8 +189,6 @@ def test_point_cloud_copy_image(point_cloud):
 
 
 def test_point_cloud_normals(point_cloud):
-    import numpy as np
-
     normals = point_cloud.copy_data("normals")
 
     assert normals.shape == (point_cloud.height, point_cloud.width, 3)
@@ -209,8 +201,6 @@ def test_point_cloud_normals(point_cloud):
 
 
 def test_point_cloud_snr(point_cloud):
-    import numpy as np
-
     snr = point_cloud.copy_data("snr")
 
     assert snr.dtype == np.float32
@@ -234,8 +224,6 @@ def test_width(point_cloud):
 
 
 def _validate_transformation(xyzw_before, xyzw_after, transform):
-    import numpy as np
-
     # Pick an arbitary point to test
     i = xyzw_before.shape[0] // 3
     j = xyzw_before.shape[1] // 3
@@ -255,6 +243,8 @@ def test_transform(point_cloud, transform):
     point_cloud_returned = point_cloud.transform(transform)
     xyzw_after = point_cloud.copy_data("xyzw")
 
+    np.testing.assert_array_equal(point_cloud_returned.transformation_matrix, transform)
+
     # Check that return value is just a reference to the original object
     assert isinstance(point_cloud_returned, zivid.PointCloud)
     assert point_cloud_returned is point_cloud
@@ -265,19 +255,23 @@ def test_transform(point_cloud, transform):
 
 def test_transform_chaining(point_cloud, transform):
     import zivid
-    import numpy as np
 
     # Get points before and after transform
     xyzw_before = point_cloud.copy_data("xyzw")
     point_cloud_returned = point_cloud.transform(transform).transform(transform)
     xyzw_after = point_cloud.copy_data("xyzw")
 
+    chained_transform = np.dot(transform, transform)
+    np.testing.assert_array_equal(
+        point_cloud_returned.transformation_matrix, chained_transform
+    )
+
     # Check that return value is just a reference to the original object
     assert isinstance(point_cloud_returned, zivid.PointCloud)
     assert point_cloud_returned is point_cloud
 
     # Check that the transformation was actually applied
-    _validate_transformation(xyzw_before, xyzw_after, np.dot(transform, transform))
+    _validate_transformation(xyzw_before, xyzw_after, chained_transform)
 
 
 def test_downsampling_enum():

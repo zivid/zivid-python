@@ -187,6 +187,23 @@ class PointCloud:
         self.__impl.transform(matrix)
         return self
 
+    @property
+    def transformation_matrix(self):
+        """Return the current transformation matrix of this point cloud.
+
+        Returns the transformation matrix from the camera's native coordinate system to the current
+        coordinate system. The returned matrix represents the cumulative result of all the transform operations
+        performed on the point cloud. If no transformations have been applied, the identity matrix is returned.
+
+        Note: ZDF files saved from SDK 2.14 or earlier did not store the active transformation matrix. This
+        means that for point clouds loaded from .zdf files from SDK 2.14 or earlier, this method will always
+        return the identity matrix even in the case where the point cloud had been transformed prior to saving.
+
+        Returns:
+            A 4x4 numpy array of floats
+        """
+        return self.__impl.transformation_matrix()
+
     def downsample(self, downsampling):
         """Downsample the point cloud in-place.
 

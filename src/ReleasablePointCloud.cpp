@@ -18,6 +18,7 @@ namespace ZividPython
                  [](ReleasablePointCloud &pointCloud, const Eigen::Matrix<float, 4, 4, Eigen::RowMajor> &matrix) {
                      pointCloud.transform(Conversion::toCpp(matrix));
                  })
+            .def("transformation_matrix", &ReleasablePointCloud::transformationMatrix)
             .def("downsample",
                  [](ReleasablePointCloud &pointCloud, Zivid::PointCloud::Downsampling downsampling) {
                      pointCloud.downsample(downsampling);
