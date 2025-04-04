@@ -11,6 +11,8 @@ namespace ZividPython
     public:
         using Releasable<Zivid::Image<Zivid::ColorRGBA>>::Releasable;
 
+        ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(ReleasableImageRGBA)
+
         ZIVID_PYTHON_FORWARD_1_ARGS(save, const std::string &, fileName)
         ZIVID_PYTHON_FORWARD_0_ARGS(width)
         ZIVID_PYTHON_FORWARD_0_ARGS(height)
@@ -21,6 +23,8 @@ namespace ZividPython
     public:
         using Releasable<Zivid::Image<Zivid::ColorBGRA>>::Releasable;
 
+        ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(ReleasableImageBGRA)
+
         ZIVID_PYTHON_FORWARD_1_ARGS(save, const std::string &, fileName)
         ZIVID_PYTHON_FORWARD_0_ARGS(width)
         ZIVID_PYTHON_FORWARD_0_ARGS(height)
@@ -30,6 +34,8 @@ namespace ZividPython
     {
     public:
         using Releasable<Zivid::Image<Zivid::ColorSRGB>>::Releasable;
+
+        ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(ReleasableImageSRGB)
 
         ZIVID_PYTHON_FORWARD_1_ARGS(save, const std::string &, fileName)
         ZIVID_PYTHON_FORWARD_0_ARGS(width)

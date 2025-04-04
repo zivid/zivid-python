@@ -16,32 +16,20 @@
         return __VA_ARGS__;                                                                                            \
     }()
 
-#define ZIVID_PYTHON_FORWARD_0_ARGS_TEMPLATE_1_ARG_WRAP_RETURN(returnType, functionName, returnTypeTypename)           \
-    auto functionName()                                                                                                \
-    {                                                                                                                  \
-        return returnType{ WITH_GIL_UNLOCKED(impl().functionName<returnTypeTypename>()) };                             \
-    }
-
-#define ZIVID_PYTHON_FORWARD_0_ARGS(functionName)                                                                      \
-    decltype(auto) functionName()                                                                                      \
+#define ZIVID_PYTHON_FORWARD_0_ARGS(functionName, ...)                                                                 \
+    decltype(auto) functionName() __VA_ARGS__                                                                          \
     {                                                                                                                  \
         return WITH_GIL_UNLOCKED(impl().functionName());                                                               \
     }
 
-#define ZIVID_PYTHON_FORWARD_0_ARGS_TEMPLATE_1_ARG(functionName, returnTypeTypename)                                   \
-    decltype(auto) functionName()                                                                                      \
-    {                                                                                                                  \
-        return WITH_GIL_UNLOCKED(impl().functionName<returnTypeTypename>());                                           \
-    }
-
-#define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(returnType, functionName)                                              \
-    auto functionName()                                                                                                \
+#define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(returnType, functionName, ...)                                         \
+    auto functionName() __VA_ARGS__                                                                                    \
     {                                                                                                                  \
         return returnType{ WITH_GIL_UNLOCKED(impl().functionName()) };                                                 \
     }
 
-#define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_CONTAINER_RETURN(container, returnType, functionName)                         \
-    auto functionName()                                                                                                \
+#define ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_CONTAINER_RETURN(container, returnType, functionName, ...)                    \
+    auto functionName() __VA_ARGS__                                                                                    \
     {                                                                                                                  \
         auto nativeContainer = WITH_GIL_UNLOCKED(impl().functionName());                                               \
         container<returnType> returnContainer;                                                                         \
@@ -55,26 +43,26 @@
         return returnContainer;                                                                                        \
     }
 
-#define ZIVID_PYTHON_FORWARD_1_ARGS(functionName, arg1Type, arg1Name)                                                  \
-    decltype(auto) functionName(arg1Type arg1Name)                                                                     \
+#define ZIVID_PYTHON_FORWARD_1_ARGS(functionName, arg1Type, arg1Name, ...)                                             \
+    decltype(auto) functionName(arg1Type arg1Name) __VA_ARGS__                                                         \
     {                                                                                                                  \
         return WITH_GIL_UNLOCKED(impl().functionName(arg1Name));                                                       \
     }
 
-#define ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(returnType, functionName, arg1Type, arg1Name)                          \
-    auto functionName(arg1Type arg1Name)                                                                               \
+#define ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(returnType, functionName, arg1Type, arg1Name, ...)                     \
+    auto functionName(arg1Type arg1Name) __VA_ARGS__                                                                   \
     {                                                                                                                  \
         return returnType{ WITH_GIL_UNLOCKED(impl().functionName(arg1Name)) };                                         \
     }
 
-#define ZIVID_PYTHON_FORWARD_2_ARGS(functionName, arg1Type, arg1Name, arg2Type, arg2Name)                              \
-    decltype(auto) functionName(arg1Type arg1Name, arg2Type arg2Name)                                                  \
+#define ZIVID_PYTHON_FORWARD_2_ARGS(functionName, arg1Type, arg1Name, arg2Type, arg2Name, ...)                         \
+    decltype(auto) functionName(arg1Type arg1Name, arg2Type arg2Name) __VA_ARGS__                                      \
     {                                                                                                                  \
         return WITH_GIL_UNLOCKED(impl().functionName(arg1Name, arg2Name));                                             \
     }
 
-#define ZIVID_PYTHON_FORWARD_2_ARGS_WRAP_RETURN(returnType, functionName, arg1Type, arg1Name, arg2Type, arg2Name)      \
-    auto functionName(arg1Type arg1Name, arg2Type arg2Name)                                                            \
+#define ZIVID_PYTHON_FORWARD_2_ARGS_WRAP_RETURN(returnType, functionName, arg1Type, arg1Name, arg2Type, arg2Name, ...) \
+    auto functionName(arg1Type arg1Name, arg2Type arg2Name) __VA_ARGS__                                                \
     {                                                                                                                  \
         return returnType{ WITH_GIL_UNLOCKED(impl().functionName(arg1Name, arg2Name)) };                               \
     }
@@ -86,13 +74,18 @@
         return WITH_GIL_UNLOCKED(impl() op other.impl());                                                              \
     }
 
+#define ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(className)                                                                   \
+    className(const className &other)                                                                                  \
+        : Releasable{ other }                                                                                          \
+    {}
+
 namespace ZividPython
 {
     template<typename T>
     class Releasable
     {
     public:
-        template<typename... Args>
+        template<typename... Args, std::enable_if_t<std::is_constructible_v<T, Args...>, int> = 0>
         explicit Releasable(Args &&...args)
             : m_impl{ std::make_optional<T>(std::forward<Args>(args)...) }
         {}
@@ -134,7 +127,7 @@ namespace ZividPython
     class Singleton
     {
     public:
-        template<typename... Args, typename std::enable_if_t<(std::is_constructible_v<T, Args...>), int> = 0>
+        template<typename... Args, std::enable_if_t<(std::is_constructible_v<T, Args...>), int> = 0>
         Singleton(Args &&...args)
         {
             // Keep the singleton alive forever to avoid races with

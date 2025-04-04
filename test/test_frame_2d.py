@@ -88,3 +88,41 @@ def test_context_manager(shared_file_camera):
         frame_2d.image_bgra()
     with pytest.raises(RuntimeError):
         frame_2d.image_bgra()
+
+
+def test_copy(frame_2d):
+    import copy
+    import zivid
+
+    with copy.copy(frame_2d) as frame_2d_copy:
+        assert frame_2d_copy
+        assert frame_2d_copy is not frame_2d
+        assert isinstance(frame_2d_copy, zivid.Frame2D)
+        np.testing.assert_array_equal(
+            frame_2d.image_rgba().copy_data(), frame_2d_copy.image_rgba().copy_data()
+        )
+
+
+def test_deepcopy(frame_2d):
+    import copy
+    import zivid
+
+    with copy.deepcopy(frame_2d) as frame_2d_copy:
+        assert frame_2d_copy
+        assert frame_2d_copy is not frame_2d
+        assert isinstance(frame_2d_copy, zivid.Frame2D)
+        np.testing.assert_array_equal(
+            frame_2d.image_rgba().copy_data(), frame_2d_copy.image_rgba().copy_data()
+        )
+
+
+def test_clone(frame_2d):
+    import zivid
+
+    frame_2d_clone = frame_2d.clone()
+    assert frame_2d_clone
+    assert frame_2d_clone is not frame_2d
+    assert isinstance(frame_2d_clone, zivid.Frame2D)
+    np.testing.assert_array_equal(
+        frame_2d.image_rgba().copy_data(), frame_2d_clone.image_rgba().copy_data()
+    )

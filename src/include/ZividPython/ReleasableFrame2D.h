@@ -14,6 +14,8 @@ namespace ZividPython
     public:
         using Releasable<Zivid::Frame2D>::Releasable;
 
+        ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(ReleasableFrame2D)
+
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageRGBA, imageRGBA)
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageBGRA, imageBGRA)
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableImageSRGB, imageSRGB)
@@ -21,6 +23,7 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS(state)
         ZIVID_PYTHON_FORWARD_0_ARGS(info)
         ZIVID_PYTHON_FORWARD_0_ARGS(cameraInfo)
+        ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableFrame2D, clone, const);
     };
 
     void wrapClass(pybind11::class_<ReleasableFrame2D> pyClass);
