@@ -27,8 +27,13 @@ namespace ZividPython
     void wrapEnum(py::enum_<Zivid::Experimental::PointCloudExport::ColorSpace> pyEnum)
     {
         pyEnum.value("srgb", Zivid::Experimental::PointCloudExport::ColorSpace::sRGB)
-            .value("linear_rgb", Zivid::Experimental::PointCloudExport::ColorSpace::linearRGB)
-            .export_values();
+            .value("linear_rgb", Zivid::Experimental::PointCloudExport::ColorSpace::linearRGB);
+    }
+
+    void wrapEnum(pybind11::enum_<Zivid::Experimental::PointCloudExport::IncludeNormals> pyEnum)
+    {
+        pyEnum.value("no", Zivid::Experimental::PointCloudExport::IncludeNormals::no)
+            .value("yes", Zivid::Experimental::PointCloudExport::IncludeNormals::yes);
     }
 
     void wrapClass(py::class_<Zivid::Experimental::PointCloudExport::FileFormat::ZDF> pyClass)
@@ -42,17 +47,20 @@ namespace ZividPython
         ZIVID_PYTHON_WRAP_ENUM_CLASS(pyClass, Layout);
 
         wrapFileFormat(std::move(pyClass))
-            .def(py::init<const std::string &, Layout, Zivid::Experimental::PointCloudExport::ColorSpace>(),
+            .def(py::init<const std::string &,
+                          Layout,
+                          Zivid::Experimental::PointCloudExport::ColorSpace,
+                          Zivid::Experimental::PointCloudExport::IncludeNormals>(),
                  py::arg("file_name"),
                  py::arg("layout"),
-                 py::arg("color_space"));
+                 py::arg("color_space"),
+                 py::arg("include_normals"));
     }
 
     void wrapEnum(py::enum_<Zivid::Experimental::PointCloudExport::FileFormat::PLY::Layout> pyEnum)
     {
         pyEnum.value("ordered", Zivid::Experimental::PointCloudExport::FileFormat::PLY::Layout::ordered)
-            .value("unordered", Zivid::Experimental::PointCloudExport::FileFormat::PLY::Layout::unordered)
-            .export_values();
+            .value("unordered", Zivid::Experimental::PointCloudExport::FileFormat::PLY::Layout::unordered);
     }
 
     void wrapClass(py::class_<Zivid::Experimental::PointCloudExport::FileFormat::XYZ> pyClass)
@@ -66,9 +74,12 @@ namespace ZividPython
     void wrapClass(py::class_<Zivid::Experimental::PointCloudExport::FileFormat::PCD> pyClass)
     {
         wrapFileFormat(std::move(pyClass))
-            .def(py::init<const std::string &, Zivid::Experimental::PointCloudExport::ColorSpace>(),
+            .def(py::init<const std::string &,
+                          Zivid::Experimental::PointCloudExport::ColorSpace,
+                          Zivid::Experimental::PointCloudExport::IncludeNormals>(),
                  py::arg("file_name"),
-                 py::arg("color_space"));
+                 py::arg("color_space"),
+                 py::arg("include_normals"));
     }
 
     namespace PointCloudExport
@@ -94,7 +105,9 @@ namespace ZividPython
         void wrapAsSubmodule(py::module &dest)
         {
             using ColorSpace = Zivid::Experimental::PointCloudExport::ColorSpace;
+            using IncludeNormals = Zivid::Experimental::PointCloudExport::IncludeNormals;
             ZIVID_PYTHON_WRAP_ENUM_CLASS(dest, ColorSpace);
+            ZIVID_PYTHON_WRAP_ENUM_CLASS(dest, IncludeNormals);
 
             wrapNamespaceAsSubmodule(dest, FileFormat::wrapAsSubmodule, "FileFormat");
 

@@ -2,6 +2,7 @@
 
 import _zivid
 from zivid.frame_2d import Frame2D
+from zivid.settings import _to_internal_settings, Settings
 from zivid.settings2d import Settings2D, _to_internal_settings2d
 
 
@@ -35,8 +36,43 @@ class ProjectedImage:
     def __str__(self):
         return str(self.__impl)
 
+    def capture_2d(self, settings):
+        """Capture a single 2D frame without stopping the ongoing image projection.
+
+        This method returns right after the acquisition of the image is complete. This function can only be used
+        with a zero-brightness 2D capture, otherwise it will interfere with the projected image. An exception
+        will be thrown if settings contains brightness > 0.
+
+        This method can be used with
+
+        Args:
+            settings: Settings to use for the capture. Can be either a Settings2D instance or a Settings instance.
+                      If a Settings instance is provided, only the Settings.color part is used. An exception is thrown
+                      if the Settings.color part is not set.
+
+        Returns:
+            A Frame2D containing a 2D image plus metadata.
+
+        Raises:
+            TypeError: If argument is not either a Settings2D or a Settings instance.
+        """
+
+        if isinstance(settings, Settings2D):
+            return Frame2D(self.__impl.capture_2d(_to_internal_settings2d(settings)))
+        if isinstance(settings, Settings):
+            return Frame2D(self.__impl.capture_2d(_to_internal_settings(settings)))
+        raise TypeError(
+            "Unsupported settings type, expected: {expected_types}, got: {value_type}".format(
+                expected_types=" or ".join([Settings.__name__, Settings2D.__name__]),
+                value_type=type(settings),
+            )
+        )
+
     def capture(self, settings2d):
         """Capture a single 2D frame without stopping the ongoing image projection.
+
+        This method is deprecated as of SDK 2.15 and will be removed in the next SDK major version (3.0).
+        Use capture_2d instead.
 
         This method returns right after the acquisition of the image is complete. This function can only be used
         with a zero-brightness 2D capture, otherwise it will interfere with the projected image. An exception

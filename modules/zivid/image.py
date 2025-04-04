@@ -22,7 +22,8 @@ class Image:
         allowed_types = (
             _zivid.ImageRGBA,
             _zivid.ImageBGRA,
-            _zivid.ImageSRGB,
+            _zivid.ImageRGBA_SRGB,
+            _zivid.ImageBGRA_SRGB,
         )
         if not isinstance(impl, allowed_types):
             raise TypeError(
@@ -71,7 +72,10 @@ class Image:
         Supported color formats:
         rgba:       ndarray(Height,Width,4) of uint8
         bgra:       ndarray(Height,Width,4) of uint8
-        srgb:       ndarray(Height,Width,4) of uint8
+        rgba_srgb:  ndarray(Height,Width,4) of uint8
+        bgra_srgb:  ndarray(Height,Width,4) of uint8
+        srgb:       ndarray(Height,Width,4) of uint8 (deprecated, use rgba_srgb instead)
+
 
         Args:
             file_path: A pathlib.Path instance or a string specifying file path to load
@@ -86,7 +90,9 @@ class Image:
         supported_color_formats = {
             "rgba": _zivid.ImageRGBA,
             "bgra": _zivid.ImageBGRA,
-            "srgb": _zivid.ImageSRGB,
+            "srgb": _zivid.ImageRGBA_SRGB,
+            "rgba_srgb": _zivid.ImageRGBA_SRGB,
+            "bgra_srgb": _zivid.ImageBGRA_SRGB,
         }
         if color_format not in supported_color_formats:
             raise ValueError(

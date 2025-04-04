@@ -12,6 +12,21 @@ from zivid.frame import Frame
 from zivid._calibration.pose import Pose
 
 
+class CalibrationBoardDetectionStatus:  # pylint: disable=too-few-public-methods
+    """Enumeration of possible detection statuses.
+
+    The DetectionResult.status() method will return one of these values.
+    """
+
+    ok = "ok"
+    no_valid_fiducial_marker_detected = "no_valid_fiducial_marker_detected"
+    multiple_valid_fiducial_markers_detected = (
+        "multiple_valid_fiducial_markers_detected"
+    )
+    board_detection_failed = "board_detection_failed"
+    insufficient_3d_quality = "insufficient_3d_quality"
+
+
 class DetectionResult:
     """Class representing detected feature points from a calibration board."""
 
@@ -63,6 +78,54 @@ class DetectionResult:
             The Pose of the top left corner (4x4 transformation matrix)
         """
         return Pose(self.__impl.pose().to_matrix())
+
+    def status(self):
+        """Get the status of the detection.
+
+        Returns:
+            The detection status as a string. See CalibrationBoardDetectionStatus for possible values.
+        """
+
+        return self.__impl.status().name
+
+    def status_description(self):
+        """Get a human-readable description of the status.
+
+        Useful for feedback if valid() returns False.
+
+        This returns a free-form string and should not be considered API stable.
+        Use status() for programmatic checks.
+
+        Returns:
+            A string which describes the detection status.
+        """
+        return self.__impl.status_description()
+
+    def feature_points(self):
+        """Get the detected feature points in camera-space.
+
+        Returns a 2D array of 3D coordinates representing the centers of the calibration
+        board squares. The element at index (0,0) corresponds to the physical top-left
+        corner of the board. The first index moves down the physical board, while the second
+        index moves to the right. If the valid() function returns false, an exception will
+        be thrown.
+
+        Returns:
+            Feature points.
+        """
+        return self.__impl.feature_points()
+
+    def feature_points_2d(self):
+        """Get the detected feature points in pixel-space.
+
+        Same as feature_points(), but with 2D coordinates instead of 3D coordinates. The points
+        are reported at subpixel accuracy. If the valid() function returns false, an exception
+        will be thrown.
+
+        Returns:
+            Feature points in 2D.
+        """
+        return self.__impl.feature_points_2d()
 
     def __bool__(self):
         return bool(self.__impl)

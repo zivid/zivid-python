@@ -236,24 +236,6 @@ def markers_poses_fixture():
     return poses
 
 
-@pytest.fixture(name="image_2d_rgba", scope="function")
-def image_2d_rgba_fixture(frame_2d):
-    with frame_2d.image_rgba() as image_2d_rgb:
-        yield image_2d_rgb
-
-
-@pytest.fixture(name="image_2d_bgra", scope="function")
-def image_2d_bgra_fixture(frame_2d):
-    with frame_2d.image_bgra() as image_2d_bgr:
-        yield image_2d_bgr
-
-
-@pytest.fixture(name="image_2d_srgb", scope="function")
-def image_2d_srgb_fixture(frame_2d):
-    with frame_2d.image_srgb() as image_2d_srgb:
-        yield image_2d_srgb
-
-
 @pytest.fixture(name="transform", scope="function")
 def transform_fixture():
     return np.array(
@@ -387,3 +369,17 @@ def run_sample(name, working_directory=None):
                 str(sample),
             )
         )
+
+
+@pytest.fixture(
+    name="color_format",
+    scope="function",
+    params=["rgba", "bgra", "rgba_srgb", "bgra_srgb", "srgb"],
+)
+def color_format_fixture(request):
+    return request.param
+
+
+@pytest.fixture(name="image_2d", scope="function")
+def image_2d_fixture(frame_2d, color_format):
+    return getattr(frame_2d, f"image_{color_format}")()

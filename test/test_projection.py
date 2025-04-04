@@ -48,19 +48,39 @@ def test_show_image_bgra(physical_camera):
 
 @pytest.mark.physical_camera
 def test_capture_while_projecting(physical_camera):
-    from zivid import Frame2D, Settings2D
+    from zivid import Frame2D, Settings2D, Settings
     from zivid.projection import projector_resolution, show_image_bgra
     import numpy as np
 
     res = projector_resolution(camera=physical_camera)
     bgra = 255 * np.ones((res[0], res[1], 4))
 
+    def is_r_series_camera(model):
+        return "R" in model
+
     with show_image_bgra(camera=physical_camera, image_bgra=bgra) as projected_image:
         settings2d = Settings2D()
         settings2d.acquisitions.append(Settings2D.Acquisition(brightness=0.0))
-        frame2d = projected_image.capture(settings2d=settings2d)
+        settings2d.sampling.color = (
+            Settings2D.Sampling.Color.grayscale
+            if is_r_series_camera(physical_camera.info.model)
+            else Settings2D.Sampling.Color.rgb
+        )
 
-        assert isinstance(frame2d, Frame2D)
+        with projected_image.capture_2d(settings2d) as frame_2d:
+            assert isinstance(frame_2d, Frame2D)
+
+        settings = Settings(color=settings2d)
+        with projected_image.capture_2d(settings) as frame_2d:
+            assert isinstance(frame_2d, Frame2D)
+
+        with pytest.raises(RuntimeError):
+            projected_image.capture_2d(Settings())
+
+        with pytest.raises(RuntimeError):
+            projected_image.capture_2d(
+                Settings2D(acquisitions=[Settings2D.Acquisition(brightness=1.0)])
+            )
 
 
 @pytest.mark.physical_camera

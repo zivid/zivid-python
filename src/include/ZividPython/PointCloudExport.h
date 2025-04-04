@@ -9,6 +9,8 @@ namespace ZividPython
 {
     void wrapEnum(pybind11::enum_<Zivid::Experimental::PointCloudExport::ColorSpace> pyEnum);
 
+    void wrapEnum(pybind11::enum_<Zivid::Experimental::PointCloudExport::IncludeNormals> pyEnum);
+
     void wrapClass(pybind11::class_<Zivid::Experimental::PointCloudExport::FileFormat::ZDF> pyClass);
 
     void wrapClass(pybind11::class_<Zivid::Experimental::PointCloudExport::FileFormat::PLY> pyClass);

@@ -66,16 +66,20 @@ class PointCloud:
         """Copy point cloud data from GPU to numpy array.
 
         Supported data formats:
-        xyz:        ndarray(Height,Width,3) of float
-        xyzw:       ndarray(Height,Width,4) of float
-        z:          ndarray(Height,Width)   of float
-        rgba:       ndarray(Height,Width,4) of uint8
-        bgra:       ndarray(Height,Width,4) of uint8
-        srgb:       ndarray(Height,Width,4) of uint8
-        normals:    ndarray(Height,Width,3) of float
-        snr:        ndarray(Height,Width)   of float
-        xyzrgba:    ndarray(Height,Width)   of composite dtype (accessed with e.g. arr["x"])
-        xyzbgra:    ndarray(Height,Width)   of composite dtype (accessed with e.g. arr["x"])
+        xyz:            ndarray(Height,Width,3) of float
+        xyzw:           ndarray(Height,Width,4) of float
+        z:              ndarray(Height,Width)   of float
+        rgba:           ndarray(Height,Width,4) of uint8
+        bgra:           ndarray(Height,Width,4) of uint8
+        rgba_srgb:      ndarray(Height,Width,4) of uint8
+        bgra_srgb:      ndarray(Height,Width,4) of uint8
+        srgb:           ndarray(Height,Width,4) of uint8 (deprecated, use rgba_srgb instead)
+        normals:        ndarray(Height,Width,3) of float
+        snr:            ndarray(Height,Width)   of float
+        xyzrgba:        ndarray(Height,Width)   of composite dtype (accessed with e.g. arr["x"])
+        xyzbgra:        ndarray(Height,Width)   of composite dtype (accessed with e.g. arr["x"])
+        xyzrgba_srgb:   ndarray(Height,Width)   of composite dtype (accessed with e.g. arr["x"])
+        xyzbgra_srgb:   ndarray(Height,Width)   of composite dtype (accessed with e.g. arr["x"])
 
         Args:
             data_format: A string specifying the data to be copied
@@ -94,11 +98,15 @@ class PointCloud:
             "z": _zivid.Array2DPointZ,
             "rgba": _zivid.Array2DColorRGBA,
             "bgra": _zivid.Array2DColorBGRA,
-            "srgb": _zivid.Array2DColorSRGB,
+            "rgba_srgb": _zivid.Array2DColorRGBA_SRGB,
+            "bgra_srgb": _zivid.Array2DColorBGRA_SRGB,
+            "srgb": _zivid.Array2DColorRGBA_SRGB,
             "normals": _zivid.Array2DNormalXYZ,
             "snr": _zivid.Array2DSNR,
             "xyzrgba": _zivid.Array2DPointXYZColorRGBA,
             "xyzbgra": _zivid.Array2DPointXYZColorBGRA,
+            "xyzrgba_srgb": _zivid.Array2DPointXYZColorRGBA_SRGB,
+            "xyzbgra_srgb": _zivid.Array2DPointXYZColorBGRA_SRGB,
         }
         try:
             data_format_class = data_formats[data_format]
@@ -116,7 +124,9 @@ class PointCloud:
         Supported data formats:
         rgba:       Image(Height,Width,4) of uint8
         bgra:       Image(Height,Width,4) of uint8
-        srgb:       Image(Height,Width,4) of uint8
+        rgba_srgb:  Image(Height,Width,4) of uint8
+        bgra_srgb:  Image(Height,Width,4) of uint8
+        srgb:       Image(Height,Width,4) of uint8 (deprecated, use rgba_srgb instead)
 
         Args:
             data_format: A string specifying the image data format
@@ -129,14 +139,16 @@ class PointCloud:
         """
         self.__impl.assert_not_released()
 
-        supported_color_formats = ["rgba", "bgra", "srgb"]
+        supported_color_formats = ["rgba", "bgra", "rgba_srgb", "bgra_srgb", "srgb"]
 
         if data_format == "rgba":
             return Image(self.__impl.copy_image_rgba())
         if data_format == "bgra":
             return Image(self.__impl.copy_image_bgra())
-        if data_format == "srgb":
-            return Image(self.__impl.copy_image_srgb())
+        if data_format in ("rgba_srgb", "srgb"):
+            return Image(self.__impl.copy_image_rgba_srgb())
+        if data_format == "bgra_srgb":
+            return Image(self.__impl.copy_image_bgra_srgb())
         raise ValueError(
             "Unsupported color format: {data_format}. Supported formats: {all_formats}".format(
                 data_format=data_format, all_formats=supported_color_formats
@@ -174,6 +186,23 @@ class PointCloud:
         """
         self.__impl.transform(matrix)
         return self
+
+    @property
+    def transformation_matrix(self):
+        """Return the current transformation matrix of this point cloud.
+
+        Returns the transformation matrix from the camera's native coordinate system to the current
+        coordinate system. The returned matrix represents the cumulative result of all the transform operations
+        performed on the point cloud. If no transformations have been applied, the identity matrix is returned.
+
+        Note: ZDF files saved from SDK 2.14 or earlier did not store the active transformation matrix. This
+        means that for point clouds loaded from .zdf files from SDK 2.14 or earlier, this method will always
+        return the identity matrix even in the case where the point cloud had been transformed prior to saving.
+
+        Returns:
+            A 4x4 numpy array of floats
+        """
+        return self.__impl.transformation_matrix()
 
     def downsample(self, downsampling):
         """Downsample the point cloud in-place.

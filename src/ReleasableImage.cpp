@@ -46,9 +46,14 @@ namespace
         return imageDataBuffer<ZividPython::ReleasableImageBGRA, Zivid::ColorBGRA>(image);
     }
 
-    py::buffer_info imageSRGBDataBuffer(ZividPython::ReleasableImageSRGB &image)
+    py::buffer_info imageRGBA_SRGBDataBuffer(ZividPython::ReleasableImageRGBA_SRGB &image)
     {
-        return imageDataBuffer<ZividPython::ReleasableImageSRGB, Zivid::ColorSRGB>(image);
+        return imageDataBuffer<ZividPython::ReleasableImageRGBA_SRGB, Zivid::ColorRGBA_SRGB>(image);
+    }
+
+    py::buffer_info imageBGRA_SRGBDataBuffer(ZividPython::ReleasableImageBGRA_SRGB &image)
+    {
+        return imageDataBuffer<ZividPython::ReleasableImageBGRA_SRGB, Zivid::ColorBGRA_SRGB>(image);
     }
 } // namespace
 
@@ -72,12 +77,21 @@ namespace ZividPython
             .def(py::init<const std::string &>(), "Load image from file");
     }
 
-    void wrapClass(pybind11::class_<ReleasableImageSRGB> pyClass)
+    void wrapClass(pybind11::class_<ReleasableImageRGBA_SRGB> pyClass)
     {
-        pyClass.def_buffer(imageSRGBDataBuffer)
-            .def("save", &ReleasableImageSRGB::save, py::arg("file_name"))
-            .def("width", &ReleasableImageSRGB::width)
-            .def("height", &ReleasableImageSRGB::height)
+        pyClass.def_buffer(imageRGBA_SRGBDataBuffer)
+            .def("save", &ReleasableImageRGBA_SRGB::save, py::arg("file_name"))
+            .def("width", &ReleasableImageRGBA_SRGB::width)
+            .def("height", &ReleasableImageRGBA_SRGB::height)
+            .def(py::init<const std::string &>(), "Load image from file");
+    }
+
+    void wrapClass(pybind11::class_<ReleasableImageBGRA_SRGB> pyClass)
+    {
+        pyClass.def_buffer(imageBGRA_SRGBDataBuffer)
+            .def("save", &ReleasableImageBGRA_SRGB::save, py::arg("file_name"))
+            .def("width", &ReleasableImageBGRA_SRGB::width)
+            .def("height", &ReleasableImageBGRA_SRGB::height)
             .def(py::init<const std::string &>(), "Load image from file");
     }
 } // namespace ZividPython

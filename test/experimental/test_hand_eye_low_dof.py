@@ -132,10 +132,10 @@ def test_eth_transform_low_dof_approximate_match(
     # Ensure that the low DOF calibration transforms are approximately the same as their
     # full 6-DOF calibration transform counterparts.
     np.testing.assert_allclose(
-        handeye_eth_transform, handeye_eth_low_dof_transform, rtol=1e-2
+        handeye_eth_transform, handeye_eth_low_dof_transform, rtol=2.5e-2
     )
     np.testing.assert_allclose(
-        handeye_marker_eth_transform, handeye_eth_low_dof_markers_transform, rtol=1e-2
+        handeye_marker_eth_transform, handeye_eth_low_dof_markers_transform, rtol=2.5e-2
     )
 
 

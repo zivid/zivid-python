@@ -51,7 +51,15 @@ def _install_zivid_sdk():
         response = requests.get(zivid_installer_url, timeout=(25, 600))
         zivid_installer.write_bytes(response.content)
         print("Installing {}".format(zivid_installer), flush=True)
-        run_process((str(zivid_installer), "/S"))
+        run_process(
+            (
+                str(zivid_installer),
+                "/VERYSILENT",
+                "/SUPPRESSMSGBOXES",
+                "/NORESTART",
+                "/TYPE=full",
+            )
+        )
 
 
 def _install_intel_opencl_runtime():
