@@ -13,6 +13,9 @@ namespace ZividPython::Firmware
         dest.def(
                 "update",
                 [](ReleasableCamera &camera, const Zivid::Firmware::ProgressCallback &callback) {
+                    // Release GIL to allow the callback function to run python code that may
+                    // require GIL, e.g., `print` function.
+                    pybind11::gil_scoped_release releaseGil;
                     Zivid::Firmware::update(camera.impl(), callback);
                 },
                 py::arg("camera"),
