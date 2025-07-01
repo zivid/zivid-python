@@ -1,6 +1,6 @@
 """Auto generated, do not edit."""
 
-# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
 
@@ -17,20 +17,12 @@ class CameraInfo:
             if isinstance(major, (int,)):
                 self._major = _zivid.CameraInfo.Revision.Major(major)
             else:
-                raise TypeError(
-                    "Unsupported type, expected: (int,), got {value_type}".format(
-                        value_type=type(major)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: (int,), got {value_type}".format(value_type=type(major)))
 
             if isinstance(minor, (int,)):
                 self._minor = _zivid.CameraInfo.Revision.Minor(minor)
             else:
-                raise TypeError(
-                    "Unsupported type, expected: (int,), got {value_type}".format(
-                        value_type=type(minor)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: (int,), got {value_type}".format(value_type=type(minor)))
 
         @property
         def major(self):
@@ -45,22 +37,14 @@ class CameraInfo:
             if isinstance(value, (int,)):
                 self._major = _zivid.CameraInfo.Revision.Major(value)
             else:
-                raise TypeError(
-                    "Unsupported type, expected: int, got {value_type}".format(
-                        value_type=type(value)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: int, got {value_type}".format(value_type=type(value)))
 
         @minor.setter
         def minor(self, value):
             if isinstance(value, (int,)):
                 self._minor = _zivid.CameraInfo.Revision.Minor(value)
             else:
-                raise TypeError(
-                    "Unsupported type, expected: int, got {value_type}".format(
-                        value_type=type(value)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: int, got {value_type}".format(value_type=type(value)))
 
         def __eq__(self, other):
             if self._major == other._major and self._minor == other._minor:
@@ -78,14 +62,10 @@ class CameraInfo:
         ):
 
             if isinstance(max_size_bytes, (int,)):
-                self._max_size_bytes = _zivid.CameraInfo.UserData.MaxSizeBytes(
-                    max_size_bytes
-                )
+                self._max_size_bytes = _zivid.CameraInfo.UserData.MaxSizeBytes(max_size_bytes)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (int,), got {value_type}".format(
-                        value_type=type(max_size_bytes)
-                    )
+                    "Unsupported type, expected: (int,), got {value_type}".format(value_type=type(max_size_bytes))
                 )
 
         @property
@@ -97,11 +77,7 @@ class CameraInfo:
             if isinstance(value, (int,)):
                 self._max_size_bytes = _zivid.CameraInfo.UserData.MaxSizeBytes(value)
             else:
-                raise TypeError(
-                    "Unsupported type, expected: int, got {value_type}".format(
-                        value_type=type(value)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: int, got {value_type}".format(value_type=type(value)))
 
         def __eq__(self, other):
             if self._max_size_bytes == other._max_size_bytes:
@@ -158,20 +134,14 @@ class CameraInfo:
             self._firmware_version = _zivid.CameraInfo.FirmwareVersion(firmware_version)
         else:
             raise TypeError(
-                "Unsupported type, expected: (str,), got {value_type}".format(
-                    value_type=type(firmware_version)
-                )
+                "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(firmware_version))
             )
 
         if isinstance(hardware_revision, (str,)):
-            self._hardware_revision = _zivid.CameraInfo.HardwareRevision(
-                hardware_revision
-            )
+            self._hardware_revision = _zivid.CameraInfo.HardwareRevision(hardware_revision)
         else:
             raise TypeError(
-                "Unsupported type, expected: (str,), got {value_type}".format(
-                    value_type=type(hardware_revision)
-                )
+                "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(hardware_revision))
             )
 
         if isinstance(model, _zivid.CameraInfo.Model.enum):
@@ -179,28 +149,18 @@ class CameraInfo:
         elif isinstance(model, str):
             self._model = _zivid.CameraInfo.Model(self.Model._valid_values[model])
         else:
-            raise TypeError(
-                "Unsupported type, expected: str, got {value_type}".format(
-                    value_type=type(model)
-                )
-            )
+            raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(model)))
 
         if isinstance(model_name, (str,)):
             self._model_name = _zivid.CameraInfo.ModelName(model_name)
         else:
-            raise TypeError(
-                "Unsupported type, expected: (str,), got {value_type}".format(
-                    value_type=type(model_name)
-                )
-            )
+            raise TypeError("Unsupported type, expected: (str,), got {value_type}".format(value_type=type(model_name)))
 
         if isinstance(serial_number, (str,)):
             self._serial_number = _zivid.CameraInfo.SerialNumber(serial_number)
         else:
             raise TypeError(
-                "Unsupported type, expected: (str,), got {value_type}".format(
-                    value_type=type(serial_number)
-                )
+                "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(serial_number))
             )
 
         if revision is None:
@@ -253,22 +213,14 @@ class CameraInfo:
         if isinstance(value, (str,)):
             self._firmware_version = _zivid.CameraInfo.FirmwareVersion(value)
         else:
-            raise TypeError(
-                "Unsupported type, expected: str, got {value_type}".format(
-                    value_type=type(value)
-                )
-            )
+            raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
     @hardware_revision.setter
     def hardware_revision(self, value):
         if isinstance(value, (str,)):
             self._hardware_revision = _zivid.CameraInfo.HardwareRevision(value)
         else:
-            raise TypeError(
-                "Unsupported type, expected: str, got {value_type}".format(
-                    value_type=type(value)
-                )
-            )
+            raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
     @model.setter
     def model(self, value):
@@ -277,33 +229,21 @@ class CameraInfo:
         elif isinstance(value, _zivid.CameraInfo.Model.enum):
             self._model = _zivid.CameraInfo.Model(value)
         else:
-            raise TypeError(
-                "Unsupported type, expected: str, got {value_type}".format(
-                    value_type=type(value)
-                )
-            )
+            raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
     @model_name.setter
     def model_name(self, value):
         if isinstance(value, (str,)):
             self._model_name = _zivid.CameraInfo.ModelName(value)
         else:
-            raise TypeError(
-                "Unsupported type, expected: str, got {value_type}".format(
-                    value_type=type(value)
-                )
-            )
+            raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
     @serial_number.setter
     def serial_number(self, value):
         if isinstance(value, (str,)):
             self._serial_number = _zivid.CameraInfo.SerialNumber(value)
         else:
-            raise TypeError(
-                "Unsupported type, expected: str, got {value_type}".format(
-                    value_type=type(value)
-                )
-            )
+            raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
     @revision.setter
     def revision(self, value):
@@ -385,9 +325,7 @@ def _to_internal_camera_info_revision(revision):
 def _to_internal_camera_info_user_data(user_data):
     internal_user_data = _zivid.CameraInfo.UserData()
 
-    internal_user_data.max_size_bytes = _zivid.CameraInfo.UserData.MaxSizeBytes(
-        user_data.max_size_bytes
-    )
+    internal_user_data.max_size_bytes = _zivid.CameraInfo.UserData.MaxSizeBytes(user_data.max_size_bytes)
 
     return internal_user_data
 
@@ -395,24 +333,12 @@ def _to_internal_camera_info_user_data(user_data):
 def _to_internal_camera_info(camera_info):
     internal_camera_info = _zivid.CameraInfo()
 
-    internal_camera_info.firmware_version = _zivid.CameraInfo.FirmwareVersion(
-        camera_info.firmware_version
-    )
-    internal_camera_info.hardware_revision = _zivid.CameraInfo.HardwareRevision(
-        camera_info.hardware_revision
-    )
+    internal_camera_info.firmware_version = _zivid.CameraInfo.FirmwareVersion(camera_info.firmware_version)
+    internal_camera_info.hardware_revision = _zivid.CameraInfo.HardwareRevision(camera_info.hardware_revision)
     internal_camera_info.model = _zivid.CameraInfo.Model(camera_info._model.value)
-    internal_camera_info.model_name = _zivid.CameraInfo.ModelName(
-        camera_info.model_name
-    )
-    internal_camera_info.serial_number = _zivid.CameraInfo.SerialNumber(
-        camera_info.serial_number
-    )
+    internal_camera_info.model_name = _zivid.CameraInfo.ModelName(camera_info.model_name)
+    internal_camera_info.serial_number = _zivid.CameraInfo.SerialNumber(camera_info.serial_number)
 
-    internal_camera_info.revision = _to_internal_camera_info_revision(
-        camera_info.revision
-    )
-    internal_camera_info.user_data = _to_internal_camera_info_user_data(
-        camera_info.user_data
-    )
+    internal_camera_info.revision = _to_internal_camera_info_revision(camera_info.revision)
+    internal_camera_info.user_data = _to_internal_camera_info_user_data(camera_info.user_data)
     return internal_camera_info

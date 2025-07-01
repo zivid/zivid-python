@@ -1,8 +1,7 @@
 """Contains a the Image class."""
 
-import numpy
-
 import _zivid
+import numpy
 
 
 class Image:

@@ -1,39 +1,57 @@
-import tempfile
+import json
+import os
 import platform
 import subprocess
-from sys import version_info
-from tempfile import TemporaryDirectory
+import tempfile
 from pathlib import Path
 from pkgutil import iter_modules
-from skbuild import setup, constants
+from sys import version_info
+from tempfile import TemporaryDirectory
+
+from packaging.utils import canonicalize_version
+from skbuild import constants, setup
 
 
-# To be replaced by: from setuptools_scm import get_version
-def get_version():
-    return "2.15.1"
+def _read_sdk_version_json():
+    sdk_version_path = Path(__file__).parent / "sdk_version.json"
+    with sdk_version_path.open("r") as f:
+        return json.load(f)
 
 
-def _zivid_sdk_version():
-    return "2.15.0"
+def _get_package_version():
+    sdk_version = _read_sdk_version_json()
 
+    version_segments = [
+        str(sdk_version["major"]),
+        str(sdk_version["minor"]),
+        str(sdk_version["patch"]),
+    ]
 
-def _zivid_python_version():
-    scm_version = get_version()
+    github_repository = os.getenv("GITHUB_REPOSITORY")
+    github_ref = os.getenv("GITHUB_REF")
 
-    if "+" in scm_version:
-        base_version, scm_metadata = scm_version.split("+", 1)
+    if github_repository != "zivid/zivid-python" and github_ref != "refs/heads/master":
+        # Only the master branch of the zivid-python repository is considered stable.
+        version_segments.append("dev0")
+
+    local_version_segments = []
+
+    if sdk_version.get("pre_release"):
+        local_version_segments.append(sdk_version["pre_release"])
+
+    commit_hash = os.getenv("CI_COMMIT_HASH")
+    github_sha = os.getenv("GITHUB_SHA")
+
+    commit_hash = commit_hash or github_sha
+    if commit_hash is not None:
+        hash_length = 8
+        local_version_segments.append(commit_hash[:hash_length])
     else:
-        base_version = scm_version
-        scm_metadata = None
+        local_version_segments.append("unofficial")
 
-    base_version = "{}.{}".format(base_version, _zivid_sdk_version())
+    version = ".".join(version_segments) + "+" + ".".join(local_version_segments)
 
-    if scm_metadata:
-        version = "{}+{}".format(base_version, scm_metadata)
-    else:
-        version = base_version
-
-    return version
+    return canonicalize_version(version, strip_trailing_zero=False)
 
 
 def _python_version():
@@ -47,9 +65,7 @@ def _make_message_box(*message):
     empty_line = "\n| " + " " * width + " |\n"
     message_lines = ["| " + line + " " * (width - len(line)) + " |" for line in message]
 
-    return (
-        "\n\n" + box_bar + "\n" + empty_line.join(message_lines) + "\n" + box_bar + "\n"
-    )
+    return "\n\n" + box_bar + "\n" + empty_line.join(message_lines) + "\n" + box_bar + "\n"
 
 
 def _check_dependency(module_name, package_hint=None):
@@ -59,9 +75,8 @@ def _check_dependency(module_name, package_hint=None):
         raise ImportError(
             _make_message_box(
                 "!! Missing module '{}' !!".format(module_name),
-                "Please install '{}' manually or use PIP>=19 to handle build dependencies automatically (PEP 517)".format(
-                    package_hint
-                ),
+                "Please install '{}' manually or use PIP>=19 to handle build dependencies automatically"
+                " (PEP 517)".format(package_hint),
             )
         )
 
@@ -72,9 +87,7 @@ def _check_cpp17_compiler():
             with subprocess.Popen(args, **kwargs) as process:
                 exit_code = process.wait()
                 if exit_code != 0:
-                    raise RuntimeError(
-                        "Wait failed with exit code {}".format(exit_code)
-                    )
+                    raise RuntimeError("Wait failed with exit code {}".format(exit_code))
         except Exception as ex:
             raise type(ex)("Process failed: '{}'.".format(" ".join(args))) from ex
 
@@ -133,7 +146,7 @@ def _main():
 
         setup(
             name="zivid",
-            version=_zivid_python_version(),
+            version=_get_package_version(),
             description="Defining the Future of 3D Machine Vision",
             long_description=Path("README.md").read_text(encoding="utf-8"),
             long_description_content_type="text/markdown",
@@ -146,13 +159,13 @@ def _main():
                 "zivid._calibration",
                 "zivid.experimental",
                 "zivid.experimental.point_cloud_export",
+                "zivid.experimental.toolbox",
                 "_zivid",
             ],
             package_dir={"": "modules"},
             install_requires=["numpy"],
             cmake_args=[
-                "-DZIVID_PYTHON_VERSION=" + _zivid_python_version(),
-                "-DZIVID_SDK_VERSION=" + _zivid_sdk_version(),
+                "-DZIVID_PYTHON_VERSION=" + _get_package_version(),
                 "-DPYTHON_INTERPRETER_VERSION=" + _python_version(),
             ],
             classifiers=[

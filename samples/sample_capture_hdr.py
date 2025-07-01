@@ -9,15 +9,10 @@ def _main():
     app = Application()
     with app.connect_camera() as camera:
         settings = Settings(
-            acquisitions=[
-                Settings.Acquisition(aperture=aperture)
-                for aperture in (10.90, 5.80, 2.83)
-            ],
+            acquisitions=[Settings.Acquisition(aperture=aperture) for aperture in (10.90, 5.80, 2.83)],
             color=Settings2D(
                 acquisitions=[
-                    Settings2D.Acquisition(
-                        exposure_time=datetime.timedelta(microseconds=exposure_time)
-                    )
+                    Settings2D.Acquisition(exposure_time=datetime.timedelta(microseconds=exposure_time))
                     for exposure_time in (1677, 5000, 10000)
                 ]
             ),

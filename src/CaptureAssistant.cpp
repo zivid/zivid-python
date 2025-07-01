@@ -17,10 +17,11 @@ namespace ZividPython::CaptureAssistant
         using namespace Zivid::CaptureAssistant;
         ZIVID_PYTHON_WRAP_DATA_MODEL(dest, SuggestSettingsParameters);
 
-        dest.def("suggest_settings",
-                 [](ReleasableCamera &camera,
-                    const Zivid::CaptureAssistant::SuggestSettingsParameters &suggestSettingsParameters) {
-                     return Zivid::CaptureAssistant::suggestSettings(camera.impl(), suggestSettingsParameters);
-                 });
+        dest.def(
+            "suggest_settings",
+            [](ReleasableCamera &camera,
+               const Zivid::CaptureAssistant::SuggestSettingsParameters &suggestSettingsParameters) {
+                return Zivid::CaptureAssistant::suggestSettings(camera.impl(), suggestSettingsParameters);
+            });
     }
 } // namespace ZividPython::CaptureAssistant

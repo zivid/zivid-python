@@ -1,11 +1,10 @@
 """Sample demonstrating in-field correction (experimental)."""
 
 import zivid
-
 from zivid.experimental.calibration import (
-    detect_feature_points,
     InfieldCorrectionInput,
     compute_camera_correction,
+    detect_feature_points,
     write_camera_correction,
 )
 
@@ -23,13 +22,9 @@ def _main():
                     print("Measurement OK. Appending to dataset.")
                     infield_inputs.append(infield_input)
                 else:
-                    print(
-                        f"Warning: Measurement invalid [{infield_input.status_description()}]. Please try again."
-                    )
+                    print(f"Warning: Measurement invalid [{infield_input.status_description()}]. Please try again.")
 
-                input(
-                    "Hit [Enter] to continue, or [Ctrl+C] to end capture loop and calculate correction."
-                )
+                input("Hit [Enter] to continue, or [Ctrl+C] to end capture loop and calculate correction.")
         except KeyboardInterrupt:
             print("\nCapture loop ended.")
 

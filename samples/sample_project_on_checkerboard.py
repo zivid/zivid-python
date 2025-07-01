@@ -2,15 +2,10 @@
 
 from datetime import timedelta
 
+import numpy as np
 from zivid import Application, Settings, Settings2D
 from zivid.calibration import detect_feature_points
-from zivid.projection import (
-    projector_resolution,
-    show_image_bgra,
-    pixels_from_3d_points,
-)
-
-import numpy as np
+from zivid.projection import pixels_from_3d_points, projector_resolution, show_image_bgra
 
 
 def _detect_checkerboard(camera):

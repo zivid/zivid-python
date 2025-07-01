@@ -37,3 +37,23 @@ def assert_point_clouds_not_equal(a, b):
         pass
     else:
         raise AssertionError("Point clouds are equal")
+
+
+def assert_unorganized_point_clouds_equal(a, b):
+    assert b.size == a.size
+
+    np.testing.assert_array_equal(a.copy_data("xyz"), b.copy_data("xyz"))
+    np.testing.assert_array_equal(a.copy_data("rgba"), b.copy_data("rgba"))
+    np.testing.assert_array_equal(a.copy_data("bgra"), b.copy_data("bgra"))
+    np.testing.assert_array_equal(a.copy_data("rgba_srgb"), b.copy_data("rgba_srgb"))
+    np.testing.assert_array_equal(a.copy_data("bgra_srgb"), b.copy_data("bgra_srgb"))
+    np.testing.assert_array_equal(a.copy_data("snr"), b.copy_data("snr"))
+
+
+def assert_unorganized_point_clouds_not_equal(a, b):
+    try:
+        assert_unorganized_point_clouds_equal(a, b)
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError("Point clouds are equal")

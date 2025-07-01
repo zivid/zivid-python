@@ -1,6 +1,7 @@
-def test_revision(file_camera_info):
-    import zivid
+import zivid
 
+
+def test_revision(file_camera_info):
     revision = file_camera_info.revision
     assert revision is not None
     assert isinstance(revision, zivid.CameraInfo.Revision)
@@ -29,8 +30,6 @@ def test_serial_number(file_camera_info):
 
 
 def test_user_data(file_camera_info):
-    import zivid
-
     user_data = file_camera_info.user_data
     assert user_data is not None
     assert isinstance(user_data, zivid.camera_info.CameraInfo.UserData)

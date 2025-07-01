@@ -88,10 +88,7 @@ class MultiCameraOutput:
         Returns:
             List of MultiCameraResidual instances, one for each camera
         """
-        return [
-            MultiCameraResidual(internal_residual)
-            for internal_residual in self.__impl.residuals()
-        ]
+        return [MultiCameraResidual(internal_residual) for internal_residual in self.__impl.residuals()]
 
     def __str__(self):
         return str(self.__impl)

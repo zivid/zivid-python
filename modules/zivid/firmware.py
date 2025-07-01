@@ -34,6 +34,4 @@ def is_up_to_date(camera):
     Returns:
         A bool that is True if the firmware is up to date
     """
-    return _zivid.firmware.is_up_to_date(
-        camera._Camera__impl  # pylint: disable=protected-access
-    )
+    return _zivid.firmware.is_up_to_date(camera._Camera__impl)  # pylint: disable=protected-access

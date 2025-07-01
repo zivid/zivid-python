@@ -1,7 +1,13 @@
-def test_multicamera_invalid_input_single_detectionresult(checkerboard_frames):
-    import pytest
-    import zivid.calibration
+import tempfile
+from pathlib import Path
 
+import numpy as np
+import pytest
+import zivid
+import zivid.calibration
+
+
+def test_multicamera_invalid_input_single_detectionresult(checkerboard_frames):
     frame = checkerboard_frames[0]
     detection_result = zivid.calibration.detect_feature_points(frame.point_cloud())
 
@@ -15,14 +21,8 @@ def test_multicamera_invalid_input_single_detectionresult(checkerboard_frames):
 
 
 def test_multicamera_calibration(checkerboard_frames, multicamera_transforms):
-    import numpy as np
-    import zivid.calibration
-
     # Detect feature points
-    detection_results = [
-        zivid.calibration.detect_feature_points(frame.point_cloud())
-        for frame in checkerboard_frames
-    ]
+    detection_results = [zivid.calibration.detect_feature_points(frame.point_cloud()) for frame in checkerboard_frames]
     assert all(detection_results)
 
     # Perform multicamera calibration
@@ -58,22 +58,12 @@ def test_multicamera_calibration(checkerboard_frames, multicamera_transforms):
 
 
 def test_multicamera_calibration_save_load(checkerboard_frames):
-    from pathlib import Path
-    import tempfile
-    import numpy as np
-    import zivid
-
     multicamera_output = zivid.calibration.calibrate_multi_camera(
-        [
-            zivid.calibration.detect_feature_points(frame.point_cloud())
-            for frame in checkerboard_frames
-        ]
+        [zivid.calibration.detect_feature_points(frame.point_cloud()) for frame in checkerboard_frames]
     )
 
     with tempfile.TemporaryDirectory() as tmpdir:
         file_path = Path(tmpdir) / "matrix.yml"
         for transform in multicamera_output.transforms():
             zivid.Matrix4x4(transform).save(file_path)
-            np.testing.assert_allclose(
-                zivid.Matrix4x4(transform), zivid.Matrix4x4(file_path), rtol=1e-6
-            )
+            np.testing.assert_allclose(zivid.Matrix4x4(transform), zivid.Matrix4x4(file_path), rtol=1e-6)

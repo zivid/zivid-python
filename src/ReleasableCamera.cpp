@@ -19,16 +19,19 @@ namespace ZividPython
             .def("connect", &ReleasableCamera::connect)
             .def("capture_2d_3d", &ReleasableCamera::capture2D3D)
             .def("capture_3d", &ReleasableCamera::capture3D)
-            .def("capture_2d",
-                 py::overload_cast<const Zivid::Settings2D &>(&ReleasableCamera::capture2D),
-                 py::arg("settings_2d"))
-            .def("capture_2d",
-                 py::overload_cast<const Zivid::Settings &>(&ReleasableCamera::capture2D),
-                 py::arg("settings"))
+            .def(
+                "capture_2d",
+                py::overload_cast<const Zivid::Settings2D &>(&ReleasableCamera::capture2D),
+                py::arg("settings_2d"))
+            .def(
+                "capture_2d",
+                py::overload_cast<const Zivid::Settings &>(&ReleasableCamera::capture2D),
+                py::arg("settings"))
             .def("capture", py::overload_cast<const Zivid::Settings &>(&ReleasableCamera::capture), py::arg("settings"))
-            .def("capture",
-                 py::overload_cast<const Zivid::Settings2D &>(&ReleasableCamera::capture),
-                 py::arg("settings_2d"))
+            .def(
+                "capture",
+                py::overload_cast<const Zivid::Settings2D &>(&ReleasableCamera::capture),
+                py::arg("settings_2d"))
             .def_property_readonly("state", &ReleasableCamera::state)
             .def_property_readonly("info", &ReleasableCamera::info)
             .def("write_user_data", &ReleasableCamera::writeUserData)

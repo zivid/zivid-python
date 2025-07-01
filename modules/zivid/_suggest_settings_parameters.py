@@ -1,7 +1,8 @@
 """Auto generated, do not edit."""
 
-# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import datetime
+
 import _zivid
 
 
@@ -30,8 +31,7 @@ class SuggestSettingsParameters:
     ):
 
         if isinstance(
-            ambient_light_frequency,
-            _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum,
+            ambient_light_frequency, _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum
         ):
             self._ambient_light_frequency = _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency(
                 ambient_light_frequency
@@ -42,17 +42,11 @@ class SuggestSettingsParameters:
             )
         else:
             raise TypeError(
-                "Unsupported type, expected: str, got {value_type}".format(
-                    value_type=type(ambient_light_frequency)
-                )
+                "Unsupported type, expected: str, got {value_type}".format(value_type=type(ambient_light_frequency))
             )
 
         if isinstance(max_capture_time, (datetime.timedelta,)):
-            self._max_capture_time = (
-                _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime(
-                    max_capture_time
-                )
-            )
+            self._max_capture_time = _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime(max_capture_time)
         else:
             raise TypeError(
                 "Unsupported type, expected: (datetime.timedelta,), got {value_type}".format(
@@ -67,9 +61,7 @@ class SuggestSettingsParameters:
         for key, internal_value in self.AmbientLightFrequency._valid_values.items():
             if internal_value == self._ambient_light_frequency.value:
                 return key
-        raise ValueError(
-            "Unsupported value {value}".format(value=self._ambient_light_frequency)
-        )
+        raise ValueError("Unsupported value {value}".format(value=self._ambient_light_frequency))
 
     @property
     def max_capture_time(self):
@@ -81,31 +73,20 @@ class SuggestSettingsParameters:
             self._ambient_light_frequency = _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency(
                 self.AmbientLightFrequency._valid_values[value]
             )
-        elif isinstance(
-            value,
-            _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum,
-        ):
+        elif isinstance(value, _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum):
             self._ambient_light_frequency = _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency(
                 value
             )
         else:
-            raise TypeError(
-                "Unsupported type, expected: str, got {value_type}".format(
-                    value_type=type(value)
-                )
-            )
+            raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
     @max_capture_time.setter
     def max_capture_time(self, value):
         if isinstance(value, (datetime.timedelta,)):
-            self._max_capture_time = (
-                _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime(value)
-            )
+            self._max_capture_time = _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime(value)
         else:
             raise TypeError(
-                "Unsupported type, expected: datetime.timedelta, got {value_type}".format(
-                    value_type=type(value)
-                )
+                "Unsupported type, expected: datetime.timedelta, got {value_type}".format(value_type=type(value))
             )
 
     @classmethod
@@ -115,22 +96,16 @@ class SuggestSettingsParameters:
         )
 
     def save(self, file_name):
-        _to_internal_capture_assistant_suggest_settings_parameters(self).save(
-            str(file_name)
-        )
+        _to_internal_capture_assistant_suggest_settings_parameters(self).save(str(file_name))
 
     @classmethod
     def from_serialized(cls, value):
         return _to_capture_assistant_suggest_settings_parameters(
-            _zivid.capture_assistant.SuggestSettingsParameters.from_serialized(
-                str(value)
-            )
+            _zivid.capture_assistant.SuggestSettingsParameters.from_serialized(str(value))
         )
 
     def serialize(self):
-        return _to_internal_capture_assistant_suggest_settings_parameters(
-            self
-        ).serialize()
+        return _to_internal_capture_assistant_suggest_settings_parameters(self).serialize()
 
     def __eq__(self, other):
         if (
@@ -144,21 +119,15 @@ class SuggestSettingsParameters:
         return str(_to_internal_capture_assistant_suggest_settings_parameters(self))
 
 
-def _to_capture_assistant_suggest_settings_parameters(
-    internal_suggest_settings_parameters,
-):
+def _to_capture_assistant_suggest_settings_parameters(internal_suggest_settings_parameters):
     return SuggestSettingsParameters(
         ambient_light_frequency=internal_suggest_settings_parameters.ambient_light_frequency.value,
         max_capture_time=internal_suggest_settings_parameters.max_capture_time.value,
     )
 
 
-def _to_internal_capture_assistant_suggest_settings_parameters(
-    suggest_settings_parameters,
-):
-    internal_suggest_settings_parameters = (
-        _zivid.capture_assistant.SuggestSettingsParameters()
-    )
+def _to_internal_capture_assistant_suggest_settings_parameters(suggest_settings_parameters):
+    internal_suggest_settings_parameters = _zivid.capture_assistant.SuggestSettingsParameters()
 
     internal_suggest_settings_parameters.ambient_light_frequency = (
         _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency(
@@ -166,9 +135,7 @@ def _to_internal_capture_assistant_suggest_settings_parameters(
         )
     )
     internal_suggest_settings_parameters.max_capture_time = (
-        _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime(
-            suggest_settings_parameters.max_capture_time
-        )
+        _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime(suggest_settings_parameters.max_capture_time)
     )
 
     return internal_suggest_settings_parameters

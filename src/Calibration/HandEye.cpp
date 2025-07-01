@@ -20,10 +20,11 @@ namespace ZividPython
     void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeOutput> pyClass)
     {
         pyClass.def("valid", &Zivid::Calibration::HandEyeOutput::valid)
-            .def("transform",
-                 [](const Zivid::Calibration::HandEyeOutput &calibrationOutput) {
-                     return Conversion::toPy(calibrationOutput.transform());
-                 })
+            .def(
+                "transform",
+                [](const Zivid::Calibration::HandEyeOutput &calibrationOutput) {
+                    return Conversion::toPy(calibrationOutput.transform());
+                })
             .def("residuals", &Zivid::Calibration::HandEyeOutput::residuals);
     }
 
@@ -31,10 +32,11 @@ namespace ZividPython
     {
         pyClass.def(py::init<Zivid::Calibration::Pose, Zivid::Calibration::DetectionResult>())
             .def(py::init<Zivid::Calibration::Pose, Zivid::Calibration::DetectionResultFiducialMarkers>())
-            .def("robot_pose",
-                 [](const Zivid::Calibration::HandEyeInput &handEyeInput) {
-                     return Conversion::toPy(handEyeInput.robotPose().toMatrix());
-                 })
+            .def(
+                "robot_pose",
+                [](const Zivid::Calibration::HandEyeInput &handEyeInput) {
+                    return Conversion::toPy(handEyeInput.robotPose().toMatrix());
+                })
             .def("detection_result", &Zivid::Calibration::HandEyeInput::detectionResult);
     }
 
@@ -51,10 +53,10 @@ namespace ZividPython
         pybind11::class_<Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfFiducialMarkers> pyClass)
     {
         using T = Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfFiducialMarkers;
-        pyClass.def(
-            py::init<const Zivid::Calibration::MarkerDictionary &,
-                     const std::vector<Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfFiducialMarker>
-                         &>());
+        pyClass.def(py::init<
+                    const Zivid::Calibration::MarkerDictionary &,
+                    const std::vector<Zivid::Experimental::Calibration::HandEyeLowDOF::FixedPlacementOfFiducialMarker>
+                        &>());
     }
 
     void wrapClass(

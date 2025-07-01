@@ -1,7 +1,8 @@
-def test_pose(transform):
-    import numpy as np
-    import zivid.calibration
+import numpy as np
+import zivid
 
+
+def test_pose(transform):
     pose = zivid.calibration.Pose(transform)
 
     assert pose is not None
@@ -11,9 +12,6 @@ def test_pose(transform):
 
 
 def test_detect_feature_points(checkerboard_frames):
-    import numpy as np
-    import zivid
-
     frame = checkerboard_frames[0]
     detection_result = zivid.calibration.detect_feature_points(frame.point_cloud())
     assert detection_result is not None
@@ -28,9 +26,6 @@ def test_detect_feature_points(checkerboard_frames):
 
 
 def test_calibration_board_pose(calibration_board_frame):
-    import numpy as np
-    import zivid
-
     point_cloud = calibration_board_frame.point_cloud()
     detection_result = zivid.calibration.detect_feature_points(point_cloud)
     pose = detection_result.pose()

@@ -6,11 +6,7 @@ import platform
 import sys
 from pathlib import Path
 
-if (
-    platform.system() == "Windows"
-    and sys.version_info.major == 3
-    and sys.version_info.minor >= 8
-):
+if platform.system() == "Windows" and sys.version_info.major == 3 and sys.version_info.minor >= 8:
     # Starting with Python 3.8, the .dll search mechanism has changed.
     # WinDLL has anew argument "winmode",
     # https://docs.python.org/3.8/library/ctypes.html
@@ -28,54 +24,63 @@ if (
 
     package_dir = Path(importlib.util.find_spec("_zivid").origin).parent
     pyd_files = list(package_dir.glob("_zivid*.pyd"))
-    assert len(pyd_files) == 1
+    if len(pyd_files) != 1:
+        raise ImportError(f"Expected exactly one _zivid*.pyd file in {package_dir}, found {len(pyd_files)} files.")
     ctypes.WinDLL(str(pyd_files[0]), winmode=0)
 
 try:
     from _zivid._zivid import (  # pylint: disable=import-error,no-name-in-module
-        __version__,
         Application,
-        Array2DColorRGBA,
+        Array1DColorBGRA,
+        Array1DColorBGRA_SRGB,
+        Array1DColorRGBA,
+        Array1DColorRGBA_SRGB,
+        Array1DPointXYZ,
+        Array1DSNR,
         Array2DColorBGRA,
-        Array2DColorRGBA_SRGB,
         Array2DColorBGRA_SRGB,
+        Array2DColorRGBA,
+        Array2DColorRGBA_SRGB,
         Array2DNormalXYZ,
         Array2DPointXYZ,
-        Array2DPointXYZColorRGBA,
         Array2DPointXYZColorBGRA,
-        Array2DPointXYZColorRGBA_SRGB,
         Array2DPointXYZColorBGRA_SRGB,
+        Array2DPointXYZColorRGBA,
+        Array2DPointXYZColorRGBA_SRGB,
         Array2DPointXYZW,
         Array2DPointZ,
         Array2DSNR,
         Camera,
+        CameraInfo,
         CameraIntrinsics,
         CameraState,
-        firmware,
-        calibration,
-        capture_assistant,
         Frame,
-        FrameInfo,
-        PointCloud,
-        point_cloud_export,
-        Settings,
-        version,
-        Settings2D,
         Frame2D,
-        ImageRGBA,
+        FrameInfo,
         ImageBGRA,
-        ImageRGBA_SRGB,
         ImageBGRA_SRGB,
-        CameraInfo,
-        infield_correction,
+        ImageRGBA,
+        ImageRGBA_SRGB,
         Matrix4x4,
         NetworkConfiguration,
-        SceneConditions,
-        data_model,
         PixelMapping,
-        projection,
+        PointCloud,
         ProjectedImage,
+        SceneConditions,
+        Settings,
+        Settings2D,
+        UnorganizedPointCloud,
+        __version__,
+        calibration,
+        capture_assistant,
+        data_model,
+        firmware,
+        infield_correction,
+        point_cloud_export,
         presets,
+        projection,
+        toolbox,
+        version,
     )
 except ImportError as ex:
 

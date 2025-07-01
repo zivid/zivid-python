@@ -1,5 +1,5 @@
-from zivid import calibration
 import numpy as np
+from zivid import calibration
 
 
 def _check_detection_result(detection_result):
@@ -27,9 +27,7 @@ def test_detect_calibration_board_frame(calibration_board_and_aruco_markers_fram
 
 
 def test_detect_calibration_board_file_camera(file_camera_calibration_board):
-    detection_result = calibration.detect_calibration_board(
-        file_camera_calibration_board
-    )
+    detection_result = calibration.detect_calibration_board(file_camera_calibration_board)
     _check_detection_result(detection_result)
 
 
@@ -37,10 +35,7 @@ def test_detect_calibration_board_invalid_file_camera(shared_file_camera):
     detection_result = calibration.detect_calibration_board(shared_file_camera)
     assert not detection_result.valid()
     assert not detection_result
-    assert (
-        detection_result.status()
-        == calibration.CalibrationBoardDetectionStatus.no_valid_fiducial_marker_detected
-    )
+    assert detection_result.status() == calibration.CalibrationBoardDetectionStatus.no_valid_fiducial_marker_detected
     assert isinstance(detection_result.status_description(), str)
 
 

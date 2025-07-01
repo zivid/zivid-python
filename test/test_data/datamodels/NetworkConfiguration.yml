@@ -1,8 +1,8 @@
 __version__:
-  serializer: 1
-  data: 1
+    serializer: 1
+    data: 1
 NetworkConfiguration:
-  IPV4:
-    Address: "172.28.60.10"
-    Mode: manual
-    SubnetMask: "255.255.0.0"
+    IPV4:
+        Address: "172.28.60.10"
+        Mode: manual
+        SubnetMask: "255.255.0.0"

@@ -1,9 +1,8 @@
 import pytest
+import zivid
 
 
 def test_3d_presets(application):  # pylint: disable=unused-argument
-    import zivid
-
     for model in zivid.CameraInfo.Model.valid_values():
         if model in [
             zivid.CameraInfo.Model.zividOnePlusLarge,
@@ -29,8 +28,6 @@ def test_3d_presets(application):  # pylint: disable=unused-argument
 
 
 def test_2d_presets(application):  # pylint: disable=unused-argument
-    import zivid
-
     for model in zivid.CameraInfo.Model.valid_values():
         if model in [
             zivid.CameraInfo.Model.zividOnePlusLarge,

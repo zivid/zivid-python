@@ -10,14 +10,17 @@ namespace ZividPython
     class SingletonApplication : public Singleton<Zivid::Application>
     {
     public:
+        using Singleton<Zivid::Application>::Singleton;
+
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_CONTAINER_RETURN(std::vector, ReleasableCamera, cameras)
 
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableCamera, connectCamera)
 
-        ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableCamera,
-                                                connectCamera,
-                                                const Zivid::CameraInfo::SerialNumber &,
-                                                serialNumber)
+        ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(
+            ReleasableCamera,
+            connectCamera,
+            const Zivid::CameraInfo::SerialNumber &,
+            serialNumber)
 
         ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableCamera, createFileCamera, const std::string &, fileName)
     };

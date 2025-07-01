@@ -31,12 +31,8 @@ def _main():
     else:
         input_address = input(f"Enter IPv4 Address [{original_config.ipv4.address}]: ")
         address = input_address if input_address else original_config.ipv4.address
-        input_subnet_mask = input(
-            f"Enter new Subnet mask [{original_config.ipv4.subnet_mask}]: "
-        )
-        subnet_mask = (
-            input_subnet_mask if input_subnet_mask else original_config.ipv4.subnet_mask
-        )
+        input_subnet_mask = input(f"Enter new Subnet mask [{original_config.ipv4.subnet_mask}]: ")
+        subnet_mask = input_subnet_mask if input_subnet_mask else original_config.ipv4.subnet_mask
 
     new_config = zivid.NetworkConfiguration(
         ipv4=zivid.NetworkConfiguration.IPV4(
@@ -49,9 +45,7 @@ def _main():
     print()
     print("New network configuration:")
     print(new_config)
-    if _confirm(
-        f"Do you want to apply the new network configuration to camera {camera.info.serial_number}?"
-    ):
+    if _confirm(f"Do you want to apply the new network configuration to camera {camera.info.serial_number}?"):
         print("Applying network configuration...")
         camera.apply_network_configuration(new_config)
 

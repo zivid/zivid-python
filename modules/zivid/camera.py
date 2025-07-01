@@ -34,11 +34,7 @@ class Camera:
             TypeError: If argument does not match the expected internal class.
         """
         if not isinstance(impl, _zivid.Camera):
-            raise TypeError(
-                "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), _zivid.Camera
-                )
-            )
+            raise TypeError("Unsupported type for argument impl. Got {}, expected {}".format(type(impl), _zivid.Camera))
 
         self.__impl = impl
 
@@ -96,9 +92,7 @@ class Camera:
         """
         if not isinstance(settings, Settings):
             raise TypeError(
-                "Unsupported type for argument settings. Got {}, expected {}.".format(
-                    type(settings), Settings.__name__
-                )
+                "Unsupported type for argument settings. Got {}, expected {}.".format(type(settings), Settings.__name__)
             )
         return Frame(self.__impl.capture_2d_3d(_to_internal_settings(settings)))
 
@@ -123,9 +117,7 @@ class Camera:
         """
         if not isinstance(settings, Settings):
             raise TypeError(
-                "Unsupported type for argument settings. Got {}, expected {}.".format(
-                    type(settings), Settings.__name__
-                )
+                "Unsupported type for argument settings. Got {}, expected {}.".format(type(settings), Settings.__name__)
             )
         return Frame(self.__impl.capture_3d(_to_internal_settings(settings)))
 
@@ -260,9 +252,7 @@ class Camera:
                     value_type=type(network_configuration),
                 )
             )
-        self.__impl.apply_network_configuration(
-            _to_internal_network_configuration(network_configuration)
-        )
+        self.__impl.apply_network_configuration(_to_internal_network_configuration(network_configuration))
 
     def write_user_data(self, user_data):
         """Write user data to camera. The total number of writes supported depends on camera model and size of data.
@@ -275,9 +265,7 @@ class Camera:
         """
         if not isinstance(user_data, bytes):
             raise TypeError(
-                "Unsupported type for argument user_data. Got {}, expected {}.".format(
-                    type(user_data), bytes.__name__
-                )
+                "Unsupported type for argument user_data. Got {}, expected {}.".format(type(user_data), bytes.__name__)
             )
         self.__impl.write_user_data(list(user_data))
 

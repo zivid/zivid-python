@@ -1,14 +1,15 @@
+import os.path
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
 import pytest
+import zivid
 
 
 def test_capture_2d_3d_one_2d_and_one_3d(shared_file_camera):
-    import zivid
-
     acquisitions3d = [zivid.Settings.Acquisition()]
     acquisitions2d = [zivid.Settings2D.Acquisition()]
-    settings = zivid.Settings(
-        acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d)
-    )
+    settings = zivid.Settings(acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d))
 
     with shared_file_camera.capture_2d_3d(settings) as frame:
         assert frame
@@ -21,13 +22,9 @@ def test_capture_2d_3d_one_2d_and_one_3d(shared_file_camera):
 
 
 def test_capture_2d_3d_two_2d_and_one_3d(shared_file_camera):
-    import zivid
-
     acquisitions3d = [zivid.Settings.Acquisition()]
     acquisitions2d = [zivid.Settings2D.Acquisition(), zivid.Settings2D.Acquisition()]
-    settings = zivid.Settings(
-        acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d)
-    )
+    settings = zivid.Settings(acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d))
 
     with shared_file_camera.capture_2d_3d(settings) as frame:
         assert frame
@@ -40,13 +37,9 @@ def test_capture_2d_3d_two_2d_and_one_3d(shared_file_camera):
 
 
 def test_capture_2d_3d_one_2d_and_two_3d(shared_file_camera):
-    import zivid
-
     acquisitions3d = [zivid.Settings.Acquisition(), zivid.Settings.Acquisition()]
     acquisitions2d = [zivid.Settings2D.Acquisition()]
-    settings = zivid.Settings(
-        acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d)
-    )
+    settings = zivid.Settings(acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d))
 
     with shared_file_camera.capture_2d_3d(settings) as frame:
         assert frame
@@ -59,13 +52,9 @@ def test_capture_2d_3d_one_2d_and_two_3d(shared_file_camera):
 
 
 def test_capture_2d_3d_two_2d_and_two_3d(shared_file_camera):
-    import zivid
-
     acquisitions3d = [zivid.Settings.Acquisition(), zivid.Settings.Acquisition()]
     acquisitions2d = [zivid.Settings2D.Acquisition(), zivid.Settings2D.Acquisition()]
-    settings = zivid.Settings(
-        acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d)
-    )
+    settings = zivid.Settings(acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d))
 
     with shared_file_camera.capture_2d_3d(settings) as frame:
         assert frame
@@ -78,8 +67,6 @@ def test_capture_2d_3d_two_2d_and_two_3d(shared_file_camera):
 
 
 def test_capture_3d_one_acquisition(shared_file_camera):
-    import zivid
-
     acquisitions = [zivid.Settings.Acquisition()]
     settings = zivid.Settings(acquisitions=acquisitions)
     with shared_file_camera.capture_3d(settings) as frame:
@@ -91,8 +78,6 @@ def test_capture_3d_one_acquisition(shared_file_camera):
 
 
 def test_capture_2d_with_settings_2d(shared_file_camera):
-    import zivid
-
     acquisitions = [zivid.Settings2D.Acquisition()]
     settings = zivid.Settings2D(acquisitions=acquisitions)
     with shared_file_camera.capture_2d(settings) as frame:
@@ -102,8 +87,6 @@ def test_capture_2d_with_settings_2d(shared_file_camera):
 
 
 def test_capture_2d_with_settings(shared_file_camera):
-    import zivid
-
     acquisitions = [zivid.Settings2D.Acquisition()]
     settings = zivid.Settings(color=zivid.Settings2D(acquisitions=acquisitions))
     with shared_file_camera.capture_2d(settings) as frame:
@@ -113,8 +96,6 @@ def test_capture_2d_with_settings(shared_file_camera):
 
 
 def test_one_acquisition_in_list(shared_file_camera):
-    import zivid
-
     acquisitions = [zivid.Settings.Acquisition()]
     settings = zivid.Settings(acquisitions=acquisitions)
     assert isinstance(acquisitions, list)
@@ -124,8 +105,6 @@ def test_one_acquisition_in_list(shared_file_camera):
 
 
 def test_five_acquisitions_in_list(shared_file_camera):
-    import zivid
-
     acquisitions = [
         zivid.Settings.Acquisition(),
         zivid.Settings.Acquisition(),
@@ -141,8 +120,6 @@ def test_five_acquisitions_in_list(shared_file_camera):
 
 
 def test_one_acquisition_in_tuple(shared_file_camera):
-    import zivid
-
     acquisitions = (zivid.Settings.Acquisition(),)
     settings = zivid.Settings(acquisitions=acquisitions)
     assert isinstance(acquisitions, tuple)
@@ -152,8 +129,6 @@ def test_one_acquisition_in_tuple(shared_file_camera):
 
 
 def test_five_acquisition_in_tuple(shared_file_camera):
-    import zivid
-
     acquisitions = (
         zivid.Settings.Acquisition(),
         zivid.Settings.Acquisition(),
@@ -169,8 +144,6 @@ def test_five_acquisition_in_tuple(shared_file_camera):
 
 
 def test_illegal_settings(shared_file_camera):
-    import zivid
-
     with pytest.raises(RuntimeError):
         shared_file_camera.capture(zivid.Settings())
 
@@ -185,18 +158,11 @@ def test_illegal_settings(shared_file_camera):
 
 
 def test_empty_settings_list(shared_file_camera):
-    import _zivid
-
     with pytest.raises(TypeError):
         shared_file_camera.capture([])
 
 
 def test_diagnostics_capture(shared_file_camera):
-    from pathlib import Path
-    from tempfile import TemporaryDirectory
-    import os.path
-    import zivid
-
     settings = zivid.Settings()
     settings.acquisitions.append(zivid.Settings.Acquisition())
     settings.diagnostics.enabled = False

@@ -21,26 +21,33 @@ namespace ZividPython::InfieldCorrection
         ZIVID_PYTHON_WRAP_CLASS(dest, AccuracyEstimate);
         ZIVID_PYTHON_WRAP_CLASS(dest, CameraCorrection);
 
-        dest.def("detect_feature_points_infield",
-                 [](ReleasableCamera &releasableCamera) { return detectFeaturePoints(releasableCamera.impl()); })
-            .def("detect_feature_points_infield",
-                 [](const ReleasableFrame &releasableFrame) { return detectFeaturePoints(releasableFrame.impl()); })
-            .def("capture_calibration_board",
-                 [](ReleasableCamera &releasableCamera) {
-                     return ReleasableFrame{ captureCalibrationBoard(releasableCamera.impl()) };
-                 })
+        dest.def(
+                "detect_feature_points_infield",
+                [](ReleasableCamera &releasableCamera) { return detectFeaturePoints(releasableCamera.impl()); })
+            .def(
+                "detect_feature_points_infield",
+                [](const ReleasableFrame &releasableFrame) { return detectFeaturePoints(releasableFrame.impl()); })
+            .def(
+                "capture_calibration_board",
+                [](ReleasableCamera &releasableCamera) {
+                    return ReleasableFrame{ captureCalibrationBoard(releasableCamera.impl()) };
+                })
             .def("verify_camera", &verifyCamera)
             .def("compute_camera_correction", &computeCameraCorrection)
-            .def("write_camera_correction",
-                 [](ReleasableCamera &releasableCamera, CameraCorrection cameraCorrection) {
-                     writeCameraCorrection(releasableCamera.impl(), cameraCorrection);
-                 })
-            .def("reset_camera_correction",
-                 [](ReleasableCamera &releasableCamera) { resetCameraCorrection(releasableCamera.impl()); })
-            .def("has_camera_correction",
-                 [](ReleasableCamera &releasableCamera) { return hasCameraCorrection(releasableCamera.impl()); })
-            .def("camera_correction_timestamp",
-                 [](ReleasableCamera &releasableCamera) { return cameraCorrectionTimestamp(releasableCamera.impl()); });
+            .def(
+                "write_camera_correction",
+                [](ReleasableCamera &releasableCamera, CameraCorrection cameraCorrection) {
+                    writeCameraCorrection(releasableCamera.impl(), cameraCorrection);
+                })
+            .def(
+                "reset_camera_correction",
+                [](ReleasableCamera &releasableCamera) { resetCameraCorrection(releasableCamera.impl()); })
+            .def(
+                "has_camera_correction",
+                [](ReleasableCamera &releasableCamera) { return hasCameraCorrection(releasableCamera.impl()); })
+            .def("camera_correction_timestamp", [](ReleasableCamera &releasableCamera) {
+                return cameraCorrectionTimestamp(releasableCamera.impl());
+            });
     }
 } // namespace ZividPython::InfieldCorrection
 

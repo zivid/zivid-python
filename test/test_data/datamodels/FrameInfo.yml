@@ -1,7 +1,7 @@
 __version__:
-  serializer: 1
-  data: 2
+    serializer: 1
+    data: 2
 FrameInfo:
-  SoftwareVersion:
-    Core: "2.4.2+1a2e8cfb-1"
-  TimeStamp: 2021-10-06 14:45:11
+    SoftwareVersion:
+        Core: "2.4.2+1a2e8cfb-1"
+    TimeStamp: 2021-10-06 14:45:11

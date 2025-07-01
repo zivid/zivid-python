@@ -4,12 +4,11 @@ This module should not be imported directly by end-user, but rather accessed thr
 the zivid.calibration module.
 """
 
-import numpy
-
 import _zivid
+import numpy
+from zivid._calibration.pose import Pose
 from zivid.camera import Camera
 from zivid.frame import Frame
-from zivid._calibration.pose import Pose
 
 
 class CalibrationBoardDetectionStatus:  # pylint: disable=too-few-public-methods
@@ -20,9 +19,7 @@ class CalibrationBoardDetectionStatus:  # pylint: disable=too-few-public-methods
 
     ok = "ok"
     no_valid_fiducial_marker_detected = "no_valid_fiducial_marker_detected"
-    multiple_valid_fiducial_markers_detected = (
-        "multiple_valid_fiducial_markers_detected"
-    )
+    multiple_valid_fiducial_markers_detected = "multiple_valid_fiducial_markers_detected"
     board_detection_failed = "board_detection_failed"
     insufficient_3d_quality = "insufficient_3d_quality"
 
@@ -272,9 +269,7 @@ class MarkerDictionary:
         """
         if dictionary_name not in cls._valid_values:
             raise ValueError(
-                "Invalid dictionary name '{}'. Valid values are {}".format(
-                    dictionary_name, cls.valid_values()
-                )
+                "Invalid dictionary name '{}'. Valid values are {}".format(dictionary_name, cls.valid_values())
             )
 
         return cls._valid_values[dictionary_name].marker_count()
@@ -345,9 +340,7 @@ def detect_feature_points(point_cloud):
     """
 
     return DetectionResult(
-        _zivid.calibration.detect_feature_points(
-            point_cloud._PointCloud__impl  # pylint: disable=protected-access
-        )
+        _zivid.calibration.detect_feature_points(point_cloud._PointCloud__impl)  # pylint: disable=protected-access
     )
 
 
@@ -375,15 +368,11 @@ def detect_calibration_board(source):
 
     if isinstance(source, Camera):
         return DetectionResult(
-            _zivid.calibration.detect_calibration_board(
-                source._Camera__impl  # pylint: disable=protected-access
-            )
+            _zivid.calibration.detect_calibration_board(source._Camera__impl)  # pylint: disable=protected-access
         )
     if isinstance(source, Frame):
         return DetectionResult(
-            _zivid.calibration.detect_calibration_board(
-                source._Frame__impl  # pylint: disable=protected-access
-            )
+            _zivid.calibration.detect_calibration_board(source._Frame__impl)  # pylint: disable=protected-access
         )
     raise TypeError(
         "Unsupported type for argument source. Got {}, expected one of {}".format(
@@ -414,11 +403,7 @@ def capture_calibration_board(camera):
     Returns:
         A Frame
     """
-    return Frame(
-        _zivid.calibration.capture_calibration_board(
-            camera._Camera__impl  # pylint: disable=protected-access
-        )
-    )
+    return Frame(_zivid.calibration.capture_calibration_board(camera._Camera__impl))  # pylint: disable=protected-access
 
 
 def detect_markers(frame, allowed_marker_ids, marker_dictionary):
@@ -451,9 +436,7 @@ def detect_markers(frame, allowed_marker_ids, marker_dictionary):
                 marker_dictionary, MarkerDictionary.valid_values()
             )
         )
-    dictionary = MarkerDictionary._valid_values.get(  # pylint: disable=protected-access
-        marker_dictionary
-    )
+    dictionary = MarkerDictionary._valid_values.get(marker_dictionary)  # pylint: disable=protected-access
 
     return DetectionResultFiducialMarkers(
         _zivid.calibration.detect_markers(

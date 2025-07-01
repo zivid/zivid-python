@@ -17,14 +17,14 @@ def get_version(module_name):
     # pkg_resources is deprecated and throws a warning in newer Python verisons.
     # We use importlib.metadata instead, but this is only available since Python 3.8.
     if sys.version_info < (3, 8):
-        from pkg_resources import get_distribution, DistributionNotFound
+        from pkg_resources import DistributionNotFound, get_distribution
 
         try:
             return get_distribution(module_name).version
         except DistributionNotFound:
             return None
 
-    from importlib.metadata import version, PackageNotFoundError
+    from importlib.metadata import PackageNotFoundError, version
 
     try:
         return version(module_name)

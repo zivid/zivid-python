@@ -1,6 +1,7 @@
 """Capture Assistant sample."""
 
 import datetime
+
 import zivid
 from zivid.capture_assistant import SuggestSettingsParameters
 
@@ -13,9 +14,7 @@ def _main():
             ambient_light_frequency=SuggestSettingsParameters.AmbientLightFrequency.none,
         )
 
-        settings = zivid.capture_assistant.suggest_settings(
-            camera, suggest_settings_parameters
-        )
+        settings = zivid.capture_assistant.suggest_settings(camera, suggest_settings_parameters)
 
         with camera.capture_2d_3d(settings) as frame:
             frame.save("result.zdf")

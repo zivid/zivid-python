@@ -1,7 +1,8 @@
 """Auto generated, do not edit."""
 
-# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import collections.abc
+
 import _zivid
 
 
@@ -22,25 +23,17 @@ class CameraState:
                     ):
 
                         if isinstance(address, (str,)):
-                            self._address = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address(
-                                address
-                            )
+                            self._address = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address(address)
                         else:
                             raise TypeError(
-                                "Unsupported type, expected: (str,), got {value_type}".format(
-                                    value_type=type(address)
-                                )
+                                "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(address))
                             )
 
                         if isinstance(mask, (str,)):
-                            self._mask = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask(
-                                mask
-                            )
+                            self._mask = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask(mask)
                         else:
                             raise TypeError(
-                                "Unsupported type, expected: (str,), got {value_type}".format(
-                                    value_type=type(mask)
-                                )
+                                "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(mask))
                             )
 
                     @property
@@ -54,43 +47,28 @@ class CameraState:
                     @address.setter
                     def address(self, value):
                         if isinstance(value, (str,)):
-                            self._address = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address(
-                                value
-                            )
+                            self._address = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address(value)
                         else:
                             raise TypeError(
-                                "Unsupported type, expected: str, got {value_type}".format(
-                                    value_type=type(value)
-                                )
+                                "Unsupported type, expected: str, got {value_type}".format(value_type=type(value))
                             )
 
                     @mask.setter
                     def mask(self, value):
                         if isinstance(value, (str,)):
-                            self._mask = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask(
-                                value
-                            )
+                            self._mask = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask(value)
                         else:
                             raise TypeError(
-                                "Unsupported type, expected: str, got {value_type}".format(
-                                    value_type=type(value)
-                                )
+                                "Unsupported type, expected: str, got {value_type}".format(value_type=type(value))
                             )
 
                     def __eq__(self, other):
-                        if (
-                            self._address == other._address
-                            and self._mask == other._mask
-                        ):
+                        if self._address == other._address and self._mask == other._mask:
                             return True
                         return False
 
                     def __str__(self):
-                        return str(
-                            _to_internal_camera_state_network_local_interface_ipv4_subnet(
-                                self
-                            )
-                        )
+                        return str(_to_internal_camera_state_network_local_interface_ipv4_subnet(self))
 
                 def __init__(
                     self,
@@ -105,11 +83,7 @@ class CameraState:
                             if isinstance(item, self.Subnet):
                                 self._subnets.append(item)
                             else:
-                                raise TypeError(
-                                    "Unsupported type {item_type}".format(
-                                        item_type=type(item)
-                                    )
-                                )
+                                raise TypeError("Unsupported type {item_type}".format(item_type=type(item)))
                     else:
                         raise TypeError(
                             "Unsupported type, expected: (collections.abc.Iterable,) or None, got {value_type}".format(
@@ -124,19 +98,13 @@ class CameraState:
                 @subnets.setter
                 def subnets(self, value):
                     if not isinstance(value, (collections.abc.Iterable,)):
-                        raise TypeError(
-                            "Unsupported type {value}".format(value=type(value))
-                        )
+                        raise TypeError("Unsupported type {value}".format(value=type(value)))
                     self._subnets = []
                     for item in value:
                         if isinstance(item, self.Subnet):
                             self._subnets.append(item)
                         else:
-                            raise TypeError(
-                                "Unsupported type {item_type}".format(
-                                    item_type=type(item)
-                                )
-                            )
+                            raise TypeError("Unsupported type {item_type}".format(item_type=type(item)))
 
                 def __eq__(self, other):
                     if self._subnets == other._subnets:
@@ -144,9 +112,7 @@ class CameraState:
                     return False
 
                 def __str__(self):
-                    return str(
-                        _to_internal_camera_state_network_local_interface_ipv4(self)
-                    )
+                    return str(_to_internal_camera_state_network_local_interface_ipv4(self))
 
             def __init__(
                 self,
@@ -155,24 +121,16 @@ class CameraState:
             ):
 
                 if isinstance(interface_name, (str,)):
-                    self._interface_name = (
-                        _zivid.CameraState.Network.LocalInterface.InterfaceName(
-                            interface_name
-                        )
-                    )
+                    self._interface_name = _zivid.CameraState.Network.LocalInterface.InterfaceName(interface_name)
                 else:
                     raise TypeError(
-                        "Unsupported type, expected: (str,), got {value_type}".format(
-                            value_type=type(interface_name)
-                        )
+                        "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(interface_name))
                     )
 
                 if ipv4 is None:
                     ipv4 = self.IPV4()
                 if not isinstance(ipv4, self.IPV4):
-                    raise TypeError(
-                        "Unsupported type: {value}".format(value=type(ipv4))
-                    )
+                    raise TypeError("Unsupported type: {value}".format(value=type(ipv4)))
                 self._ipv4 = ipv4
 
             @property
@@ -186,29 +144,18 @@ class CameraState:
             @interface_name.setter
             def interface_name(self, value):
                 if isinstance(value, (str,)):
-                    self._interface_name = (
-                        _zivid.CameraState.Network.LocalInterface.InterfaceName(value)
-                    )
+                    self._interface_name = _zivid.CameraState.Network.LocalInterface.InterfaceName(value)
                 else:
-                    raise TypeError(
-                        "Unsupported type, expected: str, got {value_type}".format(
-                            value_type=type(value)
-                        )
-                    )
+                    raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
             @ipv4.setter
             def ipv4(self, value):
                 if not isinstance(value, self.IPV4):
-                    raise TypeError(
-                        "Unsupported type {value}".format(value=type(value))
-                    )
+                    raise TypeError("Unsupported type {value}".format(value=type(value)))
                 self._ipv4 = value
 
             def __eq__(self, other):
-                if (
-                    self._interface_name == other._interface_name
-                    and self._ipv4 == other._ipv4
-                ):
+                if self._interface_name == other._interface_name and self._ipv4 == other._ipv4:
                     return True
                 return False
 
@@ -226,9 +173,7 @@ class CameraState:
                     self._address = _zivid.CameraState.Network.IPV4.Address(address)
                 else:
                     raise TypeError(
-                        "Unsupported type, expected: (str,), got {value_type}".format(
-                            value_type=type(address)
-                        )
+                        "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(address))
                     )
 
             @property
@@ -240,11 +185,7 @@ class CameraState:
                 if isinstance(value, (str,)):
                     self._address = _zivid.CameraState.Network.IPV4.Address(value)
                 else:
-                    raise TypeError(
-                        "Unsupported type, expected: str, got {value_type}".format(
-                            value_type=type(value)
-                        )
-                    )
+                    raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
             def __eq__(self, other):
                 if self._address == other._address:
@@ -268,9 +209,7 @@ class CameraState:
                     if isinstance(item, self.LocalInterface):
                         self._local_interfaces.append(item)
                     else:
-                        raise TypeError(
-                            "Unsupported type {item_type}".format(item_type=type(item))
-                        )
+                        raise TypeError("Unsupported type {item_type}".format(item_type=type(item)))
             else:
                 raise TypeError(
                     "Unsupported type, expected: (collections.abc.Iterable,) or None, got {value_type}".format(
@@ -301,9 +240,7 @@ class CameraState:
                 if isinstance(item, self.LocalInterface):
                     self._local_interfaces.append(item)
                 else:
-                    raise TypeError(
-                        "Unsupported type {item_type}".format(item_type=type(item))
-                    )
+                    raise TypeError("Unsupported type {item_type}".format(item_type=type(item)))
 
         @ipv4.setter
         def ipv4(self, value):
@@ -312,10 +249,7 @@ class CameraState:
             self._ipv4 = value
 
         def __eq__(self, other):
-            if (
-                self._local_interfaces == other._local_interfaces
-                and self._ipv4 == other._ipv4
-            ):
+            if self._local_interfaces == other._local_interfaces and self._ipv4 == other._ipv4:
                 return True
             return False
 
@@ -343,9 +277,7 @@ class CameraState:
                 self._dmd = _zivid.CameraState.Temperature.DMD(dmd)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(dmd)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(dmd))
                 )
 
             if isinstance(
@@ -358,9 +290,7 @@ class CameraState:
                 self._general = _zivid.CameraState.Temperature.General(general)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(general)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(general))
                 )
 
             if isinstance(
@@ -373,9 +303,7 @@ class CameraState:
                 self._led = _zivid.CameraState.Temperature.LED(led)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(led)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(led))
                 )
 
             if isinstance(
@@ -388,9 +316,7 @@ class CameraState:
                 self._lens = _zivid.CameraState.Temperature.Lens(lens)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(lens)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(lens))
                 )
 
             if isinstance(
@@ -403,9 +329,7 @@ class CameraState:
                 self._pcb = _zivid.CameraState.Temperature.PCB(pcb)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(pcb)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(pcb))
                 )
 
         @property
@@ -440,9 +364,7 @@ class CameraState:
                 self._dmd = _zivid.CameraState.Temperature.DMD(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         @general.setter
@@ -457,9 +379,7 @@ class CameraState:
                 self._general = _zivid.CameraState.Temperature.General(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         @led.setter
@@ -474,9 +394,7 @@ class CameraState:
                 self._led = _zivid.CameraState.Temperature.LED(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         @lens.setter
@@ -491,9 +409,7 @@ class CameraState:
                 self._lens = _zivid.CameraState.Temperature.Lens(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         @pcb.setter
@@ -508,9 +424,7 @@ class CameraState:
                 self._pcb = _zivid.CameraState.Temperature.PCB(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         def __eq__(self, other):
@@ -588,37 +502,22 @@ class CameraState:
         if isinstance(available, (bool,)):
             self._available = _zivid.CameraState.Available(available)
         else:
-            raise TypeError(
-                "Unsupported type, expected: (bool,), got {value_type}".format(
-                    value_type=type(available)
-                )
-            )
+            raise TypeError("Unsupported type, expected: (bool,), got {value_type}".format(value_type=type(available)))
 
         if isinstance(connected, (bool,)):
             self._connected = _zivid.CameraState.Connected(connected)
         else:
-            raise TypeError(
-                "Unsupported type, expected: (bool,), got {value_type}".format(
-                    value_type=type(connected)
-                )
-            )
+            raise TypeError("Unsupported type, expected: (bool,), got {value_type}".format(value_type=type(connected)))
 
-        if (
-            isinstance(inaccessible_reason, _zivid.CameraState.InaccessibleReason.enum)
-            or inaccessible_reason is None
-        ):
-            self._inaccessible_reason = _zivid.CameraState.InaccessibleReason(
-                inaccessible_reason
-            )
+        if isinstance(inaccessible_reason, _zivid.CameraState.InaccessibleReason.enum) or inaccessible_reason is None:
+            self._inaccessible_reason = _zivid.CameraState.InaccessibleReason(inaccessible_reason)
         elif isinstance(inaccessible_reason, str):
             self._inaccessible_reason = _zivid.CameraState.InaccessibleReason(
                 self.InaccessibleReason._valid_values[inaccessible_reason]
             )
         else:
             raise TypeError(
-                "Unsupported type, expected: str or None, got {value_type}".format(
-                    value_type=type(inaccessible_reason)
-                )
+                "Unsupported type, expected: str or None, got {value_type}".format(value_type=type(inaccessible_reason))
             )
 
         if isinstance(status, _zivid.CameraState.Status.enum):
@@ -626,11 +525,7 @@ class CameraState:
         elif isinstance(status, str):
             self._status = _zivid.CameraState.Status(self.Status._valid_values[status])
         else:
-            raise TypeError(
-                "Unsupported type, expected: str, got {value_type}".format(
-                    value_type=type(status)
-                )
-            )
+            raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(status)))
 
         if network is None:
             network = self.Network()
@@ -659,9 +554,7 @@ class CameraState:
         for key, internal_value in self.InaccessibleReason._valid_values.items():
             if internal_value == self._inaccessible_reason.value:
                 return key
-        raise ValueError(
-            "Unsupported value {value}".format(value=self._inaccessible_reason)
-        )
+        raise ValueError("Unsupported value {value}".format(value=self._inaccessible_reason))
 
     @property
     def status(self):
@@ -685,22 +578,14 @@ class CameraState:
         if isinstance(value, (bool,)):
             self._available = _zivid.CameraState.Available(value)
         else:
-            raise TypeError(
-                "Unsupported type, expected: bool, got {value_type}".format(
-                    value_type=type(value)
-                )
-            )
+            raise TypeError("Unsupported type, expected: bool, got {value_type}".format(value_type=type(value)))
 
     @connected.setter
     def connected(self, value):
         if isinstance(value, (bool,)):
             self._connected = _zivid.CameraState.Connected(value)
         else:
-            raise TypeError(
-                "Unsupported type, expected: bool, got {value_type}".format(
-                    value_type=type(value)
-                )
-            )
+            raise TypeError("Unsupported type, expected: bool, got {value_type}".format(value_type=type(value)))
 
     @inaccessible_reason.setter
     def inaccessible_reason(self, value):
@@ -708,17 +593,10 @@ class CameraState:
             self._inaccessible_reason = _zivid.CameraState.InaccessibleReason(
                 self.InaccessibleReason._valid_values[value]
             )
-        elif (
-            isinstance(value, _zivid.CameraState.InaccessibleReason.enum)
-            or value is None
-        ):
+        elif isinstance(value, _zivid.CameraState.InaccessibleReason.enum) or value is None:
             self._inaccessible_reason = _zivid.CameraState.InaccessibleReason(value)
         else:
-            raise TypeError(
-                "Unsupported type, expected: str or None, got {value_type}".format(
-                    value_type=type(value)
-                )
-            )
+            raise TypeError("Unsupported type, expected: str or None, got {value_type}".format(value_type=type(value)))
 
     @status.setter
     def status(self, value):
@@ -727,11 +605,7 @@ class CameraState:
         elif isinstance(value, _zivid.CameraState.Status.enum):
             self._status = _zivid.CameraState.Status(value)
         else:
-            raise TypeError(
-                "Unsupported type, expected: str, got {value_type}".format(
-                    value_type=type(value)
-                )
-            )
+            raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
     @network.setter
     def network(self, value):
@@ -784,18 +658,13 @@ def _to_camera_state_network_local_interface_ipv4_subnet(internal_subnet):
 
 def _to_camera_state_network_local_interface_ipv4(internal_ipv4):
     return CameraState.Network.LocalInterface.IPV4(
-        subnets=[
-            _to_camera_state_network_local_interface_ipv4_subnet(value)
-            for value in internal_ipv4.subnets.value
-        ],
+        subnets=[_to_camera_state_network_local_interface_ipv4_subnet(value) for value in internal_ipv4.subnets.value],
     )
 
 
 def _to_camera_state_network_local_interface(internal_local_interface):
     return CameraState.Network.LocalInterface(
-        ipv4=_to_camera_state_network_local_interface_ipv4(
-            internal_local_interface.ipv4
-        ),
+        ipv4=_to_camera_state_network_local_interface_ipv4(internal_local_interface.ipv4),
         interface_name=internal_local_interface.interface_name.value,
     )
 
@@ -809,8 +678,7 @@ def _to_camera_state_network_ipv4(internal_ipv4):
 def _to_camera_state_network(internal_network):
     return CameraState.Network(
         local_interfaces=[
-            _to_camera_state_network_local_interface(value)
-            for value in internal_network.local_interfaces.value
+            _to_camera_state_network_local_interface(value) for value in internal_network.local_interfaces.value
         ],
         ipv4=_to_camera_state_network_ipv4(internal_network.ipv4),
     )
@@ -840,12 +708,8 @@ def _to_camera_state(internal_camera_state):
 def _to_internal_camera_state_network_local_interface_ipv4_subnet(subnet):
     internal_subnet = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet()
 
-    internal_subnet.address = (
-        _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address(subnet.address)
-    )
-    internal_subnet.mask = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask(
-        subnet.mask
-    )
+    internal_subnet.address = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address(subnet.address)
+    internal_subnet.mask = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask(subnet.mask)
 
     return internal_subnet
 
@@ -855,9 +719,7 @@ def _to_internal_camera_state_network_local_interface_ipv4(ipv4):
 
     temp_subnets = _zivid.CameraState.Network.LocalInterface.IPV4.Subnets()
     for value in ipv4.subnets:
-        temp_subnets.append(
-            _to_internal_camera_state_network_local_interface_ipv4_subnet(value)
-        )
+        temp_subnets.append(_to_internal_camera_state_network_local_interface_ipv4_subnet(value))
     internal_ipv4.subnets = temp_subnets
 
     return internal_ipv4
@@ -866,15 +728,11 @@ def _to_internal_camera_state_network_local_interface_ipv4(ipv4):
 def _to_internal_camera_state_network_local_interface(local_interface):
     internal_local_interface = _zivid.CameraState.Network.LocalInterface()
 
-    internal_local_interface.interface_name = (
-        _zivid.CameraState.Network.LocalInterface.InterfaceName(
-            local_interface.interface_name
-        )
+    internal_local_interface.interface_name = _zivid.CameraState.Network.LocalInterface.InterfaceName(
+        local_interface.interface_name
     )
 
-    internal_local_interface.ipv4 = (
-        _to_internal_camera_state_network_local_interface_ipv4(local_interface.ipv4)
-    )
+    internal_local_interface.ipv4 = _to_internal_camera_state_network_local_interface_ipv4(local_interface.ipv4)
     return internal_local_interface
 
 
@@ -891,9 +749,7 @@ def _to_internal_camera_state_network(network):
 
     temp_local_interfaces = _zivid.CameraState.Network.LocalInterfaces()
     for value in network.local_interfaces:
-        temp_local_interfaces.append(
-            _to_internal_camera_state_network_local_interface(value)
-        )
+        temp_local_interfaces.append(_to_internal_camera_state_network_local_interface(value))
     internal_network.local_interfaces = temp_local_interfaces
 
     internal_network.ipv4 = _to_internal_camera_state_network_ipv4(network.ipv4)
@@ -904,9 +760,7 @@ def _to_internal_camera_state_temperature(temperature):
     internal_temperature = _zivid.CameraState.Temperature()
 
     internal_temperature.dmd = _zivid.CameraState.Temperature.DMD(temperature.dmd)
-    internal_temperature.general = _zivid.CameraState.Temperature.General(
-        temperature.general
-    )
+    internal_temperature.general = _zivid.CameraState.Temperature.General(temperature.general)
     internal_temperature.led = _zivid.CameraState.Temperature.LED(temperature.led)
     internal_temperature.lens = _zivid.CameraState.Temperature.Lens(temperature.lens)
     internal_temperature.pcb = _zivid.CameraState.Temperature.PCB(temperature.pcb)
@@ -917,21 +771,13 @@ def _to_internal_camera_state_temperature(temperature):
 def _to_internal_camera_state(camera_state):
     internal_camera_state = _zivid.CameraState()
 
-    internal_camera_state.available = _zivid.CameraState.Available(
-        camera_state.available
-    )
-    internal_camera_state.connected = _zivid.CameraState.Connected(
-        camera_state.connected
-    )
+    internal_camera_state.available = _zivid.CameraState.Available(camera_state.available)
+    internal_camera_state.connected = _zivid.CameraState.Connected(camera_state.connected)
     internal_camera_state.inaccessible_reason = _zivid.CameraState.InaccessibleReason(
         camera_state._inaccessible_reason.value
     )
     internal_camera_state.status = _zivid.CameraState.Status(camera_state._status.value)
 
-    internal_camera_state.network = _to_internal_camera_state_network(
-        camera_state.network
-    )
-    internal_camera_state.temperature = _to_internal_camera_state_temperature(
-        camera_state.temperature
-    )
+    internal_camera_state.network = _to_internal_camera_state_network(camera_state.network)
+    internal_camera_state.temperature = _to_internal_camera_state_temperature(camera_state.temperature)
     return internal_camera_state

@@ -1,12 +1,12 @@
 __version__:
-  serializer: 1
-  data: 2
+    serializer: 1
+    data: 2
 CameraState:
-  Available: no
-  Connected: yes
-  Temperature:
-    DMD: 30.4433002471924
-    General: 45
-    LED: 29.3756732940674
-    Lens: 30.9640274047852
-    PCB: 42.875
+    Available: no
+    Connected: yes
+    Temperature:
+        DMD: 30.4433002471924
+        General: 45
+        LED: 29.3756732940674
+        Lens: 30.9640274047852
+        PCB: 42.875

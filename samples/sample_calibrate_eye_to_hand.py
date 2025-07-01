@@ -1,8 +1,8 @@
 """Hand-eye calibration sample."""
 
-from pathlib import Path
 import datetime
 import tempfile
+from pathlib import Path
 
 import numpy as np
 import zivid
@@ -16,17 +16,13 @@ def _acquire_checkerboard_frame(camera):
         ambient_light_frequency=zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.none,
     )
 
-    settings = zivid.capture_assistant.suggest_settings(
-        camera, suggest_settings_parameters
-    )
+    settings = zivid.capture_assistant.suggest_settings(camera, suggest_settings_parameters)
     return camera.capture_2d_3d(settings)
 
 
 def _enter_robot_pose(index):
     inputted = input(
-        "Enter pose with id={} (a line with 16 space separated values describing 4x4 row-major matrix):".format(
-            index
-        )
+        "Enter pose with id={} (a line with 16 space separated values describing 4x4 row-major matrix):".format(index)
     )
     elements = inputted.split(maxsplit=15)
     data = np.array(elements, dtype=np.float64).reshape((4, 4))
@@ -43,9 +39,7 @@ def _main():
         calibrate = False
 
         while not calibrate:
-            command = input(
-                "Enter command, p (to add robot pose) or c (to perform calibration):"
-            ).strip()
+            command = input("Enter command, p (to add robot pose) or c (to perform calibration):").strip()
             if command == "p":
                 try:
                     robot_pose = _enter_robot_pose(current_pose_id)
@@ -53,9 +47,7 @@ def _main():
                     frame = _acquire_checkerboard_frame(camera)
 
                     print("Detecting checkerboard square centers... ")
-                    result = zivid.calibration.detect_feature_points(
-                        frame.point_cloud()
-                    )
+                    result = zivid.calibration.detect_feature_points(frame.point_cloud())
 
                     if result:
                         print("OK")

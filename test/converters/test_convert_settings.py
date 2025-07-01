@@ -1,8 +1,10 @@
-def test_to_internal_settings_to_settings_modified():
-    import datetime
-    from zivid import Settings
-    from zivid.settings import _to_settings, _to_internal_settings
+import datetime
 
+from zivid import Settings
+from zivid.settings import _to_internal_settings, _to_settings
+
+
+def test_to_internal_settings_to_settings_modified():
     modified_settings = Settings(
         acquisitions=[
             Settings.Acquisition(),
@@ -17,9 +19,6 @@ def test_to_internal_settings_to_settings_modified():
 
 
 def test_to_internal_settings_to_settings_default():
-    from zivid import Settings
-    from zivid.settings import _to_settings, _to_internal_settings
-
     default_settings = Settings()
     converted_settings = _to_settings(_to_internal_settings(default_settings))
     assert default_settings == converted_settings

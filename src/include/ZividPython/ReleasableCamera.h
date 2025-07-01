@@ -31,9 +31,10 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_1_ARGS(writeUserData, const std::vector<uint8_t> &, data)
         ZIVID_PYTHON_FORWARD_0_ARGS(userData)
         ZIVID_PYTHON_FORWARD_0_ARGS(networkConfiguration)
-        ZIVID_PYTHON_FORWARD_1_ARGS(applyNetworkConfiguration,
-                                    const Zivid::NetworkConfiguration &,
-                                    networkConfiguration)
+        ZIVID_PYTHON_FORWARD_1_ARGS(
+            applyNetworkConfiguration,
+            const Zivid::NetworkConfiguration &,
+            networkConfiguration)
         ZIVID_PYTHON_FORWARD_0_ARGS(measureSceneConditions)
     };
 

@@ -1,4 +1,7 @@
+from operator import attrgetter
+
 import pytest
+import zivid
 
 
 @pytest.mark.parametrize(
@@ -13,10 +16,11 @@ import pytest
         "capture_assistant.SuggestSettingsParameters",
     ],
 )
-def test_serialize_from_serialized(application, datamodel_yml_dir, datamodel):
-    from operator import attrgetter
-
-    import zivid
+def test_serialize_from_serialized(
+    application,  # pylint: disable=unused-argument
+    datamodel_yml_dir,
+    datamodel,
+):
 
     filename = datamodel.split(".")[-1] + ".yml"
     load_path = datamodel_yml_dir / filename
