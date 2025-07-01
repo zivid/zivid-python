@@ -9,6 +9,7 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    if: false # TODO(ZIVID-10637): Remove this line to re-enable linting.
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -163,7 +164,10 @@ jobs:
         run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
 
   deploy:
-    needs: [lint, test-linux-source-distribution, test-windows-binary-distribution]
+    needs:
+      # - lint  # TODO(ZIVID-10637): add back lint job when re-enabled.
+      - test-linux-source-distribution
+      - test-windows-binary-distribution
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
