@@ -1,6 +1,8 @@
 """Module for calibration features, such as HandEye and MultiCamera."""
 
+# ruff: noqa: F401
 # pylint: disable=unused-import
+
 from zivid._calibration.detector import (
     CalibrationBoardDetectionStatus,
     DetectionResult,

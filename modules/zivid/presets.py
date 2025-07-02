@@ -67,7 +67,6 @@ class Preset:
                 The settings of the preset. The settings will be an instance of Settings if the preset is a 3D preset,
                 or an instance of Settings2D if the preset is a 2D preset.
         """
-
         settings = self.__impl.settings()
 
         if isinstance(settings, _zivid.Settings2D):

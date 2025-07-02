@@ -92,7 +92,6 @@ def pixel_mapping(camera, settings):
     Returns:
         A PixelMapping instance.
     """
-
     pixel_mapping_handle = _zivid.calibration.pixel_mapping(
         camera._Camera__impl,  # pylint: disable=protected-access
         _to_internal_settings(settings),
@@ -283,7 +282,6 @@ def camera_correction_timestamp(camera):
     Returns:
         A timestamp indicating when the correction was created.
     """
-
     return _zivid.infield_correction.camera_correction_timestamp(
         camera._Camera__impl  # pylint: disable=protected-access
     )

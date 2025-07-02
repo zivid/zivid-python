@@ -1,7 +1,7 @@
 """Contains the Capture Assistant functionality."""
 
 import _zivid
-from zivid._suggest_settings_parameters import SuggestSettingsParameters  # pylint: disable=unused-import
+from zivid._suggest_settings_parameters import SuggestSettingsParameters  # pylint: disable=unused-import  # noqa: F401
 from zivid._suggest_settings_parameters import _to_internal_capture_assistant_suggest_settings_parameters
 from zivid.settings import _to_settings
 

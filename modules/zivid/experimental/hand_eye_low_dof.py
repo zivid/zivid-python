@@ -82,7 +82,6 @@ class FixedPlacementOfFiducialMarkers:  # pylint: disable=too-few-public-methods
             ValueError: If marker_dictionary is not one of the valid values returned by MarkerDictionary.valid_values()
             TypeError: If one of the input arguments are of the wrong type
         """
-
         if marker_dictionary not in MarkerDictionary.valid_values():
             raise ValueError(
                 "Invalid marker dictionary '{}'. Valid values are {}".format(

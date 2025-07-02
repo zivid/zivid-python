@@ -82,7 +82,6 @@ class DetectionResult:
         Returns:
             The detection status as a string. See CalibrationBoardDetectionStatus for possible values.
         """
-
         return self.__impl.status().name
 
     def status_description(self):
@@ -338,15 +337,13 @@ def detect_feature_points(point_cloud):
     Returns:
         A DetectionResult instance
     """
-
     return DetectionResult(
         _zivid.calibration.detect_feature_points(point_cloud._PointCloud__impl)  # pylint: disable=protected-access
     )
 
 
 def detect_calibration_board(source):
-    """
-    Detect feature points from a calibration board in a frame or using a given camera.
+    """Detect feature points from a calibration board in a frame or using a given camera.
 
     If a camera is used, this function will perform a relatively slow but high-quality point cloud
     capture with the camera. This function is necessary for applications that require very
@@ -365,7 +362,6 @@ def detect_calibration_board(source):
     Returns:
         A DetectionResult instance
     """
-
     if isinstance(source, Camera):
         return DetectionResult(
             _zivid.calibration.detect_calibration_board(source._Camera__impl)  # pylint: disable=protected-access
@@ -383,8 +379,7 @@ def detect_calibration_board(source):
 
 
 def capture_calibration_board(camera):
-    """
-    Capture a calibration board with the given camera.
+    """Capture a calibration board with the given camera.
 
     The functionality is to be exclusively used in combination with Zivid verified calibration boards.
     For further information please visit https://support.zivid.com.
@@ -429,7 +424,6 @@ def detect_markers(frame, allowed_marker_ids, marker_dictionary):
     Returns:
         A DetectionResultFiducialMarkers instance
     """
-
     if marker_dictionary not in MarkerDictionary.valid_values():
         raise ValueError(
             "Invalid marker dictionary '{}'. Valid values are {}".format(
