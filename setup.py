@@ -9,6 +9,7 @@ from sys import version_info
 from tempfile import TemporaryDirectory
 
 from packaging.utils import canonicalize_version
+from pkginfo.sdist import UnpackedSDist
 from skbuild import constants, setup
 
 
@@ -18,7 +19,7 @@ def _read_sdk_version_json():
         return json.load(f)
 
 
-def _get_package_version():
+def _determine_package_version():
     sdk_version = _read_sdk_version_json()
 
     version_segments = [
@@ -52,6 +53,14 @@ def _get_package_version():
     version = ".".join(version_segments) + "+" + ".".join(local_version_segments)
 
     return canonicalize_version(version, strip_trailing_zero=False)
+
+
+def _get_version():
+    try:
+        d = UnpackedSDist(__file__)
+        return d.version
+    except ValueError:
+        return _determine_package_version()
 
 
 def _python_version():
@@ -137,6 +146,7 @@ def _main():
     _check_dependency("conan")
     _check_dependency("ninja")
     _check_dependency("skbuild", "scikit-build")
+    _check_dependency("pkginfo")
 
     _check_cpp17_compiler()
 
@@ -144,9 +154,11 @@ def _main():
         print("Overriding build dir: " + build_dir)
         constants.SKBUILD_DIR = lambda: build_dir
 
+        version = _get_version()
+
         setup(
             name="zivid",
-            version=_get_package_version(),
+            version=version,
             description="Defining the Future of 3D Machine Vision",
             long_description=Path("README.md").read_text(encoding="utf-8"),
             long_description_content_type="text/markdown",
@@ -165,7 +177,7 @@ def _main():
             package_dir={"": "modules"},
             install_requires=["numpy"],
             cmake_args=[
-                "-DZIVID_PYTHON_VERSION=" + _get_package_version(),
+                "-DZIVID_PYTHON_VERSION=" + version,
                 "-DPYTHON_INTERPRETER_VERSION=" + _python_version(),
             ],
             classifiers=[
