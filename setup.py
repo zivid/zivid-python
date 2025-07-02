@@ -30,7 +30,7 @@ def _get_package_version():
     github_repository = os.getenv("GITHUB_REPOSITORY")
     github_ref = os.getenv("GITHUB_REF")
 
-    if github_repository != "zivid/zivid-python" and github_ref != "refs/heads/master":
+    if github_repository != "zivid/zivid-python" or github_ref != "refs/heads/master":
         # Only the master branch of the zivid-python repository is considered stable.
         version_segments.append("dev0")
 

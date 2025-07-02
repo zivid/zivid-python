@@ -193,8 +193,11 @@ jobs:
               --volume $PWD:/host \
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
+              --env "GITHUB_SHA=${{ github.sha }}" \
+              --env "GITHUB_REF=${{ github.ref }}" \
+              --env "GITHUB_REPOSITORY=${{ github.repository }}" \
               ubuntu:20.04 \
-              bash -c "./collect-and-check-artifacts.sh ${{ github.sha }}"
+              bash -c "./collect-and-check-artifacts.sh"
       - name: Upload all as single artifact
         uses: actions/upload-artifact@v4
         with:
