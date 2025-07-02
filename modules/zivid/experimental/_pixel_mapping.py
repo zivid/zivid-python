@@ -10,9 +10,7 @@ class PixelMapping:
     """
 
     def __init__(self, row_stride=1, col_stride=1, row_offset=0.0, col_offset=0.0):
-        self.__impl = _zivid.PixelMapping(
-            row_stride, col_stride, row_offset, col_offset
-        )
+        self.__impl = _zivid.PixelMapping(row_stride, col_stride, row_offset, col_offset)
 
     @property
     def row_stride(self):

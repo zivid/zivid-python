@@ -11,11 +11,7 @@ def _capture_sync(cameras: list[zivid.Camera]) -> list[zivid.Frame]:
     return [
         camera.capture_3d(
             zivid.Settings(
-                acquisitions=[
-                    zivid.Settings.Acquisition(
-                        exposure_time=datetime.timedelta(microseconds=100000)
-                    )
-                ]
+                acquisitions=[zivid.Settings.Acquisition(exposure_time=datetime.timedelta(microseconds=100000))]
             )
         )
         for camera in cameras
@@ -28,11 +24,7 @@ def _capture_async(cameras: list[zivid.Camera]) -> list[zivid.Frame]:
             executor.submit(
                 camera.capture,
                 zivid.Settings(
-                    acquisitions=[
-                        zivid.Settings.Acquisition(
-                            exposure_time=datetime.timedelta(microseconds=100000)
-                        )
-                    ]
+                    acquisitions=[zivid.Settings.Acquisition(exposure_time=datetime.timedelta(microseconds=100000))]
                 ),
             )
             for camera in cameras
@@ -50,16 +42,12 @@ def _main():
     start = time.monotonic()
     _capture_async(cameras)
     end = time.monotonic()
-    print(
-        f"Time taken to capture asynchronously from {len(cameras)} camera(s): {end - start} seconds"
-    )
+    print(f"Time taken to capture asynchronously from {len(cameras)} camera(s): {end - start} seconds")
 
     start = time.monotonic()
     _capture_sync(cameras)
     end = time.monotonic()
-    print(
-        f"Time taken to capture synchronously from {len(cameras)} camera(s): {end - start} seconds"
-    )
+    print(f"Time taken to capture synchronously from {len(cameras)} camera(s): {end - start} seconds")
 
     for camera in cameras:
         camera.disconnect()

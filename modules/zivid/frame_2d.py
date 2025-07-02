@@ -1,11 +1,11 @@
 """Contains the Frame class."""
 
 import _zivid
-from zivid.settings2d import _to_settings2d
 from zivid.camera_info import _to_camera_info
 from zivid.camera_state import _to_camera_state
 from zivid.frame_info import _to_frame_info
 from zivid.image import Image
+from zivid.settings2d import _to_settings2d
 
 
 class Frame2D:
@@ -29,9 +29,7 @@ class Frame2D:
             self.__impl = impl
         else:
             raise TypeError(
-                "Unsupported type for argument impl. Got {}, expected {}.".format(
-                    type(impl), _zivid.Frame2D
-                )
+                "Unsupported type for argument impl. Got {}, expected {}.".format(type(impl), _zivid.Frame2D)
             )
 
     def __str__(self):

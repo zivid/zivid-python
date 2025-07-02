@@ -1,6 +1,6 @@
 """Auto generated, do not edit."""
 
-# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
 
@@ -32,34 +32,20 @@ class NetworkConfiguration:
             if isinstance(address, (str,)):
                 self._address = _zivid.NetworkConfiguration.IPV4.Address(address)
             else:
-                raise TypeError(
-                    "Unsupported type, expected: (str,), got {value_type}".format(
-                        value_type=type(address)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: (str,), got {value_type}".format(value_type=type(address)))
 
             if isinstance(mode, _zivid.NetworkConfiguration.IPV4.Mode.enum):
                 self._mode = _zivid.NetworkConfiguration.IPV4.Mode(mode)
             elif isinstance(mode, str):
-                self._mode = _zivid.NetworkConfiguration.IPV4.Mode(
-                    self.Mode._valid_values[mode]
-                )
+                self._mode = _zivid.NetworkConfiguration.IPV4.Mode(self.Mode._valid_values[mode])
             else:
-                raise TypeError(
-                    "Unsupported type, expected: str, got {value_type}".format(
-                        value_type=type(mode)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(mode)))
 
             if isinstance(subnet_mask, (str,)):
-                self._subnet_mask = _zivid.NetworkConfiguration.IPV4.SubnetMask(
-                    subnet_mask
-                )
+                self._subnet_mask = _zivid.NetworkConfiguration.IPV4.SubnetMask(subnet_mask)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (str,), got {value_type}".format(
-                        value_type=type(subnet_mask)
-                    )
+                    "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(subnet_mask))
                 )
 
         @property
@@ -84,37 +70,23 @@ class NetworkConfiguration:
             if isinstance(value, (str,)):
                 self._address = _zivid.NetworkConfiguration.IPV4.Address(value)
             else:
-                raise TypeError(
-                    "Unsupported type, expected: str, got {value_type}".format(
-                        value_type=type(value)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
         @mode.setter
         def mode(self, value):
             if isinstance(value, str):
-                self._mode = _zivid.NetworkConfiguration.IPV4.Mode(
-                    self.Mode._valid_values[value]
-                )
+                self._mode = _zivid.NetworkConfiguration.IPV4.Mode(self.Mode._valid_values[value])
             elif isinstance(value, _zivid.NetworkConfiguration.IPV4.Mode.enum):
                 self._mode = _zivid.NetworkConfiguration.IPV4.Mode(value)
             else:
-                raise TypeError(
-                    "Unsupported type, expected: str, got {value_type}".format(
-                        value_type=type(value)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
         @subnet_mask.setter
         def subnet_mask(self, value):
             if isinstance(value, (str,)):
                 self._subnet_mask = _zivid.NetworkConfiguration.IPV4.SubnetMask(value)
             else:
-                raise TypeError(
-                    "Unsupported type, expected: str, got {value_type}".format(
-                        value_type=type(value)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
         def __eq__(self, other):
             if (
@@ -158,9 +130,7 @@ class NetworkConfiguration:
 
     @classmethod
     def from_serialized(cls, value):
-        return _to_network_configuration(
-            _zivid.NetworkConfiguration.from_serialized(str(value))
-        )
+        return _to_network_configuration(_zivid.NetworkConfiguration.from_serialized(str(value)))
 
     def serialize(self):
         return _to_internal_network_configuration(self).serialize()
@@ -193,9 +163,7 @@ def _to_internal_network_configuration_ipv4(ipv4):
 
     internal_ipv4.address = _zivid.NetworkConfiguration.IPV4.Address(ipv4.address)
     internal_ipv4.mode = _zivid.NetworkConfiguration.IPV4.Mode(ipv4._mode.value)
-    internal_ipv4.subnet_mask = _zivid.NetworkConfiguration.IPV4.SubnetMask(
-        ipv4.subnet_mask
-    )
+    internal_ipv4.subnet_mask = _zivid.NetworkConfiguration.IPV4.SubnetMask(ipv4.subnet_mask)
 
     return internal_ipv4
 
@@ -203,7 +171,5 @@ def _to_internal_network_configuration_ipv4(ipv4):
 def _to_internal_network_configuration(network_configuration):
     internal_network_configuration = _zivid.NetworkConfiguration()
 
-    internal_network_configuration.ipv4 = _to_internal_network_configuration_ipv4(
-        network_configuration.ipv4
-    )
+    internal_network_configuration.ipv4 = _to_internal_network_configuration_ipv4(network_configuration.ipv4)
     return internal_network_configuration

@@ -257,27 +257,28 @@ namespace ZividPython
                 }
                 else
                 {
-                    pyClass.def(py::init([](std::optional<ValueType> &value) {
-                                    if(value)
-                                    {
-                                        return std::make_unique<Target>(value.value());
-                                    }
-                                    return std::make_unique<Target>();
-                                }),
-                                py::arg("value"));
+                    pyClass.def(
+                        py::init([](std::optional<ValueType> &value) {
+                            if(value)
+                            {
+                                return std::make_unique<Target>(value.value());
+                            }
+                            return std::make_unique<Target>();
+                        }),
+                        py::arg("value"));
                 }
 
-                pyClass.def_property_readonly("value",
-                                              [](const Target &read) -> std::optional<typename Target::ValueType> {
-                                                  if(hasValue(read))
-                                                  {
-                                                      return read.value();
-                                                  }
-                                                  else
-                                                  {
-                                                      return {};
-                                                  }
-                                              });
+                pyClass.def_property_readonly(
+                    "value", [](const Target &read) -> std::optional<typename Target::ValueType> {
+                        if(hasValue(read))
+                        {
+                            return read.value();
+                        }
+                        else
+                        {
+                            return {};
+                        }
+                    });
 
                 if constexpr(Zivid::DataModel::HasValidRange<Target>::value)
                 {
@@ -368,8 +369,8 @@ namespace ZividPython
                     // Sanity check
                     static_assert(Zivid::DataModel::IsDataModelType<ValueTypeContained>::value);
 
-                    if constexpr(Zivid::Detail::TypeTraits::IsInTuple<ValueTypeContained,
-                                                                      typename DM::Descendants>::value)
+                    if constexpr(Zivid::Detail::TypeTraits::IsInTuple<ValueTypeContained, typename DM::Descendants>::
+                                     value)
                     {
                         // This node is instantiated.
                         return;

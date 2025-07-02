@@ -1,9 +1,9 @@
 import tempfile
 from pathlib import Path
 
-import zivid
 import numpy as np
 import pytest
+import zivid
 
 
 def test_handeye_input_init_failure(checkerboard_frames, transform):
@@ -39,9 +39,7 @@ def test_handeye_input(checkerboard_frames, transform):
     assert detection_result_returned.valid() == detection_result.valid()
 
 
-def test_eyetohand_calibration(
-    handeye_eth_frames, handeye_eth_poses, handeye_eth_transform
-):
+def test_eyetohand_calibration(handeye_eth_frames, handeye_eth_poses, handeye_eth_transform):
     # Assemble input
     inputs = []
     for frame, pose_matrix in zip(handeye_eth_frames, handeye_eth_poses):
@@ -57,26 +55,20 @@ def test_eyetohand_calibration(
     pytest.helpers.check_handeye_output(inputs, handeye_output, handeye_eth_transform)
 
 
-def test_marker_eyetohand_calibration(
-    handeye_eth_frames, handeye_eth_poses, handeye_marker_eth_transform
-):
+def test_marker_eyetohand_calibration(handeye_eth_frames, handeye_eth_poses, handeye_marker_eth_transform):
     # Assemble input
     inputs = []
     for frame, pose_matrix in zip(handeye_eth_frames, handeye_eth_poses):
         inputs.append(
             zivid.calibration.HandEyeInput(
                 zivid.calibration.Pose(pose_matrix),
-                zivid.calibration.detect_markers(
-                    frame, [1, 2, 3, 4], zivid.calibration.MarkerDictionary.aruco4x4_50
-                ),
+                zivid.calibration.detect_markers(frame, [1, 2, 3, 4], zivid.calibration.MarkerDictionary.aruco4x4_50),
             )
         )
 
     # Perform eye-to-hand calibration
     handeye_output = zivid.calibration.calibrate_eye_to_hand(inputs)
-    pytest.helpers.check_handeye_output(
-        inputs, handeye_output, handeye_marker_eth_transform
-    )
+    pytest.helpers.check_handeye_output(inputs, handeye_output, handeye_marker_eth_transform)
 
 
 def test_eyetohand_calibration_save_load(handeye_eth_frames, handeye_eth_poses):
@@ -94,6 +86,4 @@ def test_eyetohand_calibration_save_load(handeye_eth_frames, handeye_eth_poses):
         transform = handeye_output.transform()
         file_path = Path(tmpdir) / "matrix.yml"
         zivid.Matrix4x4(transform).save(file_path)
-        np.testing.assert_allclose(
-            zivid.Matrix4x4(transform), zivid.Matrix4x4(file_path), rtol=1e-6
-        )
+        np.testing.assert_allclose(zivid.Matrix4x4(transform), zivid.Matrix4x4(file_path), rtol=1e-6)

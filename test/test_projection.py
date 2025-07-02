@@ -1,10 +1,11 @@
+import numpy as np
 import pytest
+from zivid import Frame2D, Settings, Settings2D
+from zivid.projection import ProjectedImage, pixels_from_3d_points, projector_resolution, show_image_bgra
 
 
 @pytest.mark.physical_camera
 def test_projector_resolution(physical_camera):
-    from zivid.projection import projector_resolution
-
     res = projector_resolution(camera=physical_camera)
     assert isinstance(res, tuple)
     assert len(res) == 2
@@ -14,13 +15,6 @@ def test_projector_resolution(physical_camera):
 
 @pytest.mark.physical_camera
 def test_show_image_bgra(physical_camera):
-    from zivid.projection import (
-        ProjectedImage,
-        projector_resolution,
-        show_image_bgra,
-    )
-    import numpy as np
-
     # Exception if wrong image resolution
     bgra_wrong_resolution = np.zeros((10, 10, 4), dtype=np.uint8)
     with pytest.raises(RuntimeError):
@@ -48,10 +42,6 @@ def test_show_image_bgra(physical_camera):
 
 @pytest.mark.physical_camera
 def test_capture_while_projecting(physical_camera):
-    from zivid import Frame2D, Settings2D, Settings
-    from zivid.projection import projector_resolution, show_image_bgra
-    import numpy as np
-
     res = projector_resolution(camera=physical_camera)
     bgra = 255 * np.ones((res[0], res[1], 4))
 
@@ -78,16 +68,11 @@ def test_capture_while_projecting(physical_camera):
             projected_image.capture_2d(Settings())
 
         with pytest.raises(RuntimeError):
-            projected_image.capture_2d(
-                Settings2D(acquisitions=[Settings2D.Acquisition(brightness=1.0)])
-            )
+            projected_image.capture_2d(Settings2D(acquisitions=[Settings2D.Acquisition(brightness=1.0)]))
 
 
 @pytest.mark.physical_camera
 def test_3d_to_projector_pixels(physical_camera):
-    from zivid.projection import pixels_from_3d_points
-    import numpy as np
-
     points = [[0.0, 0.0, 1000.0], [10.0, -10.0, 1200.0]]
     projector_coords = pixels_from_3d_points(camera=physical_camera, points=points)
     assert isinstance(projector_coords, list)

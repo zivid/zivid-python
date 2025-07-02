@@ -1,6 +1,6 @@
 """Auto generated, do not edit."""
 
-# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
 
@@ -13,12 +13,14 @@ class SceneConditions:
             grid50hz = "grid50hz"
             grid60hz = "grid60hz"
             noFlicker = "noFlicker"
+            otherFlicker = "otherFlicker"
             unknownFlicker = "unknownFlicker"
 
             _valid_values = {
                 "grid50hz": _zivid.SceneConditions.AmbientLight.FlickerClassification.grid50hz,
                 "grid60hz": _zivid.SceneConditions.AmbientLight.FlickerClassification.grid60hz,
                 "noFlicker": _zivid.SceneConditions.AmbientLight.FlickerClassification.noFlicker,
+                "otherFlicker": _zivid.SceneConditions.AmbientLight.FlickerClassification.otherFlicker,
                 "unknownFlicker": _zivid.SceneConditions.AmbientLight.FlickerClassification.unknownFlicker,
             }
 
@@ -29,27 +31,37 @@ class SceneConditions:
         def __init__(
             self,
             flicker_classification=_zivid.SceneConditions.AmbientLight.FlickerClassification().value,
+            flicker_frequency=_zivid.SceneConditions.AmbientLight.FlickerFrequency().value,
         ):
 
-            if isinstance(
-                flicker_classification,
-                _zivid.SceneConditions.AmbientLight.FlickerClassification.enum,
-            ):
-                self._flicker_classification = (
-                    _zivid.SceneConditions.AmbientLight.FlickerClassification(
-                        flicker_classification
-                    )
+            if isinstance(flicker_classification, _zivid.SceneConditions.AmbientLight.FlickerClassification.enum):
+                self._flicker_classification = _zivid.SceneConditions.AmbientLight.FlickerClassification(
+                    flicker_classification
                 )
             elif isinstance(flicker_classification, str):
-                self._flicker_classification = (
-                    _zivid.SceneConditions.AmbientLight.FlickerClassification(
-                        self.FlickerClassification._valid_values[flicker_classification]
-                    )
+                self._flicker_classification = _zivid.SceneConditions.AmbientLight.FlickerClassification(
+                    self.FlickerClassification._valid_values[flicker_classification]
                 )
             else:
                 raise TypeError(
-                    "Unsupported type, expected: str, got {value_type}".format(
-                        value_type=type(flicker_classification)
+                    "Unsupported type, expected: str, got {value_type}".format(value_type=type(flicker_classification))
+                )
+
+            if (
+                isinstance(
+                    flicker_frequency,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or flicker_frequency is None
+            ):
+                self._flicker_frequency = _zivid.SceneConditions.AmbientLight.FlickerFrequency(flicker_frequency)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                        value_type=type(flicker_frequency)
                     )
                 )
 
@@ -60,33 +72,46 @@ class SceneConditions:
             for key, internal_value in self.FlickerClassification._valid_values.items():
                 if internal_value == self._flicker_classification.value:
                     return key
-            raise ValueError(
-                "Unsupported value {value}".format(value=self._flicker_classification)
-            )
+            raise ValueError("Unsupported value {value}".format(value=self._flicker_classification))
+
+        @property
+        def flicker_frequency(self):
+            return self._flicker_frequency.value
 
         @flicker_classification.setter
         def flicker_classification(self, value):
             if isinstance(value, str):
-                self._flicker_classification = (
-                    _zivid.SceneConditions.AmbientLight.FlickerClassification(
-                        self.FlickerClassification._valid_values[value]
-                    )
+                self._flicker_classification = _zivid.SceneConditions.AmbientLight.FlickerClassification(
+                    self.FlickerClassification._valid_values[value]
                 )
-            elif isinstance(
-                value, _zivid.SceneConditions.AmbientLight.FlickerClassification.enum
+            elif isinstance(value, _zivid.SceneConditions.AmbientLight.FlickerClassification.enum):
+                self._flicker_classification = _zivid.SceneConditions.AmbientLight.FlickerClassification(value)
+            else:
+                raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
+
+        @flicker_frequency.setter
+        def flicker_frequency(self, value):
+            if (
+                isinstance(
+                    value,
+                    (
+                        float,
+                        int,
+                    ),
+                )
+                or value is None
             ):
-                self._flicker_classification = (
-                    _zivid.SceneConditions.AmbientLight.FlickerClassification(value)
-                )
+                self._flicker_frequency = _zivid.SceneConditions.AmbientLight.FlickerFrequency(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: str, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int or None, got {value_type}".format(value_type=type(value))
                 )
 
         def __eq__(self, other):
-            if self._flicker_classification == other._flicker_classification:
+            if (
+                self._flicker_classification == other._flicker_classification
+                and self._flicker_frequency == other._flicker_frequency
+            ):
                 return True
             return False
 
@@ -101,9 +126,7 @@ class SceneConditions:
         if ambient_light is None:
             ambient_light = self.AmbientLight()
         if not isinstance(ambient_light, self.AmbientLight):
-            raise TypeError(
-                "Unsupported type: {value}".format(value=type(ambient_light))
-            )
+            raise TypeError("Unsupported type: {value}".format(value=type(ambient_light)))
         self._ambient_light = ambient_light
 
     @property
@@ -142,24 +165,24 @@ class SceneConditions:
 def _to_scene_conditions_ambient_light(internal_ambient_light):
     return SceneConditions.AmbientLight(
         flicker_classification=internal_ambient_light.flicker_classification.value,
+        flicker_frequency=internal_ambient_light.flicker_frequency.value,
     )
 
 
 def _to_scene_conditions(internal_scene_conditions):
     return SceneConditions(
-        ambient_light=_to_scene_conditions_ambient_light(
-            internal_scene_conditions.ambient_light
-        ),
+        ambient_light=_to_scene_conditions_ambient_light(internal_scene_conditions.ambient_light),
     )
 
 
 def _to_internal_scene_conditions_ambient_light(ambient_light):
     internal_ambient_light = _zivid.SceneConditions.AmbientLight()
 
-    internal_ambient_light.flicker_classification = (
-        _zivid.SceneConditions.AmbientLight.FlickerClassification(
-            ambient_light._flicker_classification.value
-        )
+    internal_ambient_light.flicker_classification = _zivid.SceneConditions.AmbientLight.FlickerClassification(
+        ambient_light._flicker_classification.value
+    )
+    internal_ambient_light.flicker_frequency = _zivid.SceneConditions.AmbientLight.FlickerFrequency(
+        ambient_light.flicker_frequency
     )
 
     return internal_ambient_light
@@ -168,7 +191,7 @@ def _to_internal_scene_conditions_ambient_light(ambient_light):
 def _to_internal_scene_conditions(scene_conditions):
     internal_scene_conditions = _zivid.SceneConditions()
 
-    internal_scene_conditions.ambient_light = (
-        _to_internal_scene_conditions_ambient_light(scene_conditions.ambient_light)
+    internal_scene_conditions.ambient_light = _to_internal_scene_conditions_ambient_light(
+        scene_conditions.ambient_light
     )
     return internal_scene_conditions

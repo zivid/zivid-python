@@ -1,6 +1,7 @@
 """Contains Matrix4x4 class."""
 
 import pathlib
+
 import _zivid
 
 

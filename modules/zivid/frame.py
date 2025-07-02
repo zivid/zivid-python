@@ -3,12 +3,12 @@
 from pathlib import Path
 
 import _zivid
-from zivid.settings import _to_settings
 from zivid.camera_info import _to_camera_info
 from zivid.camera_state import _to_camera_state
+from zivid.frame_2d import Frame2D
 from zivid.frame_info import _to_frame_info
 from zivid.point_cloud import PointCloud
-from zivid.frame_2d import Frame2D
+from zivid.settings import _to_settings
 
 
 class Frame:
@@ -77,14 +77,35 @@ class Frame:
             A Frame instance containing the 2D frame, or None if the frame was captured without 2D color or by an SDK
             version prior to 2.14.0.
         """
-        return (
-            Frame2D(self.__impl.frame_2d())
-            if self.__impl.frame_2d() is not None
-            else None
-        )
+        return Frame2D(self.__impl.frame_2d()) if self.__impl.frame_2d() is not None else None
 
     def save(self, file_path):
-        """Save the frame to file. The file type is determined from the file extension.
+        """Save the frame to file.
+
+           The file type is determined from the file extension. Supported extensions are .zdf, .ply
+           (ordered), .xyz and .pcd.
+
+           If the capture is still in-progress, then this method will block until the capture
+           completes.
+
+           This method will copy the necessary point cloud data from the compute device (GPU) memory
+           into host memory (RAM), unless that data has already been copied to host memory by an
+           earlier function call. This method saves the RGB colors in linear color space for .ply,
+           .xyz and .pcd file formats. This method does not save the normal data in the .ply and
+           .pcd file formats. The points saved in .ply format will contain NaN (invalid) values. For
+           .pcd format, the saved file will contain a header that indicates an unorganized point
+           cloud. However the points will contain NaN (invalid) values as well. Since SDK 2.5, it is
+           possible to export PCD with correct header (organized) by setting
+           Configuration/APIBreakingBugFixes/FileFormats/PCD/UseOrganizedFormat in Config.yml file.
+           See
+           https://support.zivid.com/en/latest/reference-articles/point-cloud-structure-and-output-formats.html#organized-pcd-format
+
+           It is recommended to use `export_frame` methods to save point cloud to different file
+           formats. `export_frame` methods allow customization of the color space of RGB values
+           (linear or sRGB), controlling the layout of the points (organized or unorganized) and
+           saving normal data in the .ply and .pcd file formats.
+
+           See: zivid.experimental.point_cloud_export(frame, file_format)
 
         Args:
             file_path: A pathlib.Path instance or a string specifying destination

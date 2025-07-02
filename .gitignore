@@ -8,3 +8,6 @@ __pycache__
 *.swo
 *.egg-info
 .cache
+dist/
+*.so
+*.pyd

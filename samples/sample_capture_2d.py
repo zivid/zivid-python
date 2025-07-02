@@ -1,6 +1,7 @@
 """Capture sample 2D."""
 
 import datetime
+
 from zivid import Application, Settings2D
 
 
@@ -10,9 +11,7 @@ def _main():
         settings_2d = Settings2D()
         settings_2d.acquisitions.append(Settings2D.Acquisition())
         settings_2d.acquisitions[0].aperture = 2.83
-        settings_2d.acquisitions[0].exposure_time = datetime.timedelta(
-            microseconds=10000
-        )
+        settings_2d.acquisitions[0].exposure_time = datetime.timedelta(microseconds=10000)
 
         with camera.capture_2d(settings_2d) as frame_2d:
             image = frame_2d.image_rgba()

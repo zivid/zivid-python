@@ -1,9 +1,13 @@
+import datetime
+import numbers
+
 import pytest
+import zivid
 
 
-def test_init_default_settings(application):
-    import zivid
-
+def test_init_default_settings(
+    application,  # pylint: disable=unused-argument
+):
     settings_2d = zivid.Settings2D()
 
     assert isinstance(settings_2d.acquisitions, list)
@@ -11,18 +15,16 @@ def test_init_default_settings(application):
     assert isinstance(settings_2d.processing, zivid.Settings2D.Processing)
 
     assert isinstance(settings_2d.processing.color, zivid.Settings2D.Processing.Color)
-    assert isinstance(
-        settings_2d.processing.color.balance, zivid.Settings2D.Processing.Color.Balance
-    )
+    assert isinstance(settings_2d.processing.color.balance, zivid.Settings2D.Processing.Color.Balance)
     assert settings_2d.processing.color.gamma is None
     assert settings_2d.processing.color.balance.red is None
     assert settings_2d.processing.color.balance.green is None
     assert settings_2d.processing.color.balance.blue is None
 
 
-def test_set_acquisition_list(application):
-    import zivid
-
+def test_set_acquisition_list(
+    application,  # pylint: disable=unused-argument
+):
     settings = zivid.Settings2D()
 
     settings.acquisitions = [
@@ -44,19 +46,18 @@ def test_set_acquisition_list(application):
     assert settings.acquisitions[0].gain == 4.0
 
 
-def test_append_acquisition_list(application):
-    import zivid
-
+def test_append_acquisition_list(
+    application,  # pylint: disable=unused-argument
+):
     settings = zivid.Settings2D()
     settings.acquisitions.append(zivid.Settings2D.Acquisition(brightness=1.1))
     assert len(settings.acquisitions) == 1
     assert settings.acquisitions[0].brightness == 1.1
 
 
-def test_default_acquisition(application):
-    import zivid
-    import datetime
-
+def test_default_acquisition(
+    application,  # pylint: disable=unused-argument
+):
     settings_2d = zivid.Settings2D(acquisitions=[zivid.Settings2D.Acquisition()])
     assert isinstance(settings_2d.acquisitions, list)
     acquisition = settings_2d.acquisitions[0]
@@ -74,10 +75,9 @@ def test_default_acquisition(application):
     )
 
 
-def test_acquisition_brightness(application):
-    import numbers
-    import zivid
-
+def test_acquisition_brightness(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings2D.Acquisition(),
         member="brightness",
@@ -86,10 +86,9 @@ def test_acquisition_brightness(application):
     )
 
 
-def test_acquisition_exposure_time(application):
-    import datetime
-    import zivid
-
+def test_acquisition_exposure_time(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings2D.Acquisition(),
         member="exposure_time",
@@ -98,10 +97,9 @@ def test_acquisition_exposure_time(application):
     )
 
 
-def test_acquisition_gain(application):
-    import numbers
-    import zivid
-
+def test_acquisition_gain(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings2D.Acquisition(),
         member="gain",
@@ -110,10 +108,9 @@ def test_acquisition_gain(application):
     )
 
 
-def test_acquisition_aperture(application):
-    import numbers
-    import zivid
-
+def test_acquisition_aperture(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings2D.Acquisition(),
         member="aperture",
@@ -122,9 +119,9 @@ def test_acquisition_aperture(application):
     )
 
 
-def test_settings_processing(application):
-    import zivid
-
+def test_settings_processing(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings2D(),
         member="processing",
@@ -133,22 +130,14 @@ def test_settings_processing(application):
     )
     pytest.helpers.equality_tester(
         zivid.Settings2D.Processing,
-        [
-            zivid.Settings2D.Processing.Color(
-                0.9, zivid.Settings2D.Processing.Color.Balance(blue=1.1)
-            )
-        ],
-        [
-            zivid.Settings2D.Processing.Color(
-                1.1, zivid.Settings2D.Processing.Color.Balance(blue=1.2)
-            )
-        ],
+        [zivid.Settings2D.Processing.Color(0.9, zivid.Settings2D.Processing.Color.Balance(blue=1.1))],
+        [zivid.Settings2D.Processing.Color(1.1, zivid.Settings2D.Processing.Color.Balance(blue=1.2))],
     )
 
 
-def test_settings_processing_color(application):
-    import zivid
-
+def test_settings_processing_color(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings2D.Processing(),
         member="color",
@@ -163,11 +152,8 @@ def test_settings_processing_color(application):
 
 
 def test_settings_processing_color_gamma(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-    import numbers
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings2D.Processing.Color(),
         member="gamma",
@@ -177,10 +163,8 @@ def test_settings_processing_color_gamma(
 
 
 def test_settings_processing_color_balance(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings2D.Processing.Color(),
         member="balance",
@@ -195,11 +179,8 @@ def test_settings_processing_color_balance(
 
 
 def test_settings_processing_color_balance_red(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-    import numbers
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings2D.Processing.Color.Balance(),
         member="red",
@@ -209,11 +190,8 @@ def test_settings_processing_color_balance_red(
 
 
 def test_settings_processing_color_balance_green(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-    import numbers
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings2D.Processing.Color.Balance(),
         member="green",
@@ -223,11 +201,8 @@ def test_settings_processing_color_balance_green(
 
 
 def test_settings_processing_color_balance_blue(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-    import numbers
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings2D.Processing.Color.Balance(),
         member="blue",

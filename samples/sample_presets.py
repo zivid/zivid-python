@@ -12,20 +12,12 @@ def _main():
         print("The following preset categories are available:")
         for index, category in enumerate(available_categories):
             print("    {}: {}".format(index, category.name))
-        chosen_category = available_categories[
-            int(input("Choose a category (enter a number): "))
-        ]
+        chosen_category = available_categories[int(input("Choose a category (enter a number): "))]
 
-        print(
-            "The following presets are available in category '{}':".format(
-                chosen_category.name
-            )
-        )
+        print("The following presets are available in category '{}':".format(chosen_category.name))
         for index, preset in enumerate(chosen_category.presets):
             print("    {}: {}".format(index, preset.name))
-        chosen_preset = chosen_category.presets[
-            int(input("Choose a preset (enter a number): "))
-        ]
+        chosen_preset = chosen_category.presets[int(input("Choose a preset (enter a number): "))]
 
         print("Capturing point cloud with preset '{}' ...".format(chosen_preset.name))
         with camera.capture_2d_3d(chosen_preset.settings) as frame:

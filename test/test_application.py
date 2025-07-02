@@ -1,9 +1,8 @@
 import pytest
+import zivid
 
 
 def test_create_file_camera(application, file_camera_file):
-    import zivid
-
     file_camera = application.create_file_camera(file_camera_file)
     assert file_camera
     assert isinstance(file_camera, zivid.camera.Camera)
@@ -11,8 +10,6 @@ def test_create_file_camera(application, file_camera_file):
 
 @pytest.mark.physical_camera
 def test_connect_camera(application):
-    import zivid
-
     cam = application.connect_camera()
     assert cam
     assert isinstance(cam, zivid.camera.Camera)
@@ -21,8 +18,6 @@ def test_connect_camera(application):
 
 @pytest.mark.physical_camera
 def test_connect_camera_serial_number(application):
-    import zivid
-
     with application.connect_camera() as cam:
         serial_number = cam.info.serial_number
 
@@ -32,8 +27,6 @@ def test_connect_camera_serial_number(application):
 
 
 def test_cameras_list_of_cameras(application):
-    import zivid
-
     cameras = application.cameras()
     assert isinstance(cameras, list)
     for camera in cameras:

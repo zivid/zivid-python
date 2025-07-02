@@ -1,9 +1,9 @@
 """Contains the PointCloud class."""
 
-import numpy
-
 import _zivid
+import numpy
 from zivid.image import Image
+from zivid.unorganized_point_cloud import UnorganizedPointCloud
 
 
 class PointCloud:
@@ -56,9 +56,7 @@ class PointCloud:
         """
         if not isinstance(impl, _zivid.PointCloud):
             raise TypeError(
-                "Unsupported type for argument impl. Got {}, expected {}".format(
-                    type(impl), _zivid.PointCloud
-                )
+                "Unsupported type for argument impl. Got {}, expected {}".format(type(impl), _zivid.PointCloud)
             )
         self.__impl = impl
 
@@ -187,6 +185,20 @@ class PointCloud:
         self.__impl.transform(matrix)
         return self
 
+    def transformed(self, matrix):
+        """Get a transformed copy of the point cloud.
+
+        This method is identical to "transform", except the transformed point cloud is
+        returned as a new PointCloud instance. The current point cloud is not modified.
+
+        Args:
+            matrix: A 4x4 numpy arrays of floats
+
+        Returns:
+            A new PointCloud instance
+        """
+        return PointCloud(self.__impl.transformed(matrix))
+
     @property
     def transformation_matrix(self):
         """Return the current transformation matrix of this point cloud.
@@ -238,11 +250,7 @@ class PointCloud:
         Returns:
             Reference to the same PointCloud instance (for chaining calls)
         """
-        internal_downsampling = (
-            PointCloud.Downsampling._valid_values[  # pylint: disable=protected-access
-                downsampling
-            ]
-        )
+        internal_downsampling = PointCloud.Downsampling._valid_values[downsampling]  # pylint: disable=protected-access
         self.__impl.downsample(internal_downsampling)
         return self
 
@@ -258,11 +266,7 @@ class PointCloud:
         Returns:
             A new PointCloud instance
         """
-        internal_downsampling = (
-            PointCloud.Downsampling._valid_values[  # pylint: disable=protected-access
-                downsampling
-            ]
-        )
+        internal_downsampling = PointCloud.Downsampling._valid_values[downsampling]  # pylint: disable=protected-access
         return PointCloud(self.__impl.downsampled(internal_downsampling))
 
     @property
@@ -282,6 +286,25 @@ class PointCloud:
             A positive integer
         """
         return self.__impl.width()
+
+    def to_unorganized_point_cloud(self):
+        """Convert to an UnorganizedPointCloud.
+
+        The PointCloud class represents an organized point cloud, meaning that it contains 3D data
+        for every pixel (row, col) on the sensor. If 3D data could not be computed for a given pixel,
+        or was removed by a filter, that pixel contains (x,y,z) = (NaN, NaN, NaN) representing an
+        "invalid" point. For some use cases it is more useful to have an unorganized point cloud,
+        which instead contains a linear list of only valid points.
+
+        This function efficiently picks out the valid (not-NaN) points from this structured point cloud,
+        and constructs an unorganized point cloud containing the XYZ, Color and SNR from those points only.
+        The resulting unorganized point cloud will have less than (or equal) memory footprint compared to
+        the structured point cloud it comes from, since it will contain fewer (or equal) number of points.
+
+        Returns:
+            A new UnorganizedPointCloud constructed from the data in this PointCloud
+        """
+        return UnorganizedPointCloud(self.__impl.to_unorganized_point_cloud())
 
     def release(self):
         """Release the underlying resources."""

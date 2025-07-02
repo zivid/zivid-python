@@ -16,6 +16,7 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_1_ARGS(save, const std::string &, fileName)
         ZIVID_PYTHON_FORWARD_1_ARGS(load, const std::string &, fileName)
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasablePointCloud, pointCloud)
+
         std::optional<ReleasableFrame2D> frame2D()
         {
             pybind11::gil_scoped_release gilLock;

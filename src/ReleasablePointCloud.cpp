@@ -14,23 +14,32 @@ namespace ZividPython
         pyClass.def(py::init<>())
             .def("width", &ReleasablePointCloud::width)
             .def("height", &ReleasablePointCloud::height)
-            .def("transform",
-                 [](ReleasablePointCloud &pointCloud, const Eigen::Matrix<float, 4, 4, Eigen::RowMajor> &matrix) {
-                     pointCloud.transform(Conversion::toCpp(matrix));
-                 })
+            .def(
+                "transform",
+                [](ReleasablePointCloud &pointCloud, const Eigen::Matrix<float, 4, 4, Eigen::RowMajor> &matrix) {
+                    pointCloud.transform(Conversion::toCpp(matrix));
+                })
+            .def(
+                "transformed",
+                [](ReleasablePointCloud &pointCloud, const Eigen::Matrix<float, 4, 4, Eigen::RowMajor> &matrix) {
+                    return pointCloud.transformed(Conversion::toCpp(matrix));
+                })
             .def("transformation_matrix", &ReleasablePointCloud::transformationMatrix)
-            .def("downsample",
-                 [](ReleasablePointCloud &pointCloud, Zivid::PointCloud::Downsampling downsampling) {
-                     pointCloud.downsample(downsampling);
-                 })
-            .def("downsampled",
-                 [](ReleasablePointCloud &pointCloud, Zivid::PointCloud::Downsampling downsampling) {
-                     return pointCloud.downsampled(downsampling);
-                 })
+            .def(
+                "downsample",
+                [](ReleasablePointCloud &pointCloud, Zivid::PointCloud::Downsampling downsampling) {
+                    pointCloud.downsample(downsampling);
+                })
+            .def(
+                "downsampled",
+                [](ReleasablePointCloud &pointCloud, Zivid::PointCloud::Downsampling downsampling) {
+                    return pointCloud.downsampled(downsampling);
+                })
             .def("copy_image_rgba", &ReleasablePointCloud::copyImageRGBA)
             .def("copy_image_bgra", &ReleasablePointCloud::copyImageBGRA)
             .def("copy_image_rgba_srgb", &ReleasablePointCloud::copyImageRGBA_SRGB)
             .def("copy_image_bgra_srgb", &ReleasablePointCloud::copyImageBGRA_SRGB)
+            .def("to_unorganized_point_cloud", &ReleasablePointCloud::toUnorganizedPointCloud)
             .def("clone", &ReleasablePointCloud::clone);
 
         py::enum_<Zivid::PointCloud::Downsampling>{ pyClass, "Downsampling" }

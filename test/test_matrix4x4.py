@@ -1,5 +1,6 @@
-from pathlib import Path
 import tempfile
+from pathlib import Path
+
 import numpy
 import numpy.testing
 import pytest
@@ -24,9 +25,7 @@ def assert_all_equal_flat(matrix: zivid.Matrix4x4, arr2) -> None:
     assert isinstance(matrix, zivid.Matrix4x4)
     assert len(arr2) == 16
     for element1, element2 in zip(matrix, arr2):
-        numpy.testing.assert_almost_equal(
-            element1, element2, ZIVID_MATRIX_SAVE_LOAD_TOLERANCE_DECIMAL
-        )
+        numpy.testing.assert_almost_equal(element1, element2, ZIVID_MATRIX_SAVE_LOAD_TOLERANCE_DECIMAL)
 
 
 def assert_all_equal_2d(matrix: zivid.Matrix4x4, arr2) -> None:
@@ -83,9 +82,7 @@ def test_default_init():
 
 def test_flat_array_init():
     assert_all_equal_flat(zivid.Matrix4x4(sample_1d_list()), sample_1d_list())
-    assert_all_equal_flat(
-        zivid.Matrix4x4(numpy.array(sample_1d_list())), numpy.array(sample_1d_list())
-    )
+    assert_all_equal_flat(zivid.Matrix4x4(numpy.array(sample_1d_list())), numpy.array(sample_1d_list()))
 
     with pytest.raises(TypeError):
         zivid.Matrix4x4(range(42))
@@ -96,9 +93,7 @@ def test_flat_array_init():
 
 def test_4x4_array_init():
     assert_all_equal_2d(zivid.Matrix4x4(sample_2d_list()), sample_2d_list())
-    assert_all_equal_2d(
-        zivid.Matrix4x4(sample_2d_list()), numpy.array(sample_2d_list())
-    )
+    assert_all_equal_2d(zivid.Matrix4x4(sample_2d_list()), numpy.array(sample_2d_list()))
 
     with pytest.raises(TypeError):
         zivid.Matrix4x4([range(4), range(4, 9), range(9, 13), range(13, 17)])

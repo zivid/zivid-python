@@ -1,5 +1,9 @@
+import copy
+
 import numpy as np
 import pytest
+import zivid
+from assertions import assert_point_clouds_equal, assert_point_clouds_not_equal
 
 
 def test_point_cloud_copy_data(point_cloud):
@@ -155,8 +159,6 @@ def test_point_cloud_rgba(point_cloud):
 
 
 def test_point_cloud_copy_image(point_cloud):
-    import zivid
-
     image_rgba = point_cloud.copy_image("rgba")
     assert isinstance(image_rgba, zivid.Image)
     assert image_rgba.height == point_cloud.height
@@ -236,8 +238,6 @@ def _validate_transformation(xyzw_before, xyzw_after, transform):
 
 
 def test_transform(point_cloud, transform):
-    import zivid
-
     # Get points before and after transform
     xyzw_before = point_cloud.copy_data("xyzw")
     point_cloud_returned = point_cloud.transform(transform)
@@ -253,18 +253,31 @@ def test_transform(point_cloud, transform):
     _validate_transformation(xyzw_before, xyzw_after, transform)
 
 
-def test_transform_chaining(point_cloud, transform):
-    import zivid
+def test_transformed(point_cloud, transform):
+    # Get original points
+    xyzw_before = point_cloud.copy_data("xyzw")
 
+    # Get transformed copy
+    point_cloud_transformed = point_cloud.transformed(transform)
+    assert isinstance(point_cloud_transformed, zivid.PointCloud)
+    assert point_cloud_transformed is not point_cloud
+
+    # Original point cloud should not be modified
+    np.testing.assert_array_equal(xyzw_before, point_cloud.copy_data("xyzw"))
+
+    # New point cloud should have the transformation applied
+    xyzw_after = point_cloud_transformed.copy_data("xyzw")
+    _validate_transformation(xyzw_before, xyzw_after, transform)
+
+
+def test_transform_chaining(point_cloud, transform):
     # Get points before and after transform
     xyzw_before = point_cloud.copy_data("xyzw")
     point_cloud_returned = point_cloud.transform(transform).transform(transform)
     xyzw_after = point_cloud.copy_data("xyzw")
 
     chained_transform = np.dot(transform, transform)
-    np.testing.assert_array_equal(
-        point_cloud_returned.transformation_matrix, chained_transform
-    )
+    np.testing.assert_array_equal(point_cloud_returned.transformation_matrix, chained_transform)
 
     # Check that return value is just a reference to the original object
     assert isinstance(point_cloud_returned, zivid.PointCloud)
@@ -275,8 +288,6 @@ def test_transform_chaining(point_cloud, transform):
 
 
 def test_downsampling_enum():
-    import zivid
-
     vals = zivid.PointCloud.Downsampling.valid_values()
     assert len(vals) == 3
     assert "by2x2" in vals
@@ -293,8 +304,6 @@ def _make_downsampling_enum(fraction):
 
 @pytest.mark.parametrize("fraction", [2, 3, 4])
 def test_downsample(point_cloud, fraction):
-    import zivid
-
     # Remember original size
     height_orig = point_cloud.height
     width_orig = point_cloud.width
@@ -313,8 +322,6 @@ def test_downsample(point_cloud, fraction):
 
 @pytest.mark.parametrize("fraction", [2, 3, 4])
 def test_downsampled(point_cloud, fraction):
-    import zivid
-
     # Remember original size
     height_orig = point_cloud.height
     width_orig = point_cloud.width
@@ -334,8 +341,6 @@ def test_downsampled(point_cloud, fraction):
 
 
 def test_downsample_chaining(point_cloud):
-    import zivid
-
     # Remember original size
     height_orig = point_cloud.height
     width_orig = point_cloud.width
@@ -353,8 +358,6 @@ def test_downsample_chaining(point_cloud):
 
 
 def test_downsampled_chaining(point_cloud):
-    import zivid
-
     # Remember original size
     height_orig = point_cloud.height
     width_orig = point_cloud.width
@@ -375,16 +378,16 @@ def test_downsampled_chaining(point_cloud):
 
 def test_height_context_manager(frame):
     with frame.point_cloud() as point_cloud:
-        point_cloud.height
+        _ = point_cloud.height
     with pytest.raises(RuntimeError):
-        point_cloud.height
+        _ = point_cloud.height
 
 
 def test_width_context_manager(frame):
     with frame.point_cloud() as point_cloud:
-        point_cloud.width
+        _ = point_cloud.width
     with pytest.raises(RuntimeError):
-        point_cloud.width
+        _ = point_cloud.width
 
 
 def test_copy_data_context_manager(frame):
@@ -398,9 +401,9 @@ def test_copy_data_context_manager(frame):
         point_cloud.copy_data()
 
 
-def test_illegal_init(application):
-    import zivid
-
+def test_illegal_init(
+    application,  # pylint: disable=unused-argument
+):
     with pytest.raises(TypeError):
         zivid.PointCloud()  # pylint: disable=no-value-for-parameter
 
@@ -412,10 +415,6 @@ def test_illegal_init(application):
 
 
 def test_copy_point_cloud(frame, transform):
-    import copy
-    import zivid
-    from assertions import assert_point_clouds_equal
-
     with frame.point_cloud() as point_cloud:
         with copy.copy(point_cloud) as point_cloud_copy:
             assert isinstance(point_cloud_copy, zivid.PointCloud)
@@ -428,10 +427,6 @@ def test_copy_point_cloud(frame, transform):
 
 
 def test_deepcopy_point_cloud(frame, transform):
-    import copy
-    import zivid
-    from assertions import assert_point_clouds_equal, assert_point_clouds_not_equal
-
     with frame.point_cloud() as point_cloud:
         with copy.deepcopy(point_cloud) as point_cloud_copy:
             assert isinstance(point_cloud_copy, zivid.PointCloud)
@@ -444,9 +439,6 @@ def test_deepcopy_point_cloud(frame, transform):
 
 
 def test_clone_point_cloud(frame, transform):
-    import zivid
-    from assertions import assert_point_clouds_equal, assert_point_clouds_not_equal
-
     with frame.point_cloud() as point_cloud:
         with point_cloud.clone() as point_cloud_clone:
             assert isinstance(point_cloud_clone, zivid.PointCloud)

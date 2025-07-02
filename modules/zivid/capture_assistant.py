@@ -1,13 +1,8 @@
 """Contains the Capture Assistant functionality."""
 
 import _zivid
-
-from zivid._suggest_settings_parameters import (  # pylint: disable=unused-import
-    SuggestSettingsParameters,
-)
-from zivid._suggest_settings_parameters import (
-    _to_internal_capture_assistant_suggest_settings_parameters,
-)
+from zivid._suggest_settings_parameters import SuggestSettingsParameters  # pylint: disable=unused-import
+from zivid._suggest_settings_parameters import _to_internal_capture_assistant_suggest_settings_parameters
 from zivid.settings import _to_settings
 
 
@@ -26,8 +21,6 @@ def suggest_settings(camera, suggest_settings_parameters):
     """
     internal_settings = _zivid.capture_assistant.suggest_settings(
         camera._Camera__impl,  # pylint: disable=protected-access
-        _to_internal_capture_assistant_suggest_settings_parameters(
-            suggest_settings_parameters
-        ),
+        _to_internal_capture_assistant_suggest_settings_parameters(suggest_settings_parameters),
     )
     return _to_settings(internal_settings)

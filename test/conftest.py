@@ -1,12 +1,13 @@
-import tempfile
 import numbers
 import os
 import subprocess
+import sys
+import tempfile
 from pathlib import Path
 
+import numpy as np
 import pytest
 import zivid
-import numpy as np
 
 
 def _testdata_dir():
@@ -49,9 +50,7 @@ def shared_file_camera_fixture(application, file_camera_file):
 
 @pytest.fixture(name="file_camera_calibration_board", scope="module")
 def file_camera_calibration_board_fixture(application):
-    with application.create_file_camera(
-        _testdata_dir() / "calibration_board.zfc"
-    ) as cam:
+    with application.create_file_camera(_testdata_dir() / "calibration_board.zfc") as cam:
         yield cam
 
 
@@ -75,11 +74,10 @@ def frame_file_fixture(shared_file_camera, default_settings):
 
 
 @pytest.fixture(name="checkerboard_frames", scope="module")
-def checkerboard_frames_fixture(application):
-    frames = [
-        zivid.Frame(file_path)
-        for file_path in sorted(_testdata_dir().glob("checkerboard_*.zdf"))
-    ]
+def checkerboard_frames_fixture(
+    application,  # pylint: disable=unused-argument
+):
+    frames = [zivid.Frame(file_path) for file_path in sorted(_testdata_dir().glob("checkerboard_*.zdf"))]
     assert len(frames) == 3
     yield frames
     for frame in frames:
@@ -87,13 +85,17 @@ def checkerboard_frames_fixture(application):
 
 
 @pytest.fixture(name="calibration_board_frame", scope="module")
-def calibration_board_frame_fixture(application):
+def calibration_board_frame_fixture(
+    application,  # pylint: disable=unused-argument
+):
     with zivid.Frame(_testdata_dir() / "ZVD-CB01.zdf") as frame:
         yield frame
 
 
 @pytest.fixture(name="calibration_board_and_aruco_markers_frame", scope="module")
-def calibration_board_and_aruco_markers_frame_fixture(application):
+def calibration_board_and_aruco_markers_frame_fixture(
+    application,  # pylint: disable=unused-argument
+):
     with zivid.Frame(_testdata_dir() / "handeye" / "eth" / "img01.zdf") as frame:
         yield frame
 
@@ -101,14 +103,15 @@ def calibration_board_and_aruco_markers_frame_fixture(application):
 @pytest.fixture(name="multicamera_transforms", scope="module")
 def multicamera_transforms_fixture():
     transforms = [
-        np.loadtxt(str(path), delimiter=",")
-        for path in sorted(_testdata_dir().glob("multicamera_transform_*.csv"))
+        np.loadtxt(str(path), delimiter=",") for path in sorted(_testdata_dir().glob("multicamera_transform_*.csv"))
     ]
     return transforms
 
 
 @pytest.fixture(name="handeye_eth_frames", scope="module")
-def handeye_eth_frames_fixture(application):
+def handeye_eth_frames_fixture(
+    application,  # pylint: disable=unused-argument
+):
     path = _testdata_dir() / "handeye" / "eth"
     frames = [zivid.Frame(file_path) for file_path in sorted(path.glob("*.zdf"))]
     yield frames
@@ -117,13 +120,13 @@ def handeye_eth_frames_fixture(application):
 
 
 @pytest.fixture(name="frame", scope="function")
-def frame_fixture(application, shared_file_camera, default_settings):
+def frame_fixture(shared_file_camera, default_settings):
     with shared_file_camera.capture(default_settings) as frame:
         yield frame
 
 
 @pytest.fixture(name="frame_2d", scope="function")
-def frame_2d_fixture(application, shared_file_camera, default_settings_2d):
+def frame_2d_fixture(shared_file_camera, default_settings_2d):
     with shared_file_camera.capture(default_settings_2d) as frame2d:
         yield frame2d
 
@@ -137,9 +140,7 @@ def point_cloud_fixture(frame):
 @pytest.fixture(name="handeye_eth_poses", scope="function")
 def handeye_eth_poses_fixture():
     path = _testdata_dir() / "handeye" / "eth"
-    transforms = [
-        np.loadtxt(str(path), delimiter=",") for path in sorted(path.glob("pos*.csv"))
-    ]
+    transforms = [np.loadtxt(str(path), delimiter=",") for path in sorted(path.glob("pos*.csv"))]
     return transforms
 
 
@@ -157,13 +158,7 @@ def handeye_marker_eth_transform_fixture():
 
 @pytest.fixture(name="handeye_eth_low_dof_markers_transform", scope="function")
 def handeye_eth_low_dof_markers_transform_fixture():
-    path = (
-        _testdata_dir()
-        / "handeye"
-        / "eth"
-        / "low_dof"
-        / "eth_low_dof_transform_marker.csv"
-    )
+    path = _testdata_dir() / "handeye" / "eth" / "low_dof" / "eth_low_dof_transform_marker.csv"
     return np.loadtxt(str(path), delimiter=",")
 
 
@@ -173,33 +168,17 @@ def handeye_eth_low_dof_transform_fixture():
     return np.loadtxt(str(path), delimiter=",")
 
 
-@pytest.fixture(
-    name="handeye_eth_low_dof_fixed_calibration_board_pose", scope="function"
-)
+@pytest.fixture(name="handeye_eth_low_dof_fixed_calibration_board_pose", scope="function")
 def handeye_eth_low_dof_fixed_calibration_board_pose_fixture():
-    path = (
-        _testdata_dir()
-        / "handeye"
-        / "eth"
-        / "low_dof"
-        / "eth_low_dof_fixed_calibration_board_pose.csv"
-    )
+    path = _testdata_dir() / "handeye" / "eth" / "low_dof" / "eth_low_dof_fixed_calibration_board_pose.csv"
     return np.loadtxt(str(path), delimiter=",")
 
 
-@pytest.fixture(
-    name="handeye_eth_low_dof_fixed_markers_id_position_list", scope="function"
-)
+@pytest.fixture(name="handeye_eth_low_dof_fixed_markers_id_position_list", scope="function")
 def handeye_eth_low_dof_fixed_markers_id_position_list_fixture():
     markers_id_position_list = []
     for i in range(1, 5):
-        path = (
-            _testdata_dir()
-            / "handeye"
-            / "eth"
-            / "low_dof"
-            / f"eth_low_dof_fixed_marker_id_{i}.csv"
-        )
+        path = _testdata_dir() / "handeye" / "eth" / "low_dof" / f"eth_low_dof_fixed_marker_id_{i}.csv"
         pose = np.loadtxt(str(path), delimiter=",")
         position = pose[:3, 3]
         markers_id_position_list.append((i, position))
@@ -350,22 +329,20 @@ class Cd:
 
 @pytest.helpers.register
 def run_sample(name, working_directory=None):
-    sample = (
-        Path(__file__) / ".." / ".." / "samples" / "sample_{name}.py".format(name=name)
-    ).resolve()
+    sample = (Path(__file__) / ".." / ".." / "samples" / "sample_{name}.py".format(name=name)).resolve()
 
     if working_directory is not None:
         with Cd(working_directory):
             subprocess.check_output(
                 args=(
-                    "python",
+                    sys.executable,
                     str(sample),
                 )
             )
     else:
         subprocess.check_output(
             args=(
-                "python",
+                sys.executable,
                 str(sample),
             )
         )

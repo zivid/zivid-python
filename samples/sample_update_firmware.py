@@ -15,7 +15,8 @@ def _main() -> None:
         if not zivid.firmware.is_up_to_date(camera):
             print("Firmware update required")
             print(
-                f"Updating firmware on camera {camera.info.serial_number}, model name: {camera.info.model_name}, firmware version: {camera.info.firmware_version}"
+                f"Updating firmware on camera {camera.info.serial_number}, model name: {camera.info.model_name},"
+                f" firmware version: {camera.info.firmware_version}"
             )
             zivid.firmware.update(
                 camera,
@@ -25,7 +26,8 @@ def _main() -> None:
             )
         else:
             print(
-                f"Skipping update of camera {camera.info.serial_number}, model name: {camera.info.model_name}, firmware version: {camera.info.firmware_version}"
+                f"Skipping update of camera {camera.info.serial_number}, model name: {camera.info.model_name},"
+                f" firmware version: {camera.info.firmware_version}"
             )
 
 

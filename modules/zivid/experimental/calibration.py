@@ -1,10 +1,10 @@
 """Module for experimental calibration features. This API may change in the future."""
 
 import _zivid
-from zivid.experimental import PixelMapping
 from zivid.calibration import DetectionResult
 from zivid.camera import Camera
 from zivid.camera_intrinsics import _to_camera_intrinsics
+from zivid.experimental import PixelMapping
 from zivid.frame import Frame
 from zivid.settings import Settings, _to_internal_settings
 from zivid.settings2d import Settings2D, _to_internal_settings2d
@@ -34,9 +34,7 @@ def intrinsics(camera, settings=None):
     """
     if settings is None:
         return _to_camera_intrinsics(
-            _zivid.calibration.intrinsics(
-                camera._Camera__impl  # pylint: disable=protected-access
-            )
+            _zivid.calibration.intrinsics(camera._Camera__impl)  # pylint: disable=protected-access
         )
     if isinstance(settings, Settings):
         return _to_camera_intrinsics(
@@ -53,9 +51,7 @@ def intrinsics(camera, settings=None):
             )
         )
     raise TypeError(
-        "Unsupported type for argument settings. Got {}, expected Settings or Settings2D.".format(
-            type(settings)
-        )
+        "Unsupported type for argument settings. Got {}, expected Settings or Settings2D.".format(type(settings))
     )
 
 
@@ -76,9 +72,7 @@ def estimate_intrinsics(frame):
         A CameraIntrinsics instance
     """
     return _to_camera_intrinsics(
-        _zivid.calibration.estimate_intrinsics(
-            frame._Frame__impl  # pylint: disable=protected-access
-        )
+        _zivid.calibration.estimate_intrinsics(frame._Frame__impl)  # pylint: disable=protected-access
     )
 
 
@@ -132,9 +126,7 @@ def capture_calibration_board(camera):
         A Frame that can be used with detect_feature_points.
     """
     return Frame(
-        _zivid.infield_correction.capture_calibration_board(
-            camera._Camera__impl  # pylint: disable=protected-access
-        )
+        _zivid.infield_correction.capture_calibration_board(camera._Camera__impl)  # pylint: disable=protected-access
     )
 
 
@@ -164,13 +156,9 @@ def detect_feature_points(source):
         _source = source._Frame__impl  # pylint: disable=protected-access
     else:
         raise TypeError(
-            "Unsupported type for argument source. Got {}, expected {}, {}".format(
-                type(source), Camera, Frame
-            )
+            "Unsupported type for argument source. Got {}, expected {}, {}".format(type(source), Camera, Frame)
         )
-    return DetectionResult(
-        _zivid.infield_correction.detect_feature_points_infield(_source)
-    )
+    return DetectionResult(_zivid.infield_correction.detect_feature_points_infield(_source))
 
 
 def verify_camera(infield_correction_input):
@@ -268,9 +256,7 @@ def reset_camera_correction(camera):
     Args:
         camera: The Camera to reset.
     """
-    _zivid.infield_correction.reset_camera_correction(
-        camera._Camera__impl  # pylint: disable=protected-access
-    )
+    _zivid.infield_correction.reset_camera_correction(camera._Camera__impl)  # pylint: disable=protected-access
 
 
 def has_camera_correction(camera):
@@ -285,9 +271,7 @@ def has_camera_correction(camera):
     Returns:
         Boolean indicating whether or not the camera has an in-field correction.
     """
-    return _zivid.infield_correction.has_camera_correction(
-        camera._Camera__impl  # pylint: disable=protected-access
-    )
+    return _zivid.infield_correction.has_camera_correction(camera._Camera__impl)  # pylint: disable=protected-access
 
 
 def camera_correction_timestamp(camera):
@@ -322,9 +306,8 @@ class InfieldCorrectionInput:
         """
         if not isinstance(detection_result, DetectionResult):
             raise TypeError(
-                "Unsupported type for argument detection_result. Expected zivid.calibration.DetectionResult but got {}".format(
-                    type(detection_result)
-                )
+                "Unsupported type for argument detection_result."
+                " Expected zivid.calibration.DetectionResult but got {}".format(type(detection_result))
             )
         self.__impl = _zivid.infield_correction.InfieldCorrectionInput(
             detection_result._DetectionResult__impl,  # pylint: disable=protected-access

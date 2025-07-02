@@ -1,9 +1,15 @@
+import datetime
+import numbers
+
 import pytest
+import zivid
+from zivid import Settings, Settings2D
+from zivid.settings import _to_internal_settings, _to_settings
 
 
-def test_default_settings(application):
-    import zivid
-
+def test_default_settings(
+    application,  # pylint: disable=unused-argument
+):
     settings = zivid.Settings()
 
     assert settings.color is None
@@ -15,9 +21,7 @@ def test_default_settings(application):
     assert settings.diagnostics.enabled is None
     assert isinstance(settings.processing, zivid.Settings.Processing)
     assert isinstance(settings.processing.color, zivid.Settings.Processing.Color)
-    assert isinstance(
-        settings.processing.color.balance, zivid.Settings.Processing.Color.Balance
-    )
+    assert isinstance(settings.processing.color.balance, zivid.Settings.Processing.Color.Balance)
     assert settings.processing.color.gamma is None
     assert settings.processing.color.balance.red is None
     assert settings.processing.color.balance.green is None
@@ -30,9 +34,7 @@ def test_default_settings(application):
         zivid.Settings.Processing.Filters.Experimental,
     )
 
-    assert isinstance(
-        settings.processing.filters.cluster, zivid.Settings.Processing.Filters.Cluster
-    )
+    assert isinstance(settings.processing.filters.cluster, zivid.Settings.Processing.Filters.Cluster)
     assert isinstance(
         settings.processing.filters.cluster.removal,
         zivid.Settings.Processing.Filters.Cluster.Removal,
@@ -50,19 +52,13 @@ def test_default_settings(application):
         settings.processing.filters.experimental.contrast_distortion.correction,
         zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction,
     )
-    assert (
-        settings.processing.filters.experimental.contrast_distortion.correction.enabled
-        is None
-    )
+    assert settings.processing.filters.experimental.contrast_distortion.correction.enabled is None
 
     assert isinstance(
         settings.processing.filters.experimental.contrast_distortion.removal,
         zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal,
     )
-    assert (
-        settings.processing.filters.experimental.contrast_distortion.removal.enabled
-        is None
-    )
+    assert settings.processing.filters.experimental.contrast_distortion.removal.enabled is None
 
     assert isinstance(
         settings.processing.filters.hole.repair,
@@ -73,18 +69,14 @@ def test_default_settings(application):
     assert settings.processing.filters.hole.repair.hole_size is None
     assert settings.processing.filters.hole.repair.strictness is None
 
-    assert isinstance(
-        settings.processing.filters.noise, zivid.Settings.Processing.Filters.Noise
-    )
+    assert isinstance(settings.processing.filters.noise, zivid.Settings.Processing.Filters.Noise)
     assert isinstance(
         settings.processing.filters.noise.removal,
         zivid.Settings.Processing.Filters.Noise.Removal,
     )
     assert settings.processing.filters.noise.removal.enabled is None
 
-    assert isinstance(
-        settings.processing.filters.outlier, zivid.Settings.Processing.Filters.Outlier
-    )
+    assert isinstance(settings.processing.filters.outlier, zivid.Settings.Processing.Filters.Outlier)
     assert isinstance(
         settings.processing.filters.outlier.removal,
         zivid.Settings.Processing.Filters.Outlier.Removal,
@@ -114,12 +106,8 @@ def test_default_settings(application):
     assert settings.processing.filters.smoothing.gaussian.sigma is None
 
     assert isinstance(settings.region_of_interest, zivid.Settings.RegionOfInterest)
-    assert isinstance(
-        settings.region_of_interest.box, zivid.Settings.RegionOfInterest.Box
-    )
-    assert isinstance(
-        settings.region_of_interest.depth, zivid.Settings.RegionOfInterest.Depth
-    )
+    assert isinstance(settings.region_of_interest.box, zivid.Settings.RegionOfInterest.Box)
+    assert isinstance(settings.region_of_interest.depth, zivid.Settings.RegionOfInterest.Depth)
 
     assert settings.region_of_interest.box.enabled is None
     assert settings.region_of_interest.box.extents is None
@@ -132,9 +120,6 @@ def test_default_settings(application):
 
 def test_set_color_settings():
     # pylint: disable=protected-access
-
-    from zivid import Settings, Settings2D
-    from zivid.settings import _to_settings, _to_internal_settings
 
     settings = Settings()
     assert settings.color is None
@@ -177,8 +162,6 @@ def test_set_color_settings():
 
 
 def test_set_acquisition_list():
-    from zivid import Settings
-
     settings = Settings()
 
     settings.acquisitions = [
@@ -201,8 +184,6 @@ def test_set_acquisition_list():
 
 
 def test_set_acquisition_generator():
-    from zivid import Settings
-
     settings = Settings()
 
     def _generator():
@@ -217,8 +198,6 @@ def test_set_acquisition_generator():
 
 
 def test_set_acquisition_tuple():
-    from zivid import Settings
-
     settings = Settings()
 
     settings.acquisitions = (Settings.Acquisition(), settings.Acquisition())
@@ -228,10 +207,9 @@ def test_set_acquisition_tuple():
         assert isinstance(element, Settings.Acquisition)
 
 
-def test_default_acquisition(application):
-    import zivid
-    import datetime
-
+def test_default_acquisition(
+    application,  # pylint: disable=unused-argument
+):
     settings = zivid.Settings(acquisitions=[zivid.Settings.Acquisition()])
     assert isinstance(settings.acquisitions, list)
     acquisition = settings.acquisitions[0]
@@ -248,10 +226,9 @@ def test_default_acquisition(application):
     )
 
 
-def test_acquisition_brightness(application):
-    import numbers
-    import zivid
-
+def test_acquisition_brightness(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Acquisition(),
         member="brightness",
@@ -260,10 +237,9 @@ def test_acquisition_brightness(application):
     )
 
 
-def test_acquisition_exposure_time(application):
-    import datetime
-    import zivid
-
+def test_acquisition_exposure_time(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Acquisition(),
         member="exposure_time",
@@ -272,10 +248,9 @@ def test_acquisition_exposure_time(application):
     )
 
 
-def test_acquisition_gain(application):
-    import numbers
-    import zivid
-
+def test_acquisition_gain(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Acquisition(),
         member="gain",
@@ -284,10 +259,9 @@ def test_acquisition_gain(application):
     )
 
 
-def test_acquisition_aperture(application):
-    import numbers
-    import zivid
-
+def test_acquisition_aperture(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Acquisition(),
         member="aperture",
@@ -296,9 +270,9 @@ def test_acquisition_aperture(application):
     )
 
 
-def test_settings_diagnostics(application):
-    import zivid
-
+def test_settings_diagnostics(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings(),
         member="diagnostics",
@@ -312,9 +286,9 @@ def test_settings_diagnostics(application):
     )
 
 
-def test_settings_diagnostics_enabled(application):
-    import zivid
-
+def test_settings_diagnostics_enabled(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Diagnostics(),
         member="enabled",
@@ -323,9 +297,9 @@ def test_settings_diagnostics_enabled(application):
     )
 
 
-def test_settings_engine(application):
-    import zivid
-
+def test_settings_engine(
+    application,  # pylint: disable=unused-argument
+):
     for value in zivid.Settings.Engine.valid_values():
         pytest.helpers.set_attribute_tester(
             settings_instance=zivid.Settings(),
@@ -347,9 +321,9 @@ def test_settings_engine(application):
         zivid.Settings(engine="_dummy_")
 
 
-def test_settings_processing(application):
-    import zivid
-
+def test_settings_processing(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings(),
         member="processing",
@@ -358,22 +332,14 @@ def test_settings_processing(application):
     )
     pytest.helpers.equality_tester(
         zivid.Settings.Processing,
-        [
-            zivid.Settings.Processing.Color(
-                0.9, zivid.Settings.Processing.Color.Balance(blue=1.1)
-            )
-        ],
-        [
-            zivid.Settings.Processing.Color(
-                1.1, zivid.Settings.Processing.Color.Balance(blue=1.2)
-            )
-        ],
+        [zivid.Settings.Processing.Color(0.9, zivid.Settings.Processing.Color.Balance(blue=1.1))],
+        [zivid.Settings.Processing.Color(1.1, zivid.Settings.Processing.Color.Balance(blue=1.2))],
     )
 
 
-def test_settings_processing_color(application):
-    import zivid
-
+def test_settings_processing_color(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing(),
         member="color",
@@ -388,11 +354,8 @@ def test_settings_processing_color(application):
 
 
 def test_settings_processing_color_gamma(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-    import numbers
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Color(),
         member="gamma",
@@ -402,10 +365,8 @@ def test_settings_processing_color_gamma(
 
 
 def test_settings_processing_color_balance(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Color(),
         member="balance",
@@ -420,10 +381,8 @@ def test_settings_processing_color_balance(
 
 
 def test_settings_processing_color_experimental(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Color(),
         member="experimental",
@@ -450,9 +409,9 @@ def test_settings_processing_color_experimental(
     )
 
 
-def test_settings_processing_color_experimental_mode(application):
-    import zivid
-
+def test_settings_processing_color_experimental_mode(
+    application,  # pylint: disable=unused-argument
+):
     for value in zivid.Settings.Processing.Color.Experimental.Mode.valid_values():
         pytest.helpers.set_attribute_tester(
             settings_instance=zivid.Settings.Processing.Color.Experimental(),
@@ -476,11 +435,8 @@ def test_settings_processing_color_experimental_mode(application):
 
 
 def test_settings_processing_color_balance_red(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-    import numbers
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Color.Balance(),
         member="red",
@@ -490,11 +446,8 @@ def test_settings_processing_color_balance_red(
 
 
 def test_settings_processing_color_balance_green(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-    import numbers
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Color.Balance(),
         member="green",
@@ -504,11 +457,8 @@ def test_settings_processing_color_balance_green(
 
 
 def test_settings_processing_color_balance_blue(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-    import numbers
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Color.Balance(),
         member="blue",
@@ -518,10 +468,8 @@ def test_settings_processing_color_balance_blue(
 
 
 def test_settings_processing_filters(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing(),
         member="filters",
@@ -530,24 +478,14 @@ def test_settings_processing_filters(
     )
     pytest.helpers.equality_tester(
         zivid.Settings.Processing.Filters,
-        [
-            zivid.Settings.Processing.Filters.Cluster(
-                zivid.Settings.Processing.Filters.Cluster.Removal(enabled=True)
-            )
-        ],
-        [
-            zivid.Settings.Processing.Filters.Cluster(
-                zivid.Settings.Processing.Filters.Cluster.Removal(enabled=False)
-            )
-        ],
+        [zivid.Settings.Processing.Filters.Cluster(zivid.Settings.Processing.Filters.Cluster.Removal(enabled=True))],
+        [zivid.Settings.Processing.Filters.Cluster(zivid.Settings.Processing.Filters.Cluster.Removal(enabled=False))],
     )
 
 
 def test_settings_processing_filters_experimental(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters(),
         member="experimental",
@@ -558,26 +496,20 @@ def test_settings_processing_filters_experimental(
         zivid.Settings.Processing.Filters.Experimental,
         [
             zivid.Settings.Processing.Filters.Experimental.ContrastDistortion(
-                removal=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal(
-                    enabled=False
-                )
+                removal=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal(enabled=False)
             )
         ],
         [
             zivid.Settings.Processing.Filters.Experimental.ContrastDistortion(
-                removal=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal(
-                    enabled=True
-                )
+                removal=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal(enabled=True)
             )
         ],
     )
 
 
 def test_settings_processing_filters_experimental_contrast_distortion(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Experimental(),
         member="contrast_distortion",
@@ -587,29 +519,19 @@ def test_settings_processing_filters_experimental_contrast_distortion(
     pytest.helpers.equality_tester(
         zivid.Settings.Processing.Filters.Experimental.ContrastDistortion,
         [
-            zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction(
-                enabled=True
-            ),
-            zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal(
-                enabled=False
-            ),
+            zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction(enabled=True),
+            zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal(enabled=False),
         ],
         [
-            zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction(
-                enabled=True
-            ),
-            zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal(
-                enabled=True
-            ),
+            zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction(enabled=True),
+            zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal(enabled=True),
         ],
     )
 
 
 def test_settings_processing_filters_hole_repair(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Hole(),
         member="repair",
@@ -625,10 +547,8 @@ def test_settings_processing_filters_hole_repair(
 
 
 def test_settings_processing_filters_hole_repair_enabled(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Hole.Repair(),
         member="enabled",
@@ -638,10 +558,8 @@ def test_settings_processing_filters_hole_repair_enabled(
 
 
 def test_settings_processing_filters_hole_repair_holesize(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Hole.Repair(),
         member="hole_size",
@@ -651,10 +569,8 @@ def test_settings_processing_filters_hole_repair_holesize(
 
 
 def test_settings_processing_filters_hole_repair_strictness(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Hole.Repair(),
         member="strictness",
@@ -664,10 +580,8 @@ def test_settings_processing_filters_hole_repair_strictness(
 
 
 def test_settings_processing_filters_experimental_contrast_distortion_removal(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion(),
         member="removal",
@@ -682,10 +596,8 @@ def test_settings_processing_filters_experimental_contrast_distortion_removal(
 
 
 def test_settings_processing_filters_experimental_contrast_distortion_removal_enabled(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal(),
         member="enabled",
@@ -695,10 +607,8 @@ def test_settings_processing_filters_experimental_contrast_distortion_removal_en
 
 
 def test_settings_processing_filters_experimental_contrast_distortion_removal_threshold(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal(),
         member="threshold",
@@ -708,10 +618,8 @@ def test_settings_processing_filters_experimental_contrast_distortion_removal_th
 
 
 def test_settings_processing_filters_experimental_contrast_distortion_correction(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion(),
         member="correction",
@@ -726,10 +634,8 @@ def test_settings_processing_filters_experimental_contrast_distortion_correction
 
 
 def test_settings_processing_filters_experimental_contrast_distortion_correction_strength(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction(),
         member="strength",
@@ -739,10 +645,8 @@ def test_settings_processing_filters_experimental_contrast_distortion_correction
 
 
 def test_settings_processing_filters_experimental_contrast_distortion_correction_enabled(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction(),
         member="enabled",
@@ -752,10 +656,8 @@ def test_settings_processing_filters_experimental_contrast_distortion_correction
 
 
 def test_settings_processing_filters_cluster(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters(),
         member="cluster",
@@ -771,10 +673,8 @@ def test_settings_processing_filters_cluster(
 
 
 def test_settings_processing_filters_cluster_removal(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Cluster(),
         member="removal",
@@ -789,10 +689,8 @@ def test_settings_processing_filters_cluster_removal(
 
 
 def test_settings_processing_filters_cluster_removal_enabled(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Cluster.Removal(),
         member="enabled",
@@ -802,10 +700,8 @@ def test_settings_processing_filters_cluster_removal_enabled(
 
 
 def test_settings_processing_filters_cluster_removal_minarea(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Cluster.Removal(),
         member="min_area",
@@ -815,10 +711,8 @@ def test_settings_processing_filters_cluster_removal_minarea(
 
 
 def test_settings_processing_filters_cluster_removal_maxneighbordistance(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Cluster.Removal(),
         member="max_neighbor_distance",
@@ -828,10 +722,8 @@ def test_settings_processing_filters_cluster_removal_maxneighbordistance(
 
 
 def test_settings_processing_filters_noise(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters(),
         member="noise",
@@ -846,10 +738,8 @@ def test_settings_processing_filters_noise(
 
 
 def test_settings_processing_filters_noise_removal(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Noise(),
         member="removal",
@@ -864,10 +754,8 @@ def test_settings_processing_filters_noise_removal(
 
 
 def test_settings_processing_filters_noise_removal_enabled(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Noise.Removal(),
         member="enabled",
@@ -877,10 +765,8 @@ def test_settings_processing_filters_noise_removal_enabled(
 
 
 def test_settings_processing_filters_noise_removal_threshold(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Noise.Removal(),
         member="threshold",
@@ -890,10 +776,8 @@ def test_settings_processing_filters_noise_removal_threshold(
 
 
 def test_settings_processing_filters_outlier(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters(),
         member="outlier",
@@ -908,10 +792,8 @@ def test_settings_processing_filters_outlier(
 
 
 def test_settings_processing_filters_outlier_removal(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Outlier(),
         member="removal",
@@ -926,10 +808,8 @@ def test_settings_processing_filters_outlier_removal(
 
 
 def test_settings_processing_filters_outlier_removal_enabled(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Outlier.Removal(),
         member="enabled",
@@ -939,10 +819,8 @@ def test_settings_processing_filters_outlier_removal_enabled(
 
 
 def test_settings_processing_filters_outlier_removal_threshold(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Outlier.Removal(),
         member="threshold",
@@ -952,10 +830,8 @@ def test_settings_processing_filters_outlier_removal_threshold(
 
 
 def test_settings_processing_filters_reflection(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters(),
         member="reflection",
@@ -970,10 +846,8 @@ def test_settings_processing_filters_reflection(
 
 
 def test_settings_processing_filters_reflection_removal(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Reflection(),
         member="removal",
@@ -1001,10 +875,8 @@ def test_settings_processing_filters_reflection_removal(
 
 
 def test_settings_processing_filters_reflection_removal_enabled(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Reflection.Removal(),
         member="enabled",
@@ -1014,13 +886,9 @@ def test_settings_processing_filters_reflection_removal_enabled(
 
 
 def test_settings_processing_filters_reflection_removal_mode(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
-    for (
-        value
-    ) in zivid.Settings.Processing.Filters.Reflection.Removal.Mode.valid_values():
+    for value in zivid.Settings.Processing.Filters.Reflection.Removal.Mode.valid_values():
         pytest.helpers.set_attribute_tester(
             settings_instance=zivid.Settings.Processing.Filters.Reflection.Removal(),
             member="mode",
@@ -1042,10 +910,8 @@ def test_settings_processing_filters_reflection_removal_mode(
 
 
 def test_settings_processing_filters_smoothing(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters(),
         member="smoothing",
@@ -1060,10 +926,8 @@ def test_settings_processing_filters_smoothing(
 
 
 def test_settings_processing_filters_smoothing_gaussian(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Smoothing(),
         member="gaussian",
@@ -1078,10 +942,8 @@ def test_settings_processing_filters_smoothing_gaussian(
 
 
 def test_settings_processing_filters_smoothing_gaussian_sigma(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Smoothing.Gaussian(),
         member="sigma",
@@ -1091,10 +953,8 @@ def test_settings_processing_filters_smoothing_gaussian_sigma(
 
 
 def test_settings_processing_filters_smoothing_gaussian_enabled(
-    application,
+    application,  # pylint: disable=unused-argument
 ):
-    import zivid
-
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.Processing.Filters.Smoothing.Gaussian(),
         member="enabled",
@@ -1103,9 +963,9 @@ def test_settings_processing_filters_smoothing_gaussian_enabled(
     )
 
 
-def test_settings_regionofinterest(application):
-    import zivid
-
+def test_settings_regionofinterest(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings(),
         member="region_of_interest",
@@ -1119,9 +979,9 @@ def test_settings_regionofinterest(application):
     )
 
 
-def test_settings_regionofinterest_box(application):
-    import zivid
-
+def test_settings_regionofinterest_box(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.RegionOfInterest(),
         member="box",
@@ -1135,9 +995,9 @@ def test_settings_regionofinterest_box(application):
     )
 
 
-def test_settings_regionofinterest_box_enabled(application):
-    import zivid
-
+def test_settings_regionofinterest_box_enabled(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.RegionOfInterest.Box(),
         member="enabled",
@@ -1146,9 +1006,9 @@ def test_settings_regionofinterest_box_enabled(application):
     )
 
 
-def test_settings_regionofinterest_box_pointo(application):
-    import zivid
-
+def test_settings_regionofinterest_box_pointo(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.RegionOfInterest.Box(),
         member="point_o",
@@ -1157,9 +1017,9 @@ def test_settings_regionofinterest_box_pointo(application):
     )
 
 
-def test_settings_regionofinterest_box_pointa(application):
-    import zivid
-
+def test_settings_regionofinterest_box_pointa(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.RegionOfInterest.Box(),
         member="point_a",
@@ -1168,9 +1028,9 @@ def test_settings_regionofinterest_box_pointa(application):
     )
 
 
-def test_settings_regionofinterest_box_pointb(application):
-    import zivid
-
+def test_settings_regionofinterest_box_pointb(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.RegionOfInterest.Box(),
         member="point_b",
@@ -1179,9 +1039,9 @@ def test_settings_regionofinterest_box_pointb(application):
     )
 
 
-def test_settings_regionofinterest_box_extents(application):
-    import zivid
-
+def test_settings_regionofinterest_box_extents(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.RegionOfInterest.Box(),
         member="extents",
@@ -1202,9 +1062,9 @@ def test_settings_regionofinterest_box_extents(application):
         zivid.Settings.RegionOfInterest.Box(extents=[100.0, 50.0])
 
 
-def test_settings_regionofinterest_depth(application):
-    import zivid
-
+def test_settings_regionofinterest_depth(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.RegionOfInterest(),
         member="depth",
@@ -1218,9 +1078,9 @@ def test_settings_regionofinterest_depth(application):
     )
 
 
-def test_settings_regionofinterest_depth_enabled(application):
-    import zivid
-
+def test_settings_regionofinterest_depth_enabled(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.RegionOfInterest.Depth(),
         member="enabled",
@@ -1229,9 +1089,9 @@ def test_settings_regionofinterest_depth_enabled(application):
     )
 
 
-def test_settings_regionofinterest_depth_range(application):
-    import zivid
-
+def test_settings_regionofinterest_depth_range(
+    application,  # pylint: disable=unused-argument
+):
     pytest.helpers.set_attribute_tester(
         settings_instance=zivid.Settings.RegionOfInterest.Depth(),
         member="range",
@@ -1252,19 +1112,19 @@ def test_settings_regionofinterest_depth_range(application):
         zivid.Settings.RegionOfInterest.Depth(range=[100.0, -200.0])
 
 
-def test_print_settings(application):
-    import zivid
-
+def test_print_settings(
+    application,  # pylint: disable=unused-argument
+):
     print(zivid.Settings())
 
 
-def test_print_acquisition(application):
-    import zivid
-
+def test_print_acquisition(
+    application,  # pylint: disable=unused-argument
+):
     print(zivid.Settings.Acquisition())
 
 
-def test_print_processing(application):
-    import zivid
-
+def test_print_processing(
+    application,  # pylint: disable=unused-argument
+):
     print(zivid.Settings.Processing())

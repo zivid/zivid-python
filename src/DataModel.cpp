@@ -17,18 +17,11 @@ namespace ZividPython
     {
         using R = Zivid::Range<double>;
         pyClass.def(pybind11::init<>())
-            .def(pybind11::init([](double min, double max) {
-                return R{ min, max };
-            }))
-            .def(pybind11::init([](const std::array<double, 2> &array) {
-                return R{ array[0], array[1] };
-            }))
+            .def(pybind11::init([](double min, double max) { return R{ min, max }; }))
+            .def(pybind11::init([](const std::array<double, 2> &array) { return R{ array[0], array[1] }; }))
             .def_property_readonly("min", [](const R &r) { return r.min(); })
             .def_property_readonly("max", [](const R &r) { return r.max(); })
-            .def("to_array",
-                 [](const R &self) {
-                     return std::array<double, 2>{ self.min(), self.max() };
-                 })
+            .def("to_array", [](const R &self) { return std::array<double, 2>{ self.min(), self.max() }; })
             .def("__repr__", &R::toString)
             .def("to_string", &R::toString)
             .def(pybind11::self == pybind11::self) // NOLINT
@@ -43,16 +36,11 @@ namespace ZividPython
         using T = Zivid::PointXYZ;
         pyClass.def(pybind11::init<>())
             .def(pybind11::init<float, float, float>())
-            .def(pybind11::init([](const std::array<float, 3> &array) {
-                return T{ array[0], array[1], array[2] };
-            }))
+            .def(pybind11::init([](const std::array<float, 3> &array) { return T{ array[0], array[1], array[2] }; }))
             .def("is_nan", &T::isNaN)
             .def("__repr__", &T::toString)
             .def("to_string", &T::toString)
-            .def("to_array",
-                 [](const T &self) {
-                     return std::array<float, 3>{ self.x, self.y, self.z };
-                 })
+            .def("to_array", [](const T &self) { return std::array<float, 3>{ self.x, self.y, self.z }; })
             .def(pybind11::self == pybind11::self)
             .def(pybind11::self != pybind11::self)
             .def_readwrite("x", &T::x)

@@ -12,13 +12,16 @@
 #include <ZividPython/PixelMapping.h>
 #include <ZividPython/Presets.h>
 #include <ZividPython/Projection.h>
+#include <ZividPython/ReleasableArray1D.h>
 #include <ZividPython/ReleasableArray2D.h>
 #include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/ReleasableFrame.h>
 #include <ZividPython/ReleasableFrame2D.h>
 #include <ZividPython/ReleasablePointCloud.h>
 #include <ZividPython/ReleasableProjectedImage.h>
+#include <ZividPython/ReleasableUnorganizedPointCloud.h>
 #include <ZividPython/SingletonApplication.h>
+#include <ZividPython/Toolbox/PointCloudRegistration.h>
 #include <ZividPython/Version.h>
 #include <ZividPython/Wrapper.h>
 
@@ -56,6 +59,7 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, ImageRGBA_SRGB);
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, ImageBGRA_SRGB);
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, PointCloud);
+    ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, UnorganizedPointCloud);
 
     ZIVID_PYTHON_WRAP_ARRAY2D_BUFFER_AS_RELEASABLE(module, ColorRGBA);
     ZIVID_PYTHON_WRAP_ARRAY2D_BUFFER_AS_RELEASABLE(module, ColorBGRA);
@@ -71,6 +75,13 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_ARRAY2D_BUFFER_AS_RELEASABLE(module, PointXYZColorRGBA_SRGB);
     ZIVID_PYTHON_WRAP_ARRAY2D_BUFFER_AS_RELEASABLE(module, PointXYZColorBGRA_SRGB);
 
+    ZIVID_PYTHON_WRAP_ARRAY1D_BUFFER_AS_RELEASABLE(module, ColorRGBA);
+    ZIVID_PYTHON_WRAP_ARRAY1D_BUFFER_AS_RELEASABLE(module, ColorBGRA);
+    ZIVID_PYTHON_WRAP_ARRAY1D_BUFFER_AS_RELEASABLE(module, ColorRGBA_SRGB);
+    ZIVID_PYTHON_WRAP_ARRAY1D_BUFFER_AS_RELEASABLE(module, ColorBGRA_SRGB);
+    ZIVID_PYTHON_WRAP_ARRAY1D_BUFFER_AS_RELEASABLE(module, PointXYZ);
+    ZIVID_PYTHON_WRAP_ARRAY1D_BUFFER_AS_RELEASABLE(module, SNR);
+
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Firmware);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Version);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Calibration);
@@ -78,6 +89,7 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, InfieldCorrection);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Projection);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Presets);
+    ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Toolbox);
 
     using PixelMapping = Zivid::Experimental::PixelMapping;
     ZIVID_PYTHON_WRAP_CLASS(module, PixelMapping);

@@ -1,8 +1,8 @@
-zivid-{version}-cp37-cp37m-win_amd64.whl
-zivid-{version}-cp38-cp38-win_amd64.whl
-zivid-{version}-cp39-cp39-win_amd64.whl
-zivid-{version}-cp310-cp310-win_amd64.whl
-zivid-{version}-cp311-cp311-win_amd64.whl
-zivid-{version}-cp312-cp312-win_amd64.whl
-zivid-{version}-cp313-cp313-win_amd64.whl
-zivid-{version}.tar.gz
+zivid-{version}+{commit_hash}-cp37-cp37m-win_amd64.whl
+zivid-{version}+{commit_hash}-cp38-cp38-win_amd64.whl
+zivid-{version}+{commit_hash}-cp39-cp39-win_amd64.whl
+zivid-{version}+{commit_hash}-cp310-cp310-win_amd64.whl
+zivid-{version}+{commit_hash}-cp311-cp311-win_amd64.whl
+zivid-{version}+{commit_hash}-cp312-cp312-win_amd64.whl
+zivid-{version}+{commit_hash}-cp313-cp313-win_amd64.whl
+zivid-{version}+{commit_hash}.tar.gz

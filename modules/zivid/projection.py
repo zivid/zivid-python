@@ -2,7 +2,7 @@
 
 import _zivid
 from zivid.frame_2d import Frame2D
-from zivid.settings import _to_internal_settings, Settings
+from zivid.settings import Settings, _to_internal_settings
 from zivid.settings2d import Settings2D, _to_internal_settings2d
 
 
@@ -28,9 +28,7 @@ class ProjectedImage:
             self.__impl = impl
         else:
             raise TypeError(
-                "Unsupported type for argument impl. Got {}, expected {}.".format(
-                    type(impl), _zivid.ProjectedImage
-                )
+                "Unsupported type for argument impl. Got {}, expected {}.".format(type(impl), _zivid.ProjectedImage)
             )
 
     def __str__(self):
@@ -39,11 +37,21 @@ class ProjectedImage:
     def capture_2d(self, settings):
         """Capture a single 2D frame without stopping the ongoing image projection.
 
-        This method returns right after the acquisition of the image is complete. This function can only be used
-        with a zero-brightness 2D capture, otherwise it will interfere with the projected image. An exception
-        will be thrown if settings contains brightness > 0.
+        This method returns right after the acquisition of the image is complete.
 
-        This method can be used with
+        Some settings cannot be used to capture while projecting, depending on the camera model:
+            * Not all camera models support capturing rgb colors while projecting. An exception will be thrown
+              if `Settings2D/Sampling/Color` is set to `rgb` and the camera does not support capturing rgb
+              colors while projecting. Those cameras must use `grayscale` instead.
+
+            * When `Settings2D/Sampling/Color` is set to `rgb` the brightness must be 0 in all acquisitions,
+              otherwise an exception will be thrown.
+
+            * When `Settings2D/Sampling/Color` is set to `grayscale` the brightness may be set to some
+              value > 0. This value will override the brightness of the projection to control the contrast
+              between the scene and the projected image. This will cause the projected image to flicker while
+              the camera is capturing. If the brightness is set to 0 the image projection will be
+              uninterrupted.
 
         Args:
             settings: Settings to use for the capture. Can be either a Settings2D instance or a Settings instance.
@@ -74,9 +82,21 @@ class ProjectedImage:
         This method is deprecated as of SDK 2.15 and will be removed in the next SDK major version (3.0).
         Use capture_2d instead.
 
-        This method returns right after the acquisition of the image is complete. This function can only be used
-        with a zero-brightness 2D capture, otherwise it will interfere with the projected image. An exception
-        will be thrown if settings contains brightness > 0.
+        This method returns right after the acquisition of the image is complete.
+
+        Some settings cannot be used to capture while projecting, depending on the camera model:
+            * Not all camera models support capturing rgb colors while projecting. An exception will be thrown
+              if `Settings2D/Sampling/Color` is set to `rgb` and the camera does not support capturing rgb
+              colors while projecting. Those cameras must use `grayscale` instead.
+
+            * When `Settings2D/Sampling/Color` is set to `rgb` the brightness must be 0 in all acquisitions,
+              otherwise an exception will be thrown.
+
+            * When `Settings2D/Sampling/Color` is set to `grayscale` the brightness may be set to some
+              value > 0. This value will override the brightness of the projection to control the contrast
+              between the scene and the projected image. This will cause the projected image to flicker while
+              the camera is capturing. If the brightness is set to 0 the image projection will be
+              uninterrupted.
 
         Args:
             settings2d: A Settings2D instance to be used for 2D capture.
@@ -132,9 +152,7 @@ def projector_resolution(camera):
     Returns:
         The resolution as a tuple (height,width).
     """
-    return _zivid.projection.projector_resolution(
-        camera._Camera__impl  # pylint: disable=protected-access
-    )
+    return _zivid.projection.projector_resolution(camera._Camera__impl)  # pylint: disable=protected-access
 
 
 def show_image_bgra(camera, image_bgra):

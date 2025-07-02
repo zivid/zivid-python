@@ -4,8 +4,9 @@ This API may change in the future.
 """
 
 import collections.abc
+
 import _zivid
-from zivid.calibration import Pose, HandEyeOutput, MarkerDictionary
+from zivid.calibration import HandEyeOutput, MarkerDictionary, Pose
 
 
 class FixedPlacementOfFiducialMarker:
@@ -29,17 +30,12 @@ class FixedPlacementOfFiducialMarker:
             TypeError: If one of the input arguments is of the wrong type.
         """
         if not isinstance(marker_id, int):
-            raise TypeError(
-                "Unsupported type for argument marker_id. Expected int but got {}".format(
-                    type(marker_id)
-                )
-            )
+            raise TypeError("Unsupported type for argument marker_id. Expected int but got {}".format(type(marker_id)))
 
-        if not isinstance(
-            position, (collections.abc.Iterable, _zivid.data_model.PointXYZ)
-        ):
+        if not isinstance(position, (collections.abc.Iterable, _zivid.data_model.PointXYZ)):
             raise TypeError(
-                "Unsupported type for argument position. Expected: (collections.abc.Iterable, _zivid.data_model.PointXYZ), got {value_type}".format(
+                "Unsupported type for argument position."
+                " Expected: (collections.abc.Iterable, _zivid.data_model.PointXYZ), got {value_type}".format(
                     value_type=type(position)
                 )
             )
@@ -94,30 +90,19 @@ class FixedPlacementOfFiducialMarkers:  # pylint: disable=too-few-public-methods
                 )
             )
 
-        dictionary = (
-            MarkerDictionary._valid_values.get(  # pylint: disable=protected-access
-                marker_dictionary
-            )
-        )
+        dictionary = MarkerDictionary._valid_values.get(marker_dictionary)  # pylint: disable=protected-access
 
         if not (
-            isinstance(markers, list)
-            and all(
-                isinstance(marker, FixedPlacementOfFiducialMarker) for marker in markers
-            )
+            isinstance(markers, list) and all(isinstance(marker, FixedPlacementOfFiducialMarker) for marker in markers)
         ):
             raise TypeError(
-                "Unsupported type for argument position. Expected list of FixedPlacementOfFiducialMarker but got {}".format(
-                    type(markers)
-                )
+                "Unsupported type for argument position."
+                " Expected list of FixedPlacementOfFiducialMarker but got {}".format(type(markers))
             )
 
         self.__impl = _zivid.calibration.FixedPlacementOfFiducialMarkers(
             dictionary,  # pylint: disable=protected-access
-            [
-                marker._FixedPlacementOfFiducialMarker__impl  # pylint: disable=protected-access
-                for marker in markers
-            ],
+            [marker._FixedPlacementOfFiducialMarker__impl for marker in markers],  # pylint: disable=protected-access
         )
 
     def __str__(self):
@@ -150,13 +135,9 @@ class FixedPlacementOfCalibrationBoard:  # pylint: disable=too-few-public-method
             self.__impl = _zivid.calibration.FixedPlacementOfCalibrationBoard(
                 position_or_pose._Pose__impl  # pylint: disable=protected-access
             )
-        elif isinstance(
-            position_or_pose, (collections.abc.Iterable, _zivid.data_model.PointXYZ)
-        ):
+        elif isinstance(position_or_pose, (collections.abc.Iterable, _zivid.data_model.PointXYZ)):
             self.__impl = _zivid.calibration.FixedPlacementOfCalibrationBoard(
-                _zivid.data_model.PointXYZ(
-                    position_or_pose
-                ),  # pylint: disable=protected-access
+                _zivid.data_model.PointXYZ(position_or_pose),  # pylint: disable=protected-access
             )
         else:
             raise TypeError(

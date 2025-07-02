@@ -1,7 +1,8 @@
 """Auto generated, do not edit."""
 
-# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import datetime
+
 import _zivid
 
 
@@ -13,12 +14,11 @@ class FrameInfo:
             self,
             acquisition_time=_zivid.FrameInfo.Metrics.AcquisitionTime().value,
             capture_time=_zivid.FrameInfo.Metrics.CaptureTime().value,
+            reprocessing_time=_zivid.FrameInfo.Metrics.ReprocessingTime().value,
         ):
 
             if isinstance(acquisition_time, (datetime.timedelta,)):
-                self._acquisition_time = _zivid.FrameInfo.Metrics.AcquisitionTime(
-                    acquisition_time
-                )
+                self._acquisition_time = _zivid.FrameInfo.Metrics.AcquisitionTime(acquisition_time)
             else:
                 raise TypeError(
                     "Unsupported type, expected: (datetime.timedelta,), got {value_type}".format(
@@ -35,6 +35,15 @@ class FrameInfo:
                     )
                 )
 
+            if isinstance(reprocessing_time, (datetime.timedelta,)) or reprocessing_time is None:
+                self._reprocessing_time = _zivid.FrameInfo.Metrics.ReprocessingTime(reprocessing_time)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (datetime.timedelta,) or None, got {value_type}".format(
+                        value_type=type(reprocessing_time)
+                    )
+                )
+
         @property
         def acquisition_time(self):
             return self._acquisition_time.value
@@ -43,15 +52,17 @@ class FrameInfo:
         def capture_time(self):
             return self._capture_time.value
 
+        @property
+        def reprocessing_time(self):
+            return self._reprocessing_time.value
+
         @acquisition_time.setter
         def acquisition_time(self, value):
             if isinstance(value, (datetime.timedelta,)):
                 self._acquisition_time = _zivid.FrameInfo.Metrics.AcquisitionTime(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: datetime.timedelta, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: datetime.timedelta, got {value_type}".format(value_type=type(value))
                 )
 
         @capture_time.setter
@@ -60,7 +71,16 @@ class FrameInfo:
                 self._capture_time = _zivid.FrameInfo.Metrics.CaptureTime(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: datetime.timedelta, got {value_type}".format(
+                    "Unsupported type, expected: datetime.timedelta, got {value_type}".format(value_type=type(value))
+                )
+
+        @reprocessing_time.setter
+        def reprocessing_time(self, value):
+            if isinstance(value, (datetime.timedelta,)) or value is None:
+                self._reprocessing_time = _zivid.FrameInfo.Metrics.ReprocessingTime(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: datetime.timedelta or None, got {value_type}".format(
                         value_type=type(value)
                     )
                 )
@@ -69,6 +89,7 @@ class FrameInfo:
             if (
                 self._acquisition_time == other._acquisition_time
                 and self._capture_time == other._capture_time
+                and self._reprocessing_time == other._reprocessing_time
             ):
                 return True
             return False
@@ -86,11 +107,7 @@ class FrameInfo:
             if isinstance(core, (str,)):
                 self._core = _zivid.FrameInfo.SoftwareVersion.Core(core)
             else:
-                raise TypeError(
-                    "Unsupported type, expected: (str,), got {value_type}".format(
-                        value_type=type(core)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: (str,), got {value_type}".format(value_type=type(core)))
 
         @property
         def core(self):
@@ -101,11 +118,7 @@ class FrameInfo:
             if isinstance(value, (str,)):
                 self._core = _zivid.FrameInfo.SoftwareVersion.Core(value)
             else:
-                raise TypeError(
-                    "Unsupported type, expected: str, got {value_type}".format(
-                        value_type=type(value)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
         def __eq__(self, other):
             if self._core == other._core:
@@ -128,9 +141,7 @@ class FrameInfo:
                     self._model = _zivid.FrameInfo.SystemInfo.CPU.Model(model)
                 else:
                     raise TypeError(
-                        "Unsupported type, expected: (str,), got {value_type}".format(
-                            value_type=type(model)
-                        )
+                        "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(model))
                     )
 
             @property
@@ -142,11 +153,7 @@ class FrameInfo:
                 if isinstance(value, (str,)):
                     self._model = _zivid.FrameInfo.SystemInfo.CPU.Model(value)
                 else:
-                    raise TypeError(
-                        "Unsupported type, expected: str, got {value_type}".format(
-                            value_type=type(value)
-                        )
-                    )
+                    raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
             def __eq__(self, other):
                 if self._model == other._model:
@@ -168,20 +175,14 @@ class FrameInfo:
                     self._model = _zivid.FrameInfo.SystemInfo.ComputeDevice.Model(model)
                 else:
                     raise TypeError(
-                        "Unsupported type, expected: (str,), got {value_type}".format(
-                            value_type=type(model)
-                        )
+                        "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(model))
                     )
 
                 if isinstance(vendor, (str,)):
-                    self._vendor = _zivid.FrameInfo.SystemInfo.ComputeDevice.Vendor(
-                        vendor
-                    )
+                    self._vendor = _zivid.FrameInfo.SystemInfo.ComputeDevice.Vendor(vendor)
                 else:
                     raise TypeError(
-                        "Unsupported type, expected: (str,), got {value_type}".format(
-                            value_type=type(vendor)
-                        )
+                        "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(vendor))
                     )
 
             @property
@@ -197,24 +198,14 @@ class FrameInfo:
                 if isinstance(value, (str,)):
                     self._model = _zivid.FrameInfo.SystemInfo.ComputeDevice.Model(value)
                 else:
-                    raise TypeError(
-                        "Unsupported type, expected: str, got {value_type}".format(
-                            value_type=type(value)
-                        )
-                    )
+                    raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
             @vendor.setter
             def vendor(self, value):
                 if isinstance(value, (str,)):
-                    self._vendor = _zivid.FrameInfo.SystemInfo.ComputeDevice.Vendor(
-                        value
-                    )
+                    self._vendor = _zivid.FrameInfo.SystemInfo.ComputeDevice.Vendor(value)
                 else:
-                    raise TypeError(
-                        "Unsupported type, expected: str, got {value_type}".format(
-                            value_type=type(value)
-                        )
-                    )
+                    raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
             def __eq__(self, other):
                 if self._model == other._model and self._vendor == other._vendor:
@@ -232,14 +223,10 @@ class FrameInfo:
         ):
 
             if isinstance(operating_system, (str,)):
-                self._operating_system = _zivid.FrameInfo.SystemInfo.OperatingSystem(
-                    operating_system
-                )
+                self._operating_system = _zivid.FrameInfo.SystemInfo.OperatingSystem(operating_system)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (str,), got {value_type}".format(
-                        value_type=type(operating_system)
-                    )
+                    "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(operating_system))
                 )
 
             if cpu is None:
@@ -251,9 +238,7 @@ class FrameInfo:
             if compute_device is None:
                 compute_device = self.ComputeDevice()
             if not isinstance(compute_device, self.ComputeDevice):
-                raise TypeError(
-                    "Unsupported type: {value}".format(value=type(compute_device))
-                )
+                raise TypeError("Unsupported type: {value}".format(value=type(compute_device)))
             self._compute_device = compute_device
 
         @property
@@ -271,15 +256,9 @@ class FrameInfo:
         @operating_system.setter
         def operating_system(self, value):
             if isinstance(value, (str,)):
-                self._operating_system = _zivid.FrameInfo.SystemInfo.OperatingSystem(
-                    value
-                )
+                self._operating_system = _zivid.FrameInfo.SystemInfo.OperatingSystem(value)
             else:
-                raise TypeError(
-                    "Unsupported type, expected: str, got {value_type}".format(
-                        value_type=type(value)
-                    )
-                )
+                raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
 
         @cpu.setter
         def cpu(self, value):
@@ -317,9 +296,7 @@ class FrameInfo:
             self._time_stamp = _zivid.FrameInfo.TimeStamp(time_stamp)
         else:
             raise TypeError(
-                "Unsupported type, expected: (datetime.datetime,), got {value_type}".format(
-                    value_type=type(time_stamp)
-                )
+                "Unsupported type, expected: (datetime.datetime,), got {value_type}".format(value_type=type(time_stamp))
             )
 
         if metrics is None:
@@ -331,9 +308,7 @@ class FrameInfo:
         if software_version is None:
             software_version = self.SoftwareVersion()
         if not isinstance(software_version, self.SoftwareVersion):
-            raise TypeError(
-                "Unsupported type: {value}".format(value=type(software_version))
-            )
+            raise TypeError("Unsupported type: {value}".format(value=type(software_version)))
         self._software_version = software_version
 
         if system_info is None:
@@ -364,9 +339,7 @@ class FrameInfo:
             self._time_stamp = _zivid.FrameInfo.TimeStamp(value)
         else:
             raise TypeError(
-                "Unsupported type, expected: datetime.datetime, got {value_type}".format(
-                    value_type=type(value)
-                )
+                "Unsupported type, expected: datetime.datetime, got {value_type}".format(value_type=type(value))
             )
 
     @metrics.setter
@@ -419,6 +392,7 @@ def _to_frame_info_metrics(internal_metrics):
     return FrameInfo.Metrics(
         acquisition_time=internal_metrics.acquisition_time.value,
         capture_time=internal_metrics.capture_time.value,
+        reprocessing_time=internal_metrics.reprocessing_time.value,
     )
 
 
@@ -444,9 +418,7 @@ def _to_frame_info_system_info_compute_device(internal_compute_device):
 def _to_frame_info_system_info(internal_system_info):
     return FrameInfo.SystemInfo(
         cpu=_to_frame_info_system_info_cpu(internal_system_info.cpu),
-        compute_device=_to_frame_info_system_info_compute_device(
-            internal_system_info.compute_device
-        ),
+        compute_device=_to_frame_info_system_info_compute_device(internal_system_info.compute_device),
         operating_system=internal_system_info.operating_system.value,
     )
 
@@ -454,9 +426,7 @@ def _to_frame_info_system_info(internal_system_info):
 def _to_frame_info(internal_frame_info):
     return FrameInfo(
         metrics=_to_frame_info_metrics(internal_frame_info.metrics),
-        software_version=_to_frame_info_software_version(
-            internal_frame_info.software_version
-        ),
+        software_version=_to_frame_info_software_version(internal_frame_info.software_version),
         system_info=_to_frame_info_system_info(internal_frame_info.system_info),
         time_stamp=internal_frame_info.time_stamp.value,
     )
@@ -465,12 +435,9 @@ def _to_frame_info(internal_frame_info):
 def _to_internal_frame_info_metrics(metrics):
     internal_metrics = _zivid.FrameInfo.Metrics()
 
-    internal_metrics.acquisition_time = _zivid.FrameInfo.Metrics.AcquisitionTime(
-        metrics.acquisition_time
-    )
-    internal_metrics.capture_time = _zivid.FrameInfo.Metrics.CaptureTime(
-        metrics.capture_time
-    )
+    internal_metrics.acquisition_time = _zivid.FrameInfo.Metrics.AcquisitionTime(metrics.acquisition_time)
+    internal_metrics.capture_time = _zivid.FrameInfo.Metrics.CaptureTime(metrics.capture_time)
+    internal_metrics.reprocessing_time = _zivid.FrameInfo.Metrics.ReprocessingTime(metrics.reprocessing_time)
 
     return internal_metrics
 
@@ -478,9 +445,7 @@ def _to_internal_frame_info_metrics(metrics):
 def _to_internal_frame_info_software_version(software_version):
     internal_software_version = _zivid.FrameInfo.SoftwareVersion()
 
-    internal_software_version.core = _zivid.FrameInfo.SoftwareVersion.Core(
-        software_version.core
-    )
+    internal_software_version.core = _zivid.FrameInfo.SoftwareVersion.Core(software_version.core)
 
     return internal_software_version
 
@@ -496,12 +461,8 @@ def _to_internal_frame_info_system_info_cpu(cpu):
 def _to_internal_frame_info_system_info_compute_device(compute_device):
     internal_compute_device = _zivid.FrameInfo.SystemInfo.ComputeDevice()
 
-    internal_compute_device.model = _zivid.FrameInfo.SystemInfo.ComputeDevice.Model(
-        compute_device.model
-    )
-    internal_compute_device.vendor = _zivid.FrameInfo.SystemInfo.ComputeDevice.Vendor(
-        compute_device.vendor
-    )
+    internal_compute_device.model = _zivid.FrameInfo.SystemInfo.ComputeDevice.Model(compute_device.model)
+    internal_compute_device.vendor = _zivid.FrameInfo.SystemInfo.ComputeDevice.Vendor(compute_device.vendor)
 
     return internal_compute_device
 
@@ -509,14 +470,10 @@ def _to_internal_frame_info_system_info_compute_device(compute_device):
 def _to_internal_frame_info_system_info(system_info):
     internal_system_info = _zivid.FrameInfo.SystemInfo()
 
-    internal_system_info.operating_system = _zivid.FrameInfo.SystemInfo.OperatingSystem(
-        system_info.operating_system
-    )
+    internal_system_info.operating_system = _zivid.FrameInfo.SystemInfo.OperatingSystem(system_info.operating_system)
 
     internal_system_info.cpu = _to_internal_frame_info_system_info_cpu(system_info.cpu)
-    internal_system_info.compute_device = (
-        _to_internal_frame_info_system_info_compute_device(system_info.compute_device)
-    )
+    internal_system_info.compute_device = _to_internal_frame_info_system_info_compute_device(system_info.compute_device)
     return internal_system_info
 
 
@@ -526,10 +483,6 @@ def _to_internal_frame_info(frame_info):
     internal_frame_info.time_stamp = _zivid.FrameInfo.TimeStamp(frame_info.time_stamp)
 
     internal_frame_info.metrics = _to_internal_frame_info_metrics(frame_info.metrics)
-    internal_frame_info.software_version = _to_internal_frame_info_software_version(
-        frame_info.software_version
-    )
-    internal_frame_info.system_info = _to_internal_frame_info_system_info(
-        frame_info.system_info
-    )
+    internal_frame_info.software_version = _to_internal_frame_info_software_version(frame_info.software_version)
+    internal_frame_info.system_info = _to_internal_frame_info_system_info(frame_info.system_info)
     return internal_frame_info

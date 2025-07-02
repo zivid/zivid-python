@@ -1,9 +1,8 @@
 """Contains the Preset and Category classes."""
 
 import _zivid
-
-from zivid.settings import _to_settings
 from zivid.camera_info import CameraInfo, _to_internal_camera_info
+from zivid.settings import _to_settings
 from zivid.settings2d import _to_settings2d
 
 
@@ -159,12 +158,7 @@ def categories(model):
     Returns:
         The available categories for the specified camera model.
     """
-    return [
-        Category(c)
-        for c in _zivid.presets.categories(
-            _to_internal_camera_info(CameraInfo(model=model)).model
-        )
-    ]
+    return [Category(c) for c in _zivid.presets.categories(_to_internal_camera_info(CameraInfo(model=model)).model)]
 
 
 def categories2d(model):
@@ -179,9 +173,4 @@ def categories2d(model):
     Returns:
         The available 2D categories for the specified camera model.
     """
-    return [
-        Category(c)
-        for c in _zivid.presets.categories2d(
-            _to_internal_camera_info(CameraInfo(model=model)).model
-        )
-    ]
+    return [Category(c) for c in _zivid.presets.categories2d(_to_internal_camera_info(CameraInfo(model=model)).model)]

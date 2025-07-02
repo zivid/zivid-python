@@ -5,8 +5,8 @@ the zivid.calibration module.
 """
 
 import _zivid
-from zivid._calibration.pose import Pose
 from zivid._calibration.detector import DetectionResult, DetectionResultFiducialMarkers
+from zivid._calibration.pose import Pose
 
 
 class HandEyeInput:
@@ -42,7 +42,8 @@ class HandEyeInput:
             raise TypeError(
                 (
                     "Unsupported type for argument detection_result."
-                    "Expected zivid.calibration.DetectionResult or zivid.calibration.DetectionResultFiducialMarkers but got {}"
+                    " Expected zivid.calibration.DetectionResult or zivid.calibration.DetectionResultFiducialMarkers"
+                    " but got {}"
                 ).format(type(detection_result))
             )
 
@@ -162,10 +163,7 @@ class HandEyeOutput:
         Returns:
             List of HandEyeResidual, one for each pose.
         """
-        return [
-            HandEyeResidual(internal_residual)
-            for internal_residual in self.__impl.residuals()
-        ]
+        return [HandEyeResidual(internal_residual) for internal_residual in self.__impl.residuals()]
 
     def __str__(self):
         return str(self.__impl)

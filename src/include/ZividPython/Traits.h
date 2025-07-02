@@ -11,8 +11,8 @@ namespace Detail
     struct nonesuch
     {
         ~nonesuch() = delete;
-        nonesuch(nonesuch const &) = delete;
-        void operator=(nonesuch const &) = delete;
+        nonesuch(const nonesuch &) = delete;
+        void operator=(const nonesuch &) = delete;
     };
 
     template<class Default, class AlwaysVoid, template<class...> class Op, class... Args>

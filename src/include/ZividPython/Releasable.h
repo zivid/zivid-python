@@ -34,12 +34,11 @@
         auto nativeContainer = WITH_GIL_UNLOCKED(impl().functionName());                                               \
         container<returnType> returnContainer;                                                                         \
         returnContainer.reserve(nativeContainer.size());                                                               \
-        std::transform(std::make_move_iterator(begin(nativeContainer)),                                                \
-                       std::make_move_iterator(end(nativeContainer)),                                                  \
-                       std::back_inserter(returnContainer),                                                            \
-                       [](auto &&nativeValue) {                                                                        \
-                           return returnType{ std::forward<decltype(nativeValue)>(nativeValue) };                      \
-                       });                                                                                             \
+        std::transform(                                                                                                \
+            std::make_move_iterator(begin(nativeContainer)),                                                           \
+            std::make_move_iterator(end(nativeContainer)),                                                             \
+            std::back_inserter(returnContainer),                                                                       \
+            [](auto &&nativeValue) { return returnType{ std::forward<decltype(nativeValue)>(nativeValue) }; });        \
         return returnContainer;                                                                                        \
     }
 
@@ -127,13 +126,19 @@ namespace ZividPython
     class Singleton
     {
     public:
-        template<typename... Args, std::enable_if_t<(std::is_constructible_v<T, Args...>), int> = 0>
-        Singleton(Args &&...args)
+        template<
+            typename FactoryFunction,
+            typename... Args,
+            std::enable_if_t<std::is_invocable_r_v<T, FactoryFunction, Args...>, int> = 0>
+        explicit Singleton(FactoryFunction &&create, Args &&...args)
         {
             // Keep the singleton alive forever to avoid races with
             // static variables that the singleton may need during destruction
             // This should be fixed a more elegant way!
-            if(!globalImpl) globalImpl = std::make_shared<T>(std::forward<Args>(args)...);
+            if(!globalImpl)
+            {
+                globalImpl = std::make_shared<T>(std::forward<FactoryFunction>(create)(std::forward<Args>(args)...));
+            }
         }
 
         decltype(auto) toString() const
@@ -143,7 +148,10 @@ namespace ZividPython
 
         auto &impl() const
         {
-            if(!globalImpl) throw std::runtime_error{ "Instance have been released" };
+            if(!globalImpl)
+            {
+                throw std::runtime_error{ "Instance has been released" };
+            }
             return *globalImpl;
         }
 

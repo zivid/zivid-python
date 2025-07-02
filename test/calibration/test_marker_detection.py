@@ -1,5 +1,6 @@
-import zivid
 import numpy as np
+import zivid
+from zivid.calibration import MarkerDictionary
 
 
 def _check_markers(
@@ -43,15 +44,11 @@ def test_detect_all_markers(
         allowed_marker_ids,
         zivid.calibration.MarkerDictionary.aruco4x4_50,
     )
-    assert isinstance(
-        detection_result, zivid.calibration.DetectionResultFiducialMarkers
-    )
+    assert isinstance(detection_result, zivid.calibration.DetectionResultFiducialMarkers)
     assert detection_result
     assert detection_result.valid()
     assert detection_result.allowed_marker_ids() == allowed_marker_ids
-    assert [
-        m.identifier for m in detection_result.detected_markers()
-    ] == allowed_marker_ids
+    assert [m.identifier for m in detection_result.detected_markers()] == allowed_marker_ids
     _check_markers(
         detection_result.detected_markers(),
         markers_2d_corners,
@@ -73,15 +70,11 @@ def test_detect_filtered_markers(
         allowed_marker_ids,
         zivid.calibration.MarkerDictionary.aruco4x4_50,
     )
-    assert isinstance(
-        detection_result, zivid.calibration.DetectionResultFiducialMarkers
-    )
+    assert isinstance(detection_result, zivid.calibration.DetectionResultFiducialMarkers)
     assert detection_result
     assert detection_result.valid()
     assert detection_result.allowed_marker_ids() == allowed_marker_ids
-    assert [
-        m.identifier for m in detection_result.detected_markers()
-    ] == allowed_marker_ids
+    assert [m.identifier for m in detection_result.detected_markers()] == allowed_marker_ids
     _check_markers(
         detection_result.detected_markers(),
         markers_2d_corners,
@@ -103,9 +96,7 @@ def test_detect_with_some_markers_not_present(
         allowed_marker_ids,
         zivid.calibration.MarkerDictionary.aruco4x4_50,
     )
-    assert isinstance(
-        detection_result, zivid.calibration.DetectionResultFiducialMarkers
-    )
+    assert isinstance(detection_result, zivid.calibration.DetectionResultFiducialMarkers)
     assert detection_result
     assert detection_result.valid()
     assert detection_result.allowed_marker_ids() == allowed_marker_ids
@@ -128,9 +119,7 @@ def test_detect_specifying_different_dictionary(
         allowed_marker_ids,
         zivid.calibration.MarkerDictionary.aruco6x6_250,
     )
-    assert isinstance(
-        detection_result, zivid.calibration.DetectionResultFiducialMarkers
-    )
+    assert isinstance(detection_result, zivid.calibration.DetectionResultFiducialMarkers)
     assert not detection_result
     assert not detection_result.valid()
     assert detection_result.allowed_marker_ids() == allowed_marker_ids
@@ -138,8 +127,6 @@ def test_detect_specifying_different_dictionary(
 
 
 def test_marker_dictionary():
-    from zivid.calibration import MarkerDictionary
-
     assert MarkerDictionary.marker_count(MarkerDictionary.aruco4x4_50) == 50
     assert MarkerDictionary.marker_count(MarkerDictionary.aruco6x6_250) == 250
 

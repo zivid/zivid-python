@@ -1,6 +1,6 @@
 __version__:
-  serializer: 1
-  data: 1
+    serializer: 1
+    data: 1
 SuggestSettingsParameters:
-  AmbientLightFrequency: hz50
-  MaxCaptureTime: 1200
+    AmbientLightFrequency: hz50
+    MaxCaptureTime: 1200

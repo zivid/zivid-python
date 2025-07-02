@@ -11,6 +11,7 @@ namespace py = pybind11;
 namespace
 {
 #pragma pack(push)
+
     struct PointXYZColorRGBA
     {
         float x, y, z;
@@ -22,6 +23,7 @@ namespace
         float x, y, z;
         uint8_t b, g, r, a;
     };
+
 #pragma pack(pop)
 
     template<typename NativeType, typename WrapperType, size_t depth>
@@ -36,12 +38,13 @@ namespace
                                sizeof(WrapperType) * depth,
                                sizeof(WrapperType) };
         auto *dataPtr = static_cast<void *>(const_cast<NativeType *>(arrayWrapper.impl().data()));
-        return py::buffer_info(dataPtr,
-                               sizeof(WrapperType),
-                               py::format_descriptor<WrapperType>::format(),
-                               dim,
-                               std::vector<py::ssize_t>(shape.begin(), shape.begin() + dim),
-                               std::vector<py::ssize_t>(strides.begin(), strides.begin() + dim));
+        return py::buffer_info(
+            dataPtr,
+            sizeof(WrapperType),
+            py::format_descriptor<WrapperType>::format(),
+            dim,
+            std::vector<py::ssize_t>(shape.begin(), shape.begin() + dim),
+            std::vector<py::ssize_t>(strides.begin(), strides.begin() + dim));
     }
 
     template<typename NativeType>

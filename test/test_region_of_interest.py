@@ -1,9 +1,8 @@
 import numpy as np
+import zivid
 
 
 def test_region_of_interest_depth(shared_file_camera):
-    import zivid
-
     z_min = 650.0
     z_max = 800.0
 
@@ -25,8 +24,6 @@ def test_region_of_interest_depth(shared_file_camera):
 
 
 def test_region_of_interest_box(shared_file_camera):
-    import zivid
-
     x_min = 0.0
     x_max = 150.0
     y_min = -125.0

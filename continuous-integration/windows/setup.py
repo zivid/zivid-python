@@ -76,7 +76,7 @@ def _install_intel_opencl_runtime():
 
 
 def _write_zivid_cpu_configuration_file():
-    api_config = Path() / "ZividAPIConfig.yml"
+    api_config = Path("continuous-integration") / "ZividAPIConfig.yml"
 
     appdata_dir = Path(os.getenv("LOCALAPPDATA"))
     target_location = appdata_dir / "Zivid" / "API" / "Config.yml"

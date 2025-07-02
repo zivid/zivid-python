@@ -1,6 +1,6 @@
 #include <ZividPython/PointCloudExport.h>
-
 #include <ZividPython/ReleasableFrame.h>
+#include <ZividPython/ReleasableUnorganizedPointCloud.h>
 
 #include <utility>
 
@@ -19,6 +19,14 @@ namespace
     auto exportFrame(const ZividPython::ReleasableFrame &frame, const FileFormat &fileFormat)
     {
         return Zivid::Experimental::PointCloudExport::exportFrame(frame.impl(), fileFormat);
+    }
+
+    template<typename FileFormat>
+    auto exportUnorganizedPointCloud(
+        const ZividPython::ReleasableUnorganizedPointCloud &upc,
+        const FileFormat &fileFormat)
+    {
+        return Zivid::Experimental::PointCloudExport::exportUnorganizedPointCloud(upc.impl(), fileFormat);
     }
 } // namespace
 
@@ -47,14 +55,16 @@ namespace ZividPython
         ZIVID_PYTHON_WRAP_ENUM_CLASS(pyClass, Layout);
 
         wrapFileFormat(std::move(pyClass))
-            .def(py::init<const std::string &,
-                          Layout,
-                          Zivid::Experimental::PointCloudExport::ColorSpace,
-                          Zivid::Experimental::PointCloudExport::IncludeNormals>(),
-                 py::arg("file_name"),
-                 py::arg("layout"),
-                 py::arg("color_space"),
-                 py::arg("include_normals"));
+            .def(
+                py::init<
+                    const std::string &,
+                    Layout,
+                    Zivid::Experimental::PointCloudExport::ColorSpace,
+                    Zivid::Experimental::PointCloudExport::IncludeNormals>(),
+                py::arg("file_name"),
+                py::arg("layout"),
+                py::arg("color_space"),
+                py::arg("include_normals"));
     }
 
     void wrapEnum(py::enum_<Zivid::Experimental::PointCloudExport::FileFormat::PLY::Layout> pyEnum)
@@ -66,20 +76,34 @@ namespace ZividPython
     void wrapClass(py::class_<Zivid::Experimental::PointCloudExport::FileFormat::XYZ> pyClass)
     {
         wrapFileFormat(std::move(pyClass))
-            .def(py::init<const std::string &, Zivid::Experimental::PointCloudExport::ColorSpace>(),
-                 py::arg("file_name"),
-                 py::arg("color_space"));
+            .def(
+                py::init<const std::string &, Zivid::Experimental::PointCloudExport::ColorSpace>(),
+                py::arg("file_name"),
+                py::arg("color_space"));
+    }
+
+    void wrapEnum(py::enum_<Zivid::Experimental::PointCloudExport::FileFormat::PCD::Layout> pyEnum)
+    {
+        pyEnum.value("organized", Zivid::Experimental::PointCloudExport::FileFormat::PCD::Layout::organized)
+            .value("unorganized", Zivid::Experimental::PointCloudExport::FileFormat::PCD::Layout::unorganized);
     }
 
     void wrapClass(py::class_<Zivid::Experimental::PointCloudExport::FileFormat::PCD> pyClass)
     {
+        using Layout = Zivid::Experimental::PointCloudExport::FileFormat::PCD::Layout;
+        ZIVID_PYTHON_WRAP_ENUM_CLASS(pyClass, Layout);
+
         wrapFileFormat(std::move(pyClass))
-            .def(py::init<const std::string &,
-                          Zivid::Experimental::PointCloudExport::ColorSpace,
-                          Zivid::Experimental::PointCloudExport::IncludeNormals>(),
-                 py::arg("file_name"),
-                 py::arg("color_space"),
-                 py::arg("include_normals"));
+            .def(
+                py::init<
+                    const std::string &,
+                    Zivid::Experimental::PointCloudExport::ColorSpace,
+                    Zivid::Experimental::PointCloudExport::IncludeNormals,
+                    Layout>(),
+                py::arg("file_name"),
+                py::arg("color_space"),
+                py::arg("include_normals"),
+                py::arg("layout"));
     }
 
     namespace PointCloudExport
@@ -111,22 +135,48 @@ namespace ZividPython
 
             wrapNamespaceAsSubmodule(dest, FileFormat::wrapAsSubmodule, "FileFormat");
 
-            dest.def("export_frame",
-                     py::overload_cast<const ReleasableFrame &,
-                                       const Zivid::Experimental::PointCloudExport::FileFormat::ZDF &>(
-                         &exportFrame<Zivid::Experimental::PointCloudExport::FileFormat::ZDF>))
-                .def("export_frame",
-                     py::overload_cast<const ReleasableFrame &,
-                                       const Zivid::Experimental::PointCloudExport::FileFormat::PLY &>(
-                         &exportFrame<Zivid::Experimental::PointCloudExport::FileFormat::PLY>))
-                .def("export_frame",
-                     py::overload_cast<const ReleasableFrame &,
-                                       const Zivid::Experimental::PointCloudExport::FileFormat::XYZ &>(
-                         &exportFrame<Zivid::Experimental::PointCloudExport::FileFormat::XYZ>))
-                .def("export_frame",
-                     py::overload_cast<const ReleasableFrame &,
-                                       const Zivid::Experimental::PointCloudExport::FileFormat::PCD &>(
-                         &exportFrame<Zivid::Experimental::PointCloudExport::FileFormat::PCD>));
+            dest.def(
+                    "export_frame",
+                    py::overload_cast<
+                        const ReleasableFrame &,
+                        const Zivid::Experimental::PointCloudExport::FileFormat::ZDF &>(
+                        &exportFrame<Zivid::Experimental::PointCloudExport::FileFormat::ZDF>))
+                .def(
+                    "export_frame",
+                    py::overload_cast<
+                        const ReleasableFrame &,
+                        const Zivid::Experimental::PointCloudExport::FileFormat::PLY &>(
+                        &exportFrame<Zivid::Experimental::PointCloudExport::FileFormat::PLY>))
+                .def(
+                    "export_frame",
+                    py::overload_cast<
+                        const ReleasableFrame &,
+                        const Zivid::Experimental::PointCloudExport::FileFormat::XYZ &>(
+                        &exportFrame<Zivid::Experimental::PointCloudExport::FileFormat::XYZ>))
+                .def(
+                    "export_frame",
+                    py::overload_cast<
+                        const ReleasableFrame &,
+                        const Zivid::Experimental::PointCloudExport::FileFormat::PCD &>(
+                        &exportFrame<Zivid::Experimental::PointCloudExport::FileFormat::PCD>))
+                .def(
+                    "export_unorganized_point_cloud",
+                    py::overload_cast<
+                        const ReleasableUnorganizedPointCloud &,
+                        const Zivid::Experimental::PointCloudExport::FileFormat::PLY &>(
+                        &exportUnorganizedPointCloud<Zivid::Experimental::PointCloudExport::FileFormat::PLY>))
+                .def(
+                    "export_unorganized_point_cloud",
+                    py::overload_cast<
+                        const ReleasableUnorganizedPointCloud &,
+                        const Zivid::Experimental::PointCloudExport::FileFormat::XYZ &>(
+                        &exportUnorganizedPointCloud<Zivid::Experimental::PointCloudExport::FileFormat::XYZ>))
+                .def(
+                    "export_unorganized_point_cloud",
+                    py::overload_cast<
+                        const ReleasableUnorganizedPointCloud &,
+                        const Zivid::Experimental::PointCloudExport::FileFormat::PCD &>(
+                        &exportUnorganizedPointCloud<Zivid::Experimental::PointCloudExport::FileFormat::PCD>));
         }
     } // namespace PointCloudExport
 } // namespace ZividPython

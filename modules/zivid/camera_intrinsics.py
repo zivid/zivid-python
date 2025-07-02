@@ -1,6 +1,6 @@
 """Auto generated, do not edit."""
 
-# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
 
@@ -26,9 +26,7 @@ class CameraIntrinsics:
                 self._cx = _zivid.CameraIntrinsics.CameraMatrix.CX(cx)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(cx)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(cx))
                 )
 
             if isinstance(
@@ -41,9 +39,7 @@ class CameraIntrinsics:
                 self._cy = _zivid.CameraIntrinsics.CameraMatrix.CY(cy)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(cy)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(cy))
                 )
 
             if isinstance(
@@ -56,9 +52,7 @@ class CameraIntrinsics:
                 self._fx = _zivid.CameraIntrinsics.CameraMatrix.FX(fx)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(fx)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(fx))
                 )
 
             if isinstance(
@@ -71,9 +65,7 @@ class CameraIntrinsics:
                 self._fy = _zivid.CameraIntrinsics.CameraMatrix.FY(fy)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(fy)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(fy))
                 )
 
         @property
@@ -104,9 +96,7 @@ class CameraIntrinsics:
                 self._cx = _zivid.CameraIntrinsics.CameraMatrix.CX(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         @cy.setter
@@ -121,9 +111,7 @@ class CameraIntrinsics:
                 self._cy = _zivid.CameraIntrinsics.CameraMatrix.CY(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         @fx.setter
@@ -138,9 +126,7 @@ class CameraIntrinsics:
                 self._fx = _zivid.CameraIntrinsics.CameraMatrix.FX(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         @fy.setter
@@ -155,18 +141,11 @@ class CameraIntrinsics:
                 self._fy = _zivid.CameraIntrinsics.CameraMatrix.FY(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         def __eq__(self, other):
-            if (
-                self._cx == other._cx
-                and self._cy == other._cy
-                and self._fx == other._fx
-                and self._fy == other._fy
-            ):
+            if self._cx == other._cx and self._cy == other._cy and self._fx == other._fx and self._fy == other._fy:
                 return True
             return False
 
@@ -194,9 +173,7 @@ class CameraIntrinsics:
                 self._k1 = _zivid.CameraIntrinsics.Distortion.K1(k1)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(k1)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(k1))
                 )
 
             if isinstance(
@@ -209,9 +186,7 @@ class CameraIntrinsics:
                 self._k2 = _zivid.CameraIntrinsics.Distortion.K2(k2)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(k2)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(k2))
                 )
 
             if isinstance(
@@ -224,9 +199,7 @@ class CameraIntrinsics:
                 self._k3 = _zivid.CameraIntrinsics.Distortion.K3(k3)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(k3)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(k3))
                 )
 
             if isinstance(
@@ -239,9 +212,7 @@ class CameraIntrinsics:
                 self._p1 = _zivid.CameraIntrinsics.Distortion.P1(p1)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(p1)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(p1))
                 )
 
             if isinstance(
@@ -254,9 +225,7 @@ class CameraIntrinsics:
                 self._p2 = _zivid.CameraIntrinsics.Distortion.P2(p2)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: (float, int,), got {value_type}".format(
-                        value_type=type(p2)
-                    )
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(value_type=type(p2))
                 )
 
         @property
@@ -291,9 +260,7 @@ class CameraIntrinsics:
                 self._k1 = _zivid.CameraIntrinsics.Distortion.K1(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         @k2.setter
@@ -308,9 +275,7 @@ class CameraIntrinsics:
                 self._k2 = _zivid.CameraIntrinsics.Distortion.K2(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         @k3.setter
@@ -325,9 +290,7 @@ class CameraIntrinsics:
                 self._k3 = _zivid.CameraIntrinsics.Distortion.K3(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         @p1.setter
@@ -342,9 +305,7 @@ class CameraIntrinsics:
                 self._p1 = _zivid.CameraIntrinsics.Distortion.P1(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         @p2.setter
@@ -359,9 +320,7 @@ class CameraIntrinsics:
                 self._p2 = _zivid.CameraIntrinsics.Distortion.P2(value)
             else:
                 raise TypeError(
-                    "Unsupported type, expected: float or  int, got {value_type}".format(
-                        value_type=type(value)
-                    )
+                    "Unsupported type, expected: float or  int, got {value_type}".format(value_type=type(value))
                 )
 
         def __eq__(self, other):
@@ -387,9 +346,7 @@ class CameraIntrinsics:
         if camera_matrix is None:
             camera_matrix = self.CameraMatrix()
         if not isinstance(camera_matrix, self.CameraMatrix):
-            raise TypeError(
-                "Unsupported type: {value}".format(value=type(camera_matrix))
-            )
+            raise TypeError("Unsupported type: {value}".format(value=type(camera_matrix)))
         self._camera_matrix = camera_matrix
 
         if distortion is None:
@@ -427,18 +384,13 @@ class CameraIntrinsics:
 
     @classmethod
     def from_serialized(cls, value):
-        return _to_camera_intrinsics(
-            _zivid.CameraIntrinsics.from_serialized(str(value))
-        )
+        return _to_camera_intrinsics(_zivid.CameraIntrinsics.from_serialized(str(value)))
 
     def serialize(self):
         return _to_internal_camera_intrinsics(self).serialize()
 
     def __eq__(self, other):
-        if (
-            self._camera_matrix == other._camera_matrix
-            and self._distortion == other._distortion
-        ):
+        if self._camera_matrix == other._camera_matrix and self._distortion == other._distortion:
             return True
         return False
 
@@ -467,30 +419,18 @@ def _to_camera_intrinsics_distortion(internal_distortion):
 
 def _to_camera_intrinsics(internal_camera_intrinsics):
     return CameraIntrinsics(
-        camera_matrix=_to_camera_intrinsics_camera_matrix(
-            internal_camera_intrinsics.camera_matrix
-        ),
-        distortion=_to_camera_intrinsics_distortion(
-            internal_camera_intrinsics.distortion
-        ),
+        camera_matrix=_to_camera_intrinsics_camera_matrix(internal_camera_intrinsics.camera_matrix),
+        distortion=_to_camera_intrinsics_distortion(internal_camera_intrinsics.distortion),
     )
 
 
 def _to_internal_camera_intrinsics_camera_matrix(camera_matrix):
     internal_camera_matrix = _zivid.CameraIntrinsics.CameraMatrix()
 
-    internal_camera_matrix.cx = _zivid.CameraIntrinsics.CameraMatrix.CX(
-        camera_matrix.cx
-    )
-    internal_camera_matrix.cy = _zivid.CameraIntrinsics.CameraMatrix.CY(
-        camera_matrix.cy
-    )
-    internal_camera_matrix.fx = _zivid.CameraIntrinsics.CameraMatrix.FX(
-        camera_matrix.fx
-    )
-    internal_camera_matrix.fy = _zivid.CameraIntrinsics.CameraMatrix.FY(
-        camera_matrix.fy
-    )
+    internal_camera_matrix.cx = _zivid.CameraIntrinsics.CameraMatrix.CX(camera_matrix.cx)
+    internal_camera_matrix.cy = _zivid.CameraIntrinsics.CameraMatrix.CY(camera_matrix.cy)
+    internal_camera_matrix.fx = _zivid.CameraIntrinsics.CameraMatrix.FX(camera_matrix.fx)
+    internal_camera_matrix.fy = _zivid.CameraIntrinsics.CameraMatrix.FY(camera_matrix.fy)
 
     return internal_camera_matrix
 
@@ -510,10 +450,8 @@ def _to_internal_camera_intrinsics_distortion(distortion):
 def _to_internal_camera_intrinsics(camera_intrinsics):
     internal_camera_intrinsics = _zivid.CameraIntrinsics()
 
-    internal_camera_intrinsics.camera_matrix = (
-        _to_internal_camera_intrinsics_camera_matrix(camera_intrinsics.camera_matrix)
+    internal_camera_intrinsics.camera_matrix = _to_internal_camera_intrinsics_camera_matrix(
+        camera_intrinsics.camera_matrix
     )
-    internal_camera_intrinsics.distortion = _to_internal_camera_intrinsics_distortion(
-        camera_intrinsics.distortion
-    )
+    internal_camera_intrinsics.distortion = _to_internal_camera_intrinsics_distortion(camera_intrinsics.distortion)
     return internal_camera_intrinsics

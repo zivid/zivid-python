@@ -9,4 +9,4 @@ run_platform_dependent_script "setup-opencl.sh" || exit $?
 echo "clinfo:"
 clinfo || exit $?
 
-install -D "$ROOT_DIR"/ZividAPIConfig.yml "$HOME"/.config/Zivid/API/Config.yml || exit $?
+install -D "$ROOT_DIR"/continuous-integration/ZividAPIConfig.yml "$HOME"/.config/Zivid/API/Config.yml || exit $?

@@ -46,28 +46,24 @@ namespace ZividPython::Projection
                 return ZividPython::ReleasableProjectedImage(std::move(projectedImage));
             });
 
-        dest.def("pixels_from_3d_points",
-                 [](const ReleasableCamera &camera, const std::vector<std::array<float, 3>> points) {
-                     auto pointsInternal = std::vector<Zivid::PointXYZ>();
-                     pointsInternal.reserve(points.size());
-                     std::transform(points.begin(),
-                                    points.end(),
-                                    std::back_inserter(pointsInternal),
-                                    [](const auto &point) {
-                                        return Zivid::PointXYZ{ point[0], point[1], point[2] };
-                                    });
+        dest.def(
+            "pixels_from_3d_points",
+            [](const ReleasableCamera &camera, const std::vector<std::array<float, 3>> points) {
+                auto pointsInternal = std::vector<Zivid::PointXYZ>();
+                pointsInternal.reserve(points.size());
+                std::transform(points.begin(), points.end(), std::back_inserter(pointsInternal), [](const auto &point) {
+                    return Zivid::PointXYZ{ point[0], point[1], point[2] };
+                });
 
-                     const auto outputInternal = Zivid::Projection::pixelsFrom3DPoints(camera.impl(), pointsInternal);
+                const auto outputInternal = Zivid::Projection::pixelsFrom3DPoints(camera.impl(), pointsInternal);
 
-                     auto output = std::vector<std::array<float, 2>>();
-                     output.reserve(outputInternal.size());
-                     std::transform(outputInternal.begin(),
-                                    outputInternal.end(),
-                                    std::back_inserter(output),
-                                    [](const auto &pointxy) {
-                                        return std::array<float, 2>{ pointxy.x, pointxy.y };
-                                    });
-                     return output;
-                 });
+                auto output = std::vector<std::array<float, 2>>();
+                output.reserve(outputInternal.size());
+                std::transform(
+                    outputInternal.begin(), outputInternal.end(), std::back_inserter(output), [](const auto &pointxy) {
+                        return std::array<float, 2>{ pointxy.x, pointxy.y };
+                    });
+                return output;
+            });
     }
 } // namespace ZividPython::Projection
