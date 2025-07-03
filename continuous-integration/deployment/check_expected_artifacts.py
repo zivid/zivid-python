@@ -13,8 +13,9 @@ def _expected_artifacts(repository, commit_hash, ref):
     version = version_file.read_text().strip()
     if repository != ZIVID_PYTHON or ref != MASTER_REF:
         # On all branches but master in the zivid/zivid-python repo, a .dev0 suffix will be added to the version.
-        version += ".dev0"
-    return [artifact.format(version=version, commit_hash=commit_hash[:8]) for artifact in artifacts]
+        version += ".dev0" + f"+{commit_hash[:8]}"
+
+    return [artifact.format(version=version) for artifact in artifacts]
 
 
 def _present_artifacts():

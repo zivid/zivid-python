@@ -31,10 +31,6 @@ def _determine_package_version():
     github_repository = os.getenv("GITHUB_REPOSITORY")
     github_ref = os.getenv("GITHUB_REF")
 
-    if github_repository != "zivid/zivid-python" or github_ref != "refs/heads/master":
-        # Only the master branch of the zivid-python repository is considered stable.
-        version_segments.append("dev0")
-
     local_version_segments = []
 
     if sdk_version.get("pre_release"):
@@ -50,7 +46,15 @@ def _determine_package_version():
     else:
         local_version_segments.append("unofficial")
 
-    version = ".".join(version_segments) + "+" + ".".join(local_version_segments)
+    if github_repository != "zivid/zivid-python" or github_ref != "refs/heads/master":
+        # Only the master branch of the zivid-python repository is considered stable.
+        # Anywhere else the version will be a development version, and we add the local version.
+        version_segments.append("dev0")
+        version = ".".join(version_segments) + "+" + ".".join(local_version_segments)
+    else:
+        # Stable releases must not include a local version to be allowed to upload to PyPI.
+        version = ".".join(version_segments)
+
 
     return canonicalize_version(version, strip_trailing_zero=False)
 
