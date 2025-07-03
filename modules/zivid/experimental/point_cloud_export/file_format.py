@@ -210,6 +210,7 @@ class PCD:  # pylint: disable=too-few-public-methods
 
         Args:
             file_name: File name. color_space: Color space of point cloud. Default is sRGB.
+            color_space: Color space of point cloud. Default is sRGB.
             include_normals: Include normals in point cloud. Default is no.
             layout: Layout of point cloud. Default is organized.
 

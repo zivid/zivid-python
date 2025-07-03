@@ -259,9 +259,9 @@ def set_attribute_tester(settings_instance, member, value, expected_data_type):
             setattr(settings_instance, member, 999999999)
         with pytest.raises(IndexError):
             setattr(settings_instance, member, -999999999)
-    elif expected_data_type == bool:
+    elif expected_data_type is bool:
         pass
-    elif expected_data_type == list:
+    elif expected_data_type is list:
         with pytest.raises(TypeError):
             setattr(settings_instance, member, 1)
         with pytest.raises(TypeError):

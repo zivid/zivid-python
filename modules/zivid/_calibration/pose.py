@@ -16,7 +16,6 @@ class Pose:
         Args:
             transformation_matrix:  A 4x4 array representing the pose
         """
-
         self.__impl = _zivid.calibration.Pose(transformation_matrix)
 
     def to_matrix(self):

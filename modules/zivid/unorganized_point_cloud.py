@@ -5,6 +5,14 @@ import numpy
 
 
 class UnorganizedPointCloud:
+    """Point cloud with x, y, z, RGB color and SNR laid out as a linear list of only valid points.
+
+    An instance of this class is a handle to a point cloud stored on the compute device memory.
+    This class provides several methods to copy point cloud data from the compute device
+    memory to host (CPU) system memory (RAM).
+
+    This point cloud contains only valid points, meaning that the XYZ values are never NaN.
+    """
 
     def __init__(self, impl=None):
         """Create an empty point cloud.
@@ -33,11 +41,11 @@ class UnorganizedPointCloud:
 
     @property
     def size(self):
-        """Get the size of the point cloud (number of points)"""
+        """Get the size of the point cloud (number of points)."""
         return self.__impl.size()
 
     def extended(self, other):
-        """Create a new point cloud containing the combined data of this point cloud and another
+        """Create a new point cloud containing the combined data of this point cloud and another.
 
         Args:
             other: The other UnorganizedPointCloud to copy data from
@@ -52,7 +60,7 @@ class UnorganizedPointCloud:
         return UnorganizedPointCloud(self.__impl.extended(other.__impl))  # pylint: disable=protected-access
 
     def extend(self, other):
-        """Extend this point cloud in-place by adding the points from another point cloud
+        """Extend this point cloud in-place by adding the points from another point cloud.
 
         Args:
             other: The other UnorganizedPointCloud to copy data from
@@ -68,7 +76,7 @@ class UnorganizedPointCloud:
         return self
 
     def voxel_downsampled(self, voxel_size, min_points_per_voxel):
-        """Create a new point cloud that is a voxel downsampling of this point cloud
+        """Create a new point cloud that is a voxel downsampling of this point cloud.
 
         Voxel downsampling subdivides 3D space into a grid of cubic voxels with a given size. If a given voxel
         contains a number of points at or above the given limit, all those source points are replaced with a
@@ -112,14 +120,14 @@ class UnorganizedPointCloud:
         return UnorganizedPointCloud(self.__impl.transformed(matrix))
 
     def center(self):
-        """Translate the point cloud in-place so that its centroid lands at the origin (0,0,0)"""
+        """Translate the point cloud in-place so that its centroid lands at the origin (0,0,0)."""
         self.__impl.center()
         return self
 
     def centroid(self):
-        """Get the centroid of the point cloud, i.e. average of all XYZ point positions
+        """Get the centroid of the point cloud, i.e. average of all XYZ point positions.
 
-        Returns
+        Returns:
             The XYZ centroid as a numpy array, or None if the point cloud is empty.
         """
         return self.__impl.centroid()

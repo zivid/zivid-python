@@ -220,8 +220,7 @@ class Camera:
         return _to_network_configuration(self.__impl.network_configuration)
 
     def apply_network_configuration(self, network_configuration):
-        """
-        Apply the network configuration to the camera.
+        """Apply the network configuration to the camera.
 
         Args:
             network_configuration (NetworkConfiguration): The network configuration to apply to the camera.

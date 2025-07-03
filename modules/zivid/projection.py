@@ -64,7 +64,6 @@ class ProjectedImage:
         Raises:
             TypeError: If argument is not either a Settings2D or a Settings instance.
         """
-
         if isinstance(settings, Settings2D):
             return Frame2D(self.__impl.capture_2d(_to_internal_settings2d(settings)))
         if isinstance(settings, Settings):
@@ -107,7 +106,6 @@ class ProjectedImage:
         Raises:
             TypeError: If argument is not a Settings2D.
         """
-
         if isinstance(settings2d, Settings2D):
             return Frame2D(self.__impl.capture(_to_internal_settings2d(settings2d)))
         raise TypeError("Unsupported settings type: {}".format(type(settings2d)))
@@ -171,7 +169,6 @@ def show_image_bgra(camera, image_bgra):
     Returns:
         A handle in the form of a ProjectedImage instance.
     """
-
     return ProjectedImage(
         _zivid.projection.show_image_bgra(
             camera._Camera__impl,  # pylint: disable=protected-access
@@ -196,7 +193,6 @@ def pixels_from_3d_points(camera, points):
     Returns:
         The corresponding 2D (XY) points in the projector (List[List[float[2]]])
     """
-
     return _zivid.projection.pixels_from_3d_points(
         camera._Camera__impl,  # pylint: disable=protected-access
         points,

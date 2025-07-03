@@ -9,8 +9,7 @@ class Matrix4x4(_zivid.Matrix4x4):
     """Matrix of size 4x4 containing 32-bit floats."""
 
     def __init__(self, arg=None):
-        """
-        Overloaded constructor.
+        """Overloaded constructor.
 
         Does different kinds of initializations depending on the argument:
 
@@ -30,8 +29,7 @@ class Matrix4x4(_zivid.Matrix4x4):
             super().__init__(arg)
 
     def inverse(self):
-        """
-        Return the inverse of this matrix.
+        """Return the inverse of this matrix.
 
         An exception is thrown if the matrix is not invertible.
 
@@ -41,8 +39,7 @@ class Matrix4x4(_zivid.Matrix4x4):
         return Matrix4x4(super().inverse())
 
     def load(self, file_path):
-        """
-        Load the matrix from the given file.
+        """Load the matrix from the given file.
 
         Args:
             file_path: path for the file to load the matrix from.
@@ -50,8 +47,7 @@ class Matrix4x4(_zivid.Matrix4x4):
         super().load(str(file_path))
 
     def save(self, file_path):
-        """
-        Save the matrix to the given file.
+        """Save the matrix to the given file.
 
         Args:
             file_path: path for the new file to save the matrix in.
@@ -60,8 +56,7 @@ class Matrix4x4(_zivid.Matrix4x4):
 
     @staticmethod
     def identity():
-        """
-        Return the identity matrix.
+        """Return the identity matrix.
 
         Returns:
             A new matrix, holding the identity matrix.
@@ -69,8 +64,7 @@ class Matrix4x4(_zivid.Matrix4x4):
         return Matrix4x4(_zivid.Matrix4x4.identity())
 
     def __getitem__(self, indexes):
-        """
-        Access specified element with bounds checking.
+        """Access specified element with bounds checking.
 
         Args:
             indexes: a tuple of 2 integers as the indexes.
@@ -81,8 +75,7 @@ class Matrix4x4(_zivid.Matrix4x4):
         return super()._getitem(indexes)
 
     def __iter__(self):
-        """
-        Return an iterator to iterate all 16 elements as if this is a 1D array.
+        """Return an iterator to iterate all 16 elements as if this is a 1D array.
 
         Returns:
             the iterator.
@@ -91,8 +84,7 @@ class Matrix4x4(_zivid.Matrix4x4):
         return iterator
 
     def __setitem__(self, indexes, value):
-        """
-        Set specified element with bounds checking.
+        """Set specified element with bounds checking.
 
         Args:
             indexes: a tuple of 2 integers as the indexes.
