@@ -7,7 +7,7 @@
 astroid==3.2.4
     # via pylint
 black==24.8.0
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 certifi==2024.8.30
     # via requests
 charset-normalizer==3.3.2
@@ -15,21 +15,21 @@ charset-normalizer==3.3.2
 click==8.1.7
     # via black
 darglint==1.8.1
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 dill==0.3.8
     # via pylint
 distro==1.9.0
     # via scikit-build
 flake8==7.1.1
     # via
-    #   -r continuous-integration/python-requirements/lint.in
+    #   -r lint.in
     #   flake8-docstrings
 flake8-docstrings==1.7.0
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 idna==3.8
     # via requests
 inflection==0.5.1
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 iniconfig==2.0.0
     # via pytest
 isort==5.13.2
@@ -60,13 +60,13 @@ pydocstyle==6.3.0
 pyflakes==3.2.0
     # via flake8
 pylint==3.2.7
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 pytest==8.3.2
-    # via -r continuous-integration/python-requirements/lint.in
-requests==2.32.3
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
+requests==2.32.4
+    # via -r lint.in
 scikit-build==0.18.1
-    # via -r continuous-integration/python-requirements/lint.in
+    # via -r lint.in
 snowballstemmer==2.2.0
     # via pydocstyle
 tomlkit==0.13.2
