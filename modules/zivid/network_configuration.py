@@ -143,6 +143,11 @@ class NetworkConfiguration:
     def __str__(self):
         return str(_to_internal_network_configuration(self))
 
+    def __deepcopy__(self, memodict):
+        # Create deep copy by converting to internal representation and back.
+        # memodict not used since conversion creates entirely new objects.
+        return _to_network_configuration(_to_internal_network_configuration(self))
+
 
 def _to_network_configuration_ipv4(internal_ipv4):
     return NetworkConfiguration.IPV4(

@@ -39,6 +39,10 @@ class ProjectedImage:
 
         This method returns right after the acquisition of the image is complete.
 
+        To match the projector frequency of 120 Hz, the exposure time should be set to 8333 microseconds,
+        otherwise the projected image brightness in the captured image may appear inconsistent over repeated
+        captures.
+
         Some settings cannot be used to capture while projecting, depending on the camera model:
             * Not all camera models support capturing rgb colors while projecting. An exception will be thrown
               if `Settings2D/Sampling/Color` is set to `rgb` and the camera does not support capturing rgb
@@ -82,6 +86,10 @@ class ProjectedImage:
         Use capture_2d instead.
 
         This method returns right after the acquisition of the image is complete.
+
+        To match the projector frequency of 120 Hz, the exposure time should be set to 8333 microseconds,
+        otherwise the projected image brightness in the captured image may appear inconsistent over repeated
+        captures.
 
         Some settings cannot be used to capture while projecting, depending on the camera model:
             * Not all camera models support capturing rgb colors while projecting. An exception will be thrown

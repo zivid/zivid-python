@@ -162,6 +162,76 @@ class CameraState:
             def __str__(self):
                 return str(_to_internal_camera_state_network_local_interface(self))
 
+        class Ethernet:
+
+            class LinkSpeed:
+
+                link100Mbps = "link100Mbps"
+                link10Gbps = "link10Gbps"
+                link10Mbps = "link10Mbps"
+                link1Gbps = "link1Gbps"
+                link2_5Gbps = "link2_5Gbps"
+                link5Gbps = "link5Gbps"
+                unknown = "unknown"
+
+                _valid_values = {
+                    "link100Mbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link100Mbps,
+                    "link10Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link10Gbps,
+                    "link10Mbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link10Mbps,
+                    "link1Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link1Gbps,
+                    "link2_5Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link2_5Gbps,
+                    "link5Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link5Gbps,
+                    "unknown": _zivid.CameraState.Network.Ethernet.LinkSpeed.unknown,
+                }
+
+                @classmethod
+                def valid_values(cls):
+                    return list(cls._valid_values.keys())
+
+            def __init__(
+                self,
+                link_speed=_zivid.CameraState.Network.Ethernet.LinkSpeed().value,
+            ):
+
+                if isinstance(link_speed, _zivid.CameraState.Network.Ethernet.LinkSpeed.enum):
+                    self._link_speed = _zivid.CameraState.Network.Ethernet.LinkSpeed(link_speed)
+                elif isinstance(link_speed, str):
+                    self._link_speed = _zivid.CameraState.Network.Ethernet.LinkSpeed(
+                        self.LinkSpeed._valid_values[link_speed]
+                    )
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: str, got {value_type}".format(value_type=type(link_speed))
+                    )
+
+            @property
+            def link_speed(self):
+                if self._link_speed.value is None:
+                    return None
+                for key, internal_value in self.LinkSpeed._valid_values.items():
+                    if internal_value == self._link_speed.value:
+                        return key
+                raise ValueError("Unsupported value {value}".format(value=self._link_speed))
+
+            @link_speed.setter
+            def link_speed(self, value):
+                if isinstance(value, str):
+                    self._link_speed = _zivid.CameraState.Network.Ethernet.LinkSpeed(
+                        self.LinkSpeed._valid_values[value]
+                    )
+                elif isinstance(value, _zivid.CameraState.Network.Ethernet.LinkSpeed.enum):
+                    self._link_speed = _zivid.CameraState.Network.Ethernet.LinkSpeed(value)
+                else:
+                    raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
+
+            def __eq__(self, other):
+                if self._link_speed == other._link_speed:
+                    return True
+                return False
+
+            def __str__(self):
+                return str(_to_internal_camera_state_network_ethernet(self))
+
         class IPV4:
 
             def __init__(
@@ -198,6 +268,7 @@ class CameraState:
         def __init__(
             self,
             local_interfaces=None,
+            ethernet=None,
             ipv4=None,
         ):
 
@@ -217,6 +288,12 @@ class CameraState:
                     )
                 )
 
+            if ethernet is None:
+                ethernet = self.Ethernet()
+            if not isinstance(ethernet, self.Ethernet):
+                raise TypeError("Unsupported type: {value}".format(value=type(ethernet)))
+            self._ethernet = ethernet
+
             if ipv4 is None:
                 ipv4 = self.IPV4()
             if not isinstance(ipv4, self.IPV4):
@@ -226,6 +303,10 @@ class CameraState:
         @property
         def local_interfaces(self):
             return self._local_interfaces
+
+        @property
+        def ethernet(self):
+            return self._ethernet
 
         @property
         def ipv4(self):
@@ -242,6 +323,12 @@ class CameraState:
                 else:
                     raise TypeError("Unsupported type {item_type}".format(item_type=type(item)))
 
+        @ethernet.setter
+        def ethernet(self, value):
+            if not isinstance(value, self.Ethernet):
+                raise TypeError("Unsupported type {value}".format(value=type(value)))
+            self._ethernet = value
+
         @ipv4.setter
         def ipv4(self, value):
             if not isinstance(value, self.IPV4):
@@ -249,7 +336,11 @@ class CameraState:
             self._ipv4 = value
 
         def __eq__(self, other):
-            if self._local_interfaces == other._local_interfaces and self._ipv4 == other._ipv4:
+            if (
+                self._local_interfaces == other._local_interfaces
+                and self._ethernet == other._ethernet
+                and self._ipv4 == other._ipv4
+            ):
                 return True
             return False
 
@@ -648,6 +739,11 @@ class CameraState:
     def __str__(self):
         return str(_to_internal_camera_state(self))
 
+    def __deepcopy__(self, memodict):
+        # Create deep copy by converting to internal representation and back.
+        # memodict not used since conversion creates entirely new objects.
+        return _to_camera_state(_to_internal_camera_state(self))
+
 
 def _to_camera_state_network_local_interface_ipv4_subnet(internal_subnet):
     return CameraState.Network.LocalInterface.IPV4.Subnet(
@@ -669,6 +765,12 @@ def _to_camera_state_network_local_interface(internal_local_interface):
     )
 
 
+def _to_camera_state_network_ethernet(internal_ethernet):
+    return CameraState.Network.Ethernet(
+        link_speed=internal_ethernet.link_speed.value,
+    )
+
+
 def _to_camera_state_network_ipv4(internal_ipv4):
     return CameraState.Network.IPV4(
         address=internal_ipv4.address.value,
@@ -680,6 +782,7 @@ def _to_camera_state_network(internal_network):
         local_interfaces=[
             _to_camera_state_network_local_interface(value) for value in internal_network.local_interfaces.value
         ],
+        ethernet=_to_camera_state_network_ethernet(internal_network.ethernet),
         ipv4=_to_camera_state_network_ipv4(internal_network.ipv4),
     )
 
@@ -736,6 +839,14 @@ def _to_internal_camera_state_network_local_interface(local_interface):
     return internal_local_interface
 
 
+def _to_internal_camera_state_network_ethernet(ethernet):
+    internal_ethernet = _zivid.CameraState.Network.Ethernet()
+
+    internal_ethernet.link_speed = _zivid.CameraState.Network.Ethernet.LinkSpeed(ethernet._link_speed.value)
+
+    return internal_ethernet
+
+
 def _to_internal_camera_state_network_ipv4(ipv4):
     internal_ipv4 = _zivid.CameraState.Network.IPV4()
 
@@ -752,6 +863,7 @@ def _to_internal_camera_state_network(network):
         temp_local_interfaces.append(_to_internal_camera_state_network_local_interface(value))
     internal_network.local_interfaces = temp_local_interfaces
 
+    internal_network.ethernet = _to_internal_camera_state_network_ethernet(network.ethernet)
     internal_network.ipv4 = _to_internal_camera_state_network_ipv4(network.ipv4)
     return internal_network
 

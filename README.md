@@ -18,7 +18,7 @@ at [zivid.com](https://www.zivid.com/).
 ### Dependencies
 
 * [Python](https://www.python.org/) version 3.7 or higher
-* [Zivid SDK][zivid-download-software-url] version 2.16.0 (see [here][zivid-software-installation-url] for help)
+* [Zivid SDK][zivid-download-software-url] version 2.17.0 (see [docs][zivid-software-installation-url] for help)
 * [Compiler](doc/CompilerInstallation.md) with C++17 support
 
 *Ubuntu users must install Python headers (`apt install python3-dev`) in addition to the regular `python3` package.*
@@ -229,7 +229,7 @@ This requires Zivid SDK version 2.7.0 to be installed on the system.
 ## License
 
 This project is licensed, see the [LICENSE](LICENSE) file for details. The licenses of dependencies are
-listed [here](./licenses-dependencies).
+listed [license dependencies](./licenses-dependencies).
 
 ## Support
 
@@ -239,7 +239,7 @@ cannot find a solution to your issue, please contact <customersuccess@zivid.com>
 ## Test matrix
 
 The test matrix shows which Python versions and operating systems are tested in CI.
-Click [here](continuous-integration/TestMatrix.md) to go to the test matrix.
+Check [text matrix here](continuous-integration/TestMatrix.md) to go to the test matrix.
 
 [header-image]: https://www.zivid.com/hubfs/softwarefiles/images/zivid-generic-github-header.png
 

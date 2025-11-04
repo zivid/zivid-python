@@ -100,6 +100,14 @@ def calibration_board_and_aruco_markers_frame_fixture(
         yield frame
 
 
+@pytest.fixture(name="barcodes_frame", scope="module")
+def barcodes_frame_fixture(
+    application,  # pylint: disable=unused-argument
+):
+    with zivid.Frame(_testdata_dir() / "barcodes.zdf") as frame:
+        yield frame
+
+
 @pytest.fixture(name="multicamera_transforms", scope="module")
 def multicamera_transforms_fixture():
     transforms = [

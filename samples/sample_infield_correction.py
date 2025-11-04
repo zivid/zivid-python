@@ -1,10 +1,10 @@
 """Sample demonstrating in-field correction (experimental)."""
 
 import zivid
-from zivid.experimental.calibration import (
+from zivid.calibration import (
     InfieldCorrectionInput,
     compute_camera_correction,
-    detect_feature_points,
+    detect_calibration_board,
     write_camera_correction,
 )
 
@@ -16,7 +16,7 @@ def _main():
 
         try:
             while True:
-                detection_result = detect_feature_points(camera)
+                detection_result = detect_calibration_board(camera)
                 infield_input = InfieldCorrectionInput(detection_result)
                 if infield_input.valid():
                     print("Measurement OK. Appending to dataset.")

@@ -95,6 +95,7 @@ class CameraInfo:
         zivid2PlusM60 = "zivid2PlusM60"
         zivid2PlusMR130 = "zivid2PlusMR130"
         zivid2PlusMR60 = "zivid2PlusMR60"
+        zivid3XL250 = "zivid3XL250"
         zividOnePlusLarge = "zividOnePlusLarge"
         zividOnePlusMedium = "zividOnePlusMedium"
         zividOnePlusSmall = "zividOnePlusSmall"
@@ -108,6 +109,7 @@ class CameraInfo:
             "zivid2PlusM60": _zivid.CameraInfo.Model.zivid2PlusM60,
             "zivid2PlusMR130": _zivid.CameraInfo.Model.zivid2PlusMR130,
             "zivid2PlusMR60": _zivid.CameraInfo.Model.zivid2PlusMR60,
+            "zivid3XL250": _zivid.CameraInfo.Model.zivid3XL250,
             "zividOnePlusLarge": _zivid.CameraInfo.Model.zividOnePlusLarge,
             "zividOnePlusMedium": _zivid.CameraInfo.Model.zividOnePlusMedium,
             "zividOnePlusSmall": _zivid.CameraInfo.Model.zividOnePlusSmall,
@@ -286,6 +288,11 @@ class CameraInfo:
 
     def __str__(self):
         return str(_to_internal_camera_info(self))
+
+    def __deepcopy__(self, memodict):
+        # Create deep copy by converting to internal representation and back.
+        # memodict not used since conversion creates entirely new objects.
+        return _to_camera_info(_to_internal_camera_info(self))
 
 
 def _to_camera_info_revision(internal_revision):

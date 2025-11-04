@@ -161,6 +161,11 @@ class SceneConditions:
     def __str__(self):
         return str(_to_internal_scene_conditions(self))
 
+    def __deepcopy__(self, memodict):
+        # Create deep copy by converting to internal representation and back.
+        # memodict not used since conversion creates entirely new objects.
+        return _to_scene_conditions(_to_internal_scene_conditions(self))
+
 
 def _to_scene_conditions_ambient_light(internal_ambient_light):
     return SceneConditions.AmbientLight(

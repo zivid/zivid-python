@@ -15,10 +15,10 @@
             "binaryDir": "${sourceParentDir}/build/${presetName}"
         },
         {
-            "name": "python_312",
+            "name": "python_313",
             "hidden": true,
             "cacheVariables": {
-                "PYTHON_INTERPRETER_VERSION": "3.12"
+                "PYTHON_INTERPRETER_VERSION": "3.13"
             }
         },
         {
@@ -26,8 +26,8 @@
             "description": "Build python wrapper with latest sdk on Linux",
             "inherits": "common_opts",
             "cacheVariables": {
-                "CMAKE_C_COMPILER": "clang-18",
-                "CMAKE_CXX_COMPILER": "clang++-18",
+                "CMAKE_C_COMPILER": "clang-20",
+                "CMAKE_CXX_COMPILER": "clang++-20",
                 "CMAKE_EXE_LINKER_FLAGS": "-fuse-ld=mold",
                 "CMAKE_MODULE_LINKER_FLAGS": "-fuse-ld=mold",
                 "CMAKE_SHARED_LINKER_FLAGS": "-fuse-ld=mold"
@@ -39,17 +39,17 @@
             }
         },
         {
-            "name": "linux_sdk_python_312_debug_build",
-            "description": "Debug build of python wrapper with latest sdk for python 3.12 on Linux",
-            "inherits": ["linux_sdk_python_wrapper_dev_build", "python_312"],
+            "name": "linux_sdk_python_313_debug_build",
+            "description": "Debug build of python wrapper with latest sdk for python 3.13 on Linux",
+            "inherits": ["linux_sdk_python_wrapper_dev_build", "python_313"],
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
-            "name": "linux_sdk_python_312_release_build",
-            "description": "Release build of python wrapper with latest sdk for python 3.12 on Linux",
-            "inherits": ["linux_sdk_python_wrapper_dev_build", "python_312"],
+            "name": "linux_sdk_python_313_release_build",
+            "description": "Release build of python wrapper with latest sdk for python 3.13 on Linux",
+            "inherits": ["linux_sdk_python_wrapper_dev_build", "python_313"],
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
@@ -65,17 +65,17 @@
             }
         },
         {
-            "name": "windows_sdk_python_312_debug_build",
-            "description": "Debug build of python wrapper with latest sdk for python 3.12 on Windows",
-            "inherits": ["windows_sdk_python_wrapper_dev_build", "python_312"],
+            "name": "windows_sdk_python_313_debug_build",
+            "description": "Debug build of python wrapper with latest sdk for python 3.13 on Windows",
+            "inherits": ["windows_sdk_python_wrapper_dev_build", "python_313"],
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
-            "name": "windows_sdk_python_312_release_build",
-            "description": "Release build of python wrapper with latest sdk for python 3.12 on Windows",
-            "inherits": ["windows_sdk_python_wrapper_dev_build", "python_312"],
+            "name": "windows_sdk_python_313_release_build",
+            "description": "Release build of python wrapper with latest sdk for python 3.13 on Windows",
+            "inherits": ["windows_sdk_python_wrapper_dev_build", "python_313"],
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }

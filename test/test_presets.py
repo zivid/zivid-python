@@ -16,6 +16,7 @@ def test_3d_presets(application):  # pylint: disable=unused-argument
                 zivid.presets.categories(model)
         else:
             categories = zivid.presets.categories(model)
+
             assert categories
             for category in categories:
                 assert isinstance(category, zivid.presets.Category)
@@ -41,6 +42,7 @@ def test_2d_presets(application):  # pylint: disable=unused-argument
                 zivid.presets.categories2d(model)
         else:
             categories = zivid.presets.categories2d(model)
+
             assert categories
             for category in categories:
                 assert isinstance(category, zivid.presets.Category)

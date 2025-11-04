@@ -118,6 +118,13 @@ class SuggestSettingsParameters:
     def __str__(self):
         return str(_to_internal_capture_assistant_suggest_settings_parameters(self))
 
+    def __deepcopy__(self, memodict):
+        # Create deep copy by converting to internal representation and back.
+        # memodict not used since conversion creates entirely new objects.
+        return _to_capture_assistant_suggest_settings_parameters(
+            _to_internal_capture_assistant_suggest_settings_parameters(self)
+        )
+
 
 def _to_capture_assistant_suggest_settings_parameters(internal_suggest_settings_parameters):
     return SuggestSettingsParameters(

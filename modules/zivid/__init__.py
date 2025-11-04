@@ -9,6 +9,7 @@ import zivid.capture_assistant
 import zivid.firmware
 import zivid.presets
 import zivid.projection
+import zivid.visualization
 from zivid.application import Application
 from zivid.camera import Camera
 from zivid.camera_info import CameraInfo

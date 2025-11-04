@@ -16,6 +16,8 @@ project(zivid LANGUAGES CXX)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 include(ReadZividVersion)
+include(CompilerWarningOptions)
+include(TargetUtilities)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -40,12 +42,19 @@ find_package(
         Interpreter
         Development
 )
-if(${CMAKE_BUILD_TYPE} MATCHES Debug AND WIN32)
-    # Because of https://github.com/pybind/pybind11/issues/5467, newer CMake versions on
-    # windows build throws following error: LNK1104: cannot open file 'python312.lib'. Note
-    # how linker tries to find python312.lib instead of expected python312_d.lib debug
-    # version.
-    set(PYTHON_IS_DEBUG ON)
+if(WIN32)
+    # If "debug" libraries for Python are installed on Windows, `find_package(Python3 ...)`
+    # above will find debug version `_d` of imported python library during linking. `pybind11`
+    # however expects to find release versions of imported python library during linking. This
+    # leads to following linker error: `fatal error LNK1104: cannot open file 'python312.lib'`.
+    # Hence we map imported python target properties to always use release libraries. See issue
+    # https://github.com/pybind/pybind11/issues/3403 for details of the following workaround.
+    set_target_properties(
+        Python3::Module
+        PROPERTIES
+            MAP_IMPORTED_CONFIG_DEBUG
+                ";RELEASE"
+    )
 endif()
 
 find_package(Eigen3 3.4.0 CONFIG REQUIRED)

@@ -216,6 +216,13 @@ class LocalPointCloudRegistrationParameters:
     def __str__(self):
         return str(_to_internal_toolbox_local_point_cloud_registration_parameters(self))
 
+    def __deepcopy__(self, memodict):
+        # Create deep copy by converting to internal representation and back.
+        # memodict not used since conversion creates entirely new objects.
+        return _to_toolbox_local_point_cloud_registration_parameters(
+            _to_internal_toolbox_local_point_cloud_registration_parameters(self)
+        )
+
 
 def _to_toolbox_local_point_cloud_registration_parameters_convergence_criteria(internal_convergence_criteria):
     return LocalPointCloudRegistrationParameters.ConvergenceCriteria(

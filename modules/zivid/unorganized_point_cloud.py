@@ -132,6 +132,25 @@ class UnorganizedPointCloud:
         """
         return self.__impl.centroid()
 
+    def paint_uniform_color(self, color):
+        """Set point cloud colors in-place according to the given value.
+
+        Args:
+            color: The RGBA value used to color all points as a list of 8-bit integers List[int[4]] or Numpy array of\
+            shape (4,) or (1,4) with dtype=np.uint8
+        """
+        self.__impl.paint_uniform_color(color)
+        return self
+
+    def painted_uniform_color(self, color):
+        """Create a clone of this point cloud with all points colored according to the given value.
+
+        Args:
+            color: The RGBA value used to color all points as a list of 8-bit integers List[int[4]] or Numpy array of\
+            shape (4,) or (1,4) with dtype=np.uint8
+        """
+        return UnorganizedPointCloud(self.__impl.painted_uniform_color(color))
+
     def copy_data(self, data_format):
         """Copy point cloud data from GPU to numpy array.
 
@@ -156,6 +175,7 @@ class UnorganizedPointCloud:
 
         data_formats = {
             "xyz": _zivid.Array1DPointXYZ,
+            "xyzw": _zivid.Array1DPointXYZW,
             "rgba": _zivid.Array1DColorRGBA,
             "bgra": _zivid.Array1DColorBGRA,
             "rgba_srgb": _zivid.Array1DColorRGBA_SRGB,

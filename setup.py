@@ -55,7 +55,6 @@ def _determine_package_version():
         # Stable releases must not include a local version to be allowed to upload to PyPI.
         version = ".".join(version_segments)
 
-
     return canonicalize_version(version, strip_trailing_zero=False)
 
 

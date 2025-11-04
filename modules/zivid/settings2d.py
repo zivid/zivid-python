@@ -505,14 +505,78 @@ class Settings2D:
 
     class Sampling:
 
+        class Interval:
+
+            def __init__(
+                self,
+                duration=_zivid.Settings2D.Sampling.Interval.Duration().value,
+                enabled=_zivid.Settings2D.Sampling.Interval.Enabled().value,
+            ):
+
+                if isinstance(duration, (datetime.timedelta,)) or duration is None:
+                    self._duration = _zivid.Settings2D.Sampling.Interval.Duration(duration)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: (datetime.timedelta,) or None, got {value_type}".format(
+                            value_type=type(duration)
+                        )
+                    )
+
+                if isinstance(enabled, (bool,)) or enabled is None:
+                    self._enabled = _zivid.Settings2D.Sampling.Interval.Enabled(enabled)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: (bool,) or None, got {value_type}".format(value_type=type(enabled))
+                    )
+
+            @property
+            def duration(self):
+                return self._duration.value
+
+            @property
+            def enabled(self):
+                return self._enabled.value
+
+            @duration.setter
+            def duration(self, value):
+                if isinstance(value, (datetime.timedelta,)) or value is None:
+                    self._duration = _zivid.Settings2D.Sampling.Interval.Duration(value)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: datetime.timedelta or None, got {value_type}".format(
+                            value_type=type(value)
+                        )
+                    )
+
+            @enabled.setter
+            def enabled(self, value):
+                if isinstance(value, (bool,)) or value is None:
+                    self._enabled = _zivid.Settings2D.Sampling.Interval.Enabled(value)
+                else:
+                    raise TypeError(
+                        "Unsupported type, expected: bool or None, got {value_type}".format(value_type=type(value))
+                    )
+
+            def __eq__(self, other):
+                if self._duration == other._duration and self._enabled == other._enabled:
+                    return True
+                return False
+
+            def __str__(self):
+                return str(_to_internal_settings2d_sampling_interval(self))
+
         class Color:
 
             grayscale = "grayscale"
             rgb = "rgb"
+            rgbAmbientSuppression = "rgbAmbientSuppression"
+            rgbStrongAmbientLight = "rgbStrongAmbientLight"
 
             _valid_values = {
                 "grayscale": _zivid.Settings2D.Sampling.Color.grayscale,
                 "rgb": _zivid.Settings2D.Sampling.Color.rgb,
+                "rgbAmbientSuppression": _zivid.Settings2D.Sampling.Color.rgbAmbientSuppression,
+                "rgbStrongAmbientLight": _zivid.Settings2D.Sampling.Color.rgbStrongAmbientLight,
             }
 
             @classmethod
@@ -547,6 +611,7 @@ class Settings2D:
             self,
             color=_zivid.Settings2D.Sampling.Color().value,
             pixel=_zivid.Settings2D.Sampling.Pixel().value,
+            interval=None,
         ):
 
             if isinstance(color, _zivid.Settings2D.Sampling.Color.enum) or color is None:
@@ -567,6 +632,12 @@ class Settings2D:
                     "Unsupported type, expected: str or None, got {value_type}".format(value_type=type(pixel))
                 )
 
+            if interval is None:
+                interval = self.Interval()
+            if not isinstance(interval, self.Interval):
+                raise TypeError("Unsupported type: {value}".format(value=type(interval)))
+            self._interval = interval
+
         @property
         def color(self):
             if self._color.value is None:
@@ -584,6 +655,10 @@ class Settings2D:
                 if internal_value == self._pixel.value:
                     return key
             raise ValueError("Unsupported value {value}".format(value=self._pixel))
+
+        @property
+        def interval(self):
+            return self._interval
 
         @color.setter
         def color(self, value):
@@ -607,8 +682,14 @@ class Settings2D:
                     "Unsupported type, expected: str or None, got {value_type}".format(value_type=type(value))
                 )
 
+        @interval.setter
+        def interval(self, value):
+            if not isinstance(value, self.Interval):
+                raise TypeError("Unsupported type {value}".format(value=type(value)))
+            self._interval = value
+
         def __eq__(self, other):
-            if self._color == other._color and self._pixel == other._pixel:
+            if self._color == other._color and self._pixel == other._pixel and self._interval == other._interval:
                 return True
             return False
 
@@ -711,6 +792,11 @@ class Settings2D:
     def __str__(self):
         return str(_to_internal_settings2d(self))
 
+    def __deepcopy__(self, memodict):
+        # Create deep copy by converting to internal representation and back.
+        # memodict not used since conversion creates entirely new objects.
+        return _to_settings2d(_to_internal_settings2d(self))
+
 
 def _to_settings2d_acquisition(internal_acquisition):
     return Settings2D.Acquisition(
@@ -749,8 +835,16 @@ def _to_settings2d_processing(internal_processing):
     )
 
 
+def _to_settings2d_sampling_interval(internal_interval):
+    return Settings2D.Sampling.Interval(
+        duration=internal_interval.duration.value,
+        enabled=internal_interval.enabled.value,
+    )
+
+
 def _to_settings2d_sampling(internal_sampling):
     return Settings2D.Sampling(
+        interval=_to_settings2d_sampling_interval(internal_sampling.interval),
         color=internal_sampling.color.value,
         pixel=internal_sampling.pixel.value,
     )
@@ -810,12 +904,22 @@ def _to_internal_settings2d_processing(processing):
     return internal_processing
 
 
+def _to_internal_settings2d_sampling_interval(interval):
+    internal_interval = _zivid.Settings2D.Sampling.Interval()
+
+    internal_interval.duration = _zivid.Settings2D.Sampling.Interval.Duration(interval.duration)
+    internal_interval.enabled = _zivid.Settings2D.Sampling.Interval.Enabled(interval.enabled)
+
+    return internal_interval
+
+
 def _to_internal_settings2d_sampling(sampling):
     internal_sampling = _zivid.Settings2D.Sampling()
 
     internal_sampling.color = _zivid.Settings2D.Sampling.Color(sampling._color.value)
     internal_sampling.pixel = _zivid.Settings2D.Sampling.Pixel(sampling._pixel.value)
 
+    internal_sampling.interval = _to_internal_settings2d_sampling_interval(sampling.interval)
     return internal_sampling
 
 
