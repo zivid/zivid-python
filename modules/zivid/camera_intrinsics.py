@@ -397,6 +397,11 @@ class CameraIntrinsics:
     def __str__(self):
         return str(_to_internal_camera_intrinsics(self))
 
+    def __deepcopy__(self, memodict):
+        # Create deep copy by converting to internal representation and back.
+        # memodict not used since conversion creates entirely new objects.
+        return _to_camera_intrinsics(_to_internal_camera_intrinsics(self))
+
 
 def _to_camera_intrinsics_camera_matrix(internal_camera_matrix):
     return CameraIntrinsics.CameraMatrix(

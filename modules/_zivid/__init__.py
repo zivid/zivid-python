@@ -6,6 +6,47 @@ import platform
 import sys
 from pathlib import Path
 
+
+def __missing_sdk_error_message():
+    error_message = """Failed to import the Zivid Python C-module, please verify that:
+ - Zivid SDK is installed
+ - Zivid SDK version is matching the SDK version part of the Zivid Python version """
+    if platform.system() != "Windows":
+        return error_message
+    return (
+        error_message
+        + """
+ - Zivid SDK libraries location is in system PATH"""
+    )
+
+
+class __LazyLoader:  # pylint: disable=invalid-name
+    def __init__(self, module_name):
+        self._module_name = module_name
+        self._module = None
+
+    def _load(self):
+        if self._module is None:
+            try:
+                self._module = importlib.import_module(self._module_name)
+            except ImportError as ex:
+                raise ImportError(__missing_sdk_error_message()) from ex
+        return self._module
+
+    def __getattr__(self, name):
+        self._load()
+        return getattr(self._module, name)
+
+    def __dir__(self):
+        self._load()
+        return dir(self._module)
+
+    def __repr__(self):
+        if not self._module:
+            return "<lazy-loaded module '{}' (not loaded yet)>".format(self._module_name)
+        return repr(self._module)
+
+
 if platform.system() == "Windows" and sys.version_info.major == 3 and sys.version_info.minor >= 8:
     # Starting with Python 3.8, the .dll search mechanism has changed.
     # WinDLL has anew argument "winmode",
@@ -24,18 +65,20 @@ if platform.system() == "Windows" and sys.version_info.major == 3 and sys.versio
 
     package_dir = Path(importlib.util.find_spec("_zivid").origin).parent
     pyd_files = list(package_dir.glob("_zivid*.pyd"))
-    if len(pyd_files) != 1:
-        raise ImportError(f"Expected exactly one _zivid*.pyd file in {package_dir}, found {len(pyd_files)} files.")
+    if len(pyd_files) != 2:
+        raise ImportError(f"Expected exactly two _zivid*.pyd file in {package_dir}, found {len(pyd_files)} files.")
     ctypes.WinDLL(str(pyd_files[0]), winmode=0)
+    ctypes.WinDLL(str(pyd_files[1]), winmode=0)
 
 try:
-    from _zivid._zivid import (  # pylint: disable=import-error,no-name-in-module
+    from _zivid._zividcore import (  # pylint: disable=import-error,no-name-in-module
         Application,
         Array1DColorBGRA,
         Array1DColorBGRA_SRGB,
         Array1DColorRGBA,
         Array1DColorRGBA_SRGB,
         Array1DPointXYZ,
+        Array1DPointXYZW,
         Array1DSNR,
         Array2DColorBGRA,
         Array2DColorBGRA_SRGB,
@@ -83,17 +126,8 @@ try:
         version,
     )
 except ImportError as ex:
-
-    def __missing_sdk_error_message():
-        error_message = """Failed to import the Zivid Python C-module, please verify that:
- - Zivid SDK is installed
- - Zivid SDK version is matching the SDK version part of the Zivid Python version """
-        if platform.system() != "Windows":
-            return error_message
-        return (
-            error_message
-            + """
- - Zivid SDK libraries location is in system PATH"""
-        )
-
     raise ImportError(__missing_sdk_error_message()) from ex
+
+# Lazy load the visualization module. We don't want to load this module automatically because
+# then that would fail if OpenGL libraries are unavailable on the system.
+visualization = __LazyLoader("_zivid._zividvisualization")

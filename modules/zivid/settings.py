@@ -2208,11 +2208,15 @@ class Settings:
             disabled = "disabled"
             grayscale = "grayscale"
             rgb = "rgb"
+            rgbAmbientSuppression = "rgbAmbientSuppression"
+            rgbStrongAmbientLight = "rgbStrongAmbientLight"
 
             _valid_values = {
                 "disabled": _zivid.Settings.Sampling.Color.disabled,
                 "grayscale": _zivid.Settings.Sampling.Color.grayscale,
                 "rgb": _zivid.Settings.Sampling.Color.rgb,
+                "rgbAmbientSuppression": _zivid.Settings.Sampling.Color.rgbAmbientSuppression,
+                "rgbStrongAmbientLight": _zivid.Settings.Sampling.Color.rgbStrongAmbientLight,
             }
 
             @classmethod
@@ -2517,6 +2521,11 @@ class Settings:
 
     def __str__(self):
         return str(_to_internal_settings(self))
+
+    def __deepcopy__(self, memodict):
+        # Create deep copy by converting to internal representation and back.
+        # memodict not used since conversion creates entirely new objects.
+        return _to_settings(_to_internal_settings(self))
 
 
 def _to_settings_acquisition(internal_acquisition):

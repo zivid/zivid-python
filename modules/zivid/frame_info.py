@@ -15,6 +15,7 @@ class FrameInfo:
             acquisition_time=_zivid.FrameInfo.Metrics.AcquisitionTime().value,
             capture_time=_zivid.FrameInfo.Metrics.CaptureTime().value,
             reprocessing_time=_zivid.FrameInfo.Metrics.ReprocessingTime().value,
+            throttling_time=_zivid.FrameInfo.Metrics.ThrottlingTime().value,
         ):
 
             if isinstance(acquisition_time, (datetime.timedelta,)):
@@ -44,6 +45,15 @@ class FrameInfo:
                     )
                 )
 
+            if isinstance(throttling_time, (datetime.timedelta,)):
+                self._throttling_time = _zivid.FrameInfo.Metrics.ThrottlingTime(throttling_time)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (datetime.timedelta,), got {value_type}".format(
+                        value_type=type(throttling_time)
+                    )
+                )
+
         @property
         def acquisition_time(self):
             return self._acquisition_time.value
@@ -55,6 +65,10 @@ class FrameInfo:
         @property
         def reprocessing_time(self):
             return self._reprocessing_time.value
+
+        @property
+        def throttling_time(self):
+            return self._throttling_time.value
 
         @acquisition_time.setter
         def acquisition_time(self, value):
@@ -85,11 +99,21 @@ class FrameInfo:
                     )
                 )
 
+        @throttling_time.setter
+        def throttling_time(self, value):
+            if isinstance(value, (datetime.timedelta,)):
+                self._throttling_time = _zivid.FrameInfo.Metrics.ThrottlingTime(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: datetime.timedelta, got {value_type}".format(value_type=type(value))
+                )
+
         def __eq__(self, other):
             if (
                 self._acquisition_time == other._acquisition_time
                 and self._capture_time == other._capture_time
                 and self._reprocessing_time == other._reprocessing_time
+                and self._throttling_time == other._throttling_time
             ):
                 return True
             return False
@@ -387,12 +411,18 @@ class FrameInfo:
     def __str__(self):
         return str(_to_internal_frame_info(self))
 
+    def __deepcopy__(self, memodict):
+        # Create deep copy by converting to internal representation and back.
+        # memodict not used since conversion creates entirely new objects.
+        return _to_frame_info(_to_internal_frame_info(self))
+
 
 def _to_frame_info_metrics(internal_metrics):
     return FrameInfo.Metrics(
         acquisition_time=internal_metrics.acquisition_time.value,
         capture_time=internal_metrics.capture_time.value,
         reprocessing_time=internal_metrics.reprocessing_time.value,
+        throttling_time=internal_metrics.throttling_time.value,
     )
 
 
@@ -438,6 +468,7 @@ def _to_internal_frame_info_metrics(metrics):
     internal_metrics.acquisition_time = _zivid.FrameInfo.Metrics.AcquisitionTime(metrics.acquisition_time)
     internal_metrics.capture_time = _zivid.FrameInfo.Metrics.CaptureTime(metrics.capture_time)
     internal_metrics.reprocessing_time = _zivid.FrameInfo.Metrics.ReprocessingTime(metrics.reprocessing_time)
+    internal_metrics.throttling_time = _zivid.FrameInfo.Metrics.ThrottlingTime(metrics.throttling_time)
 
     return internal_metrics
 

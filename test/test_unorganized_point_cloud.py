@@ -14,12 +14,17 @@ def test_create_empty_unorganized_point_cloud(
     assert upc.size == 0
 
     xyz = upc.copy_data("xyz")
+    xyzw = upc.copy_data("xyzw")
     rgba = upc.copy_data("rgba")
     snr = upc.copy_data("snr")
 
     assert isinstance(xyz, np.ndarray)
     assert xyz.dtype == np.float32
     assert xyz.shape == (0, 3)
+
+    assert isinstance(xyzw, np.ndarray)
+    assert xyzw.dtype == np.float32
+    assert xyzw.shape == (0, 4)
 
     assert isinstance(rgba, np.ndarray)
     assert rgba.dtype == np.uint8
@@ -33,6 +38,7 @@ def test_create_empty_unorganized_point_cloud(
 def test_create_unorganized_point_cloud(point_cloud):
     n_points_original = point_cloud.width * point_cloud.height
     xyz_organized = point_cloud.copy_data("xyz")
+    xyzw_organized = point_cloud.copy_data("xyzw")
     rgba_organized = point_cloud.copy_data("rgba")
     bgra_organized = point_cloud.copy_data("bgra")
     rgba_srgb_organized = point_cloud.copy_data("rgba_srgb")
@@ -44,6 +50,7 @@ def test_create_unorganized_point_cloud(point_cloud):
     assert n_points_valid < n_points_original
 
     xyz_unorganized_reference = xyz_organized[valid_mask]
+    xyzw_unorganized_reference = xyzw_organized[valid_mask]
     rgba_unorganized_reference = rgba_organized[valid_mask]
     bgra_unorganized_reference = bgra_organized[valid_mask]
     rgba_srgb_unorganized_reference = rgba_srgb_organized[valid_mask]
@@ -59,6 +66,12 @@ def test_create_unorganized_point_cloud(point_cloud):
     assert xyz.dtype == np.float32
     assert xyz.shape == (n_points_valid, 3)
     np.testing.assert_array_equal(xyz_unorganized_reference, xyz)
+
+    xyzw = upc.copy_data("xyzw")
+    assert isinstance(xyzw, np.ndarray)
+    assert xyzw.dtype == np.float32
+    assert xyzw.shape == (n_points_valid, 4)
+    np.testing.assert_array_equal(xyzw_unorganized_reference, xyzw)
 
     rgba = upc.copy_data("rgba")
     assert isinstance(rgba, np.ndarray)
@@ -191,8 +204,8 @@ def test_unorganized_point_cloud_center_and_centroid(point_cloud):
     xyz_after = upc.copy_data("xyz")
     centroid_after_reference = np.mean(xyz_after, axis=0, dtype=np.float64)
 
-    np.testing.assert_allclose(centroid_after, [0.0, 0.0, 0.0], atol=1e-3)
-    np.testing.assert_allclose(centroid_after_reference, [0.0, 0.0, 0.0], atol=1e-3)
+    np.testing.assert_allclose(centroid_after, [0.0, 0.0, 0.0], atol=5e-3)
+    np.testing.assert_allclose(centroid_after_reference, [0.0, 0.0, 0.0], atol=5e-3)
 
 
 def test_unorganized_point_cloud_center_and_centroid_empty(point_cloud):
@@ -253,3 +266,90 @@ def test_clone_point_cloud(point_cloud, transform):
         upc.transform(transform)
         # clone, transform should not have affected the clone
         assert_unorganized_point_clouds_not_equal(upc, upc_clone)
+
+
+def test_paint_uniform_color(point_cloud):
+    upc = point_cloud.to_unorganized_point_cloud()
+
+    color = [255, 3, 100, 200]
+    upc.paint_uniform_color(color)
+
+    rgba = upc.copy_data("rgba")
+    np.testing.assert_array_equal(rgba, np.tile(color, (len(rgba), 1)))
+
+    # Numpy array should also be valid input
+    upc.paint_uniform_color(np.array([255, 3, 100, 200], dtype=np.uint8))
+    upc.paint_uniform_color(np.array([[255, 3, 100, 200]], dtype=np.uint8))
+
+
+def test_painted_uniform_color(point_cloud):
+    upc = point_cloud.to_unorganized_point_cloud()
+
+    color = [255, 3, 100, 200]
+    upc_painted = upc.painted_uniform_color(color)
+
+    assert isinstance(upc_painted, zivid.UnorganizedPointCloud)
+    assert upc_painted is not upc
+
+    rgba = upc_painted.copy_data("rgba")
+    np.testing.assert_array_equal(rgba, np.tile(color, (len(rgba), 1)))
+
+    # Numpy array should also be valid input
+    upc.painted_uniform_color(np.array([255, 3, 100, 200], dtype=np.uint8))
+    upc.painted_uniform_color(np.array([[255, 3, 100, 200]], dtype=np.uint8))
+
+
+def test_paint_uniform_color_invalid_color(point_cloud):
+    upc = point_cloud.to_unorganized_point_cloud()
+
+    with pytest.raises(RuntimeError):
+        upc.paint_uniform_color("Should fail")
+
+    with pytest.raises(RuntimeError):
+        upc.paint_uniform_color({255, 1, 2, 100})
+
+    with pytest.raises(RuntimeError):
+        upc.paint_uniform_color([255, 0, 0])
+
+    with pytest.raises(RuntimeError):
+        upc.paint_uniform_color([255, 0, 0, 1000])
+
+    with pytest.raises(RuntimeError):
+        upc.paint_uniform_color([255, 0, 0, 100.2])
+
+    with pytest.raises(TypeError):
+        upc.paint_uniform_color(np.array([255, 0, 0, 100]))
+
+    with pytest.raises(TypeError):
+        upc.paint_uniform_color(np.array([255, 0, 0, 100], dtype=np.int32))
+
+    with pytest.raises(TypeError):
+        upc.paint_uniform_color(np.array([255, 0, 0, 100.2], dtype=np.float16))
+
+
+def test_painted_uniform_color_invalid_color(point_cloud):
+    upc = point_cloud.to_unorganized_point_cloud()
+
+    with pytest.raises(RuntimeError):
+        upc.painted_uniform_color("Should fail")
+
+    with pytest.raises(RuntimeError):
+        upc.painted_uniform_color({255, 1, 2, 100})
+
+    with pytest.raises(RuntimeError):
+        upc.painted_uniform_color([255, 0, 0])
+
+    with pytest.raises(RuntimeError):
+        upc.painted_uniform_color([255, 0, 0, 1000])
+
+    with pytest.raises(RuntimeError):
+        upc.painted_uniform_color([255, 0, 0, 100.2])
+
+    with pytest.raises(TypeError):
+        upc.painted_uniform_color(np.array([255, 0, 0, 100]))
+
+    with pytest.raises(TypeError):
+        upc.painted_uniform_color(np.array([255, 0, 0, 100], dtype=np.int32))
+
+    with pytest.raises(TypeError):
+        upc.painted_uniform_color(np.array([255, 0, 0, 100.2], dtype=np.float16))

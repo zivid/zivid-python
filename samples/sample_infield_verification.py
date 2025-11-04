@@ -1,10 +1,10 @@
 """Sample demonstrating in-field verification (experimental)."""
 
 import zivid
-from zivid.experimental.calibration import (
+from zivid.calibration import (
     InfieldCorrectionInput,
     camera_correction_timestamp,
-    detect_feature_points,
+    detect_calibration_board,
     has_camera_correction,
     verify_camera,
 )
@@ -19,7 +19,7 @@ def _main():
             print(f"Camera currently has a correction. Timestamp: {timestamp.strftime(r'%Y-%m-%d %H:%M:%S')}")
 
         print("Detecting feature points for verification...")
-        detection_result = detect_feature_points(camera)
+        detection_result = detect_calibration_board(camera)
         print(f"Feature point detection: {detection_result}")
         infield_input = InfieldCorrectionInput(detection_result)
         print(f"In-field correction input: {infield_input}")

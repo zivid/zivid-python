@@ -1,0 +1,49 @@
+project(
+    Core
+    LANGUAGES
+        CXX
+        C
+)
+
+set(SOURCES
+    Calibration/Calibration.cpp
+    Calibration/Detector.cpp
+    Calibration/HandEye.cpp
+    Calibration/MultiCamera.cpp
+    Calibration/Pose.cpp
+    CaptureAssistant.cpp
+    DataModel.cpp
+    Firmware.cpp
+    InfieldCorrection/InfieldCorrection.cpp
+    NodeType.cpp
+    PixelMapping.cpp
+    PointCloudExport.cpp
+    Projection.cpp
+    Presets.cpp
+    ReleasableArray1D.cpp
+    ReleasableArray2D.cpp
+    ReleasableCamera.cpp
+    ReleasableFrame.cpp
+    ReleasableFrame2D.cpp
+    ReleasableImage.cpp
+    ReleasablePointCloud.cpp
+    ReleasableUnorganizedPointCloud.cpp
+    ReleasableProjectedImage.cpp
+    SingletonApplication.cpp
+    Toolbox/PointCloudRegistration.cpp
+    Toolbox/Barcode.cpp
+    Toolbox/Toolbox.cpp
+    Version.cpp
+    Wrapper.cpp
+    Matrix4x4.cpp
+)
+
+zivid_python_shared_library(
+    NAME
+    ${PROJECT_NAME}
+    SOURCES
+    ${SOURCES}
+    LINK_LIBRARIES
+    Zivid::Core
+    Eigen3::Eigen
+)
