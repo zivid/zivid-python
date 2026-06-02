@@ -12,6 +12,9 @@ class Frame2D:
     """A 2D frame captured by a Zivid camera.
 
     Contains a 2D image as well as metadata, settings and state of the API at the time of capture.
+
+    The images are not corrected for lens distortion. If your application relies on the geometry
+    of the image, you can undistort it using the camera intrinsics.
     """
 
     def __init__(self, impl):
