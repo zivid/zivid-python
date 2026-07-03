@@ -30,6 +30,7 @@ namespace ZividPython::Calibration
         using namespace Zivid::Experimental::Calibration::HandEyeLowDOF;
 
         ZIVID_PYTHON_WRAP_ENUM_CLASS(dest, CalibrationBoardDetectionStatus);
+        ZIVID_PYTHON_WRAP_ENUM_CLASS(dest, HandEyeStatus);
 
         ZIVID_PYTHON_WRAP_CLASS(dest, Pose);
         ZIVID_PYTHON_WRAP_CLASS(dest, HandEyeOutput);

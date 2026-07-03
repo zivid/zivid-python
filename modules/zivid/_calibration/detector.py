@@ -68,8 +68,13 @@ class DetectionResult:
     def pose(self):
         """Get position and orientation of the top left detected corner in camera-space.
 
+        This is the top left inner corner as viewed from the board's coordinate system.
+
         Pose calculation works for official Zivid calibration boards only.
         An exception will be thrown if valid() is false or if the board is not supported.
+
+        For an illustration of where the origin of the pose is located, see Zivid Calibration Object:
+        https://support.zivid.com/en/latest/academy/applications/hand-eye/calibration-object.html
 
         Returns:
             The Pose of the top left corner (4x4 transformation matrix)
@@ -186,6 +191,9 @@ class MarkerShape:
 
         The returned pose will be positioned at the center of the marker, and have an orientation such that its z-axis
         points perpendicularly into the face of the marker.
+
+        For an illustration of where the origin of the pose is located, see Zivid Calibration Object:
+        https://support.zivid.com/en/latest/academy/applications/hand-eye/calibration-object.html
 
         Returns:
             The Pose of the marker center (4x4 transformation matrix)
@@ -353,8 +361,8 @@ def detect_calibration_board(source):
     For further information please visit https://support.zivid.com.
 
     Args:
-        source: A frame containing an image of a calibration board or a camera pointed at
-            a calibration board
+        source: A Frame containing an image of a calibration board,
+            or a Camera pointed at a calibration board
 
     Raises:
         TypeError: If source is not of type Camera or Frame
@@ -410,10 +418,10 @@ def detect_markers(frame, allowed_marker_ids, marker_dictionary):
     For more information on ArUco markers specifically, see the OpenCV documentation on ArUco markers:
     https://docs.opencv.org/4.x/d5/dae/tutorial_aruco_detection.html,
 
-    Frame need not contain all markers listed in allowedMarkerIds for a successful detection.
+    The frame need not contain all markers listed in allowedMarkerIds for a successful detection.
 
     Args:
-        frame: A frame containing an image of one or several fiducial markers
+        frame: A Frame containing an image of one or several fiducial markers
         allowed_marker_ids: List of the IDs of markers to be detected
         marker_dictionary: The name of the marker dictionary to use. The name must be one of the values returned by
             MarkerDictionary.valid_values()

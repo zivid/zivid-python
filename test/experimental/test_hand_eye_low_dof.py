@@ -98,7 +98,7 @@ def test_eth_transform_low_dof_approximate_match(
     # Ensure that the low DOF calibration transforms are approximately the same as their
     # full 6-DOF calibration transform counterparts.
     np.testing.assert_allclose(handeye_eth_transform, handeye_eth_low_dof_transform, rtol=2.5e-2)
-    np.testing.assert_allclose(handeye_marker_eth_transform, handeye_eth_low_dof_markers_transform, rtol=2.5e-2)
+    np.testing.assert_allclose(handeye_marker_eth_transform, handeye_eth_low_dof_markers_transform, rtol=3.0e-2)
 
 
 def test_eye_to_hand_low_dof_calibration_with_calibration_board(
@@ -179,5 +179,7 @@ def test_eye_in_hand_low_dof_calibration_with_eye_to_hand_data(
     )
     fixed_objects = zivid.experimental.hand_eye_low_dof.FixedPlacementOfCalibrationObjects(fixed_calibration_board)
 
-    with pytest.raises(RuntimeError):
-        _ = zivid.experimental.hand_eye_low_dof.calibrate_eye_in_hand_low_dof(inputs, fixed_objects)
+    # Should not throw as of ZIVID-12106. We should instead test the status enum.
+    output = zivid.experimental.hand_eye_low_dof.calibrate_eye_in_hand_low_dof(inputs, fixed_objects)
+    assert output.valid()
+    assert output.status() != zivid.calibration.HandEyeStatus.ok

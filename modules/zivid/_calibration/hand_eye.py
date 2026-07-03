@@ -109,6 +109,17 @@ class HandEyeResidual:
         return str(self.__impl)
 
 
+class HandEyeStatus:  # pylint: disable=too-few-public-methods
+    """Enumeration of hand-eye status options.
+
+    The HandEyeOutput.status() method will return one of these values.
+    """
+
+    ok = "ok"
+    insufficient_motion = "insufficient_motion"
+    insufficient_data_quality = "insufficient_data_quality"
+
+
 class HandEyeOutput:
     """Class representing the result of a hand-eye calibration process.
 
@@ -164,6 +175,14 @@ class HandEyeOutput:
             List of HandEyeResidual, one for each pose.
         """
         return [HandEyeResidual(internal_residual) for internal_residual in self.__impl.residuals()]
+
+    def status(self):
+        """Get the status of the calibration.
+
+        Returns:
+            The calibration status as a string. See HandEyeStatus for possible values.
+        """
+        return self.__impl.status().name
 
     def __str__(self):
         return str(self.__impl)

@@ -1,35 +1,70 @@
-"""Contains the Frame class."""
+"""Contains the Frame2D class."""
+
+from pathlib import Path
 
 import _zivid
 from zivid.camera_info import _to_camera_info
 from zivid.camera_state import _to_camera_state
+from zivid.device_array import DeviceArray, _require_stream_or_queue
+from zivid.device_array_view import _device_array_view_fill_target
 from zivid.frame_info import _to_frame_info
 from zivid.image import Image
+from zivid.pixel_format import PixelFormat, _resolve_color_format
 from zivid.settings2d import _to_settings2d
+
+_COLOR_FORMAT_ACCESSOR_SUFFIX = {
+    PixelFormat.RGBA: "rgba",
+    PixelFormat.BGRA: "bgra",
+    PixelFormat.RGBA_SRGB: "rgba_srgb",
+    PixelFormat.BGRA_SRGB: "bgra_srgb",
+    PixelFormat.RGBAF: "rgba_float",
+    PixelFormat.RGB: "rgb",
+    PixelFormat.RGB_SRGB: "rgb_srgb",
+    PixelFormat.BGR: "bgr",
+    PixelFormat.BGR_SRGB: "bgr_srgb",
+}
+
+_FILL_VIEW_SUFFIX = {
+    _zivid.DeviceArrayViewRGBA: "rgba",
+    _zivid.DeviceArrayViewBGRA: "bgra",
+    _zivid.DeviceArrayViewRGBA_SRGB: "rgba_srgb",
+    _zivid.DeviceArrayViewBGRA_SRGB: "bgra_srgb",
+    _zivid.DeviceArrayViewRGBAf: "rgba_float",
+    _zivid.DeviceArrayViewRGB: "rgb",
+    _zivid.DeviceArrayViewRGB_SRGB: "rgb_srgb",
+    _zivid.DeviceArrayViewBGR: "bgr",
+    _zivid.DeviceArrayViewBGR_SRGB: "bgr_srgb",
+}
 
 
 class Frame2D:
     """A 2D frame captured by a Zivid camera.
 
     Contains a 2D image as well as metadata, settings and state of the API at the time of capture.
+
+    The images are not corrected for lens distortion. If your application relies on the geometry of the
+    image, you can undistort it using the camera intrinsics.
     """
 
     def __init__(self, impl):
         """Initialize Frame2D wrapper.
 
-        This constructor is only used internally, and should not be called by the end-user.
-
         Args:
-            impl:   Reference to internal/back-end instance.
+            impl:   A pathlib.Path or str path to a .zdf file, or a reference to an internal
+                    _zivid.Frame2D instance.
 
         Raises:
-            TypeError: If argument does not match the expected internal class.
+            TypeError: If argument does not match the expected types.
         """
-        if isinstance(impl, _zivid.Frame2D):
+        if isinstance(impl, (str, Path)):
+            self.__impl = _zivid.Frame2D(str(impl))
+        elif isinstance(impl, _zivid.Frame2D):
             self.__impl = impl
         else:
             raise TypeError(
-                "Unsupported type for argument impl. Got {}, expected {}.".format(type(impl), _zivid.Frame2D)
+                "Unsupported type for argument impl. Got {}, expected {}, {} or {}.".format(
+                    type(impl), str, Path, _zivid.Frame2D
+                )
             )
 
     def __str__(self):
@@ -67,6 +102,62 @@ class Frame2D:
         """
         return Image(self.__impl.image_bgra_srgb())
 
+    def image_rgb(self):
+        """Get color (RGB, 3-channel, no alpha) image from the frame.
+
+        Identical to :py:meth:`image_rgba` but skips the alpha channel for ~25% bandwidth savings.
+        """
+        return Image(self.__impl.image_rgb())
+
+    def image_rgb_srgb(self):
+        """Get color (RGB, 3-channel, no alpha) image from the frame in the sRGB color space."""
+        return Image(self.__impl.image_rgb_srgb())
+
+    def image_bgr(self):
+        """Get color (BGR, 3-channel, no alpha) image from the frame."""
+        return Image(self.__impl.image_bgr())
+
+    def image_bgr_srgb(self):
+        """Get color (BGR, 3-channel, no alpha) image from the frame in the sRGB color space."""
+        return Image(self.__impl.image_bgr_srgb())
+
+    def image_device_array(self, stream_or_queue, color_format):
+        """Get the 2D image as a newly allocated GPU device buffer.
+
+        Args:
+            stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr the SDK records a readiness
+                event on before handing off the buffer.
+            color_format: A zivid.PixelFormat color format. All color formats are supported: the
+                4-channel RGBA / BGRA / RGBA_SRGB / BGRA_SRGB / RGBAF and the 3-channel RGB / BGR /
+                RGB_SRGB / BGR_SRGB.
+
+        Returns:
+            A DeviceArray owning the freshly allocated buffer.
+        """
+        suffix = _resolve_color_format(color_format, _COLOR_FORMAT_ACCESSOR_SUFFIX)
+        _require_stream_or_queue(stream_or_queue)
+        accessor = getattr(self.__impl, "image_device_array_{}".format(suffix))
+        return DeviceArray(accessor(stream_or_queue))
+
+    def image_device_array_fill(self, stream_or_queue, destination_buffer):
+        """Fill a caller-provided DeviceArrayView with the 2D image.
+
+        The color format is taken from destination_buffer, which must be a color DeviceArrayView
+        created via zivid.create_device_array_view. All color formats can be filled, including the
+        3-channel RGB / BGR / RGB_SRGB / BGR_SRGB.
+
+        Args:
+            stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr the SDK enqueues the fill on.
+            destination_buffer: A color DeviceArrayView to fill in place.
+
+        Raises:
+            TypeError: If destination_buffer is not a color DeviceArrayView.
+        """
+        suffix, impl = _device_array_view_fill_target(destination_buffer, _FILL_VIEW_SUFFIX)
+        _require_stream_or_queue(stream_or_queue)
+        fill = getattr(self.__impl, "image_device_array_{}_fill".format(suffix))
+        fill(stream_or_queue, impl)
+
     def image_srgb(self):
         """Get color (RGBA) image from the frame in the sRGB color space.
 
@@ -76,6 +167,22 @@ class Frame2D:
             An image instance containing RGBA data in sRGB color space
         """
         return Image(self.__impl.image_rgba_srgb())
+
+    def save(self, file_path):
+        """Save the 2D frame to a .zdf file.
+
+        Args:
+            file_path: A pathlib.Path instance or a string specifying the destination .zdf file
+        """
+        self.__impl.save(str(file_path))
+
+    def load(self, file_path):
+        """Load a 2D frame from a .zdf file.
+
+        Args:
+            file_path: A pathlib.Path instance or a string specifying the .zdf file to load
+        """
+        self.__impl.load(str(file_path))
 
     @property
     def settings(self):

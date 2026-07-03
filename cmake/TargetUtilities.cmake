@@ -1,3 +1,5 @@
+include_guard()
+
 function(_zivid_python_library)
     set(OPTIONS "")
     set(ONE_VALUE_ARGUMENTS
@@ -37,6 +39,12 @@ function(_zivid_python_library)
             NO_EXTRAS
     )
 
+    # Avoid STB_GNU_UNIQUE on guard variables for function-local statics in inline/template
+    # functions: when two Python extension .so files are loaded into the same process, the
+    # unified guard otherwise makes the second module skip initialization of its own
+    # (hidden, per-DSO) copy. See pybind11 PR #949.
+    target_compile_options(${MODULE_NAME} PRIVATE $<$<CXX_COMPILER_ID:GNU>:-fno-gnu-unique>)
+
     add_library("ZividPython::${ARG_NAME}" ALIAS ${MODULE_NAME})
 
     target_link_libraries(${MODULE_NAME} PRIVATE ${ARG_LINK_LIBRARIES})
@@ -49,6 +57,21 @@ function(_zivid_python_library)
             DEBUG_POSTFIX
                 ""
     )
+
+    if(DEFINED ZIVID_PYTHON_OUTPUT_DIR AND ZIVID_PYTHON_OUTPUT_DIR)
+        set_target_properties(
+            ${MODULE_NAME}
+            PROPERTIES
+                LIBRARY_OUTPUT_DIRECTORY
+                    "${ZIVID_PYTHON_OUTPUT_DIR}/_zivid"
+                RUNTIME_OUTPUT_DIRECTORY
+                    "${ZIVID_PYTHON_OUTPUT_DIR}/_zivid"
+        )
+    endif()
+
+    if(TARGET zivid-python)
+        add_dependencies(zivid-python ${MODULE_NAME})
+    endif()
 
     target_include_directories(
         ${MODULE_NAME}

@@ -8,12 +8,46 @@ import _zivid
 
 class FrameInfo:
 
+    class Diagnostics:
+
+        def __init__(
+            self,
+            packet_loss=_zivid.FrameInfo.Diagnostics.PacketLoss().value,
+        ):
+
+            if isinstance(packet_loss, (bool,)):
+                self._packet_loss = _zivid.FrameInfo.Diagnostics.PacketLoss(packet_loss)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (bool,), got {value_type}".format(value_type=type(packet_loss))
+                )
+
+        @property
+        def packet_loss(self):
+            return self._packet_loss.value
+
+        @packet_loss.setter
+        def packet_loss(self, value):
+            if isinstance(value, (bool,)):
+                self._packet_loss = _zivid.FrameInfo.Diagnostics.PacketLoss(value)
+            else:
+                raise TypeError("Unsupported type, expected: bool, got {value_type}".format(value_type=type(value)))
+
+        def __eq__(self, other):
+            if self._packet_loss == other._packet_loss:
+                return True
+            return False
+
+        def __str__(self):
+            return str(_to_internal_frame_info_diagnostics(self))
+
     class Metrics:
 
         def __init__(
             self,
             acquisition_time=_zivid.FrameInfo.Metrics.AcquisitionTime().value,
             capture_time=_zivid.FrameInfo.Metrics.CaptureTime().value,
+            kernel_compute_time=_zivid.FrameInfo.Metrics.KernelComputeTime().value,
             reprocessing_time=_zivid.FrameInfo.Metrics.ReprocessingTime().value,
             throttling_time=_zivid.FrameInfo.Metrics.ThrottlingTime().value,
         ):
@@ -33,6 +67,15 @@ class FrameInfo:
                 raise TypeError(
                     "Unsupported type, expected: (datetime.timedelta,), got {value_type}".format(
                         value_type=type(capture_time)
+                    )
+                )
+
+            if isinstance(kernel_compute_time, (datetime.timedelta,)):
+                self._kernel_compute_time = _zivid.FrameInfo.Metrics.KernelComputeTime(kernel_compute_time)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (datetime.timedelta,), got {value_type}".format(
+                        value_type=type(kernel_compute_time)
                     )
                 )
 
@@ -63,6 +106,10 @@ class FrameInfo:
             return self._capture_time.value
 
         @property
+        def kernel_compute_time(self):
+            return self._kernel_compute_time.value
+
+        @property
         def reprocessing_time(self):
             return self._reprocessing_time.value
 
@@ -83,6 +130,15 @@ class FrameInfo:
         def capture_time(self, value):
             if isinstance(value, (datetime.timedelta,)):
                 self._capture_time = _zivid.FrameInfo.Metrics.CaptureTime(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: datetime.timedelta, got {value_type}".format(value_type=type(value))
+                )
+
+        @kernel_compute_time.setter
+        def kernel_compute_time(self, value):
+            if isinstance(value, (datetime.timedelta,)):
+                self._kernel_compute_time = _zivid.FrameInfo.Metrics.KernelComputeTime(value)
             else:
                 raise TypeError(
                     "Unsupported type, expected: datetime.timedelta, got {value_type}".format(value_type=type(value))
@@ -112,6 +168,7 @@ class FrameInfo:
             if (
                 self._acquisition_time == other._acquisition_time
                 and self._capture_time == other._capture_time
+                and self._kernel_compute_time == other._kernel_compute_time
                 and self._reprocessing_time == other._reprocessing_time
                 and self._throttling_time == other._throttling_time
             ):
@@ -311,6 +368,7 @@ class FrameInfo:
     def __init__(
         self,
         time_stamp=_zivid.FrameInfo.TimeStamp().value,
+        diagnostics=None,
         metrics=None,
         software_version=None,
         system_info=None,
@@ -322,6 +380,12 @@ class FrameInfo:
             raise TypeError(
                 "Unsupported type, expected: (datetime.datetime,), got {value_type}".format(value_type=type(time_stamp))
             )
+
+        if diagnostics is None:
+            diagnostics = self.Diagnostics()
+        if not isinstance(diagnostics, self.Diagnostics):
+            raise TypeError("Unsupported type: {value}".format(value=type(diagnostics)))
+        self._diagnostics = diagnostics
 
         if metrics is None:
             metrics = self.Metrics()
@@ -346,6 +410,10 @@ class FrameInfo:
         return self._time_stamp.value
 
     @property
+    def diagnostics(self):
+        return self._diagnostics
+
+    @property
     def metrics(self):
         return self._metrics
 
@@ -365,6 +433,12 @@ class FrameInfo:
             raise TypeError(
                 "Unsupported type, expected: datetime.datetime, got {value_type}".format(value_type=type(value))
             )
+
+    @diagnostics.setter
+    def diagnostics(self, value):
+        if not isinstance(value, self.Diagnostics):
+            raise TypeError("Unsupported type {value}".format(value=type(value)))
+        self._diagnostics = value
 
     @metrics.setter
     def metrics(self, value):
@@ -401,6 +475,7 @@ class FrameInfo:
     def __eq__(self, other):
         if (
             self._time_stamp == other._time_stamp
+            and self._diagnostics == other._diagnostics
             and self._metrics == other._metrics
             and self._software_version == other._software_version
             and self._system_info == other._system_info
@@ -417,10 +492,17 @@ class FrameInfo:
         return _to_frame_info(_to_internal_frame_info(self))
 
 
+def _to_frame_info_diagnostics(internal_diagnostics):
+    return FrameInfo.Diagnostics(
+        packet_loss=internal_diagnostics.packet_loss.value,
+    )
+
+
 def _to_frame_info_metrics(internal_metrics):
     return FrameInfo.Metrics(
         acquisition_time=internal_metrics.acquisition_time.value,
         capture_time=internal_metrics.capture_time.value,
+        kernel_compute_time=internal_metrics.kernel_compute_time.value,
         reprocessing_time=internal_metrics.reprocessing_time.value,
         throttling_time=internal_metrics.throttling_time.value,
     )
@@ -455,6 +537,7 @@ def _to_frame_info_system_info(internal_system_info):
 
 def _to_frame_info(internal_frame_info):
     return FrameInfo(
+        diagnostics=_to_frame_info_diagnostics(internal_frame_info.diagnostics),
         metrics=_to_frame_info_metrics(internal_frame_info.metrics),
         software_version=_to_frame_info_software_version(internal_frame_info.software_version),
         system_info=_to_frame_info_system_info(internal_frame_info.system_info),
@@ -462,11 +545,20 @@ def _to_frame_info(internal_frame_info):
     )
 
 
+def _to_internal_frame_info_diagnostics(diagnostics):
+    internal_diagnostics = _zivid.FrameInfo.Diagnostics()
+
+    internal_diagnostics.packet_loss = _zivid.FrameInfo.Diagnostics.PacketLoss(diagnostics.packet_loss)
+
+    return internal_diagnostics
+
+
 def _to_internal_frame_info_metrics(metrics):
     internal_metrics = _zivid.FrameInfo.Metrics()
 
     internal_metrics.acquisition_time = _zivid.FrameInfo.Metrics.AcquisitionTime(metrics.acquisition_time)
     internal_metrics.capture_time = _zivid.FrameInfo.Metrics.CaptureTime(metrics.capture_time)
+    internal_metrics.kernel_compute_time = _zivid.FrameInfo.Metrics.KernelComputeTime(metrics.kernel_compute_time)
     internal_metrics.reprocessing_time = _zivid.FrameInfo.Metrics.ReprocessingTime(metrics.reprocessing_time)
     internal_metrics.throttling_time = _zivid.FrameInfo.Metrics.ThrottlingTime(metrics.throttling_time)
 
@@ -513,6 +605,7 @@ def _to_internal_frame_info(frame_info):
 
     internal_frame_info.time_stamp = _zivid.FrameInfo.TimeStamp(frame_info.time_stamp)
 
+    internal_frame_info.diagnostics = _to_internal_frame_info_diagnostics(frame_info.diagnostics)
     internal_frame_info.metrics = _to_internal_frame_info_metrics(frame_info.metrics)
     internal_frame_info.software_version = _to_internal_frame_info_software_version(frame_info.software_version)
     internal_frame_info.system_info = _to_internal_frame_info_system_info(frame_info.system_info)

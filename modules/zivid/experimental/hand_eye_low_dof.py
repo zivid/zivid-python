@@ -118,7 +118,9 @@ class FixedPlacementOfCalibrationBoard:  # pylint: disable=too-few-public-method
         calibration, the position or pose should be given in the robot's end-effector frame.
 
         The origin is the top left inner corner of the calibration board. Using a pose instead of a position can improve
-        accuracy of the hand-eye calibration in some situations.
+        accuracy of the hand-eye calibration in some situations. For an illustration of where the origin is located, see
+        Zivid Calibration Object:
+        https://support.zivid.com/en/latest/academy/applications/hand-eye/calibration-object.html
 
         Note: the units of the input robot poses must be consistent with the units of the point clouds used to create
         the detection result. Zivid point clouds are, by default, in millimeters.

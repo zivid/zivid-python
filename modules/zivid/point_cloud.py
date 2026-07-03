@@ -2,8 +2,20 @@
 
 import _zivid
 import numpy
+from zivid.device_array import DeviceArray, _require_stream_or_queue
 from zivid.image import Image
+from zivid.mask import Mask, _to_internal_mask
+from zivid.pixel_format import PixelFormat, _resolve_color_format
+from zivid.settings import _to_internal_settings_region_of_interest_box
 from zivid.unorganized_point_cloud import UnorganizedPointCloud
+
+_COLOR_FORMAT_ACCESSOR_SUFFIX = {
+    PixelFormat.RGBA: "rgba",
+    PixelFormat.RGBA_SRGB: "rgba_srgb",
+    PixelFormat.BGRA: "bgra",
+    PixelFormat.BGRA_SRGB: "bgra_srgb",
+    PixelFormat.RGBAF: "rgbaf",
+}
 
 
 class PointCloud:
@@ -269,6 +281,87 @@ class PointCloud:
         internal_downsampling = PointCloud.Downsampling._valid_values[downsampling]  # pylint: disable=protected-access
         return PointCloud(self.__impl.downsampled(internal_downsampling))
 
+    def mask_by_region_of_interest(self, roi_box):
+        """Apply a region of interest box mask to the point cloud in-place.
+
+        Region of interest masking is used to mask out points that fall outside a specified 3D box region.
+        Points outside the region are set to invalid (NaN) values, effectively removing them from the point cloud
+        while maintaining the original dimensions and structure.
+
+        The masking is performed on the compute device. The point cloud is modified in-place. Use
+        "masked_by_region_of_interest" if you want to apply ROI masking to a new PointCloud instance.
+
+        The ROI box must be enabled (roi_box.enabled == True) for the masking to be applied.
+
+        Args:
+            roi_box: A zivid.Settings.RegionOfInterest.Box instance defining the 3D region to preserve
+
+        Returns:
+            Reference to the same PointCloud instance (for chaining calls)
+        """
+        internal_roi_box = _to_internal_settings_region_of_interest_box(roi_box)
+        self.__impl.mask_by_region_of_interest(internal_roi_box)
+        return self
+
+    def masked_by_region_of_interest(self, roi_box):
+        """Apply region of interest filtering to a copy of the point cloud.
+
+        This method is identical to "mask_by_region_of_interest", except that the filtering is
+        performed on a copy of the original point cloud. This method does not modify the original
+        point cloud.
+
+        Args:
+            roi_box: A zivid.Settings.RegionOfInterest.Box instance defining the 3D region to preserve
+
+        Returns:
+            A new PointCloud instance
+        """
+        internal_roi_box = _to_internal_settings_region_of_interest_box(roi_box)
+        return PointCloud(self.__impl.masked_by_region_of_interest(internal_roi_box))
+
+    def mask(self, mask):
+        """Apply a binary mask to the point cloud in-place.
+
+        The mask indicates which points in the point cloud should be considered invalid (NaN).
+        The mask can be a 2D numpy array of booleans/uint8 or a zivid.Mask object with the same
+        height and width as the point cloud. A value of True/non-zero in the mask indicates that
+        the corresponding point in the point cloud should be set to invalid (NaN). A value of
+        False/zero indicates that the corresponding point should be kept unchanged.
+
+        Args:
+            mask: A binary mask as a 2D numpy array of booleans/uint8 or a zivid.Mask object
+
+        Returns:
+            Reference to the same PointCloud instance (for chaining calls)
+        """
+        if isinstance(mask, Mask):
+            # Already a Mask object, use its internal implementation
+            self.__impl.mask(_to_internal_mask(mask))
+        else:
+            # Convert numpy array or other data to Mask first
+            mask_obj = Mask(mask)
+            self.__impl.mask(_to_internal_mask(mask_obj))
+        return self
+
+    def masked(self, mask):
+        """Get a copy of the point cloud with a binary mask applied.
+
+        This method is identical to "mask", except the masked point cloud is
+        returned as a new PointCloud instance. The current point cloud is not modified.
+
+        Args:
+            mask: A binary mask as a 2D numpy array of booleans/uint8 or a zivid.Mask object
+
+        Returns:
+            A new PointCloud instance with the mask applied
+        """
+        if isinstance(mask, Mask):
+            # Already a Mask object, use its internal implementation
+            return PointCloud(self.__impl.masked(_to_internal_mask(mask)))
+        # Convert numpy array or other data to Mask first
+        mask_obj = Mask(mask)
+        return PointCloud(self.__impl.masked(_to_internal_mask(mask_obj)))
+
     @property
     def height(self):
         """Get the height of the point cloud (number of rows).
@@ -305,6 +398,112 @@ class PointCloud:
             A new UnorganizedPointCloud constructed from the data in this PointCloud
         """
         return UnorganizedPointCloud(self.__impl.to_unorganized_point_cloud())
+
+    def device_points_xyz(self, stream_or_queue):
+        """Get a GPU device array containing XYZ point coordinates.
+
+        Returns a DeviceArray providing access to point cloud data
+        on the GPU device without CPU transfers.
+
+        Args:
+            stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr to synchronize SDK
+                operations with before handing off the buffer.
+
+        Returns:
+            A DeviceArray object containing XYZ point coordinates.
+        """
+        self.__impl.assert_not_released()
+        _require_stream_or_queue(stream_or_queue)
+        return DeviceArray(self.__impl.device_points_xyz(stream_or_queue))
+
+    def device_points_xyzw(self, stream_or_queue):
+        """Get a GPU device array containing XYZW point coordinates.
+
+        Returns a DeviceArray providing access to point cloud data
+        on the GPU device without CPU transfers.
+
+        Args:
+            stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr to synchronize SDK
+                operations with before handing off the buffer.
+
+        Returns:
+            A DeviceArray object containing XYZW point coordinates.
+        """
+        self.__impl.assert_not_released()
+        _require_stream_or_queue(stream_or_queue)
+        return DeviceArray(self.__impl.device_points_xyzw(stream_or_queue))
+
+    def device_points_z(self, stream_or_queue):
+        """Get a GPU device array containing Z point coordinates.
+
+        Returns a DeviceArray providing access to point cloud data
+        on the GPU device without CPU transfers.
+
+        Args:
+            stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr to synchronize SDK
+                operations with before handing off the buffer.
+
+        Returns:
+            A DeviceArray object containing Z point coordinates.
+        """
+        self.__impl.assert_not_released()
+        _require_stream_or_queue(stream_or_queue)
+        return DeviceArray(self.__impl.device_points_z(stream_or_queue))
+
+    def device_snrs(self, stream_or_queue):
+        """Get a GPU device array containing SNR values.
+
+        Returns a DeviceArray providing access to point cloud data
+        on the GPU device without CPU transfers.
+
+        Args:
+            stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr to synchronize SDK
+                operations with before handing off the buffer.
+
+        Returns:
+            A DeviceArray object containing SNR values.
+        """
+        self.__impl.assert_not_released()
+        _require_stream_or_queue(stream_or_queue)
+        return DeviceArray(self.__impl.device_snrs(stream_or_queue))
+
+    def device_normals_xyz(self, stream_or_queue):
+        """Get a GPU device array containing normal vectors.
+
+        Returns a DeviceArray providing access to point cloud data
+        on the GPU device without CPU transfers.
+
+        Args:
+            stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr to synchronize SDK
+                operations with before handing off the buffer.
+
+        Returns:
+            A DeviceArray object containing normal vectors.
+        """
+        self.__impl.assert_not_released()
+        _require_stream_or_queue(stream_or_queue)
+        return DeviceArray(self.__impl.device_normals_xyz(stream_or_queue))
+
+    def device_image(self, stream_or_queue, color_format):
+        """Get a GPU device array containing the organized color image.
+
+        Returns a DeviceArray providing access to point cloud color data on the GPU device without
+        CPU transfers.
+
+        Args:
+            stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr the SDK records a readiness
+                event on before handing off the buffer.
+            color_format: A zivid.PixelFormat color format. Supported: RGBA, BGRA, RGBA_SRGB,
+                BGRA_SRGB, RGBAF.
+
+        Returns:
+            A DeviceArray object containing the color image data.
+        """
+        suffix = _resolve_color_format(color_format, _COLOR_FORMAT_ACCESSOR_SUFFIX)
+        self.__impl.assert_not_released()
+        _require_stream_or_queue(stream_or_queue)
+        accessor = getattr(self.__impl, "device_image_{}".format(suffix))
+        return DeviceArray(accessor(stream_or_queue))
 
     def release(self):
         """Release the underlying resources."""

@@ -38,6 +38,7 @@ namespace ZividPython
             .def_property_readonly("user_data", &ReleasableCamera::userData)
             .def_property_readonly("network_configuration", &ReleasableCamera::networkConfiguration)
             .def("apply_network_configuration", &ReleasableCamera::applyNetworkConfiguration)
-            .def("measure_scene_conditions", &ReleasableCamera::measureSceneConditions);
+            .def("measure_scene_conditions", &ReleasableCamera::measureSceneConditions)
+            .def("check_health", &ReleasableCamera::checkHealth);
     }
 } // namespace ZividPython

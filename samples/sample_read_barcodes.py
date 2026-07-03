@@ -13,6 +13,7 @@ def _main():
         LinearBarcodeFormat.ean8,
         LinearBarcodeFormat.upcA,
         LinearBarcodeFormat.upcE,
+        LinearBarcodeFormat.itf,
     }
 
     matrix_barcode_formats = {

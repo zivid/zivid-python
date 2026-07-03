@@ -7,6 +7,7 @@
 
 namespace ZividPython
 {
+    void wrapEnum(pybind11::enum_<Zivid::Calibration::HandEyeStatus> pyEnum);
     void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeResidual> pyClass);
     void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeOutput> pyClass);
     void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeInput> pyClass);

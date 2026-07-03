@@ -1,3 +1,5 @@
+include_guard()
+
 option(WARNINGS "Enable compiler warnings" OFF)
 
 if(WARNINGS)
@@ -34,6 +36,7 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         set(WARNINGS_THAT_SHOULD_BE_IGNORED # WHY it is ok to ignore
             c++98-compat # Code base should be modern
             c++98-compat-pedantic # Code base should be modern
+            nrvo # TODO(ZIVID-11540): Reenable when fixed - return value optimization warning
         )
 
         foreach(WARNING ${WARNINGS_THAT_SHOULD_BE_FIXED})
