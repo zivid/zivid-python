@@ -7,7 +7,10 @@
 #include <ZividPython/ReleasableFrame2D.h>
 #include <ZividPython/Wrappers.h>
 
+#include <Zivid/CameraHealth.h>
 #include <Zivid/SceneConditions.h>
+
+#include <optional>
 
 namespace ZividPython
 {
@@ -36,6 +39,7 @@ namespace ZividPython
             const Zivid::NetworkConfiguration &,
             networkConfiguration)
         ZIVID_PYTHON_FORWARD_0_ARGS(measureSceneConditions)
+        ZIVID_PYTHON_FORWARD_0_ARGS(checkHealth)
     };
 
     void wrapClass(pybind11::class_<ReleasableCamera> pyClass);

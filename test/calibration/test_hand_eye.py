@@ -53,6 +53,7 @@ def test_eyetohand_calibration(handeye_eth_frames, handeye_eth_poses, handeye_et
     # Perform eye-to-hand calibration
     handeye_output = zivid.calibration.calibrate_eye_to_hand(inputs)
     pytest.helpers.check_handeye_output(inputs, handeye_output, handeye_eth_transform)
+    assert handeye_output.status() == zivid.calibration.HandEyeStatus.ok
 
 
 def test_marker_eyetohand_calibration(handeye_eth_frames, handeye_eth_poses, handeye_marker_eth_transform):
@@ -69,6 +70,7 @@ def test_marker_eyetohand_calibration(handeye_eth_frames, handeye_eth_poses, han
     # Perform eye-to-hand calibration
     handeye_output = zivid.calibration.calibrate_eye_to_hand(inputs)
     pytest.helpers.check_handeye_output(inputs, handeye_output, handeye_marker_eth_transform)
+    assert handeye_output.status() == zivid.calibration.HandEyeStatus.ok
 
 
 def test_eyetohand_calibration_save_load(handeye_eth_frames, handeye_eth_poses):

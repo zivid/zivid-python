@@ -2,10 +2,13 @@ import copy
 import tempfile
 from pathlib import Path
 
+import numpy as np
 import pytest
 import zivid
 from assertions import assert_point_clouds_equal, assert_point_clouds_not_equal
 from zivid import CameraInfo, CameraState, FrameInfo, Settings
+from zivid.mask import Mask
+from zivid.resolution import Resolution
 
 
 def test_illegal_init(
@@ -150,3 +153,153 @@ def test_clone(frame, transform):
 
     frame.release()
     assert isinstance(frame_clone.point_cloud(), zivid.PointCloud)
+
+
+def test_mask_with_zivid_mask(frame):
+    """Test masking with zivid.Mask object."""
+    height, width = frame.point_cloud().height, frame.point_cloud().width
+
+    # Create mask using zivid.Mask
+    mask_array = np.ones((height, width), dtype=np.uint8)
+    mask_array[height // 3 : 2 * height // 3, width // 3 : 2 * width // 3] = False  # Only keep center region
+
+    mask = zivid.Mask(mask_array)
+
+    # Apply mask
+    frame.mask(mask)
+
+    # Check results
+    masked_xyz = frame.point_cloud().copy_data("xyz")
+
+    # Outside center region should be NaN
+    # Top region
+    top_region = masked_xyz[: height // 3, :, 0]
+    assert np.all(np.isnan(top_region))
+
+    # Bottom region
+    bottom_region = masked_xyz[2 * height // 3 :, :, 0]
+    assert np.all(np.isnan(bottom_region))
+
+    # Left and right regions
+    left_region = masked_xyz[:, : width // 3, 0]
+    assert np.all(np.isnan(left_region))
+
+    right_region = masked_xyz[:, 2 * width // 3 :, 0]
+    assert np.all(np.isnan(right_region))
+
+
+def test_masked_returns_new_instance(frame):
+    """Test that masked() returns a new PointCloud instance."""
+    height, width = frame.point_cloud().height, frame.point_cloud().width
+
+    # Create mask
+    mask_array = np.zeros((height, width), dtype=bool)
+    mask_array[10:20, 10:20] = True
+
+    # Get original data for comparison
+    original_xyz = frame.point_cloud().copy_data("xyz").copy()
+
+    # Apply masked() - should return new instance
+    masked_point_cloud = frame.point_cloud().masked(mask_array)
+
+    # Should be different instances
+    assert masked_point_cloud is not frame.point_cloud()
+    assert isinstance(masked_point_cloud, zivid.PointCloud)
+
+    # Original should be unchanged
+    current_xyz = frame.point_cloud().copy_data("xyz")
+    np.testing.assert_array_equal(original_xyz, current_xyz)
+
+    # New instance should have mask applied
+    masked_xyz = masked_point_cloud.copy_data("xyz")
+    masked_region = masked_xyz[10:20, 10:20, 0]
+    assert np.all(np.isnan(masked_region))
+
+    # Clean up
+    masked_point_cloud.release()
+
+
+def test_mask_frame_with_numpy_array(frame):
+    """Test masking frame with numpy array."""
+    height, width = frame.point_cloud().height, frame.point_cloud().width
+
+    # Create mask as numpy array
+    mask_array = np.ones((height, width), dtype=bool)
+    mask_array[height // 4 : 3 * height // 4, width // 4 : 3 * width // 4] = False  # Keep center region
+
+    # Apply mask to frame
+    frame.mask(mask_array)
+
+    # Check results
+    masked_xyz = frame.point_cloud().copy_data("xyz")
+
+    # Outside center region should be NaN
+    # Top region should be NaN
+    top_region = masked_xyz[: height // 4, :, 0]
+    assert np.all(np.isnan(top_region))
+
+    # Bottom region should be NaN
+    bottom_region = masked_xyz[3 * height // 4 :, :, 0]
+    assert np.all(np.isnan(bottom_region))
+
+
+def test_masked_frame_returns_new_instance(frame):
+    """Test that frame.masked() returns a new Frame instance."""
+    height, width = frame.point_cloud().height, frame.point_cloud().width
+
+    # Create mask
+    mask_array = np.zeros((height, width), dtype=bool)
+    mask_array[5:15, 5:15] = True
+
+    # Get original data for comparison
+    original_xyz = frame.point_cloud().copy_data("xyz").copy()
+
+    # Apply masked() - should return new instance
+    masked_frame = frame.masked(mask_array)
+
+    # Should be different instances
+    assert masked_frame is not frame
+    assert isinstance(masked_frame, zivid.Frame)
+
+    # Original should be unchanged
+    current_xyz = frame.point_cloud().copy_data("xyz")
+    np.testing.assert_array_equal(original_xyz, current_xyz)
+
+    # New instance should have mask applied
+    masked_xyz = masked_frame.point_cloud().copy_data("xyz")
+    masked_region = masked_xyz[5:15, 5:15, 0]
+    assert np.all(np.isnan(masked_region))
+
+    # Clean up
+    masked_frame.release()
+
+
+def test_mask_can_be_released():
+    """Test that Mask objects can be released."""
+    # Create a mask
+    resolution = Resolution(100, 80)
+    mask = Mask(resolution)
+
+    # Should be able to access properties
+    assert mask.width == 100
+    assert mask.height == 80
+
+    # Release the mask
+    mask.release()
+
+    # After release, should raise RuntimeError when accessing properties
+    with pytest.raises(RuntimeError):
+        _ = mask.width
+
+
+def test_mask_context_manager():
+    """Test that Mask works as context manager."""
+    resolution = Resolution(50, 40)
+
+    with Mask(resolution) as mask:
+        assert mask.width == 50
+        assert mask.height == 40
+
+    # After exiting context, should raise RuntimeError
+    with pytest.raises(RuntimeError):
+        _ = mask.width

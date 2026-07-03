@@ -18,6 +18,7 @@ from zivid._calibration.hand_eye import (
     HandEyeInput,
     HandEyeOutput,
     HandEyeResidual,
+    HandEyeStatus,
     calibrate_eye_in_hand,
     calibrate_eye_to_hand,
 )

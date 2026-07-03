@@ -1,7 +1,9 @@
 #include <ZividPython/Matrix.h>
+#include <ZividPython/ReleasableMask.h>
 #include <ZividPython/ReleasablePointCloud.h>
 
 #include <Zivid/PointCloud.h>
+#include <Zivid/Settings.h>
 
 #include <pybind11/pybind11.h>
 
@@ -35,12 +37,44 @@ namespace ZividPython
                 [](ReleasablePointCloud &pointCloud, Zivid::PointCloud::Downsampling downsampling) {
                     return pointCloud.downsampled(downsampling);
                 })
+            .def(
+                "mask_by_region_of_interest",
+                [](ReleasablePointCloud &pointCloud, const Zivid::Settings::RegionOfInterest::Box &roiSettings) {
+                    pointCloud.maskByRegionOfInterest(roiSettings);
+                })
+            .def(
+                "masked_by_region_of_interest",
+                [](ReleasablePointCloud &pointCloud, const Zivid::Settings::RegionOfInterest::Box &roiSettings) {
+                    return pointCloud.maskedByRegionOfInterest(roiSettings);
+                })
+            .def("mask", [](ReleasablePointCloud &pointCloud, const Zivid::Mask &mask) { pointCloud.mask(mask); })
+            .def(
+                "mask",
+                [](ReleasablePointCloud &pointCloud, const ReleasableMask &mask) { pointCloud.mask(mask.impl()); })
+            .def(
+                "masked",
+                [](ReleasablePointCloud &pointCloud, const Zivid::Mask &mask) { return pointCloud.masked(mask); })
+            .def(
+                "masked",
+                [](ReleasablePointCloud &pointCloud, const ReleasableMask &mask) {
+                    return pointCloud.masked(mask.impl());
+                })
             .def("copy_image_rgba", &ReleasablePointCloud::copyImageRGBA)
             .def("copy_image_bgra", &ReleasablePointCloud::copyImageBGRA)
             .def("copy_image_rgba_srgb", &ReleasablePointCloud::copyImageRGBA_SRGB)
             .def("copy_image_bgra_srgb", &ReleasablePointCloud::copyImageBGRA_SRGB)
             .def("to_unorganized_point_cloud", &ReleasablePointCloud::toUnorganizedPointCloud)
-            .def("clone", &ReleasablePointCloud::clone);
+            .def("clone", &ReleasablePointCloud::clone)
+            .def("device_points_xyz", &ReleasablePointCloud::devicePointsXYZ, py::arg("stream_or_queue"))
+            .def("device_points_xyzw", &ReleasablePointCloud::devicePointsXYZW, py::arg("stream_or_queue"))
+            .def("device_points_z", &ReleasablePointCloud::devicePointsZ, py::arg("stream_or_queue"))
+            .def("device_snrs", &ReleasablePointCloud::deviceSNRs, py::arg("stream_or_queue"))
+            .def("device_normals_xyz", &ReleasablePointCloud::deviceNormalsXYZ, py::arg("stream_or_queue"))
+            .def("device_image_rgba", &ReleasablePointCloud::deviceImageRGBA, py::arg("stream_or_queue"))
+            .def("device_image_rgba_srgb", &ReleasablePointCloud::deviceImageRGBA_SRGB, py::arg("stream_or_queue"))
+            .def("device_image_bgra", &ReleasablePointCloud::deviceImageBGRA, py::arg("stream_or_queue"))
+            .def("device_image_bgra_srgb", &ReleasablePointCloud::deviceImageBGRA_SRGB, py::arg("stream_or_queue"))
+            .def("device_image_rgbaf", &ReleasablePointCloud::deviceImageRGBAf, py::arg("stream_or_queue"));
 
         py::enum_<Zivid::PointCloud::Downsampling>{ pyClass, "Downsampling" }
             .value("by2x2", Zivid::PointCloud::Downsampling::by2x2)

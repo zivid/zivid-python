@@ -1,4 +1,5 @@
 #include <ZividPython/ReleasableFrame.h>
+#include <ZividPython/ReleasableMask.h>
 
 #include <pybind11/pybind11.h>
 
@@ -18,6 +19,26 @@ namespace ZividPython
             .def_property_readonly("camera_info", &ReleasableFrame::cameraInfo)
             .def("point_cloud", &ReleasableFrame::pointCloud)
             .def("frame_2d", &ReleasableFrame::frame2D)
-            .def("clone", &ReleasableFrame::clone);
+            .def("clone", &ReleasableFrame::clone)
+            .def(
+                "mask",
+                &ReleasableFrame::mask,
+                "Apply a binary mask to the frame's point cloud in-place",
+                py::arg("mask"))
+            .def(
+                "mask",
+                [](ReleasableFrame &frame, const ReleasableMask &mask) { frame.mask(mask.impl()); },
+                "Apply a binary mask to the frame's point cloud in-place",
+                py::arg("mask"))
+            .def(
+                "masked",
+                &ReleasableFrame::masked,
+                "Get a copy of the frame with a binary mask applied to its point cloud",
+                py::arg("mask"))
+            .def(
+                "masked",
+                [](ReleasableFrame &frame, const ReleasableMask &mask) { return frame.masked(mask.impl()); },
+                "Get a copy of the frame with a binary mask applied to its point cloud",
+                py::arg("mask"));
     }
 } // namespace ZividPython

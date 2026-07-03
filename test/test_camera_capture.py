@@ -21,12 +21,12 @@ def test_capture_2d_3d_one_2d_and_one_3d(shared_file_camera):
         assert isinstance(frame.frame_2d(), zivid.Frame2D)
 
 
-def test_capture_2d_3d_two_2d_and_one_3d(shared_file_camera):
+def test_capture_2d_3d_two_2d_and_one_3d(file_camera_calibration_board):
     acquisitions3d = [zivid.Settings.Acquisition()]
     acquisitions2d = [zivid.Settings2D.Acquisition(), zivid.Settings2D.Acquisition()]
     settings = zivid.Settings(acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d))
 
-    with shared_file_camera.capture_2d_3d(settings) as frame:
+    with file_camera_calibration_board.capture_2d_3d(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
         assert len(frame.settings.acquisitions) == 1
@@ -36,12 +36,12 @@ def test_capture_2d_3d_two_2d_and_one_3d(shared_file_camera):
         assert isinstance(frame.frame_2d(), zivid.Frame2D)
 
 
-def test_capture_2d_3d_one_2d_and_two_3d(shared_file_camera):
+def test_capture_2d_3d_one_2d_and_two_3d(file_camera_calibration_board):
     acquisitions3d = [zivid.Settings.Acquisition(), zivid.Settings.Acquisition()]
     acquisitions2d = [zivid.Settings2D.Acquisition()]
     settings = zivid.Settings(acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d))
 
-    with shared_file_camera.capture_2d_3d(settings) as frame:
+    with file_camera_calibration_board.capture_2d_3d(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
         assert len(frame.settings.acquisitions) == 2
@@ -51,12 +51,12 @@ def test_capture_2d_3d_one_2d_and_two_3d(shared_file_camera):
         assert isinstance(frame.frame_2d(), zivid.Frame2D)
 
 
-def test_capture_2d_3d_two_2d_and_two_3d(shared_file_camera):
+def test_capture_2d_3d_two_2d_and_two_3d(file_camera_calibration_board):
     acquisitions3d = [zivid.Settings.Acquisition(), zivid.Settings.Acquisition()]
     acquisitions2d = [zivid.Settings2D.Acquisition(), zivid.Settings2D.Acquisition()]
     settings = zivid.Settings(acquisitions=acquisitions3d, color=zivid.Settings2D(acquisitions=acquisitions2d))
 
-    with shared_file_camera.capture_2d_3d(settings) as frame:
+    with file_camera_calibration_board.capture_2d_3d(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
         assert len(frame.settings.acquisitions) == 2
@@ -104,17 +104,14 @@ def test_one_acquisition_in_list(shared_file_camera):
         assert isinstance(frame, zivid.frame.Frame)
 
 
-def test_five_acquisitions_in_list(shared_file_camera):
+def test_multiple_acquisitions_in_list(file_camera_calibration_board):
     acquisitions = [
-        zivid.Settings.Acquisition(),
-        zivid.Settings.Acquisition(),
-        zivid.Settings.Acquisition(),
         zivid.Settings.Acquisition(),
         zivid.Settings.Acquisition(),
     ]
     settings = zivid.Settings(acquisitions=acquisitions)
     assert isinstance(acquisitions, list)
-    with shared_file_camera.capture(settings) as frame:
+    with file_camera_calibration_board.capture(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
 
@@ -128,17 +125,14 @@ def test_one_acquisition_in_tuple(shared_file_camera):
         assert isinstance(frame, zivid.frame.Frame)
 
 
-def test_five_acquisition_in_tuple(shared_file_camera):
+def test_multiple_acquisition_in_tuple(file_camera_calibration_board):
     acquisitions = (
-        zivid.Settings.Acquisition(),
-        zivid.Settings.Acquisition(),
-        zivid.Settings.Acquisition(),
         zivid.Settings.Acquisition(),
         zivid.Settings.Acquisition(),
     )
     settings = zivid.Settings(acquisitions=acquisitions)
     assert isinstance(acquisitions, tuple)
-    with shared_file_camera.capture(settings) as frame:
+    with file_camera_calibration_board.capture(settings) as frame:
         assert frame
         assert isinstance(frame, zivid.frame.Frame)
 

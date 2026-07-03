@@ -66,6 +66,17 @@ namespace
         pyClass.def(py::init<>(&pointCloudDataCopier<NativeType>))
             .def_buffer(pointCloudDataBuffer<NativeType, WrapperType, 4>);
     }
+
+    template<typename NativeType>
+    void wrapThreeChannelImageClass(pybind11::class_<ZividPython::ReleasableArray2D<NativeType>> pyClass)
+    {
+        using WrapperType = uint8_t;
+        static_assert(std::is_same_v<WrapperType, decltype(NativeType::r)>);
+        static_assert(std::is_same_v<WrapperType, decltype(NativeType::g)>);
+        static_assert(std::is_same_v<WrapperType, decltype(NativeType::b)>);
+
+        pyClass.def_buffer(pointCloudDataBuffer<NativeType, WrapperType, 3>);
+    }
 } // namespace
 
 namespace ZividPython
@@ -98,6 +109,26 @@ namespace ZividPython
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorBGRA_SRGB>> pyClass)
     {
         wrapImageClass<Zivid::ColorBGRA_SRGB>(pyClass);
+    }
+
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorRGB>> pyClass)
+    {
+        wrapThreeChannelImageClass<Zivid::ColorRGB>(pyClass);
+    }
+
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorRGB_SRGB>> pyClass)
+    {
+        wrapThreeChannelImageClass<Zivid::ColorRGB_SRGB>(pyClass);
+    }
+
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorBGR>> pyClass)
+    {
+        wrapThreeChannelImageClass<Zivid::ColorBGR>(pyClass);
+    }
+
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorBGR_SRGB>> pyClass)
+    {
+        wrapThreeChannelImageClass<Zivid::ColorBGR_SRGB>(pyClass);
     }
 
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::NormalXYZ>> pyClass)

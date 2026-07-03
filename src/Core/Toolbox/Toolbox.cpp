@@ -35,7 +35,8 @@ namespace ZividPython::Toolbox
         ZIVID_PYTHON_WRAP_ENUM_CLASS(dest, LinearBarcodeFormat);
         ZIVID_PYTHON_WRAP_ENUM_CLASS(dest, MatrixBarcodeFormat);
         ZIVID_PYTHON_WRAP_CLASS(dest, LinearBarcodeDetectionResult);
-        ZIVID_PYTHON_WRAP_CLASS(dest, MatrixBarcodeDetectionResult);
+        ZIVID_PYTHON_WRAP_CLASS(dest, LinearBarcodeDecodingResult);
+        ZIVID_PYTHON_WRAP_CLASS(dest, MatrixBarcodeDecodingResult);
         ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(dest, BarcodeDetector);
     }
 } // namespace ZividPython::Toolbox

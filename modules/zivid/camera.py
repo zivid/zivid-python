@@ -1,6 +1,7 @@
 """Contains Camera class."""
 
 import _zivid
+from zivid.camera_health import _to_camera_health
 from zivid.camera_info import _to_camera_info
 from zivid.camera_state import _to_camera_state
 from zivid.frame import Frame
@@ -187,6 +188,22 @@ class Camera:
             A CameraInfo instance
         """
         return _to_camera_info(self.__impl.info)
+
+    def check_health(self):
+        """Run health checks on the camera and return a severity report.
+
+        The returned CameraHealth contains an aggregated overall severity, along with the severity of each
+        individual check (link, temperatures, fan, memory and infield verification). Each check uses the
+        four-level severity scale "OK", "Suboptimal", "Error", "Unknown". The overall value is the worst
+        severity across all populated checks.
+
+        `check_health` will raise a RuntimeException if the camera status (see `CameraState.Status`) is not
+        "connected".
+
+        Returns:
+            The current health check report as a CameraHealth instance.
+        """
+        return _to_camera_health(self.__impl.check_health())
 
     @property
     def state(self):

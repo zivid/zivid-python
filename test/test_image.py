@@ -7,11 +7,12 @@ import pytest
 import zivid
 
 
-def test_copy_data(image_2d):
+def test_copy_data(image_2d, color_format):
     data = image_2d.copy_data()
     assert data is not None
     assert isinstance(data, np.ndarray)
-    assert data.shape == (image_2d.height, image_2d.width, 4)
+    expected_channels = 3 if color_format in {"rgb", "rgb_srgb", "bgr", "bgr_srgb"} else 4
+    assert data.shape == (image_2d.height, image_2d.width, expected_channels)
     assert data.dtype == np.uint8
 
 
@@ -71,9 +72,7 @@ def test_load_invalid_color_format(frame_2d):
         image_file = Path(tmpdir) / "saved_image.png"
         frame_2d.image_rgba().save(image_file)
         with pytest.raises(ValueError):
-            zivid.Image.load(image_file, "bgr")
-        with pytest.raises(ValueError):
-            zivid.Image.load(image_file, "rgb")
+            zivid.Image.load(image_file, "rgbz")
         with pytest.raises(ValueError):
             zivid.Image.load(image_file, "asdf")
 

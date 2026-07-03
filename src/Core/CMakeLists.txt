@@ -6,6 +6,8 @@ project(
 )
 
 set(SOURCES
+    BoundingBox.cpp
+    CameraAddress.cpp
     Calibration/Calibration.cpp
     Calibration/Detector.cpp
     Calibration/HandEye.cpp
@@ -23,12 +25,19 @@ set(SOURCES
     ReleasableArray1D.cpp
     ReleasableArray2D.cpp
     ReleasableCamera.cpp
+    FrameFileType.cpp
+    ReleasableComputeDevice.cpp
     ReleasableFrame.cpp
     ReleasableFrame2D.cpp
+    ReleasableMask.cpp
     ReleasableImage.cpp
+    ReleasableImageDeviceArray.cpp
+    ReleasableDeviceArrayView.cpp
     ReleasablePointCloud.cpp
+    ReleasablePointCloudDeviceArray.cpp
     ReleasableUnorganizedPointCloud.cpp
     ReleasableProjectedImage.cpp
+    Resolution.cpp
     SingletonApplication.cpp
     Toolbox/PointCloudRegistration.cpp
     Toolbox/Barcode.cpp

@@ -2,6 +2,15 @@
 
 import _zivid
 import numpy
+from zivid.device_array import DeviceArray, _require_stream_or_queue
+from zivid.pixel_format import PixelFormat, _resolve_color_format
+
+_COLOR_FORMAT_ACCESSOR_SUFFIX = {
+    PixelFormat.RGBA: "rgba",
+    PixelFormat.RGBA_SRGB: "rgba_srgb",
+    PixelFormat.BGRA: "bgra",
+    PixelFormat.BGRA_SRGB: "bgra_srgb",
+}
 
 
 class UnorganizedPointCloud:
@@ -150,6 +159,78 @@ class UnorganizedPointCloud:
             shape (4,) or (1,4) with dtype=np.uint8
         """
         return UnorganizedPointCloud(self.__impl.painted_uniform_color(color))
+
+    def device_points_xyz(self, stream_or_queue):
+        """Get a GPU device array containing XYZ point coordinates.
+
+        Returns a DeviceArray (with shape [1, N, 3]) providing access to unorganized point cloud data
+        on the GPU device without CPU transfers.
+
+        Args:
+            stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr to synchronize SDK
+                operations with before handing off the buffer.
+
+        Returns:
+            A DeviceArray object containing XYZ point coordinates.
+        """
+        self.__impl.assert_not_released()
+        _require_stream_or_queue(stream_or_queue)
+        return DeviceArray(self.__impl.device_array_xyz(stream_or_queue))
+
+    def device_points_xyzw(self, stream_or_queue):
+        """Get a GPU device array containing XYZW point coordinates.
+
+        Returns a DeviceArray providing access to unorganized point cloud data
+        on the GPU device without CPU transfers.
+
+        Args:
+            stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr to synchronize SDK
+                operations with before handing off the buffer.
+
+        Returns:
+            A DeviceArray object containing XYZW point coordinates.
+        """
+        self.__impl.assert_not_released()
+        _require_stream_or_queue(stream_or_queue)
+        return DeviceArray(self.__impl.device_array_xyzw(stream_or_queue))
+
+    def device_snrs(self, stream_or_queue):
+        """Get a GPU device array containing SNR values.
+
+        Returns a DeviceArray providing access to unorganized point cloud data
+        on the GPU device without CPU transfers.
+
+        Args:
+            stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr to synchronize SDK
+                operations with before handing off the buffer.
+
+        Returns:
+            A DeviceArray object containing SNR values.
+        """
+        self.__impl.assert_not_released()
+        _require_stream_or_queue(stream_or_queue)
+        return DeviceArray(self.__impl.device_array_snr(stream_or_queue))
+
+    def device_colors(self, stream_or_queue, color_format):
+        """Get a GPU device array containing the unorganized point cloud colors.
+
+        Returns a DeviceArray providing access to unorganized point cloud color data on the GPU
+        device without CPU transfers.
+
+        Args:
+            stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr the SDK records a readiness
+                event on before handing off the buffer.
+            color_format: A zivid.PixelFormat color format. Supported: RGBA, BGRA, RGBA_SRGB,
+                BGRA_SRGB.
+
+        Returns:
+            A DeviceArray object containing the color data.
+        """
+        suffix = _resolve_color_format(color_format, _COLOR_FORMAT_ACCESSOR_SUFFIX)
+        self.__impl.assert_not_released()
+        _require_stream_or_queue(stream_or_queue)
+        accessor = getattr(self.__impl, "device_array_{}".format(suffix))
+        return DeviceArray(accessor(stream_or_queue))
 
     def copy_data(self, data_format):
         """Copy point cloud data from GPU to numpy array.

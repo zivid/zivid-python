@@ -448,3 +448,184 @@ def test_clone_point_cloud(frame, transform):
             point_cloud.transform(transform)
             # clone, transform should not have affected the clone
             assert_point_clouds_not_equal(point_cloud, point_cloud_clone)
+
+
+def test_mask_with_numpy_boolean(point_cloud):
+    """Test masking with numpy boolean array."""
+    height, width = point_cloud.height, point_cloud.width
+
+    # Create a boolean mask that masks out center region
+    mask_array = np.ones((height, width), dtype=bool)
+    mask_array[height // 4 : 3 * height // 4, width // 4 : 3 * width // 4] = False
+
+    # Get original point count
+    original_xyz = point_cloud.copy_data("xyz")
+    original_valid_points = np.sum(~np.isnan(original_xyz[:, :, 0]))
+
+    # Apply mask in-place
+    result = point_cloud.mask(mask_array)
+
+    # Should return self for chaining
+    assert result is point_cloud
+
+    # Count valid points after masking
+    masked_xyz = point_cloud.copy_data("xyz")
+    masked_valid_points = np.sum(~np.isnan(masked_xyz[:, :, 0]))
+
+    # Should have fewer valid points after masking
+    assert masked_valid_points <= original_valid_points
+
+    # Points where mask was True should now be NaN
+    outside_center_slice_top = masked_xyz[: height // 4, :, 0]
+    outside_center_slice_bottom = masked_xyz[3 * height // 4 :, :, 0]
+    outside_center_slice_left = masked_xyz[:, : width // 4, 0]
+    outside_center_slice_right = masked_xyz[:, 3 * width // 4 :, 0]
+    assert np.all(np.isnan(outside_center_slice_top))
+    assert np.all(np.isnan(outside_center_slice_bottom))
+    assert np.all(np.isnan(outside_center_slice_left))
+    assert np.all(np.isnan(outside_center_slice_right))
+
+
+def test_mask_with_numpy_uint8(point_cloud):
+    """Test masking with numpy uint8 array."""
+    height, width = point_cloud.height, point_cloud.width
+
+    # Create a uint8 mask (0 = keep, 1 = mask out)
+    mask_array = np.zeros((height, width), dtype=np.uint8)
+    mask_array[: height // 2, :] = 1  # Mask out top half
+
+    # Get original data for comparison
+    original_xyz = point_cloud.copy_data("xyz").copy()
+
+    # Apply mask
+    point_cloud.mask(mask_array)
+
+    # Check results
+    masked_xyz = point_cloud.copy_data("xyz")
+
+    # Top half should be NaN
+    top_half_masked = masked_xyz[: height // 2, :, 0]
+    assert np.all(np.isnan(top_half_masked))
+
+    # Bottom half should be unchanged where originally valid
+    bottom_half_original = original_xyz[height // 2 :, :, 0]
+    bottom_half_masked = masked_xyz[height // 2 :, :, 0]
+
+    # Where original was valid, masked should be the same
+    valid_original = ~np.isnan(bottom_half_original)
+    np.testing.assert_array_equal(bottom_half_original[valid_original], bottom_half_masked[valid_original])
+
+
+def test_mask_with_zivid_mask(point_cloud):
+    """Test masking with zivid.Mask object."""
+    height, width = point_cloud.height, point_cloud.width
+
+    # Create mask using zivid.Mask (0 = keep, 1 = mask out)
+    mask_array = np.ones((height, width), dtype=np.uint8)
+    mask_array[height // 3 : 2 * height // 3, width // 3 : 2 * width // 3] = 0  # Only keep center region
+
+    mask = zivid.Mask(mask_array)
+
+    # Apply mask
+    point_cloud.mask(mask)
+
+    # Check results
+    masked_xyz = point_cloud.copy_data("xyz")
+
+    # Outside center region should be NaN
+    # Top region
+    top_region = masked_xyz[: height // 3, :, 0]
+    assert np.all(np.isnan(top_region))
+
+    # Bottom region
+    bottom_region = masked_xyz[2 * height // 3 :, :, 0]
+    assert np.all(np.isnan(bottom_region))
+
+    # Left and right regions
+    left_region = masked_xyz[:, : width // 3, 0]
+    assert np.all(np.isnan(left_region))
+
+    right_region = masked_xyz[:, 2 * width // 3 :, 0]
+    assert np.all(np.isnan(right_region))
+
+
+def test_masked_returns_new_instance(point_cloud):
+    """Test that masked() returns a new PointCloud instance."""
+    height, width = point_cloud.height, point_cloud.width
+
+    # Create mask
+    mask_array = np.ones((height, width), dtype=bool)
+    mask_array[10:20, 10:20] = False
+
+    # Get original data for comparison
+    original_xyz = point_cloud.copy_data("xyz").copy()
+
+    # Apply masked() - should return new instance
+    masked_point_cloud = point_cloud.masked(mask_array)
+
+    # Should be different instances
+    assert masked_point_cloud is not point_cloud
+    assert isinstance(masked_point_cloud, zivid.PointCloud)
+
+    # Original should be unchanged
+    current_xyz = point_cloud.copy_data("xyz")
+    np.testing.assert_array_equal(original_xyz, current_xyz)
+
+    # New instance should have mask applied
+    masked_xyz = masked_point_cloud.copy_data("xyz")
+    outside_masked_region_top = masked_xyz[:10, :, 0]
+    outside_masked_region_bottom = masked_xyz[20:, :, 0]
+    outside_masked_region_left = masked_xyz[:, :10, 0]
+    outside_masked_region_right = masked_xyz[:, 20:, 0]
+    assert np.all(np.isnan(outside_masked_region_top))
+    assert np.all(np.isnan(outside_masked_region_bottom))
+    assert np.all(np.isnan(outside_masked_region_left))
+    assert np.all(np.isnan(outside_masked_region_right))
+
+    # Clean up
+    masked_point_cloud.release()
+
+
+def test_mask_chaining(point_cloud):
+    """Test that mask() returns self for method chaining."""
+    height, width = point_cloud.height, point_cloud.width
+
+    # Create simple masks
+    mask1 = np.ones((height, width), dtype=bool)
+    mask1[:10, :] = False  # Mask top 10 rows
+
+    mask2 = np.ones((height, width), dtype=bool)
+    mask2[-10:, :] = False  # Mask bottom 10 rows
+
+    # Test chaining
+    result = point_cloud.mask(mask1).mask(mask2)
+
+    # Should return self
+    assert result is point_cloud
+
+    # Check that both masks were applied
+    masked_xyz = point_cloud.copy_data("xyz")
+
+    # Top and bottom should be NaN
+    top_region = masked_xyz[:10, :, 0]
+    bottom_region = masked_xyz[-10:, :, 0]
+
+    assert np.all(np.isnan(top_region))
+    assert np.all(np.isnan(bottom_region))
+
+
+def test_mask_invalid_dimensions(point_cloud):
+    """Test error handling for invalid mask dimensions."""
+    height, width = point_cloud.height, point_cloud.width
+
+    # Wrong dimensions
+    wrong_mask = np.ones((height + 1, width), dtype=bool)
+
+    with pytest.raises((ValueError, RuntimeError)):
+        point_cloud.mask(wrong_mask)
+
+    # Wrong number of dimensions
+    wrong_dims = np.ones((height, width, 3), dtype=bool)
+
+    with pytest.raises((ValueError, TypeError)):
+        point_cloud.mask(wrong_dims)

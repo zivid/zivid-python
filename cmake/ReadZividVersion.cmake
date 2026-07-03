@@ -1,3 +1,5 @@
+include_guard()
+
 # Reads the zivid sdk version from a json file. Sets `ZIVID_SDK_VERSION` CMake variable in parent
 # scope to the version read from the file.
 function(zivid_read_sdk_version)

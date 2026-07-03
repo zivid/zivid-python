@@ -52,8 +52,60 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS(height)
     };
 
+    class ReleasableImageRGB : public Releasable<Zivid::Image<Zivid::ColorRGB>>
+    {
+    public:
+        using Releasable<Zivid::Image<Zivid::ColorRGB>>::Releasable;
+
+        ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(ReleasableImageRGB)
+
+        ZIVID_PYTHON_FORWARD_1_ARGS(save, const std::string &, fileName)
+        ZIVID_PYTHON_FORWARD_0_ARGS(width)
+        ZIVID_PYTHON_FORWARD_0_ARGS(height)
+    };
+
+    class ReleasableImageRGB_SRGB : public Releasable<Zivid::Image<Zivid::ColorRGB_SRGB>>
+    {
+    public:
+        using Releasable<Zivid::Image<Zivid::ColorRGB_SRGB>>::Releasable;
+
+        ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(ReleasableImageRGB_SRGB)
+
+        ZIVID_PYTHON_FORWARD_1_ARGS(save, const std::string &, fileName)
+        ZIVID_PYTHON_FORWARD_0_ARGS(width)
+        ZIVID_PYTHON_FORWARD_0_ARGS(height)
+    };
+
+    class ReleasableImageBGR : public Releasable<Zivid::Image<Zivid::ColorBGR>>
+    {
+    public:
+        using Releasable<Zivid::Image<Zivid::ColorBGR>>::Releasable;
+
+        ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(ReleasableImageBGR)
+
+        ZIVID_PYTHON_FORWARD_1_ARGS(save, const std::string &, fileName)
+        ZIVID_PYTHON_FORWARD_0_ARGS(width)
+        ZIVID_PYTHON_FORWARD_0_ARGS(height)
+    };
+
+    class ReleasableImageBGR_SRGB : public Releasable<Zivid::Image<Zivid::ColorBGR_SRGB>>
+    {
+    public:
+        using Releasable<Zivid::Image<Zivid::ColorBGR_SRGB>>::Releasable;
+
+        ZIVID_PYTHON_ADD_COPY_CONSTRUCTOR(ReleasableImageBGR_SRGB)
+
+        ZIVID_PYTHON_FORWARD_1_ARGS(save, const std::string &, fileName)
+        ZIVID_PYTHON_FORWARD_0_ARGS(width)
+        ZIVID_PYTHON_FORWARD_0_ARGS(height)
+    };
+
     void wrapClass(pybind11::class_<ReleasableImageRGBA> pyClass);
     void wrapClass(pybind11::class_<ReleasableImageBGRA> pyClass);
     void wrapClass(pybind11::class_<ReleasableImageRGBA_SRGB> pyClass);
     void wrapClass(pybind11::class_<ReleasableImageBGRA_SRGB> pyClass);
+    void wrapClass(pybind11::class_<ReleasableImageRGB> pyClass);
+    void wrapClass(pybind11::class_<ReleasableImageRGB_SRGB> pyClass);
+    void wrapClass(pybind11::class_<ReleasableImageBGR> pyClass);
+    void wrapClass(pybind11::class_<ReleasableImageBGR_SRGB> pyClass);
 } // namespace ZividPython

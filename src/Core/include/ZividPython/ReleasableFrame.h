@@ -33,6 +33,8 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS(info)
         ZIVID_PYTHON_FORWARD_0_ARGS(cameraInfo)
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableFrame, clone, const)
+        ZIVID_PYTHON_FORWARD_1_ARGS(mask, const Zivid::Mask &, mask, const)
+        ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableFrame, masked, const Zivid::Mask &, mask, const)
     };
 
     void wrapClass(pybind11::class_<ReleasableFrame> pyClass);

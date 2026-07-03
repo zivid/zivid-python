@@ -10,18 +10,35 @@ import zivid.firmware
 import zivid.presets
 import zivid.projection
 import zivid.visualization
+from _zivid._zividcore import (
+    ComputeBackend,
+    CUDAContextPtr,
+    CUDAStreamPtr,
+    FrameFileType,
+    OpenCLCommandQueuePtr,
+    StreamOrQueue,
+    read_frame_file_type,
+    synchronize_stream,
+)
 from zivid.application import Application
+from zivid.bounding_box import BoundingBox
 from zivid.camera import Camera
+from zivid.camera_address import CameraAddress
+from zivid.camera_health import CameraHealth
 from zivid.camera_info import CameraInfo
 from zivid.camera_intrinsics import CameraIntrinsics
 from zivid.camera_state import CameraState
+from zivid.device_array_view import DeviceArrayView, create_device_array_view
 from zivid.frame import Frame
 from zivid.frame_2d import Frame2D
 from zivid.frame_info import FrameInfo
 from zivid.image import Image
+from zivid.mask import Mask
 from zivid.matrix4x4 import Matrix4x4
 from zivid.network_configuration import NetworkConfiguration
+from zivid.pixel_format import PixelFormat
 from zivid.point_cloud import PointCloud
+from zivid.resolution import Resolution
 from zivid.scene_conditions import SceneConditions
 from zivid.sdk_version import SDKVersion
 from zivid.settings import Settings
