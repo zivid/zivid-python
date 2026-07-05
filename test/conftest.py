@@ -373,3 +373,84 @@ def color_format_fixture(request):
 @pytest.fixture(name="image_2d", scope="function")
 def image_2d_fixture(frame_2d, color_format):
     return getattr(frame_2d, f"image_{color_format}")()
+
+
+import gc as _gc  # noqa: E402
+import weakref as _weakref  # noqa: E402
+from collections import Counter as _Counter  # noqa: E402
+
+import zivid.application as _leak_app  # noqa: E402
+import zivid.camera as _leak_cam  # noqa: E402
+import zivid.device_array as _leak_da  # noqa: E402
+import zivid.frame as _leak_fr  # noqa: E402
+import zivid.frame_2d as _leak_f2  # noqa: E402
+import zivid.image as _leak_img  # noqa: E402
+import zivid.point_cloud as _leak_pc  # noqa: E402
+import zivid.unorganized_point_cloud as _leak_upc  # noqa: E402
+
+_LEAK_TRACK = {
+    "DeviceArray": _leak_da.DeviceArray,
+    "Frame": _leak_fr.Frame,
+    "Frame2D": _leak_f2.Frame2D,
+    "PointCloud": _leak_pc.PointCloud,
+    "UnorganizedPointCloud": _leak_upc.UnorganizedPointCloud,
+    "Image": _leak_img.Image,
+    "Camera": _leak_cam.Camera,
+}
+_leak_current = {"module": None, "test": None}
+_leak_created = []
+_leak_hits = []
+
+
+def _leak_make_patch(clsname, cls):
+    orig = cls.__init__
+
+    def patched(self, *args, **kwargs):
+        orig(self, *args, **kwargs)
+        try:
+            _leak_created.append((_leak_current["module"], _leak_current["test"], clsname, _weakref.ref(self)))
+        except TypeError:
+            pass
+
+    return patched
+
+
+def pytest_configure(config):  # noqa: D103
+    for _name, _cls in _LEAK_TRACK.items():
+        _cls.__init__ = _leak_make_patch(_name, _cls)
+
+    _app_orig = _leak_app.Application.__init__
+
+    def _app_init(self, *args, **kwargs):
+        cur = _leak_current["module"]
+        survivors = [(m, t, c) for (m, t, c, w) in _leak_created if m != cur and w() is not None]
+        if survivors:
+            by = _Counter(f"{c} <- {m}::{(t or '').split('::')[-1]}" for (m, t, c) in survivors)
+            print(
+                f"\n[LEAKCAPTURE] Application() for module '{cur}' constructed while "
+                f"{len(survivors)} Zivid object(s) from OTHER modules are still ALIVE "
+                f"(this trips the OpenCL Halide-context guard):",
+                flush=True,
+            )
+            for _k, _v in by.most_common():
+                print(f"[LEAKCAPTURE]     {_v:3d}  {_k}", flush=True)
+            _leak_hits.append((cur, dict(by)))
+        _app_orig(self, *args, **kwargs)
+
+    _leak_app.Application.__init__ = _app_init
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_setup(item):  # noqa: D103
+    _leak_current["module"] = item.nodeid.split("::")[0]
+    _leak_current["test"] = item.nodeid
+    yield
+
+
+def pytest_sessionfinish(session, exitstatus):  # noqa: D103
+    _ = _gc  # kept importable for ad-hoc use while probing
+    print("\n[LEAKCAPTURE] summary of Application() constructions with cross-module survivors:", flush=True)
+    for _mod, _by in _leak_hits:
+        print(f"[LEAKCAPTURE]   {_mod}: {_by}", flush=True)
+    if not _leak_hits:
+        print("[LEAKCAPTURE]   none", flush=True)
