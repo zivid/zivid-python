@@ -5,7 +5,7 @@ ROOT_DIR=$(realpath "$SCRIPT_DIR/../..")
 
 source $SCRIPT_DIR/venv.sh || exit $?
 activate_venv || exit $?
-
+export PYTEST_ADDOPTS='--randomly-seed=2862145993'
 python3 -m pip install --requirement "$SCRIPT_DIR/../python-requirements/test.txt" || exit $?
 
 python -m pytest "$ROOT_DIR" -c "$ROOT_DIR/pytest.ini" || exit $?
