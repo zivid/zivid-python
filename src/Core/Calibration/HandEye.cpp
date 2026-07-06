@@ -11,6 +11,13 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
+    void wrapEnum(pybind11::enum_<Zivid::Calibration::HandEyeStatus> pyEnum)
+    {
+        pyEnum.value("ok", Zivid::Calibration::HandEyeStatus::ok)
+            .value("insufficient_motion", Zivid::Calibration::HandEyeStatus::insufficientMotion)
+            .value("insufficient_data_quality", Zivid::Calibration::HandEyeStatus::insufficientDataQuality);
+    }
+
     void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeResidual> pyClass)
     {
         pyClass.def("rotation", &Zivid::Calibration::HandEyeResidual::rotation)
@@ -20,6 +27,7 @@ namespace ZividPython
     void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeOutput> pyClass)
     {
         pyClass.def("valid", &Zivid::Calibration::HandEyeOutput::valid)
+            .def("status", &Zivid::Calibration::HandEyeOutput::status)
             .def(
                 "transform",
                 [](const Zivid::Calibration::HandEyeOutput &calibrationOutput) {

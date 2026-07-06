@@ -38,6 +38,16 @@ def test_image(frame_2d):
     assert isinstance(image_srgb, zivid.Image)
 
 
+def test_image_three_channel(frame_2d):
+    for method_name in ["image_rgb", "image_rgb_srgb", "image_bgr", "image_bgr_srgb"]:
+        image = getattr(frame_2d, method_name)()
+        assert image is not None, method_name
+        assert isinstance(image, zivid.Image), method_name
+        data = image.copy_data()
+        assert data.ndim == 3, method_name
+        assert data.shape[2] == 3, method_name
+
+
 def test_deprecated_srgb(frame_2d):
     image_rgba_srgb = frame_2d.image_rgba_srgb()
     image_srgb = frame_2d.image_srgb()
@@ -56,6 +66,39 @@ def test_image_rgba_bgra_correspondence(frame_2d):
         np.testing.assert_array_equal(bgra[:, :, 1], rgba[:, :, 1])
         np.testing.assert_array_equal(bgra[:, :, 2], rgba[:, :, 0])
         np.testing.assert_array_equal(bgra[:, :, 3], rgba[:, :, 3])
+
+
+def test_image_rgb_bgr_correspondence(frame_2d):
+    """3-channel RGB and BGR are the same pixels with channels 0 and 2 swapped."""
+    rgb_linear = frame_2d.image_rgb().copy_data()
+    bgr_linear = frame_2d.image_bgr().copy_data()
+
+    rgb_srgb = frame_2d.image_rgb_srgb().copy_data()
+    bgr_srgb = frame_2d.image_bgr_srgb().copy_data()
+
+    for rgb, bgr in [(rgb_linear, bgr_linear), (rgb_srgb, bgr_srgb)]:
+        np.testing.assert_array_equal(bgr[:, :, 0], rgb[:, :, 2])
+        np.testing.assert_array_equal(bgr[:, :, 1], rgb[:, :, 1])
+        np.testing.assert_array_equal(bgr[:, :, 2], rgb[:, :, 0])
+
+
+def test_image_three_channel_matches_four_channel(frame_2d):
+    """The 3-channel formats carry the same RGB/BGR pixels as their 4-channel siblings."""
+    rgba = frame_2d.image_rgba().copy_data()
+    rgb = frame_2d.image_rgb().copy_data()
+    np.testing.assert_array_equal(rgb, rgba[:, :, :3])
+
+    bgra = frame_2d.image_bgra().copy_data()
+    bgr = frame_2d.image_bgr().copy_data()
+    np.testing.assert_array_equal(bgr, bgra[:, :, :3])
+
+    rgba_srgb = frame_2d.image_rgba_srgb().copy_data()
+    rgb_srgb = frame_2d.image_rgb_srgb().copy_data()
+    np.testing.assert_array_equal(rgb_srgb, rgba_srgb[:, :, :3])
+
+    bgra_srgb = frame_2d.image_bgra_srgb().copy_data()
+    bgr_srgb = frame_2d.image_bgr_srgb().copy_data()
+    np.testing.assert_array_equal(bgr_srgb, bgra_srgb[:, :, :3])
 
 
 def test_state(frame_2d):

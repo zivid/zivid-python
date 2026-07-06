@@ -174,6 +174,41 @@ class Settings2D:
         def __str__(self):
             return str(_to_internal_settings2d_acquisition(self))
 
+    class Diagnostics:
+
+        def __init__(
+            self,
+            enabled=_zivid.Settings2D.Diagnostics.Enabled().value,
+        ):
+
+            if isinstance(enabled, (bool,)) or enabled is None:
+                self._enabled = _zivid.Settings2D.Diagnostics.Enabled(enabled)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (bool,) or None, got {value_type}".format(value_type=type(enabled))
+                )
+
+        @property
+        def enabled(self):
+            return self._enabled.value
+
+        @enabled.setter
+        def enabled(self, value):
+            if isinstance(value, (bool,)) or value is None:
+                self._enabled = _zivid.Settings2D.Diagnostics.Enabled(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: bool or None, got {value_type}".format(value_type=type(value))
+                )
+
+        def __eq__(self, other):
+            if self._enabled == other._enabled:
+                return True
+            return False
+
+        def __str__(self):
+            return str(_to_internal_settings2d_diagnostics(self))
+
     class Processing:
 
         class Color:
@@ -699,6 +734,7 @@ class Settings2D:
     def __init__(
         self,
         acquisitions=None,
+        diagnostics=None,
         processing=None,
         sampling=None,
     ):
@@ -719,6 +755,12 @@ class Settings2D:
                 )
             )
 
+        if diagnostics is None:
+            diagnostics = self.Diagnostics()
+        if not isinstance(diagnostics, self.Diagnostics):
+            raise TypeError("Unsupported type: {value}".format(value=type(diagnostics)))
+        self._diagnostics = diagnostics
+
         if processing is None:
             processing = self.Processing()
         if not isinstance(processing, self.Processing):
@@ -734,6 +776,10 @@ class Settings2D:
     @property
     def acquisitions(self):
         return self._acquisitions
+
+    @property
+    def diagnostics(self):
+        return self._diagnostics
 
     @property
     def processing(self):
@@ -753,6 +799,12 @@ class Settings2D:
                 self._acquisitions.append(item)
             else:
                 raise TypeError("Unsupported type {item_type}".format(item_type=type(item)))
+
+    @diagnostics.setter
+    def diagnostics(self, value):
+        if not isinstance(value, self.Diagnostics):
+            raise TypeError("Unsupported type {value}".format(value=type(value)))
+        self._diagnostics = value
 
     @processing.setter
     def processing(self, value):
@@ -783,6 +835,7 @@ class Settings2D:
     def __eq__(self, other):
         if (
             self._acquisitions == other._acquisitions
+            and self._diagnostics == other._diagnostics
             and self._processing == other._processing
             and self._sampling == other._sampling
         ):
@@ -804,6 +857,12 @@ def _to_settings2d_acquisition(internal_acquisition):
         brightness=internal_acquisition.brightness.value,
         exposure_time=internal_acquisition.exposure_time.value,
         gain=internal_acquisition.gain.value,
+    )
+
+
+def _to_settings2d_diagnostics(internal_diagnostics):
+    return Settings2D.Diagnostics(
+        enabled=internal_diagnostics.enabled.value,
     )
 
 
@@ -853,6 +912,7 @@ def _to_settings2d_sampling(internal_sampling):
 def _to_settings2d(internal_settings2d):
     return Settings2D(
         acquisitions=[_to_settings2d_acquisition(value) for value in internal_settings2d.acquisitions.value],
+        diagnostics=_to_settings2d_diagnostics(internal_settings2d.diagnostics),
         processing=_to_settings2d_processing(internal_settings2d.processing),
         sampling=_to_settings2d_sampling(internal_settings2d.sampling),
     )
@@ -867,6 +927,14 @@ def _to_internal_settings2d_acquisition(acquisition):
     internal_acquisition.gain = _zivid.Settings2D.Acquisition.Gain(acquisition.gain)
 
     return internal_acquisition
+
+
+def _to_internal_settings2d_diagnostics(diagnostics):
+    internal_diagnostics = _zivid.Settings2D.Diagnostics()
+
+    internal_diagnostics.enabled = _zivid.Settings2D.Diagnostics.Enabled(diagnostics.enabled)
+
+    return internal_diagnostics
 
 
 def _to_internal_settings2d_processing_color_balance(balance):
@@ -931,6 +999,7 @@ def _to_internal_settings2d(settings2d):
         temp_acquisitions.append(_to_internal_settings2d_acquisition(value))
     internal_settings2d.acquisitions = temp_acquisitions
 
+    internal_settings2d.diagnostics = _to_internal_settings2d_diagnostics(settings2d.diagnostics)
     internal_settings2d.processing = _to_internal_settings2d_processing(settings2d.processing)
     internal_settings2d.sampling = _to_internal_settings2d_sampling(settings2d.sampling)
     return internal_settings2d

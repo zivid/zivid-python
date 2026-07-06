@@ -121,6 +121,22 @@ namespace ZividPython
                     const auto color = toCppColor(pyColor);
                     return pointCloud.paintedUniformColor(Zivid::ColorRGBA{ color[0], color[1], color[2], color[3] });
                 })
-            .def("clone", &ReleasableUnorganizedPointCloud::clone);
+            .def("clone", &ReleasableUnorganizedPointCloud::clone)
+            .def("device_array_xyz", &ReleasableUnorganizedPointCloud::deviceArrayPointXYZ, py::arg("stream_or_queue"))
+            .def(
+                "device_array_xyzw", &ReleasableUnorganizedPointCloud::deviceArrayPointXYZW, py::arg("stream_or_queue"))
+            .def(
+                "device_array_rgba", &ReleasableUnorganizedPointCloud::deviceArrayColorRGBA, py::arg("stream_or_queue"))
+            .def(
+                "device_array_bgra", &ReleasableUnorganizedPointCloud::deviceArrayColorBGRA, py::arg("stream_or_queue"))
+            .def(
+                "device_array_rgba_srgb",
+                &ReleasableUnorganizedPointCloud::deviceArrayColorRGBA_SRGB,
+                py::arg("stream_or_queue"))
+            .def(
+                "device_array_bgra_srgb",
+                &ReleasableUnorganizedPointCloud::deviceArrayColorBGRA_SRGB,
+                py::arg("stream_or_queue"))
+            .def("device_array_snr", &ReleasableUnorganizedPointCloud::deviceArraySNR, py::arg("stream_or_queue"));
     }
 } // namespace ZividPython

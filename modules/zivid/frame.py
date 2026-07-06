@@ -7,6 +7,7 @@ from zivid.camera_info import _to_camera_info
 from zivid.camera_state import _to_camera_state
 from zivid.frame_2d import Frame2D
 from zivid.frame_info import _to_frame_info
+from zivid.mask import Mask, _to_internal_mask
 from zivid.point_cloud import PointCloud
 from zivid.settings import _to_settings
 
@@ -83,7 +84,7 @@ class Frame:
         """Save the frame to file.
 
            The file type is determined from the file extension. Supported extensions are .zdf, .ply
-           (ordered), .xyz and .pcd.
+           (ordered), .xyz, and .pcd.
 
            If the capture is still in-progress, then this method will block until the capture
            completes.
@@ -182,6 +183,49 @@ class Frame:
             A Frame instance
         """
         return Frame(self.__impl.clone())
+
+    def mask(self, mask):
+        """Apply a binary mask to the frame's point cloud in-place.
+
+        The mask indicates which points in the point cloud should be considered invalid (NaN).
+        The mask can be a 2D numpy array of booleans/uint8 or a zivid.Mask object with the same
+        height and width as the point cloud. A value of True/non-zero in the mask indicates that
+        the corresponding point in the point cloud should be set to invalid (NaN). A value of
+        False/zero indicates that the corresponding point should be kept unchanged.
+
+        Args:
+            mask: A binary mask as a 2D numpy array of booleans/uint8 or a zivid.Mask object
+
+        Returns:
+            Reference to the same Frame instance (for chaining calls)
+        """
+        if isinstance(mask, Mask):
+            # Already a Mask object, use its internal implementation
+            self.__impl.mask(_to_internal_mask(mask))
+        else:
+            # Convert numpy array or other data to Mask first
+            mask_obj = Mask(mask)
+            self.__impl.mask(_to_internal_mask(mask_obj))
+        return self
+
+    def masked(self, mask):
+        """Get a copy of the frame with a binary mask applied to its point cloud.
+
+        This method is identical to "mask", except the masked frame is
+        returned as a new Frame instance. The current frame is not modified.
+
+        Args:
+            mask: A binary mask as a 2D numpy array of booleans/uint8 or a zivid.Mask object
+
+        Returns:
+            A new Frame instance with the mask applied to its point cloud
+        """
+        if isinstance(mask, Mask):
+            # Already a Mask object, use its internal implementation
+            return Frame(self.__impl.masked(_to_internal_mask(mask)))
+        # Convert numpy array or other data to Mask first
+        mask_obj = Mask(mask)
+        return Frame(self.__impl.masked(_to_internal_mask(mask_obj)))
 
     def __enter__(self):
         return self

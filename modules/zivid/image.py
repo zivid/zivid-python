@@ -23,6 +23,10 @@ class Image:
             _zivid.ImageBGRA,
             _zivid.ImageRGBA_SRGB,
             _zivid.ImageBGRA_SRGB,
+            _zivid.ImageRGB,
+            _zivid.ImageRGB_SRGB,
+            _zivid.ImageBGR,
+            _zivid.ImageBGR_SRGB,
         )
         if not isinstance(impl, allowed_types):
             raise TypeError(
@@ -74,6 +78,10 @@ class Image:
         rgba_srgb:  ndarray(Height,Width,4) of uint8
         bgra_srgb:  ndarray(Height,Width,4) of uint8
         srgb:       ndarray(Height,Width,4) of uint8 (deprecated, use rgba_srgb instead)
+        rgb:        ndarray(Height,Width,3) of uint8
+        rgb_srgb:   ndarray(Height,Width,3) of uint8
+        bgr:        ndarray(Height,Width,3) of uint8
+        bgr_srgb:   ndarray(Height,Width,3) of uint8
 
 
         Args:
@@ -92,6 +100,10 @@ class Image:
             "srgb": _zivid.ImageRGBA_SRGB,
             "rgba_srgb": _zivid.ImageRGBA_SRGB,
             "bgra_srgb": _zivid.ImageBGRA_SRGB,
+            "rgb": _zivid.ImageRGB,
+            "rgb_srgb": _zivid.ImageRGB_SRGB,
+            "bgr": _zivid.ImageBGR,
+            "bgr_srgb": _zivid.ImageBGR_SRGB,
         }
         if color_format not in supported_color_formats:
             raise ValueError(

@@ -145,6 +145,11 @@ def point_cloud_fixture(frame):
         yield point_cloud
 
 
+@pytest.fixture(name="sdk_stream_or_queue", scope="module")
+def sdk_stream_or_queue_fixture(application):
+    return application.compute_device().sdk_stream_or_queue()
+
+
 @pytest.fixture(name="handeye_eth_poses", scope="function")
 def handeye_eth_poses_fixture():
     path = _testdata_dir() / "handeye" / "eth"
@@ -359,7 +364,7 @@ def run_sample(name, working_directory=None):
 @pytest.fixture(
     name="color_format",
     scope="function",
-    params=["rgba", "bgra", "rgba_srgb", "bgra_srgb", "srgb"],
+    params=["rgba", "bgra", "rgba_srgb", "bgra_srgb", "srgb", "rgb", "rgb_srgb", "bgr", "bgr_srgb"],
 )
 def color_format_fixture(request):
     return request.param

@@ -16,6 +16,10 @@ namespace ZividPython
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorBGRA>> pyClass);
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorRGBA_SRGB>> pyClass);
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorBGRA_SRGB>> pyClass);
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorRGB>> pyClass);
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorRGB_SRGB>> pyClass);
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorBGR>> pyClass);
+    void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::ColorBGR_SRGB>> pyClass);
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::NormalXYZ>> pyClass);
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::PointXYZ>> pyClass);
     void wrapClass(pybind11::class_<ReleasableArray2D<Zivid::PointXYZW>> pyClass);

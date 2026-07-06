@@ -46,3 +46,18 @@ def test_to_string(application):
     string = str(application)
     assert string
     assert isinstance(string, str)
+
+
+def test_connect_camera_raises_when_serial_number_and_address_both_given(application):
+    with pytest.raises(ValueError):
+        application.connect_camera(serial_number="ABC123", address=zivid.CameraAddress("192.168.0.1"))
+
+
+@pytest.mark.physical_camera
+def test_connect_camera_with_address(application):
+    with application.connect_camera() as cam:
+        ip_address = cam.state.network.ipv4.address
+
+    with application.connect_camera(address=zivid.CameraAddress(ip_address)) as cam:
+        assert cam
+        assert isinstance(cam, zivid.Camera)
