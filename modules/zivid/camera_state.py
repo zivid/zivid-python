@@ -384,6 +384,7 @@ class CameraState:
         def __init__(
             self,
             local_interfaces=None,
+            hostname: str = "",
             ethernet: CameraState.Network.Ethernet | None = None,
             ipv4: CameraState.Network.IPV4 | None = None,
         ):
@@ -404,6 +405,13 @@ class CameraState:
                     )
                 )
 
+            if isinstance(hostname, (str,)):
+                self._hostname = _zivid.CameraState.Network.Hostname(hostname)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (str,), got {value_type}".format(value_type=type(hostname))
+                )
+
             if ethernet is None:
                 ethernet = self.Ethernet()
             if not isinstance(ethernet, self.Ethernet):
@@ -420,6 +428,11 @@ class CameraState:
         def local_interfaces(self):
             """List of the computer's local network interfaces that discovered the camera. In the most common scenario with the camera connected to the computer with an Ethernet cable, this list will contain only the network interface for that Ethernet port. In more complex network scenarios it can be the case that the camera is discovered by multiple interfaces, and in that case this list will contain multiple network interfaces. However, when `CameraState::Status` is `connected`, only the one network interface that has the active TCP/IP connection to the camera will be listed."""
             return self._local_interfaces
+
+        @property
+        def hostname(self):
+            """Current hostname of the camera"""
+            return self._hostname.value
 
         @property
         def ethernet(self):
@@ -442,6 +455,13 @@ class CameraState:
                 else:
                     raise TypeError("Unsupported type {item_type}".format(item_type=type(item)))
 
+        @hostname.setter
+        def hostname(self, value):
+            if isinstance(value, (str,)):
+                self._hostname = _zivid.CameraState.Network.Hostname(value)
+            else:
+                raise TypeError("Unsupported type, expected: str, got {value_type}".format(value_type=type(value)))
+
         @ethernet.setter
         def ethernet(self, value):
             if not isinstance(value, self.Ethernet):
@@ -457,6 +477,7 @@ class CameraState:
         def __eq__(self, other):
             if (
                 self._local_interfaces == other._local_interfaces
+                and self._hostname == other._hostname
                 and self._ethernet == other._ethernet
                 and self._ipv4 == other._ipv4
             ):
@@ -937,6 +958,7 @@ def _to_camera_state_network(internal_network):
         ],
         ethernet=_to_camera_state_network_ethernet(internal_network.ethernet),
         ipv4=_to_camera_state_network_ipv4(internal_network.ipv4),
+        hostname=internal_network.hostname.value,
     )
 
 
@@ -1028,6 +1050,8 @@ def _to_internal_camera_state_network(network):
     for value in network.local_interfaces:
         temp_local_interfaces.append(_to_internal_camera_state_network_local_interface(value))
     internal_network.local_interfaces = temp_local_interfaces
+
+    internal_network.hostname = _zivid.CameraState.Network.Hostname(network.hostname)
 
     internal_network.ethernet = _to_internal_camera_state_network_ethernet(network.ethernet)
     internal_network.ipv4 = _to_internal_camera_state_network_ipv4(network.ipv4)
