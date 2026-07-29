@@ -111,8 +111,16 @@ class NetworkConfiguration:
 
     def __init__(
         self,
+        hostname: str | None = None,
         ipv4: NetworkConfiguration.IPV4 | None = None,
     ):
+
+        if isinstance(hostname, (str,)) or hostname is None:
+            self._hostname = _zivid.NetworkConfiguration.Hostname(hostname)
+        else:
+            raise TypeError(
+                "Unsupported type, expected: (str,) or None, got {value_type}".format(value_type=type(hostname))
+            )
 
         if ipv4 is None:
             ipv4 = self.IPV4()
@@ -121,9 +129,21 @@ class NetworkConfiguration:
         self._ipv4 = ipv4
 
     @property
+    def hostname(self):
+        """Configure the camera's hostname. If unset, the camera will use the default hostname based on the serial number: `zivid-<serial>`. Note that `fetchNetworkConfig` will not return the default hostname in this field. If the camera is using the default hostname, then this field will be unset. Use `CameraState/Network/Hostname` instead, which returns the camera's current hostname. Must contain a minimum of one character, and cannot be longer than 15 characters."""
+        return self._hostname.value
+
+    @property
     def ipv4(self):
         """IPv4 network configuration"""
         return self._ipv4
+
+    @hostname.setter
+    def hostname(self, value):
+        if isinstance(value, (str,)) or value is None:
+            self._hostname = _zivid.NetworkConfiguration.Hostname(value)
+        else:
+            raise TypeError("Unsupported type, expected: str or None, got {value_type}".format(value_type=type(value)))
 
     @ipv4.setter
     def ipv4(self, value):
@@ -157,7 +177,7 @@ class NetworkConfiguration:
         return _to_internal_network_configuration(self).serialize()
 
     def __eq__(self, other):
-        if self._ipv4 == other._ipv4:
+        if self._hostname == other._hostname and self._ipv4 == other._ipv4:
             return True
         return False
 
@@ -181,6 +201,7 @@ def _to_network_configuration_ipv4(internal_ipv4):
 def _to_network_configuration(internal_network_configuration):
     return NetworkConfiguration(
         ipv4=_to_network_configuration_ipv4(internal_network_configuration.ipv4),
+        hostname=internal_network_configuration.hostname.value,
     )
 
 
@@ -196,6 +217,8 @@ def _to_internal_network_configuration_ipv4(ipv4):
 
 def _to_internal_network_configuration(network_configuration):
     internal_network_configuration = _zivid.NetworkConfiguration()
+
+    internal_network_configuration.hostname = _zivid.NetworkConfiguration.Hostname(network_configuration.hostname)
 
     internal_network_configuration.ipv4 = _to_internal_network_configuration_ipv4(network_configuration.ipv4)
     return internal_network_configuration
