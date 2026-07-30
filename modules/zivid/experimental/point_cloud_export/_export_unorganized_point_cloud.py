@@ -1,9 +1,13 @@
+from __future__ import annotations
+
 import _zivid
 from zivid.experimental.point_cloud_export.file_format import PCD, PLY, XYZ
 from zivid.unorganized_point_cloud import UnorganizedPointCloud
 
 
-def export_unorganized_point_cloud(unorganized_point_cloud, file_format):
+def export_unorganized_point_cloud(
+    unorganized_point_cloud: UnorganizedPointCloud, file_format: PCD | PLY | XYZ
+) -> None:
     """Save UnorganizedPointCloud to a file.
 
     The file format is specified by the file_format argument. The file format can be PLY, XYZ, or

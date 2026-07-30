@@ -1,5 +1,7 @@
 """Auto generated, do not edit."""
 
+from __future__ import annotations
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import datetime
 
@@ -26,8 +28,8 @@ class SuggestSettingsParameters:
 
     def __init__(
         self,
-        ambient_light_frequency=_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency().value,
-        max_capture_time=_zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime().value,
+        ambient_light_frequency: str = _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency().value,
+        max_capture_time: datetime.timedelta = _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime().value,
     ):
 
         if isinstance(

@@ -1,5 +1,7 @@
 """Auto generated, do not edit."""
 
+from __future__ import annotations
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
@@ -30,8 +32,8 @@ class SceneConditions:
 
         def __init__(
             self,
-            flicker_classification=_zivid.SceneConditions.AmbientLight.FlickerClassification().value,
-            flicker_frequency=_zivid.SceneConditions.AmbientLight.FlickerFrequency().value,
+            flicker_classification: str = _zivid.SceneConditions.AmbientLight.FlickerClassification().value,
+            flicker_frequency: float | int | None = _zivid.SceneConditions.AmbientLight.FlickerFrequency().value,
         ):
 
             if isinstance(flicker_classification, _zivid.SceneConditions.AmbientLight.FlickerClassification.enum):
@@ -120,7 +122,7 @@ class SceneConditions:
 
     def __init__(
         self,
-        ambient_light=None,
+        ambient_light: SceneConditions.AmbientLight | None = None,
     ):
 
         if ambient_light is None:

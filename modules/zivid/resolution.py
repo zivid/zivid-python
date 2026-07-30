@@ -1,5 +1,7 @@
 """Contains the Resolution class."""
 
+from __future__ import annotations
+
 import _zivid
 
 
@@ -10,7 +12,7 @@ class Resolution:
     such as images, point clouds, or masks.
     """
 
-    def __init__(self, width, height):
+    def __init__(self, width: int, height: int):
         """Construct a Resolution from width and height.
 
         Args:
@@ -30,7 +32,7 @@ class Resolution:
         self.__impl = _zivid.Resolution(width, height)
 
     @property
-    def width(self):
+    def width(self) -> int:
         """Get the width value of the resolution.
 
         Returns:
@@ -39,7 +41,7 @@ class Resolution:
         return self.__impl.width()
 
     @property
-    def height(self):
+    def height(self) -> int:
         """Get the height value of the resolution.
 
         Returns:
@@ -48,7 +50,7 @@ class Resolution:
         return self.__impl.height()
 
     @property
-    def size(self):
+    def size(self) -> int:
         """Get the size (area) that is the product of the width and height.
 
         Returns:

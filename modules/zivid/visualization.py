@@ -1,5 +1,7 @@
 """Contains Visualizer class for point cloud visualization."""
 
+from __future__ import annotations
+
 import _zivid
 from zivid.frame import Frame
 from zivid.point_cloud import PointCloud
@@ -28,7 +30,7 @@ class Visualizer:
         """
         return str(self.__impl)
 
-    def show(self, data=None):
+    def show(self, data: PointCloud | UnorganizedPointCloud | Frame | None = None) -> None:
         """Show the visualization window or display data.
 
         When called without arguments, shows the visualization window.
@@ -48,11 +50,11 @@ class Visualizer:
         else:
             raise TypeError(f"Unsupported data type for visualization: {type(data)}")
 
-    def hide(self):
+    def hide(self) -> None:
         """Hide the visualization window."""
         self.__impl.hide()
 
-    def run(self):
+    def run(self) -> int:
         """Run the event loop.
 
         Should be called to allow interaction with the point cloud visualization.
@@ -63,14 +65,14 @@ class Visualizer:
         """
         return self.__impl.run()
 
-    def close(self):
+    def close(self) -> None:
         """Stop the event loop and close the window.
 
         The object goes back to idle state.
         """
         self.__impl.close()
 
-    def resize(self, height, width):
+    def resize(self, height: int, width: int) -> None:
         """Resize the window to specified height and width.
 
         Args:
@@ -79,7 +81,7 @@ class Visualizer:
         """
         self.__impl.resize(height, width)
 
-    def reset_to_fit(self):
+    def reset_to_fit(self) -> None:
         """Reset the view so that the point cloud will fit in the window.
 
         The view will be reset to the default view, which is looking at the point cloud
@@ -87,15 +89,15 @@ class Visualizer:
         """
         self.__impl.reset_to_fit()
 
-    def show_full_screen(self):
+    def show_full_screen(self) -> None:
         """Show the window in full screen mode."""
         self.__impl.show_full_screen()
 
-    def show_maximized(self):
+    def show_maximized(self) -> None:
         """Show the window in maximized mode."""
         self.__impl.show_maximized()
 
-    def set_window_title(self, title):
+    def set_window_title(self, title: str) -> None:
         """Set the window title.
 
         Args:
@@ -104,7 +106,7 @@ class Visualizer:
         self.__impl.set_window_title(title)
 
     @property
-    def colors_enabled(self):
+    def colors_enabled(self) -> bool:
         """Whether coloring of the points with their accompanying RGB colors is enabled.
 
         Returns:
@@ -113,7 +115,7 @@ class Visualizer:
         return self.__impl.colors_enabled
 
     @colors_enabled.setter
-    def colors_enabled(self, enabled):
+    def colors_enabled(self, enabled: bool) -> None:
         """Enable or disable coloring of the points with their accompanying RGB colors.
 
         Args:
@@ -122,7 +124,7 @@ class Visualizer:
         self.__impl.colors_enabled = enabled
 
     @property
-    def meshing_enabled(self):
+    def meshing_enabled(self) -> bool:
         """Whether meshing is enabled.
 
         Meshing is not supported when showing an unorganized point cloud. An exception
@@ -134,7 +136,7 @@ class Visualizer:
         return self.__impl.meshing_enabled
 
     @meshing_enabled.setter
-    def meshing_enabled(self, enabled):
+    def meshing_enabled(self, enabled: bool) -> None:
         """Enable or disable meshing.
 
         Meshing is not supported when showing an unorganized point cloud. An exception
@@ -146,7 +148,7 @@ class Visualizer:
         self.__impl.meshing_enabled = enabled
 
     @property
-    def axis_indicator_enabled(self):
+    def axis_indicator_enabled(self) -> bool:
         """Whether the axis indicator is enabled.
 
         Returns:
@@ -155,7 +157,7 @@ class Visualizer:
         return self.__impl.axis_indicator_enabled
 
     @axis_indicator_enabled.setter
-    def axis_indicator_enabled(self, enabled):
+    def axis_indicator_enabled(self, enabled: bool) -> None:
         """Enable or disable the axis indicator.
 
         Args:
@@ -163,7 +165,7 @@ class Visualizer:
         """
         self.__impl.axis_indicator_enabled = enabled
 
-    def release(self):
+    def release(self) -> None:
         """Release the singleton visualizer resources.
 
         This will invalidate all Visualizer instances and free the underlying resources.

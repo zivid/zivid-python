@@ -1,5 +1,7 @@
 """Contains the UnorganizedPointCloud class."""
 
+from __future__ import annotations
+
 import _zivid
 import numpy
 from zivid.device_array import DeviceArray, _require_stream_or_queue
@@ -49,11 +51,11 @@ class UnorganizedPointCloud:
             self.__impl = impl
 
     @property
-    def size(self):
+    def size(self) -> int:
         """Get the size of the point cloud (number of points)."""
         return self.__impl.size()
 
-    def extended(self, other):
+    def extended(self, other: UnorganizedPointCloud) -> UnorganizedPointCloud:
         """Create a new point cloud containing the combined data of this point cloud and another.
 
         Args:
@@ -68,7 +70,7 @@ class UnorganizedPointCloud:
             )
         return UnorganizedPointCloud(self.__impl.extended(other.__impl))  # pylint: disable=protected-access
 
-    def extend(self, other):
+    def extend(self, other: UnorganizedPointCloud) -> UnorganizedPointCloud:
         """Extend this point cloud in-place by adding the points from another point cloud.
 
         Args:
@@ -84,7 +86,7 @@ class UnorganizedPointCloud:
         self.__impl.extend(other.__impl)  # pylint: disable=protected-access
         return self
 
-    def voxel_downsampled(self, voxel_size, min_points_per_voxel):
+    def voxel_downsampled(self, voxel_size: float, min_points_per_voxel: int) -> UnorganizedPointCloud:
         """Create a new point cloud that is a voxel downsampling of this point cloud.
 
         Voxel downsampling subdivides 3D space into a grid of cubic voxels with a given size. If a given voxel
@@ -100,7 +102,7 @@ class UnorganizedPointCloud:
         """
         return UnorganizedPointCloud(self.__impl.voxel_downsampled(voxel_size, min_points_per_voxel))
 
-    def transform(self, matrix):
+    def transform(self, matrix: numpy.ndarray) -> UnorganizedPointCloud:
         """Transform the point cloud in-place by a 4x4 transformation matrix.
 
         The transform matrix must be affine, i.e., the last row of the matrix should be [0, 0, 0, 1].
@@ -114,7 +116,7 @@ class UnorganizedPointCloud:
         self.__impl.transform(matrix)
         return self
 
-    def transformed(self, matrix):
+    def transformed(self, matrix: numpy.ndarray) -> UnorganizedPointCloud:
         """Get a transformed copy of the point cloud.
 
         This method is identical to "transform", except the transformed point cloud is
@@ -128,12 +130,12 @@ class UnorganizedPointCloud:
         """
         return UnorganizedPointCloud(self.__impl.transformed(matrix))
 
-    def center(self):
+    def center(self) -> UnorganizedPointCloud:
         """Translate the point cloud in-place so that its centroid lands at the origin (0,0,0)."""
         self.__impl.center()
         return self
 
-    def centroid(self):
+    def centroid(self) -> numpy.ndarray | None:
         """Get the centroid of the point cloud, i.e. average of all XYZ point positions.
 
         Returns:
@@ -141,7 +143,7 @@ class UnorganizedPointCloud:
         """
         return self.__impl.centroid()
 
-    def paint_uniform_color(self, color):
+    def paint_uniform_color(self, color: list | numpy.ndarray) -> UnorganizedPointCloud:
         """Set point cloud colors in-place according to the given value.
 
         Args:
@@ -151,7 +153,7 @@ class UnorganizedPointCloud:
         self.__impl.paint_uniform_color(color)
         return self
 
-    def painted_uniform_color(self, color):
+    def painted_uniform_color(self, color: list | numpy.ndarray) -> UnorganizedPointCloud:
         """Create a clone of this point cloud with all points colored according to the given value.
 
         Args:
@@ -160,7 +162,7 @@ class UnorganizedPointCloud:
         """
         return UnorganizedPointCloud(self.__impl.painted_uniform_color(color))
 
-    def device_points_xyz(self, stream_or_queue):
+    def device_points_xyz(self, stream_or_queue) -> DeviceArray:
         """Get a GPU device array containing XYZ point coordinates.
 
         Returns a DeviceArray (with shape [1, N, 3]) providing access to unorganized point cloud data
@@ -177,7 +179,7 @@ class UnorganizedPointCloud:
         _require_stream_or_queue(stream_or_queue)
         return DeviceArray(self.__impl.device_array_xyz(stream_or_queue))
 
-    def device_points_xyzw(self, stream_or_queue):
+    def device_points_xyzw(self, stream_or_queue) -> DeviceArray:
         """Get a GPU device array containing XYZW point coordinates.
 
         Returns a DeviceArray providing access to unorganized point cloud data
@@ -194,7 +196,7 @@ class UnorganizedPointCloud:
         _require_stream_or_queue(stream_or_queue)
         return DeviceArray(self.__impl.device_array_xyzw(stream_or_queue))
 
-    def device_snrs(self, stream_or_queue):
+    def device_snrs(self, stream_or_queue) -> DeviceArray:
         """Get a GPU device array containing SNR values.
 
         Returns a DeviceArray providing access to unorganized point cloud data
@@ -211,7 +213,7 @@ class UnorganizedPointCloud:
         _require_stream_or_queue(stream_or_queue)
         return DeviceArray(self.__impl.device_array_snr(stream_or_queue))
 
-    def device_colors(self, stream_or_queue, color_format):
+    def device_colors(self, stream_or_queue, color_format: PixelFormat) -> DeviceArray:
         """Get a GPU device array containing the unorganized point cloud colors.
 
         Returns a DeviceArray providing access to unorganized point cloud color data on the GPU
@@ -232,7 +234,7 @@ class UnorganizedPointCloud:
         accessor = getattr(self.__impl, "device_array_{}".format(suffix))
         return DeviceArray(accessor(stream_or_queue))
 
-    def copy_data(self, data_format):
+    def copy_data(self, data_format: str) -> numpy.ndarray:
         """Copy point cloud data from GPU to numpy array.
 
         Supported data formats:
@@ -273,7 +275,7 @@ class UnorganizedPointCloud:
             ) from ex
         return numpy.array(data_format_class(self.__impl))
 
-    def clone(self):
+    def clone(self) -> UnorganizedPointCloud:
         """Get a clone of the point cloud.
 
         The clone will include a copy of all the point cloud data on the compute device memory. This means that the
@@ -291,7 +293,7 @@ class UnorganizedPointCloud:
         """
         return UnorganizedPointCloud(self.__impl.clone())
 
-    def release(self):
+    def release(self) -> None:
         """Release the underlying resources."""
         try:
             impl = self.__impl

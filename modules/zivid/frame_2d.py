@@ -1,16 +1,18 @@
 """Contains the Frame2D class."""
 
+from __future__ import annotations
+
 from pathlib import Path
 
 import _zivid
-from zivid.camera_info import _to_camera_info
-from zivid.camera_state import _to_camera_state
+from zivid.camera_info import CameraInfo, _to_camera_info
+from zivid.camera_state import CameraState, _to_camera_state
 from zivid.device_array import DeviceArray, _require_stream_or_queue
-from zivid.device_array_view import _device_array_view_fill_target
-from zivid.frame_info import _to_frame_info
+from zivid.device_array_view import DeviceArrayView, _device_array_view_fill_target
+from zivid.frame_info import FrameInfo, _to_frame_info
 from zivid.image import Image
 from zivid.pixel_format import PixelFormat, _resolve_color_format
-from zivid.settings2d import _to_settings2d
+from zivid.settings2d import Settings2D, _to_settings2d
 
 _COLOR_FORMAT_ACCESSOR_SUFFIX = {
     PixelFormat.RGBA: "rgba",
@@ -70,7 +72,7 @@ class Frame2D:
     def __str__(self):
         return str(self.__impl)
 
-    def image_rgba(self):
+    def image_rgba(self) -> Image:
         """Get color (RGBA) image from the frame.
 
         Returns:
@@ -78,7 +80,7 @@ class Frame2D:
         """
         return Image(self.__impl.image_rgba())
 
-    def image_bgra(self):
+    def image_bgra(self) -> Image:
         """Get color (BGRA) image from the frame.
 
         Returns:
@@ -86,7 +88,7 @@ class Frame2D:
         """
         return Image(self.__impl.image_bgra())
 
-    def image_rgba_srgb(self):
+    def image_rgba_srgb(self) -> Image:
         """Get color (RGBA) image from the frame in the sRGB color space.
 
         Returns:
@@ -94,7 +96,7 @@ class Frame2D:
         """
         return Image(self.__impl.image_rgba_srgb())
 
-    def image_bgra_srgb(self):
+    def image_bgra_srgb(self) -> Image:
         """Get color (BGRA) image from the frame in the sRGB color space.
 
         Returns:
@@ -102,26 +104,26 @@ class Frame2D:
         """
         return Image(self.__impl.image_bgra_srgb())
 
-    def image_rgb(self):
+    def image_rgb(self) -> Image:
         """Get color (RGB, 3-channel, no alpha) image from the frame.
 
         Identical to :py:meth:`image_rgba` but skips the alpha channel for ~25% bandwidth savings.
         """
         return Image(self.__impl.image_rgb())
 
-    def image_rgb_srgb(self):
+    def image_rgb_srgb(self) -> Image:
         """Get color (RGB, 3-channel, no alpha) image from the frame in the sRGB color space."""
         return Image(self.__impl.image_rgb_srgb())
 
-    def image_bgr(self):
+    def image_bgr(self) -> Image:
         """Get color (BGR, 3-channel, no alpha) image from the frame."""
         return Image(self.__impl.image_bgr())
 
-    def image_bgr_srgb(self):
+    def image_bgr_srgb(self) -> Image:
         """Get color (BGR, 3-channel, no alpha) image from the frame in the sRGB color space."""
         return Image(self.__impl.image_bgr_srgb())
 
-    def image_device_array(self, stream_or_queue, color_format):
+    def image_device_array(self, stream_or_queue, color_format: PixelFormat) -> DeviceArray:
         """Get the 2D image as a newly allocated GPU device buffer.
 
         Args:
@@ -139,7 +141,7 @@ class Frame2D:
         accessor = getattr(self.__impl, "image_device_array_{}".format(suffix))
         return DeviceArray(accessor(stream_or_queue))
 
-    def image_device_array_fill(self, stream_or_queue, destination_buffer):
+    def image_device_array_fill(self, stream_or_queue, destination_buffer: DeviceArrayView) -> None:
         """Fill a caller-provided DeviceArrayView with the 2D image.
 
         The color format is taken from destination_buffer, which must be a color DeviceArrayView
@@ -158,7 +160,7 @@ class Frame2D:
         fill = getattr(self.__impl, "image_device_array_{}_fill".format(suffix))
         fill(stream_or_queue, impl)
 
-    def image_srgb(self):
+    def image_srgb(self) -> Image:
         """Get color (RGBA) image from the frame in the sRGB color space.
 
         This method is deprecated. Use image_rgba_srgb() instead.
@@ -168,7 +170,7 @@ class Frame2D:
         """
         return Image(self.__impl.image_rgba_srgb())
 
-    def save(self, file_path):
+    def save(self, file_path: str | Path) -> None:
         """Save the 2D frame to a .zdf file.
 
         Args:
@@ -176,7 +178,7 @@ class Frame2D:
         """
         self.__impl.save(str(file_path))
 
-    def load(self, file_path):
+    def load(self, file_path: str | Path) -> None:
         """Load a 2D frame from a .zdf file.
 
         Args:
@@ -185,7 +187,7 @@ class Frame2D:
         self.__impl.load(str(file_path))
 
     @property
-    def settings(self):
+    def settings(self) -> Settings2D:
         """Get the settings used to capture this frame.
 
         Returns:
@@ -194,7 +196,7 @@ class Frame2D:
         return _to_settings2d(self.__impl.settings)
 
     @property
-    def state(self):
+    def state(self) -> CameraState:
         """Get the camera state data at the time of the frame capture.
 
         Returns:
@@ -203,7 +205,7 @@ class Frame2D:
         return _to_camera_state(self.__impl.state)
 
     @property
-    def info(self):
+    def info(self) -> FrameInfo:
         """Get information collected at the time of the capture.
 
         Returns:
@@ -212,7 +214,7 @@ class Frame2D:
         return _to_frame_info(self.__impl.info)
 
     @property
-    def camera_info(self):
+    def camera_info(self) -> CameraInfo:
         """Get information about the camera used to capture the frame.
 
         Returns:
@@ -220,7 +222,7 @@ class Frame2D:
         """
         return _to_camera_info(self.__impl.camera_info)
 
-    def release(self):
+    def release(self) -> None:
         """Release the underlying resources."""
         try:
             impl = self.__impl
@@ -229,7 +231,7 @@ class Frame2D:
         else:
             impl.release()
 
-    def clone(self):
+    def clone(self) -> Frame2D:
         """Get a clone of the frame.
 
         The clone will include a copy of all the frame data.

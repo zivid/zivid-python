@@ -1,5 +1,7 @@
 """Auto generated, do not edit."""
 
+from __future__ import annotations
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
@@ -10,8 +12,12 @@ class LocalPointCloudRegistrationParameters:
 
         def __init__(
             self,
-            rmse_diff_threshold=_zivid.toolbox.LocalPointCloudRegistrationParameters.ConvergenceCriteria.RMSEDiffThreshold().value,
-            source_coverage_diff_threshold=_zivid.toolbox.LocalPointCloudRegistrationParameters.ConvergenceCriteria.SourceCoverageDiffThreshold().value,
+            rmse_diff_threshold: (
+                float | int
+            ) = _zivid.toolbox.LocalPointCloudRegistrationParameters.ConvergenceCriteria.RMSEDiffThreshold().value,
+            source_coverage_diff_threshold: (
+                float | int
+            ) = _zivid.toolbox.LocalPointCloudRegistrationParameters.ConvergenceCriteria.SourceCoverageDiffThreshold().value,
         ):
 
             if isinstance(
@@ -105,9 +111,11 @@ class LocalPointCloudRegistrationParameters:
 
     def __init__(
         self,
-        max_correspondence_distance=_zivid.toolbox.LocalPointCloudRegistrationParameters.MaxCorrespondenceDistance().value,
-        max_iteration_count=_zivid.toolbox.LocalPointCloudRegistrationParameters.MaxIterationCount().value,
-        convergence_criteria=None,
+        max_correspondence_distance: (
+            float | int
+        ) = _zivid.toolbox.LocalPointCloudRegistrationParameters.MaxCorrespondenceDistance().value,
+        max_iteration_count: int = _zivid.toolbox.LocalPointCloudRegistrationParameters.MaxIterationCount().value,
+        convergence_criteria: LocalPointCloudRegistrationParameters.ConvergenceCriteria | None = None,
     ):
 
         if isinstance(

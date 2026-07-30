@@ -1,7 +1,9 @@
 """Contains the Mask class."""
 
+from __future__ import annotations
+
 import _zivid
-import numpy as np
+import numpy
 from zivid.resolution import Resolution
 
 
@@ -37,18 +39,18 @@ class Mask:
                 # Handle other resolution-like objects
                 resolution = Resolution(mask_data.width, mask_data.height)
                 self.__impl = _zivid.Mask(resolution._to_internal())  # pylint: disable=protected-access
-        elif isinstance(mask_data, np.ndarray):
+        elif isinstance(mask_data, numpy.ndarray):
             if mask_data.ndim != 2:
                 raise ValueError("Mask data must be a 2D array")
 
             # Convert boolean mask to uint8 (True -> 1, False -> 0)
             if mask_data.dtype == bool:
-                mask_array = mask_data.astype(np.uint8)
-            elif mask_data.dtype == np.uint8:
+                mask_array = mask_data.astype(numpy.uint8)
+            elif mask_data.dtype == numpy.uint8:
                 mask_array = mask_data
             else:
                 # Convert other numeric types to uint8, treating non-zero as 1
-                mask_array = (mask_data != 0).astype(np.uint8)
+                mask_array = (mask_data != 0).astype(numpy.uint8)
 
             height, width = mask_array.shape
 
@@ -63,7 +65,7 @@ class Mask:
             )
 
     @property
-    def width(self):
+    def width(self) -> int:
         """Get the width of the mask.
 
         Returns:
@@ -72,7 +74,7 @@ class Mask:
         return self.__impl.width()
 
     @property
-    def height(self):
+    def height(self) -> int:
         """Get the height of the mask.
 
         Returns:
@@ -81,7 +83,7 @@ class Mask:
         return self.__impl.height()
 
     @property
-    def resolution(self):
+    def resolution(self) -> Resolution:
         """Get the resolution of the mask.
 
         Returns:
@@ -89,13 +91,13 @@ class Mask:
         """
         return Resolution(self.__impl.width(), self.__impl.height())
 
-    def to_array(self):
+    def to_array(self) -> numpy.ndarray:
         """Convert mask to numpy array.
 
         Returns:
             2D numpy array of uint8 values
         """
-        return np.array(self.__impl)
+        return numpy.array(self.__impl)
 
     def __str__(self):
         """Get string representation of the mask."""
@@ -105,7 +107,7 @@ class Mask:
         """Get string representation of the mask."""
         return self.__impl.to_string()
 
-    def release(self):
+    def release(self) -> None:
         """Release the underlying resources."""
         try:
             impl = self.__impl

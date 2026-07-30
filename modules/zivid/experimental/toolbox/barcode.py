@@ -1,10 +1,12 @@
 """Module for experimental barcode reading. This API may change in the future."""
 
+from __future__ import annotations
+
 import _zivid
 from zivid.bounding_box import BoundingBox
 from zivid.camera import Camera
 from zivid.frame_2d import Frame2D
-from zivid.settings2d import _to_settings2d
+from zivid.settings2d import Settings2D, _to_settings2d
 
 
 class LinearBarcodeFormat:
@@ -31,7 +33,7 @@ class LinearBarcodeFormat:
     }
 
     @classmethod
-    def valid_values(cls):
+    def valid_values(cls) -> dict:
         """List all valid linear barcode format values."""
         return cls._valid_values
 
@@ -48,7 +50,7 @@ class MatrixBarcodeFormat:
     }
 
     @classmethod
-    def valid_values(cls):
+    def valid_values(cls) -> dict:
         """List all valid matrix barcode format values."""
         return cls._valid_values
 
@@ -75,11 +77,11 @@ class BarcodeDetectionResult:
         """Initialize."""
         self.__impl = impl
 
-    def center_position(self):
+    def center_position(self) -> tuple:
         """Position of barcode as tuple of pixel coodinates (x,y)."""
         return tuple(self.__impl.center_position())
 
-    def bounding_box(self):
+    def bounding_box(self) -> BoundingBox:
         """Get the bounding box of the region in the 2D image."""
         bb_impl = self.__impl.bounding_box()
         return BoundingBox(x=bb_impl.x, y=bb_impl.y, width=bb_impl.width, height=bb_impl.height)
@@ -118,19 +120,19 @@ class BarcodeDecodingResult:
         """Initialize."""
         self.__impl = impl
 
-    def code(self):
+    def code(self) -> str:
         """Code as string."""
         return self.__impl.code()
 
-    def code_format(self):
+    def code_format(self) -> str:
         """Code format as string."""
         return self.__impl.code_format()
 
-    def center_position(self):
+    def center_position(self) -> tuple:
         """Position of barcode as tuple of pixel coodinates (x,y)."""
         return tuple(self.__impl.center_position())
 
-    def bounding_box(self):
+    def bounding_box(self) -> BoundingBox:
         """Get the bounding box of the barcode in the 2D image."""
         bb_impl = self.__impl.bounding_box()
         return BoundingBox(x=bb_impl.x, y=bb_impl.y, width=bb_impl.width, height=bb_impl.height)
@@ -197,7 +199,7 @@ class BarcodeDetector:
         """Initialize BarcodeDetector."""
         self.__impl = _zivid.toolbox.BarcodeDetector()
 
-    def suggest_settings(self, camera):
+    def suggest_settings(self, camera: Camera) -> Settings2D:
         """Get 2D capture settings that are ideal for barcode reading with the given camera.
 
         Args:
@@ -211,7 +213,7 @@ class BarcodeDetector:
         settings2d_impl = self.__impl.suggest_settings(camera._Camera__impl)  # pylint: disable=protected-access
         return _to_settings2d(settings2d_impl)
 
-    def detect_linear_codes(self, frame2d):
+    def detect_linear_codes(self, frame2d: Frame2D) -> list:
         """Detect linear (1D) barcode candidate regions based on the result of a 2D capture.
 
         This method detects potential barcode regions in the image but does not attempt to decode them.
@@ -233,7 +235,7 @@ class BarcodeDetector:
         )
         return [LinearBarcodeDetectionResult(result) for result in results]
 
-    def decode_linear_codes(self, detection_results, format_filter=None):
+    def decode_linear_codes(self, detection_results: list, format_filter=None) -> list:
         """Decode linear (1D) barcode candidate regions.
 
         This method attempts to decode barcode candidates that were previously detected using
@@ -266,7 +268,7 @@ class BarcodeDetector:
         )
         return [LinearBarcodeDecodingResult(result) if result is not None else None for result in results]
 
-    def read_linear_codes(self, frame2d, format_filter=None):
+    def read_linear_codes(self, frame2d: Frame2D, format_filter=None) -> list:
         """Detect and decode linear (1D) barcodes based on the result of a 2D capture.
 
         Args:
@@ -286,7 +288,7 @@ class BarcodeDetector:
         )
         return [LinearBarcodeDecodingResult(result) for result in results]
 
-    def read_matrix_codes(self, frame2d, format_filter=None):
+    def read_matrix_codes(self, frame2d: Frame2D, format_filter=None) -> list:
         """Detect and decode matrix (2D) barcodes based on the result of a 2D capture.
 
         Args:
@@ -305,7 +307,7 @@ class BarcodeDetector:
         )
         return [MatrixBarcodeDecodingResult(result) for result in results]
 
-    def release(self):
+    def release(self) -> None:
         """Release the underlying resources."""
         try:
             impl = self.__impl

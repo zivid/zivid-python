@@ -4,13 +4,16 @@ This module should not be imported directly by end-user, but rather accessed thr
 the zivid.calibration module.
 """
 
+from __future__ import annotations
+
 import _zivid
+import numpy
 
 
 class Pose:
     """Class representing a robot pose."""
 
-    def __init__(self, transformation_matrix):
+    def __init__(self, transformation_matrix: numpy.ndarray) -> None:
         """Construct a Pose object.
 
         Args:
@@ -18,7 +21,7 @@ class Pose:
         """
         self.__impl = _zivid.calibration.Pose(transformation_matrix)
 
-    def to_matrix(self):
+    def to_matrix(self) -> numpy.ndarray:
         """Get the matrix representation of the pose.
 
         Returns:

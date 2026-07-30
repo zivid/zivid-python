@@ -1,6 +1,10 @@
 """Module for experimental projection features. This API may change in the future."""
 
+from __future__ import annotations
+
 import _zivid
+import numpy
+from zivid.camera import Camera
 from zivid.frame_2d import Frame2D
 from zivid.settings import Settings, _to_internal_settings
 from zivid.settings2d import Settings2D, _to_internal_settings2d
@@ -34,7 +38,7 @@ class ProjectedImage:
     def __str__(self):
         return str(self.__impl)
 
-    def capture_2d(self, settings):
+    def capture_2d(self, settings: Settings | Settings2D) -> Frame2D:
         """Capture a single 2D frame without stopping the ongoing image projection.
 
         This method returns right after the acquisition of the image is complete.
@@ -79,7 +83,7 @@ class ProjectedImage:
             )
         )
 
-    def capture(self, settings2d):
+    def capture(self, settings2d: Settings2D) -> Frame2D:
         """Capture a single 2D frame without stopping the ongoing image projection.
 
         This method is deprecated as of SDK 2.15 and will be removed in the next SDK major version (3.0).
@@ -118,11 +122,11 @@ class ProjectedImage:
             return Frame2D(self.__impl.capture(_to_internal_settings2d(settings2d)))
         raise TypeError("Unsupported settings type: {}".format(type(settings2d)))
 
-    def stop(self):
+    def stop(self) -> None:
         """Stop the ongoing image projection."""
         self.__impl.stop()
 
-    def active(self):
+    def active(self) -> bool:
         """Check if a handle is associated with an ongoing image projection.
 
         Returns:
@@ -130,7 +134,7 @@ class ProjectedImage:
         """
         return self.__impl.active()
 
-    def release(self):
+    def release(self) -> None:
         """Release the underlying resources and stop projection."""
         try:
             impl = self.__impl
@@ -149,7 +153,7 @@ class ProjectedImage:
         self.release()
 
 
-def projector_resolution(camera):
+def projector_resolution(camera: Camera) -> tuple:
     """Get the resolution of the internal projector in the Zivid camera.
 
     Args:
@@ -161,7 +165,7 @@ def projector_resolution(camera):
     return _zivid.projection.projector_resolution(camera._Camera__impl)  # pylint: disable=protected-access
 
 
-def show_image_bgra(camera, image_bgra):
+def show_image_bgra(camera: Camera, image_bgra: numpy.ndarray) -> ProjectedImage:
     """Display a 2D color image using the projector.
 
     The image resolution needs to be the same as the resolution obtained from the projector_resolution
@@ -185,7 +189,7 @@ def show_image_bgra(camera, image_bgra):
     )
 
 
-def pixels_from_3d_points(camera, points):
+def pixels_from_3d_points(camera: Camera, points: list | numpy.ndarray) -> list:
     """Get 2D projector pixel coordinates corresponding to 3D points relative to the camera.
 
     This function takes 3D points in the camera's reference frame and converts them to the projector frame

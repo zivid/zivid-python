@@ -1,12 +1,17 @@
 """Contains the Capture Assistant functionality."""
 
+from __future__ import annotations
+
 import _zivid
-from zivid._suggest_settings_parameters import SuggestSettingsParameters  # pylint: disable=unused-import  # noqa: F401
-from zivid._suggest_settings_parameters import _to_internal_capture_assistant_suggest_settings_parameters
-from zivid.settings import _to_settings
+from zivid._suggest_settings_parameters import (
+    SuggestSettingsParameters,
+    _to_internal_capture_assistant_suggest_settings_parameters,
+)
+from zivid.camera import Camera
+from zivid.settings import Settings, _to_settings
 
 
-def suggest_settings(camera, suggest_settings_parameters):
+def suggest_settings(camera: Camera, suggest_settings_parameters: SuggestSettingsParameters) -> Settings:
     """Find settings for the current scene based on given parameters.
 
     The suggested settings returned from this function should be passed into

@@ -1,9 +1,12 @@
 """Contains functions for checking and updating camera firmware."""
 
+from __future__ import annotations
+
 import _zivid
+from zivid.camera import Camera
 
 
-def update(camera, progress_callback=None):
+def update(camera: Camera, progress_callback=None) -> None:
     """Update camera firmware.
 
     If the current API requires a different firmware than what is present on the camera,
@@ -25,7 +28,7 @@ def update(camera, progress_callback=None):
         )
 
 
-def is_up_to_date(camera):
+def is_up_to_date(camera: Camera) -> bool:
     """Check if the firmware on the camera is of the version that is required by the API.
 
     Args:

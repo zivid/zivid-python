@@ -1,5 +1,7 @@
 """Contains the DeviceArray class."""
 
+from __future__ import annotations
+
 import _zivid
 import numpy
 
@@ -87,7 +89,7 @@ class DeviceArray:
         return self.__impl
 
     @property
-    def shape(self):
+    def shape(self) -> tuple:
         """Get the shape of the device array.
 
         Returns:
@@ -96,7 +98,7 @@ class DeviceArray:
         return self.__impl.shape
 
     @property
-    def strides(self):
+    def strides(self) -> tuple:
         """Get the strides of the device array in element count.
 
         Returns:
@@ -105,7 +107,7 @@ class DeviceArray:
         return self.__impl.strides
 
     @property
-    def strides_in_bytes(self):
+    def strides_in_bytes(self) -> tuple:
         """Get the strides of the device array in bytes.
 
         Returns:
@@ -114,7 +116,7 @@ class DeviceArray:
         return self.__impl.strides_in_bytes
 
     @property
-    def size_bytes(self):
+    def size_bytes(self) -> int:
         """Get the size of the device array in bytes.
 
         Returns:
@@ -132,7 +134,7 @@ class DeviceArray:
         return self.__impl.backend
 
     @property
-    def is_valid(self):
+    def is_valid(self) -> bool:
         """Check if the device array is valid.
 
         Returns:
@@ -141,7 +143,7 @@ class DeviceArray:
         return self.__impl.is_valid
 
     @property
-    def is_empty(self):
+    def is_empty(self) -> bool:
         """Check if the device array is empty.
 
         Returns:
@@ -149,7 +151,7 @@ class DeviceArray:
         """
         return self.__impl.is_empty
 
-    def device_pointer(self):
+    def device_pointer(self) -> int:
         """Get the raw device pointer for the array data.
 
         No synchronization is performed. The DeviceArray was already synchronized against the
@@ -198,7 +200,7 @@ class DeviceArray:
             "version": 3,
         }
 
-    def copy_to_host_organized_array(self, stream_or_queue):
+    def copy_to_host_organized_array(self, stream_or_queue) -> numpy.ndarray:
         """Enqueue a device-to-host copy and return a numpy array WITHOUT synchronizing.
 
         Use this for device arrays obtained from organized point clouds, or from 2D frames.
@@ -240,7 +242,7 @@ class DeviceArray:
                 " or 2D frames."
             ) from e
 
-    def copy_to_host_unorganized_array(self, stream_or_queue):
+    def copy_to_host_unorganized_array(self, stream_or_queue) -> numpy.ndarray:
         """Enqueue a device-to-host copy and return a numpy array WITHOUT synchronizing.
 
         Use this for device arrays obtained from unorganized point clouds.

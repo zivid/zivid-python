@@ -1,5 +1,7 @@
 """Auto generated, do not edit."""
 
+from __future__ import annotations
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
@@ -24,9 +26,9 @@ class NetworkConfiguration:
 
         def __init__(
             self,
-            address=_zivid.NetworkConfiguration.IPV4.Address().value,
-            mode=_zivid.NetworkConfiguration.IPV4.Mode().value,
-            subnet_mask=_zivid.NetworkConfiguration.IPV4.SubnetMask().value,
+            address: str = _zivid.NetworkConfiguration.IPV4.Address().value,
+            mode: str = _zivid.NetworkConfiguration.IPV4.Mode().value,
+            subnet_mask: str = _zivid.NetworkConfiguration.IPV4.SubnetMask().value,
         ):
 
             if isinstance(address, (str,)):
@@ -102,7 +104,7 @@ class NetworkConfiguration:
 
     def __init__(
         self,
-        ipv4=None,
+        ipv4: NetworkConfiguration.IPV4 | None = None,
     ):
 
         if ipv4 is None:

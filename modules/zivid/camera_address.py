@@ -1,5 +1,7 @@
 """Contains the CameraAddress class."""
 
+from __future__ import annotations
+
 import _zivid
 
 
@@ -10,7 +12,7 @@ class CameraAddress:
     Accepts either an IPv4 address string (e.g. "172.28.60.5") or a resolvable hostname.
     """
 
-    def __init__(self, value):
+    def __init__(self, value: str):
         """Construct a CameraAddress from a hostname or IPv4 address string.
 
         Args:
@@ -25,7 +27,7 @@ class CameraAddress:
         self.__impl = _zivid.CameraAddress(value)
 
     @property
-    def value(self):
+    def value(self) -> str:
         """Get the address value.
 
         Returns:

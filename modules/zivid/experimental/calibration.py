@@ -1,13 +1,17 @@
 """Module for experimental calibration features. This API may change in the future."""
 
+from __future__ import annotations
+
 import _zivid
-from zivid.camera_intrinsics import _to_camera_intrinsics
+from zivid.camera import Camera
+from zivid.camera_intrinsics import CameraIntrinsics, _to_camera_intrinsics
 from zivid.experimental import PixelMapping
+from zivid.frame import Frame
 from zivid.settings import Settings, _to_internal_settings
 from zivid.settings2d import Settings2D, _to_internal_settings2d
 
 
-def intrinsics(camera, settings=None):
+def intrinsics(camera: Camera, settings: Settings | Settings2D | None = None) -> CameraIntrinsics:
     """Get intrinsic parameters of a given camera and settings (3D or 2D).
 
     These intrinsic parameters take into account the expected resolution of the point clouds captured
@@ -52,7 +56,7 @@ def intrinsics(camera, settings=None):
     )
 
 
-def estimate_intrinsics(frame):
+def estimate_intrinsics(frame: Frame) -> CameraIntrinsics:
     """Estimate camera intrinsics for a given frame.
 
     The estimated parameters may be used to project 3D point cloud onto the corresponding 2D image.
@@ -73,7 +77,7 @@ def estimate_intrinsics(frame):
     )
 
 
-def pixel_mapping(camera, settings):
+def pixel_mapping(camera: Camera, settings: Settings) -> PixelMapping:
     """Return pixel mapping information given camera and settings.
 
     When mapping from a subsampled point cloud to a full resolution

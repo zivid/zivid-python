@@ -1,5 +1,7 @@
 """Auto generated, do not edit."""
 
+from __future__ import annotations
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import datetime
 
@@ -12,7 +14,7 @@ class FrameInfo:
 
         def __init__(
             self,
-            packet_loss=_zivid.FrameInfo.Diagnostics.PacketLoss().value,
+            packet_loss: bool = _zivid.FrameInfo.Diagnostics.PacketLoss().value,
         ):
 
             if isinstance(packet_loss, (bool,)):
@@ -45,11 +47,11 @@ class FrameInfo:
 
         def __init__(
             self,
-            acquisition_time=_zivid.FrameInfo.Metrics.AcquisitionTime().value,
-            capture_time=_zivid.FrameInfo.Metrics.CaptureTime().value,
-            kernel_compute_time=_zivid.FrameInfo.Metrics.KernelComputeTime().value,
-            reprocessing_time=_zivid.FrameInfo.Metrics.ReprocessingTime().value,
-            throttling_time=_zivid.FrameInfo.Metrics.ThrottlingTime().value,
+            acquisition_time: datetime.timedelta = _zivid.FrameInfo.Metrics.AcquisitionTime().value,
+            capture_time: datetime.timedelta = _zivid.FrameInfo.Metrics.CaptureTime().value,
+            kernel_compute_time: datetime.timedelta = _zivid.FrameInfo.Metrics.KernelComputeTime().value,
+            reprocessing_time: datetime.timedelta | None = _zivid.FrameInfo.Metrics.ReprocessingTime().value,
+            throttling_time: datetime.timedelta = _zivid.FrameInfo.Metrics.ThrottlingTime().value,
         ):
 
             if isinstance(acquisition_time, (datetime.timedelta,)):
@@ -182,7 +184,7 @@ class FrameInfo:
 
         def __init__(
             self,
-            core=_zivid.FrameInfo.SoftwareVersion.Core().value,
+            core: str = _zivid.FrameInfo.SoftwareVersion.Core().value,
         ):
 
             if isinstance(core, (str,)):
@@ -215,7 +217,7 @@ class FrameInfo:
 
             def __init__(
                 self,
-                model=_zivid.FrameInfo.SystemInfo.CPU.Model().value,
+                model: str = _zivid.FrameInfo.SystemInfo.CPU.Model().value,
             ):
 
                 if isinstance(model, (str,)):
@@ -248,8 +250,8 @@ class FrameInfo:
 
             def __init__(
                 self,
-                model=_zivid.FrameInfo.SystemInfo.ComputeDevice.Model().value,
-                vendor=_zivid.FrameInfo.SystemInfo.ComputeDevice.Vendor().value,
+                model: str = _zivid.FrameInfo.SystemInfo.ComputeDevice.Model().value,
+                vendor: str = _zivid.FrameInfo.SystemInfo.ComputeDevice.Vendor().value,
             ):
 
                 if isinstance(model, (str,)):
@@ -298,9 +300,9 @@ class FrameInfo:
 
         def __init__(
             self,
-            operating_system=_zivid.FrameInfo.SystemInfo.OperatingSystem().value,
-            cpu=None,
-            compute_device=None,
+            operating_system: str = _zivid.FrameInfo.SystemInfo.OperatingSystem().value,
+            cpu: FrameInfo.SystemInfo.CPU | None = None,
+            compute_device: FrameInfo.SystemInfo.ComputeDevice | None = None,
         ):
 
             if isinstance(operating_system, (str,)):
@@ -367,11 +369,11 @@ class FrameInfo:
 
     def __init__(
         self,
-        time_stamp=_zivid.FrameInfo.TimeStamp().value,
-        diagnostics=None,
-        metrics=None,
-        software_version=None,
-        system_info=None,
+        time_stamp: datetime.datetime = _zivid.FrameInfo.TimeStamp().value,
+        diagnostics: FrameInfo.Diagnostics | None = None,
+        metrics: FrameInfo.Metrics | None = None,
+        software_version: FrameInfo.SoftwareVersion | None = None,
+        system_info: FrameInfo.SystemInfo | None = None,
     ):
 
         if isinstance(time_stamp, (datetime.datetime,)):

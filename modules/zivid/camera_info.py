@@ -1,5 +1,7 @@
 """Auto generated, do not edit."""
 
+from __future__ import annotations
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
@@ -10,8 +12,8 @@ class CameraInfo:
 
         def __init__(
             self,
-            major=_zivid.CameraInfo.Revision.Major().value,
-            minor=_zivid.CameraInfo.Revision.Minor().value,
+            major: int = _zivid.CameraInfo.Revision.Major().value,
+            minor: int = _zivid.CameraInfo.Revision.Minor().value,
         ):
 
             if isinstance(major, (int,)):
@@ -58,7 +60,7 @@ class CameraInfo:
 
         def __init__(
             self,
-            max_size_bytes=_zivid.CameraInfo.UserData.MaxSizeBytes().value,
+            max_size_bytes: int = _zivid.CameraInfo.UserData.MaxSizeBytes().value,
         ):
 
             if isinstance(max_size_bytes, (int,)):
@@ -123,13 +125,13 @@ class CameraInfo:
 
     def __init__(
         self,
-        firmware_version=_zivid.CameraInfo.FirmwareVersion().value,
-        hardware_revision=_zivid.CameraInfo.HardwareRevision().value,
-        model=_zivid.CameraInfo.Model().value,
-        model_name=_zivid.CameraInfo.ModelName().value,
-        serial_number=_zivid.CameraInfo.SerialNumber().value,
-        revision=None,
-        user_data=None,
+        firmware_version: str = _zivid.CameraInfo.FirmwareVersion().value,
+        hardware_revision: str = _zivid.CameraInfo.HardwareRevision().value,
+        model: str = _zivid.CameraInfo.Model().value,
+        model_name: str = _zivid.CameraInfo.ModelName().value,
+        serial_number: str = _zivid.CameraInfo.SerialNumber().value,
+        revision: CameraInfo.Revision | None = None,
+        user_data: CameraInfo.UserData | None = None,
     ):
 
         if isinstance(firmware_version, (str,)):

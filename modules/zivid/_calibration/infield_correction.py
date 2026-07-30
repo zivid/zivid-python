@@ -4,11 +4,15 @@ This module should not be imported directly by end-user, but rather accessed thr
 the zivid.calibration module.
 """
 
+from __future__ import annotations
+
 import _zivid
+import numpy
 from zivid.calibration import DetectionResult
+from zivid.camera import Camera
 
 
-def verify_camera(infield_correction_input):
+def verify_camera(infield_correction_input: InfieldCorrectionInput) -> CameraVerification:
     """Verify the current camera trueness based on a single measurement.
 
     The purpose of this function is to allow quick assessment of the quality of
@@ -35,7 +39,7 @@ def verify_camera(infield_correction_input):
     )
 
 
-def compute_camera_correction(dataset):
+def compute_camera_correction(dataset: list[InfieldCorrectionInput]) -> CameraCorrection:
     """Calculate new in-field camera correction.
 
     The purpose of this function is to calculate a new in-field correction for a
@@ -76,7 +80,7 @@ def compute_camera_correction(dataset):
     )
 
 
-def write_camera_correction(camera, camera_correction):
+def write_camera_correction(camera: Camera, camera_correction: CameraCorrection) -> None:
     """Write the in-field correction on a camera.
 
     After calling this function, the given correction will automatically be used
@@ -97,7 +101,7 @@ def write_camera_correction(camera, camera_correction):
     )
 
 
-def reset_camera_correction(camera):
+def reset_camera_correction(camera: Camera) -> None:
     """Reset the in-field correction on a camera to factory settings.
 
     Args:
@@ -106,7 +110,7 @@ def reset_camera_correction(camera):
     _zivid.infield_correction.reset_camera_correction(camera._Camera__impl)  # pylint: disable=protected-access
 
 
-def has_camera_correction(camera):
+def has_camera_correction(camera: Camera) -> bool:
     """Check if the camera has an in-field correction written to it.
 
     This is false if write_camera_correction has never been called using this
@@ -121,7 +125,7 @@ def has_camera_correction(camera):
     return _zivid.infield_correction.has_camera_correction(camera._Camera__impl)  # pylint: disable=protected-access
 
 
-def camera_correction_timestamp(camera):
+def camera_correction_timestamp(camera: Camera):
     """Get the UTC time at which the camera's in-field correction was created.
 
     Args:
@@ -149,14 +153,14 @@ class InfieldCorrectionDetectionStatus:
     }
 
     @classmethod
-    def valid_values(cls):
+    def valid_values(cls) -> dict:
         return cls._valid_values
 
 
 class InfieldCorrectionInput:
     """Container for input-data needed by in-field verification and correction functions."""
 
-    def __init__(self, detection_result):
+    def __init__(self, detection_result: DetectionResult) -> None:
         """Construct an InfieldCorrectionInput instance.
 
         Input data should be captured by calling the version of detect_feature_points that
@@ -177,7 +181,7 @@ class InfieldCorrectionInput:
             detection_result._DetectionResult__impl,  # pylint: disable=protected-access
         )
 
-    def detection_result(self):
+    def detection_result(self) -> DetectionResult:
         """Get the contained DetectionResult.
 
         Returns:
@@ -185,7 +189,7 @@ class InfieldCorrectionInput:
         """
         return DetectionResult(self.__impl.detection_result())
 
-    def valid(self):
+    def valid(self) -> bool:
         """Check if this object is valid for use with in-field correction.
 
         Returns:
@@ -193,7 +197,7 @@ class InfieldCorrectionInput:
         """
         return self.__impl.valid()
 
-    def status_description(self):
+    def status_description(self) -> str:
         """Get a string describing the status of this input object.
 
         Mostly used to figure out why valid() is False.
@@ -203,7 +207,7 @@ class InfieldCorrectionInput:
         """
         return self.__impl.status_description()
 
-    def status(self):
+    def status(self) -> str:
         """Get a the status of this input object.
 
         Mostly used to figure out why valid() is False.
@@ -245,7 +249,7 @@ class CameraVerification:
             )
         self.__impl = impl
 
-    def local_dimension_trueness(self):
+    def local_dimension_trueness(self) -> float:
         """Get the estimated local dimension trueness.
 
         The dimension trueness represents the relative deviation between the
@@ -263,7 +267,7 @@ class CameraVerification:
         """
         return self.__impl.local_dimension_trueness()
 
-    def position(self):
+    def position(self) -> numpy.ndarray:
         """Get the location at which the measurement was made.
 
         Returns:
@@ -297,7 +301,7 @@ class AccuracyEstimate:
             )
         self.__impl = impl
 
-    def dimension_accuracy(self):
+    def dimension_accuracy(self) -> float:
         """Get the estimated dimension accuracy obtained if the correction is applied.
 
         This number represents a 1-sigma (68% confidence) upper bound for
@@ -319,7 +323,7 @@ class AccuracyEstimate:
         """
         return self.__impl.dimension_accuracy()
 
-    def z_min(self):
+    def z_min(self) -> float:
         """Get the range of validity of the accuracy estimate (lower end).
 
         Returns:
@@ -327,7 +331,7 @@ class AccuracyEstimate:
         """
         return self.__impl.z_min()
 
-    def z_max(self):
+    def z_max(self) -> float:
         """Get the range of validity of the accuracy estimate (upper end).
 
         Returns:
@@ -361,7 +365,7 @@ class CameraCorrection:
             )
         self.__impl = impl
 
-    def accuracy_estimate(self):
+    def accuracy_estimate(self) -> AccuracyEstimate:
         """Get an estimate for expected dimension accuracy if the correction is applied to the camera.
 
         Returns:
