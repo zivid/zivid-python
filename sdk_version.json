@@ -2,5 +2,6 @@
     "major": 2,
     "minor": 18,
     "patch": 0,
-    "pre_release": ""
+    "pre_release": "",
+    "python_wrapper_patch": 1
 }

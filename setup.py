@@ -28,6 +28,11 @@ def _determine_package_version():
         str(sdk_version["patch"]),
     ]
 
+    wrapper_patch_version = str(sdk_version["python_wrapper_patch"])
+
+    if int(wrapper_patch_version) > 0:
+        version_segments.append(wrapper_patch_version)
+
     github_repository = os.getenv("GITHUB_REPOSITORY")
     github_ref = os.getenv("GITHUB_REF")
 
