@@ -1,6 +1,9 @@
 """Module for experimental point cloud registration. This API may change in the future."""
 
+from __future__ import annotations
+
 import _zivid
+import numpy
 from zivid._local_point_cloud_registration_parameters import (
     LocalPointCloudRegistrationParameters,
     _to_internal_toolbox_local_point_cloud_registration_parameters,
@@ -32,7 +35,7 @@ class LocalPointCloudRegistrationResult:
             )
         self.__impl = impl
 
-    def transform(self):
+    def transform(self) -> Pose:
         """The transform that must be applied to the source point cloud for it to align with the target point cloud.
 
         Returns:
@@ -40,7 +43,7 @@ class LocalPointCloudRegistrationResult:
         """
         return Pose(self.__impl.transform().to_matrix())
 
-    def converged(self):
+    def converged(self) -> bool:
         """A boolean indicating whether the convergence criteria were satisfied before reaching the iteration limit.
 
         Returns:
@@ -48,7 +51,7 @@ class LocalPointCloudRegistrationResult:
         """
         return self.__impl.converged()
 
-    def source_coverage(self):
+    def source_coverage(self) -> float:
         """The fraction of points in the source that has a correspondence in the target after transformation.
 
         Returns:
@@ -56,7 +59,7 @@ class LocalPointCloudRegistrationResult:
         """
         return self.__impl.source_coverage()
 
-    def root_mean_square_error(self):
+    def root_mean_square_error(self) -> float:
         """The root mean squared distance between corresponding points in the source and target after transformation.
 
         Returns:
@@ -68,7 +71,12 @@ class LocalPointCloudRegistrationResult:
         return str(self.__impl)
 
 
-def local_point_cloud_registration(target, source, parameters=None, initial_transform=None):
+def local_point_cloud_registration(
+    target: UnorganizedPointCloud,
+    source: UnorganizedPointCloud,
+    parameters: LocalPointCloudRegistrationParameters | None = None,
+    initial_transform: Pose | Matrix4x4 | numpy.ndarray | None = None,
+) -> LocalPointCloudRegistrationResult:
     """Compute alignment transform between two point clouds.
 
     Given a `source` point cloud and a `target` point cloud, this function attempts to compute the transform

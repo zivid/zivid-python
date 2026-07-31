@@ -1,8 +1,10 @@
 """Contains Application class."""
 
+from __future__ import annotations
+
 import _zivid
 from zivid.camera import Camera
-from zivid.camera_address import _to_internal_camera_address
+from zivid.camera_address import CameraAddress, _to_internal_camera_address
 
 
 class Application:
@@ -47,7 +49,7 @@ class Application:
     def __str__(self):
         return str(self.__impl)
 
-    def create_file_camera(self, frame):
+    def create_file_camera(self, frame) -> Camera:
         """Create a virtual camera from a captured frame or a .zfc file.
 
         A file camera is a virtual camera that replays a previously captured frame. It holds the raw sensor
@@ -96,7 +98,7 @@ class Application:
             return Camera(self.__impl.create_file_camera(frame._Frame__impl))
         return Camera(self.__impl.create_file_camera(str(frame)))
 
-    def connect_camera(self, serial_number=None, address=None):
+    def connect_camera(self, serial_number: str | None = None, address: CameraAddress | None = None) -> Camera:
         """Connect to the next available Zivid camera.
 
         Args:
@@ -118,7 +120,7 @@ class Application:
             return Camera(self.__impl.connect_camera(serial_number))
         return Camera(self.__impl.connect_camera())
 
-    def cameras(self):
+    def cameras(self) -> list[Camera]:
         """Get a list of all cameras.
 
         Returns:

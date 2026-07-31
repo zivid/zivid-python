@@ -4,7 +4,11 @@ This module should not be imported directly by end-user, but rather accessed thr
 the zivid.calibration module.
 """
 
+from __future__ import annotations
+
 import _zivid
+import numpy
+from zivid._calibration.detector import DetectionResult
 
 
 class MultiCameraResidual:
@@ -29,7 +33,7 @@ class MultiCameraResidual:
             )
         self.__impl = impl
 
-    def translation(self):
+    def translation(self) -> float:
         """Get the average overlap error.
 
         Returns:
@@ -63,7 +67,7 @@ class MultiCameraOutput:
             )
         self.__impl = impl
 
-    def valid(self):
+    def valid(self) -> bool:
         """Check validity of MultiCameraOutput.
 
         Returns:
@@ -74,7 +78,7 @@ class MultiCameraOutput:
     def __bool__(self):
         return bool(self.__impl)
 
-    def transforms(self):
+    def transforms(self) -> list[numpy.ndarray]:
         """Get multi-camera calibration transforms.
 
         Returns:
@@ -82,7 +86,7 @@ class MultiCameraOutput:
         """
         return self.__impl.transforms()
 
-    def residuals(self):
+    def residuals(self) -> list[MultiCameraResidual]:
         """Get multi-camera calibration residuals.
 
         Returns:
@@ -94,7 +98,7 @@ class MultiCameraOutput:
         return str(self.__impl)
 
 
-def calibrate_multi_camera(detection_results):
+def calibrate_multi_camera(detection_results: list[DetectionResult]) -> MultiCameraOutput:
     """Perform multi-camera calibration.
 
     Args:

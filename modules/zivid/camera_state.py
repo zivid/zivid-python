@@ -1,5 +1,7 @@
 """Auto generated, do not edit."""
 
+from __future__ import annotations
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import collections.abc
 
@@ -40,7 +42,7 @@ class CameraState:
 
                 def __init__(
                     self,
-                    link_speed=_zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed().value,
+                    link_speed: str = _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed().value,
                 ):
 
                     if isinstance(link_speed, _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.enum):
@@ -90,8 +92,8 @@ class CameraState:
 
                     def __init__(
                         self,
-                        address=_zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address().value,
-                        mask=_zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask().value,
+                        address: str = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address().value,
+                        mask: str = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask().value,
                     ):
 
                         if isinstance(address, (str,)):
@@ -188,9 +190,9 @@ class CameraState:
 
             def __init__(
                 self,
-                interface_name=_zivid.CameraState.Network.LocalInterface.InterfaceName().value,
-                ethernet=None,
-                ipv4=None,
+                interface_name: str = _zivid.CameraState.Network.LocalInterface.InterfaceName().value,
+                ethernet: CameraState.Network.LocalInterface.Ethernet | None = None,
+                ipv4: CameraState.Network.LocalInterface.IPV4 | None = None,
             ):
 
                 if isinstance(interface_name, (str,)):
@@ -283,7 +285,7 @@ class CameraState:
 
             def __init__(
                 self,
-                link_speed=_zivid.CameraState.Network.Ethernet.LinkSpeed().value,
+                link_speed: str = _zivid.CameraState.Network.Ethernet.LinkSpeed().value,
             ):
 
                 if isinstance(link_speed, _zivid.CameraState.Network.Ethernet.LinkSpeed.enum):
@@ -329,7 +331,7 @@ class CameraState:
 
             def __init__(
                 self,
-                address=_zivid.CameraState.Network.IPV4.Address().value,
+                address: str = _zivid.CameraState.Network.IPV4.Address().value,
             ):
 
                 if isinstance(address, (str,)):
@@ -361,8 +363,8 @@ class CameraState:
         def __init__(
             self,
             local_interfaces=None,
-            ethernet=None,
-            ipv4=None,
+            ethernet: CameraState.Network.Ethernet | None = None,
+            ipv4: CameraState.Network.IPV4 | None = None,
         ):
 
             if local_interfaces is None:
@@ -444,11 +446,11 @@ class CameraState:
 
         def __init__(
             self,
-            dmd=_zivid.CameraState.Temperature.DMD().value,
-            general=_zivid.CameraState.Temperature.General().value,
-            led=_zivid.CameraState.Temperature.LED().value,
-            lens=_zivid.CameraState.Temperature.Lens().value,
-            pcb=_zivid.CameraState.Temperature.PCB().value,
+            dmd: float | int = _zivid.CameraState.Temperature.DMD().value,
+            general: float | int = _zivid.CameraState.Temperature.General().value,
+            led: float | int = _zivid.CameraState.Temperature.LED().value,
+            lens: float | int = _zivid.CameraState.Temperature.Lens().value,
+            pcb: float | int = _zivid.CameraState.Temperature.PCB().value,
         ):
 
             if isinstance(
@@ -675,12 +677,12 @@ class CameraState:
 
     def __init__(
         self,
-        available=_zivid.CameraState.Available().value,
-        connected=_zivid.CameraState.Connected().value,
-        inaccessible_reason=_zivid.CameraState.InaccessibleReason().value,
-        status=_zivid.CameraState.Status().value,
-        network=None,
-        temperature=None,
+        available: bool = _zivid.CameraState.Available().value,
+        connected: bool = _zivid.CameraState.Connected().value,
+        inaccessible_reason: str | None = _zivid.CameraState.InaccessibleReason().value,
+        status: str = _zivid.CameraState.Status().value,
+        network: CameraState.Network | None = None,
+        temperature: CameraState.Temperature | None = None,
     ):
 
         if isinstance(available, (bool,)):

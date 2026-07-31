@@ -1,5 +1,7 @@
 """Contains Matrix4x4 class."""
 
+from __future__ import annotations
+
 import pathlib
 
 import _zivid
@@ -28,7 +30,7 @@ class Matrix4x4(_zivid.Matrix4x4):
         else:
             super().__init__(arg)
 
-    def inverse(self):
+    def inverse(self) -> Matrix4x4:
         """Return the inverse of this matrix.
 
         An exception is thrown if the matrix is not invertible.
@@ -38,7 +40,7 @@ class Matrix4x4(_zivid.Matrix4x4):
         """
         return Matrix4x4(super().inverse())
 
-    def load(self, file_path):
+    def load(self, file_path: str) -> None:
         """Load the matrix from the given file.
 
         Args:
@@ -46,7 +48,7 @@ class Matrix4x4(_zivid.Matrix4x4):
         """
         super().load(str(file_path))
 
-    def save(self, file_path):
+    def save(self, file_path: str) -> None:
         """Save the matrix to the given file.
 
         Args:
@@ -55,7 +57,7 @@ class Matrix4x4(_zivid.Matrix4x4):
         super().save(str(file_path))
 
     @staticmethod
-    def identity():
+    def identity() -> Matrix4x4:
         """Return the identity matrix.
 
         Returns:

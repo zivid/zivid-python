@@ -1,5 +1,7 @@
 """Contains a the Image class."""
 
+from __future__ import annotations
+
 import _zivid
 import numpy
 
@@ -37,7 +39,7 @@ class Image:
         self.__impl = impl
 
     @property
-    def height(self):
+    def height(self) -> int:
         """Get the height of the image (number of rows).
 
         Returns:
@@ -46,7 +48,7 @@ class Image:
         return self.__impl.height()
 
     @property
-    def width(self):
+    def width(self) -> int:
         """Get the width of the image (number of columns).
 
         Returns:
@@ -54,7 +56,7 @@ class Image:
         """
         return self.__impl.width()
 
-    def save(self, file_path):
+    def save(self, file_path) -> None:
         """Save the image to a file.
 
         The supported file type is PNG with extension .png.
@@ -66,7 +68,7 @@ class Image:
         self.__impl.save(str(file_path))
 
     @classmethod
-    def load(cls, file_path, color_format):
+    def load(cls, file_path, color_format: str) -> Image:
         r"""Load an image from a file.
 
         The supported file types are PNG (.png), JPEG (.jpg, .jpeg), and BMP (.bmp). This method
@@ -115,7 +117,7 @@ class Image:
         color_format_class = supported_color_formats[color_format]
         return Image(color_format_class(str(file_path)))
 
-    def copy_data(self):
+    def copy_data(self) -> numpy.ndarray:
         """Copy image data to numpy array.
 
         Returns:
@@ -124,7 +126,7 @@ class Image:
         self.__impl.assert_not_released()
         return numpy.array(self.__impl)
 
-    def release(self):
+    def release(self) -> None:
         """Release the underlying resources."""
         try:
             impl = self.__impl

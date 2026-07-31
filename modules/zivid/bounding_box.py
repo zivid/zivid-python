@@ -1,12 +1,14 @@
 """Contains BoundingBox class."""
 
+from __future__ import annotations
+
 import _zivid
 
 
 class BoundingBox:
     """Defines a 2D rectangular bounding box in image coordinates."""
 
-    def __init__(self, x, y, width, height):
+    def __init__(self, x: int, y: int, width: int, height: int):
         """Construct a BoundingBox object.
 
         Args:
@@ -18,7 +20,7 @@ class BoundingBox:
         self.__impl = _zivid.BoundingBox(x, y, width, height)
 
     @property
-    def x(self):
+    def x(self) -> int:
         """Get the top-left corner x coordinate.
 
         Returns:
@@ -27,7 +29,7 @@ class BoundingBox:
         return self.__impl.x
 
     @x.setter
-    def x(self, value):
+    def x(self, value: int) -> None:
         """Set the top-left corner x coordinate.
 
         Args:
@@ -36,7 +38,7 @@ class BoundingBox:
         self.__impl.x = value
 
     @property
-    def y(self):
+    def y(self) -> int:
         """Get the top-left corner y coordinate.
 
         Returns:
@@ -45,7 +47,7 @@ class BoundingBox:
         return self.__impl.y
 
     @y.setter
-    def y(self, value):
+    def y(self, value: int) -> None:
         """Set the top-left corner y coordinate.
 
         Args:
@@ -54,7 +56,7 @@ class BoundingBox:
         self.__impl.y = value
 
     @property
-    def width(self):
+    def width(self) -> int:
         """Get the width of the bounding box.
 
         Returns:
@@ -63,7 +65,7 @@ class BoundingBox:
         return self.__impl.width
 
     @width.setter
-    def width(self, value):
+    def width(self, value: int) -> None:
         """Set the width of the bounding box.
 
         Args:
@@ -72,7 +74,7 @@ class BoundingBox:
         self.__impl.width = value
 
     @property
-    def height(self):
+    def height(self) -> int:
         """Get the height of the bounding box.
 
         Returns:
@@ -81,7 +83,7 @@ class BoundingBox:
         return self.__impl.height
 
     @height.setter
-    def height(self, value):
+    def height(self, value: int) -> None:
         """Set the height of the bounding box.
 
         Args:

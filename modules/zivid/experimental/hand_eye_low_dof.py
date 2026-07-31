@@ -3,6 +3,8 @@
 This API may change in the future.
 """
 
+from __future__ import annotations
+
 import collections.abc
 
 import _zivid
@@ -12,7 +14,7 @@ from zivid.calibration import HandEyeOutput, MarkerDictionary, Pose
 class FixedPlacementOfFiducialMarker:
     """Specifies the fixed placement of a fiducial marker for low degrees-of-freedom hand-eye calibration."""
 
-    def __init__(self, marker_id, position):
+    def __init__(self, marker_id: int, position: list):
         """Construct a FixedPlacementOfFiducialMarker.
 
         For eye-in-hand calibration, positions should be given in the robot's base frame. For eye-to-hand calibration,
@@ -46,7 +48,7 @@ class FixedPlacementOfFiducialMarker:
         )
 
     @property
-    def id(self):
+    def id(self) -> int:
         """Get ID of fiducial marker.
 
         Returns:
@@ -55,7 +57,7 @@ class FixedPlacementOfFiducialMarker:
         return self.__impl.id
 
     @property
-    def position(self):
+    def position(self) -> list:
         """Get position of fiducial marker.
 
         Returns:
@@ -70,7 +72,7 @@ class FixedPlacementOfFiducialMarker:
 class FixedPlacementOfFiducialMarkers:  # pylint: disable=too-few-public-methods
     """Specifies the fixed placement of a list of fiducial markers for low degrees-of-freedom hand-eye calibration."""
 
-    def __init__(self, marker_dictionary, markers):
+    def __init__(self, marker_dictionary: str, markers: list):
         """Construct a FixedPlacementOfFiducialMarkers instance.
 
         Args:
@@ -111,7 +113,7 @@ class FixedPlacementOfFiducialMarkers:  # pylint: disable=too-few-public-methods
 class FixedPlacementOfCalibrationBoard:  # pylint: disable=too-few-public-methods
     """Specifies the fixed placement of a Zivid calibration board for low degrees-of-freedom hand-eye calibration."""
 
-    def __init__(self, position_or_pose):
+    def __init__(self, position_or_pose: Pose | list):
         """Construct a FixedPlacementOfCalibrationBoard instance.
 
         For eye-in-hand calibration, the position or pose should be given in the robot's base frame. For eye-to-hand
@@ -153,7 +155,7 @@ class FixedPlacementOfCalibrationBoard:  # pylint: disable=too-few-public-method
 class FixedPlacementOfCalibrationObjects:  # pylint: disable=too-few-public-methods
     """Specifies the fixed placement of calibration objects for low degrees-of-freedom hand-eye calibration."""
 
-    def __init__(self, fixed_objects):
+    def __init__(self, fixed_objects: FixedPlacementOfFiducialMarkers | FixedPlacementOfCalibrationBoard):
         """Construct a FixedPlacementOfCalibrationObjects instance from fiducial markers or a calibration board.
 
         Args:
@@ -183,7 +185,9 @@ class FixedPlacementOfCalibrationObjects:  # pylint: disable=too-few-public-meth
         return str(self.__impl)
 
 
-def calibrate_eye_in_hand_low_dof(calibration_inputs, fixed_objects):
+def calibrate_eye_in_hand_low_dof(
+    calibration_inputs: list, fixed_objects: FixedPlacementOfCalibrationObjects
+) -> HandEyeOutput:
     """Perform eye-in-hand calibration for low degrees-of-freedom robots.
 
     For robots with low degrees-of-freedom (DOF), that is, less than 6 DOF, the robot pose and capture inputs are not
@@ -217,7 +221,9 @@ def calibrate_eye_in_hand_low_dof(calibration_inputs, fixed_objects):
     )
 
 
-def calibrate_eye_to_hand_low_dof(calibration_inputs, fixed_objects):
+def calibrate_eye_to_hand_low_dof(
+    calibration_inputs: list, fixed_objects: FixedPlacementOfCalibrationObjects
+) -> HandEyeOutput:
     """Perform eye-to-hand calibration for low degrees-of-freedom robots.
 
     For robots with low degrees-of-freedom (DOF), that is, less than 6 DOF, the robot pose and capture inputs are not

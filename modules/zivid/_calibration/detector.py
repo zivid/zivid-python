@@ -4,11 +4,14 @@ This module should not be imported directly by end-user, but rather accessed thr
 the zivid.calibration module.
 """
 
+from __future__ import annotations
+
 import _zivid
 import numpy
 from zivid._calibration.pose import Pose
 from zivid.camera import Camera
 from zivid.frame import Frame
+from zivid.point_cloud import PointCloud
 
 
 class CalibrationBoardDetectionStatus:  # pylint: disable=too-few-public-methods
@@ -47,7 +50,7 @@ class DetectionResult:
 
         self.__impl = impl
 
-    def valid(self):
+    def valid(self) -> bool:
         """Check validity of DetectionResult.
 
         Returns:
@@ -55,7 +58,7 @@ class DetectionResult:
         """
         return self.__impl.valid()
 
-    def centroid(self):
+    def centroid(self) -> numpy.ndarray:
         """Get the centroid of the detected feature points.
 
         Will throw an exception if the DetectionResult is not valid.
@@ -65,7 +68,7 @@ class DetectionResult:
         """
         return self.__impl.centroid()
 
-    def pose(self):
+    def pose(self) -> Pose:
         """Get position and orientation of the top left detected corner in camera-space.
 
         This is the top left inner corner as viewed from the board's coordinate system.
@@ -81,7 +84,7 @@ class DetectionResult:
         """
         return Pose(self.__impl.pose().to_matrix())
 
-    def status(self):
+    def status(self) -> str:
         """Get the status of the detection.
 
         Returns:
@@ -89,7 +92,7 @@ class DetectionResult:
         """
         return self.__impl.status().name
 
-    def status_description(self):
+    def status_description(self) -> str:
         """Get a human-readable description of the status.
 
         Useful for feedback if valid() returns False.
@@ -102,7 +105,7 @@ class DetectionResult:
         """
         return self.__impl.status_description()
 
-    def feature_points(self):
+    def feature_points(self) -> list[numpy.ndarray]:
         """Get the detected feature points in camera-space.
 
         Returns a 2D array of 3D coordinates representing the centers of the calibration
@@ -116,7 +119,7 @@ class DetectionResult:
         """
         return self.__impl.feature_points()
 
-    def feature_points_2d(self):
+    def feature_points_2d(self) -> list[numpy.ndarray]:
         """Get the detected feature points in pixel-space.
 
         Same as feature_points(), but with 2D coordinates instead of 3D coordinates. The points
@@ -159,7 +162,7 @@ class MarkerShape:
         self.__impl = impl
 
     @property
-    def corners_in_pixel_coordinates(self):
+    def corners_in_pixel_coordinates(self) -> numpy.ndarray:
         """Get 2D image coordinates of the corners of the detected marker.
 
         Returns:
@@ -168,7 +171,7 @@ class MarkerShape:
         return numpy.array(self.__impl.corners_in_pixel_coordinates())
 
     @property
-    def corners_in_camera_coordinates(self):
+    def corners_in_camera_coordinates(self) -> numpy.ndarray:
         """Get 3D spatial coordinates of the corners of the detected marker.
 
         Returns:
@@ -177,7 +180,7 @@ class MarkerShape:
         return numpy.array(self.__impl.corners_in_camera_coordinates())
 
     @property
-    def identifier(self):
+    def identifier(self) -> int:
         """Get the id of the detected marker.
 
         Returns:
@@ -186,7 +189,7 @@ class MarkerShape:
         return self.__impl.id_()
 
     @property
-    def pose(self):
+    def pose(self) -> Pose:
         """Get 3D pose of the marker.
 
         The returned pose will be positioned at the center of the marker, and have an orientation such that its z-axis
@@ -251,7 +254,7 @@ class MarkerDictionary:
     }
 
     @classmethod
-    def valid_values(cls):
+    def valid_values(cls) -> list[str]:
         """Get valid values for MarkerDictionary.
 
         Returns:
@@ -260,7 +263,7 @@ class MarkerDictionary:
         return list(cls._valid_values.keys())
 
     @classmethod
-    def marker_count(cls, dictionary_name):
+    def marker_count(cls, dictionary_name: str) -> int:
         """Get the number of markers in a dictionary.
 
         Args:
@@ -305,7 +308,7 @@ class DetectionResultFiducialMarkers:
 
         self.__impl = impl
 
-    def valid(self):
+    def valid(self) -> bool:
         """Check validity of DetectionResult.
 
         Returns:
@@ -313,7 +316,7 @@ class DetectionResultFiducialMarkers:
         """
         return self.__impl.valid()
 
-    def allowed_marker_ids(self):
+    def allowed_marker_ids(self) -> list[int]:
         """Get the allowed marker ids this detection result was made with.
 
         Returns:
@@ -321,7 +324,7 @@ class DetectionResultFiducialMarkers:
         """
         return self.__impl.allowed_marker_ids()
 
-    def detected_markers(self):
+    def detected_markers(self) -> list[MarkerShape]:
         """Get all detected markers.
 
         Returns:
@@ -336,7 +339,7 @@ class DetectionResultFiducialMarkers:
         return str(self.__impl)
 
 
-def detect_feature_points(point_cloud):
+def detect_feature_points(point_cloud: PointCloud) -> DetectionResult:
     """Detect feature points from a calibration object in a point cloud.
 
     Args:
@@ -350,7 +353,7 @@ def detect_feature_points(point_cloud):
     )
 
 
-def detect_calibration_board(source):
+def detect_calibration_board(source: Camera | Frame) -> DetectionResult:
     """Detect feature points from a calibration board in a frame or using a given camera.
 
     If a camera is used, this function will perform a relatively slow but high-quality point cloud
@@ -386,7 +389,7 @@ def detect_calibration_board(source):
     )
 
 
-def capture_calibration_board(camera):
+def capture_calibration_board(camera: Camera) -> Frame:
     """Capture a calibration board with the given camera.
 
     The functionality is to be exclusively used in combination with Zivid verified calibration boards.
@@ -409,7 +412,9 @@ def capture_calibration_board(camera):
     return Frame(_zivid.calibration.capture_calibration_board(camera._Camera__impl))  # pylint: disable=protected-access
 
 
-def detect_markers(frame, allowed_marker_ids, marker_dictionary):
+def detect_markers(
+    frame: Frame, allowed_marker_ids: list[int], marker_dictionary: str
+) -> DetectionResultFiducialMarkers:
     """Detect fiducial markers such as ArUco markers in a frame.
 
     Only markers with integer IDs are supported. To get more information about fiducial markers, refer to the

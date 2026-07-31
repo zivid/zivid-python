@@ -1,5 +1,7 @@
 """Auto generated, do not edit."""
 
+from __future__ import annotations
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import datetime
 
@@ -44,8 +46,8 @@ class CameraHealth:
 
         def __init__(
             self,
-            status=_zivid.CameraHealth.Fan.Status().value,
-            value=_zivid.CameraHealth.Fan.Value().value,
+            status: str = _zivid.CameraHealth.Fan.Status().value,
+            value: str | None = _zivid.CameraHealth.Fan.Value().value,
         ):
 
             if isinstance(status, _zivid.CameraHealth.Fan.Status.enum):
@@ -132,8 +134,8 @@ class CameraHealth:
 
         def __init__(
             self,
-            status=_zivid.CameraHealth.InfieldVerification.Status().value,
-            value=_zivid.CameraHealth.InfieldVerification.Value().value,
+            status: str = _zivid.CameraHealth.InfieldVerification.Status().value,
+            value: datetime.datetime | None = _zivid.CameraHealth.InfieldVerification.Value().value,
         ):
 
             if isinstance(status, _zivid.CameraHealth.InfieldVerification.Status.enum):
@@ -215,8 +217,8 @@ class CameraHealth:
 
         def __init__(
             self,
-            status=_zivid.CameraHealth.MaxTransferSpeed.Status().value,
-            value=_zivid.CameraHealth.MaxTransferSpeed.Value().value,
+            status: str = _zivid.CameraHealth.MaxTransferSpeed.Status().value,
+            value: int | None = _zivid.CameraHealth.MaxTransferSpeed.Value().value,
         ):
 
             if isinstance(status, _zivid.CameraHealth.MaxTransferSpeed.Status.enum):
@@ -294,8 +296,8 @@ class CameraHealth:
 
         def __init__(
             self,
-            status=_zivid.CameraHealth.Memory.Status().value,
-            value=_zivid.CameraHealth.Memory.Value().value,
+            status: str = _zivid.CameraHealth.Memory.Status().value,
+            value: int | None = _zivid.CameraHealth.Memory.Value().value,
         ):
 
             if isinstance(status, _zivid.CameraHealth.Memory.Status.enum):
@@ -375,8 +377,8 @@ class CameraHealth:
 
             def __init__(
                 self,
-                status=_zivid.CameraHealth.Temperature.DMD.Status().value,
-                value=_zivid.CameraHealth.Temperature.DMD.Value().value,
+                status: str = _zivid.CameraHealth.Temperature.DMD.Status().value,
+                value: float | int | None = _zivid.CameraHealth.Temperature.DMD.Value().value,
             ):
 
                 if isinstance(status, _zivid.CameraHealth.Temperature.DMD.Status.enum):
@@ -476,8 +478,8 @@ class CameraHealth:
 
             def __init__(
                 self,
-                status=_zivid.CameraHealth.Temperature.LED.Status().value,
-                value=_zivid.CameraHealth.Temperature.LED.Value().value,
+                status: str = _zivid.CameraHealth.Temperature.LED.Status().value,
+                value: float | int | None = _zivid.CameraHealth.Temperature.LED.Value().value,
             ):
 
                 if isinstance(status, _zivid.CameraHealth.Temperature.LED.Status.enum):
@@ -577,8 +579,8 @@ class CameraHealth:
 
             def __init__(
                 self,
-                status=_zivid.CameraHealth.Temperature.Lens.Status().value,
-                value=_zivid.CameraHealth.Temperature.Lens.Value().value,
+                status: str = _zivid.CameraHealth.Temperature.Lens.Status().value,
+                value: float | int | None = _zivid.CameraHealth.Temperature.Lens.Value().value,
             ):
 
                 if isinstance(status, _zivid.CameraHealth.Temperature.Lens.Status.enum):
@@ -658,9 +660,9 @@ class CameraHealth:
 
         def __init__(
             self,
-            dmd=None,
-            led=None,
-            lens=None,
+            dmd: CameraHealth.Temperature.DMD | None = None,
+            led: CameraHealth.Temperature.LED | None = None,
+            lens: CameraHealth.Temperature.Lens | None = None,
         ):
 
             if dmd is None:
@@ -739,12 +741,12 @@ class CameraHealth:
 
     def __init__(
         self,
-        overall=_zivid.CameraHealth.Overall().value,
-        fan=None,
-        infield_verification=None,
-        max_transfer_speed=None,
-        memory=None,
-        temperature=None,
+        overall: str = _zivid.CameraHealth.Overall().value,
+        fan: CameraHealth.Fan | None = None,
+        infield_verification: CameraHealth.InfieldVerification | None = None,
+        max_transfer_speed: CameraHealth.MaxTransferSpeed | None = None,
+        memory: CameraHealth.Memory | None = None,
+        temperature: CameraHealth.Temperature | None = None,
     ):
 
         if isinstance(overall, _zivid.CameraHealth.Overall.enum):

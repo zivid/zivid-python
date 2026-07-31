@@ -1,7 +1,10 @@
 """Auto generated, do not edit."""
 
-# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
+from __future__ import annotations
+
 import collections.abc
+
+# pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import datetime
 
 import _zivid
@@ -13,10 +16,10 @@ class Settings2D:
 
         def __init__(
             self,
-            aperture=_zivid.Settings2D.Acquisition.Aperture().value,
-            brightness=_zivid.Settings2D.Acquisition.Brightness().value,
-            exposure_time=_zivid.Settings2D.Acquisition.ExposureTime().value,
-            gain=_zivid.Settings2D.Acquisition.Gain().value,
+            aperture: float | int | None = _zivid.Settings2D.Acquisition.Aperture().value,
+            brightness: float | int | None = _zivid.Settings2D.Acquisition.Brightness().value,
+            exposure_time: datetime.timedelta | None = _zivid.Settings2D.Acquisition.ExposureTime().value,
+            gain: float | int | None = _zivid.Settings2D.Acquisition.Gain().value,
         ):
 
             if (
@@ -178,7 +181,7 @@ class Settings2D:
 
         def __init__(
             self,
-            enabled=_zivid.Settings2D.Diagnostics.Enabled().value,
+            enabled: bool | None = _zivid.Settings2D.Diagnostics.Enabled().value,
         ):
 
             if isinstance(enabled, (bool,)) or enabled is None:
@@ -217,9 +220,9 @@ class Settings2D:
 
                 def __init__(
                     self,
-                    blue=_zivid.Settings2D.Processing.Color.Balance.Blue().value,
-                    green=_zivid.Settings2D.Processing.Color.Balance.Green().value,
-                    red=_zivid.Settings2D.Processing.Color.Balance.Red().value,
+                    blue: float | int | None = _zivid.Settings2D.Processing.Color.Balance.Blue().value,
+                    green: float | int | None = _zivid.Settings2D.Processing.Color.Balance.Green().value,
+                    red: float | int | None = _zivid.Settings2D.Processing.Color.Balance.Red().value,
                 ):
 
                     if (
@@ -374,7 +377,7 @@ class Settings2D:
 
                 def __init__(
                     self,
-                    mode=_zivid.Settings2D.Processing.Color.Experimental.Mode().value,
+                    mode: str | None = _zivid.Settings2D.Processing.Color.Experimental.Mode().value,
                 ):
 
                     if isinstance(mode, _zivid.Settings2D.Processing.Color.Experimental.Mode.enum) or mode is None:
@@ -418,9 +421,9 @@ class Settings2D:
 
             def __init__(
                 self,
-                gamma=_zivid.Settings2D.Processing.Color.Gamma().value,
-                balance=None,
-                experimental=None,
+                gamma: float | int | None = _zivid.Settings2D.Processing.Color.Gamma().value,
+                balance: Settings2D.Processing.Color.Balance | None = None,
+                experimental: Settings2D.Processing.Color.Experimental | None = None,
             ):
 
                 if (
@@ -511,7 +514,7 @@ class Settings2D:
 
         def __init__(
             self,
-            color=None,
+            color: Settings2D.Processing.Color | None = None,
         ):
 
             if color is None:
@@ -544,8 +547,8 @@ class Settings2D:
 
             def __init__(
                 self,
-                duration=_zivid.Settings2D.Sampling.Interval.Duration().value,
-                enabled=_zivid.Settings2D.Sampling.Interval.Enabled().value,
+                duration: datetime.timedelta | None = _zivid.Settings2D.Sampling.Interval.Duration().value,
+                enabled: bool | None = _zivid.Settings2D.Sampling.Interval.Enabled().value,
             ):
 
                 if isinstance(duration, (datetime.timedelta,)) or duration is None:
@@ -644,9 +647,9 @@ class Settings2D:
 
         def __init__(
             self,
-            color=_zivid.Settings2D.Sampling.Color().value,
-            pixel=_zivid.Settings2D.Sampling.Pixel().value,
-            interval=None,
+            color: str | None = _zivid.Settings2D.Sampling.Color().value,
+            pixel: str | None = _zivid.Settings2D.Sampling.Pixel().value,
+            interval: Settings2D.Sampling.Interval | None = None,
         ):
 
             if isinstance(color, _zivid.Settings2D.Sampling.Color.enum) or color is None:
@@ -734,9 +737,9 @@ class Settings2D:
     def __init__(
         self,
         acquisitions=None,
-        diagnostics=None,
-        processing=None,
-        sampling=None,
+        diagnostics: Settings2D.Diagnostics | None = None,
+        processing: Settings2D.Processing | None = None,
+        sampling: Settings2D.Sampling | None = None,
     ):
 
         if acquisitions is None:

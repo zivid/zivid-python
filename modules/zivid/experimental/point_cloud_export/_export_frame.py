@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 import _zivid
 from zivid.experimental.point_cloud_export.file_format import PCD, PLY, XYZ, ZDF
 from zivid.frame import Frame
 
 
-def export_frame(frame, file_format):
+def export_frame(frame: Frame, file_format: PCD | PLY | XYZ | ZDF) -> None:
     """Save frame to a file.
 
     The file format is specified by the file_format argument. The file format can be ZDF, PLY, XYZ,

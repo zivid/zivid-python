@@ -1,5 +1,7 @@
 """Contains the PointCloud class."""
 
+from __future__ import annotations
+
 import _zivid
 import numpy
 from zivid.device_array import DeviceArray, _require_stream_or_queue
@@ -47,7 +49,7 @@ class PointCloud:
         }
 
         @classmethod
-        def valid_values(cls):
+        def valid_values(cls) -> list:
             """Get list of allowed values.
 
             Returns:
@@ -72,7 +74,7 @@ class PointCloud:
             )
         self.__impl = impl
 
-    def copy_data(self, data_format):
+    def copy_data(self, data_format: str) -> numpy.ndarray:
         """Copy point cloud data from GPU to numpy array.
 
         Supported data formats:
@@ -128,7 +130,7 @@ class PointCloud:
             ) from ex
         return numpy.array(data_format_class(self.__impl))
 
-    def copy_image(self, data_format):
+    def copy_image(self, data_format: str) -> Image:
         """Copy the point cloud colors as 8-bit image in input format.
 
         Supported data formats:
@@ -165,7 +167,7 @@ class PointCloud:
             )
         )
 
-    def clone(self):
+    def clone(self) -> PointCloud:
         """Get a clone of the point cloud.
 
         The clone will include a copy of all the point cloud data on the compute device memory. This means that the
@@ -183,7 +185,7 @@ class PointCloud:
         """
         return PointCloud(self.__impl.clone())
 
-    def transform(self, matrix):
+    def transform(self, matrix: numpy.ndarray) -> PointCloud:
         """Transform the point cloud in-place by a 4x4 transformation matrix.
 
         The transform matrix must be affine, i.e., the last row of the matrix should be [0, 0, 0, 1].
@@ -197,7 +199,7 @@ class PointCloud:
         self.__impl.transform(matrix)
         return self
 
-    def transformed(self, matrix):
+    def transformed(self, matrix: numpy.ndarray) -> PointCloud:
         """Get a transformed copy of the point cloud.
 
         This method is identical to "transform", except the transformed point cloud is
@@ -212,7 +214,7 @@ class PointCloud:
         return PointCloud(self.__impl.transformed(matrix))
 
     @property
-    def transformation_matrix(self):
+    def transformation_matrix(self) -> numpy.ndarray:
         """Return the current transformation matrix of this point cloud.
 
         Returns the transformation matrix from the camera's native coordinate system to the current
@@ -228,7 +230,7 @@ class PointCloud:
         """
         return self.__impl.transformation_matrix()
 
-    def downsample(self, downsampling):
+    def downsample(self, downsampling: str) -> PointCloud:
         """Downsample the point cloud in-place.
 
         Downsampling is used to reduce the number of points in the point cloud. Downsampling is performed
@@ -266,7 +268,7 @@ class PointCloud:
         self.__impl.downsample(internal_downsampling)
         return self
 
-    def downsampled(self, downsampling):
+    def downsampled(self, downsampling: str) -> PointCloud:
         """Get a downsampled copy of the point cloud.
 
         This method is identical to "downsample", except the downsampled point cloud is
@@ -281,7 +283,7 @@ class PointCloud:
         internal_downsampling = PointCloud.Downsampling._valid_values[downsampling]  # pylint: disable=protected-access
         return PointCloud(self.__impl.downsampled(internal_downsampling))
 
-    def mask_by_region_of_interest(self, roi_box):
+    def mask_by_region_of_interest(self, roi_box) -> PointCloud:
         """Apply a region of interest box mask to the point cloud in-place.
 
         Region of interest masking is used to mask out points that fall outside a specified 3D box region.
@@ -303,7 +305,7 @@ class PointCloud:
         self.__impl.mask_by_region_of_interest(internal_roi_box)
         return self
 
-    def masked_by_region_of_interest(self, roi_box):
+    def masked_by_region_of_interest(self, roi_box) -> PointCloud:
         """Apply region of interest filtering to a copy of the point cloud.
 
         This method is identical to "mask_by_region_of_interest", except that the filtering is
@@ -319,7 +321,7 @@ class PointCloud:
         internal_roi_box = _to_internal_settings_region_of_interest_box(roi_box)
         return PointCloud(self.__impl.masked_by_region_of_interest(internal_roi_box))
 
-    def mask(self, mask):
+    def mask(self, mask: numpy.ndarray | Mask) -> PointCloud:
         """Apply a binary mask to the point cloud in-place.
 
         The mask indicates which points in the point cloud should be considered invalid (NaN).
@@ -343,7 +345,7 @@ class PointCloud:
             self.__impl.mask(_to_internal_mask(mask_obj))
         return self
 
-    def masked(self, mask):
+    def masked(self, mask: numpy.ndarray | Mask) -> PointCloud:
         """Get a copy of the point cloud with a binary mask applied.
 
         This method is identical to "mask", except the masked point cloud is
@@ -363,7 +365,7 @@ class PointCloud:
         return PointCloud(self.__impl.masked(_to_internal_mask(mask_obj)))
 
     @property
-    def height(self):
+    def height(self) -> int:
         """Get the height of the point cloud (number of rows).
 
         Returns:
@@ -372,7 +374,7 @@ class PointCloud:
         return self.__impl.height()
 
     @property
-    def width(self):
+    def width(self) -> int:
         """Get the width of the point cloud (number of columns).
 
         Returns:
@@ -380,7 +382,7 @@ class PointCloud:
         """
         return self.__impl.width()
 
-    def to_unorganized_point_cloud(self):
+    def to_unorganized_point_cloud(self) -> UnorganizedPointCloud:
         """Convert to an UnorganizedPointCloud.
 
         The PointCloud class represents an organized point cloud, meaning that it contains 3D data
@@ -399,7 +401,7 @@ class PointCloud:
         """
         return UnorganizedPointCloud(self.__impl.to_unorganized_point_cloud())
 
-    def device_points_xyz(self, stream_or_queue):
+    def device_points_xyz(self, stream_or_queue) -> DeviceArray:
         """Get a GPU device array containing XYZ point coordinates.
 
         Returns a DeviceArray providing access to point cloud data
@@ -416,7 +418,7 @@ class PointCloud:
         _require_stream_or_queue(stream_or_queue)
         return DeviceArray(self.__impl.device_points_xyz(stream_or_queue))
 
-    def device_points_xyzw(self, stream_or_queue):
+    def device_points_xyzw(self, stream_or_queue) -> DeviceArray:
         """Get a GPU device array containing XYZW point coordinates.
 
         Returns a DeviceArray providing access to point cloud data
@@ -433,7 +435,7 @@ class PointCloud:
         _require_stream_or_queue(stream_or_queue)
         return DeviceArray(self.__impl.device_points_xyzw(stream_or_queue))
 
-    def device_points_z(self, stream_or_queue):
+    def device_points_z(self, stream_or_queue) -> DeviceArray:
         """Get a GPU device array containing Z point coordinates.
 
         Returns a DeviceArray providing access to point cloud data
@@ -450,7 +452,7 @@ class PointCloud:
         _require_stream_or_queue(stream_or_queue)
         return DeviceArray(self.__impl.device_points_z(stream_or_queue))
 
-    def device_snrs(self, stream_or_queue):
+    def device_snrs(self, stream_or_queue) -> DeviceArray:
         """Get a GPU device array containing SNR values.
 
         Returns a DeviceArray providing access to point cloud data
@@ -467,7 +469,7 @@ class PointCloud:
         _require_stream_or_queue(stream_or_queue)
         return DeviceArray(self.__impl.device_snrs(stream_or_queue))
 
-    def device_normals_xyz(self, stream_or_queue):
+    def device_normals_xyz(self, stream_or_queue) -> DeviceArray:
         """Get a GPU device array containing normal vectors.
 
         Returns a DeviceArray providing access to point cloud data
@@ -484,7 +486,7 @@ class PointCloud:
         _require_stream_or_queue(stream_or_queue)
         return DeviceArray(self.__impl.device_normals_xyz(stream_or_queue))
 
-    def device_image(self, stream_or_queue, color_format):
+    def device_image(self, stream_or_queue, color_format: PixelFormat) -> DeviceArray:
         """Get a GPU device array containing the organized color image.
 
         Returns a DeviceArray providing access to point cloud color data on the GPU device without
@@ -505,7 +507,7 @@ class PointCloud:
         accessor = getattr(self.__impl, "device_image_{}".format(suffix))
         return DeviceArray(accessor(stream_or_queue))
 
-    def release(self):
+    def release(self) -> None:
         """Release the underlying resources."""
         try:
             impl = self.__impl

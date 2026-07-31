@@ -1,5 +1,7 @@
 """Module defining file formats that point cloud data can be exported to."""
 
+from __future__ import annotations
+
 import _zivid
 
 
@@ -10,7 +12,7 @@ class ColorSpace:  # pylint: disable=too-few-public-methods
     srgb = "srgb"
 
     @staticmethod
-    def valid_values():
+    def valid_values() -> list:
         """Get valid values for color space.
 
         Returns:
@@ -34,7 +36,7 @@ class IncludeNormals:  # pylint: disable=too-few-public-methods
     yes = "yes"
 
     @staticmethod
-    def valid_values():
+    def valid_values() -> list:
         """Get valid values for including normals.
 
         Returns:
@@ -54,7 +56,7 @@ class IncludeNormals:  # pylint: disable=too-few-public-methods
 class ZDF:  # pylint: disable=too-few-public-methods
     """Specification for saving frame in ZDF (*.zdf) format."""
 
-    def __init__(self, file_name):
+    def __init__(self, file_name: str):
         """Create a ZDF file format specification with file name.
 
         Args:
@@ -85,7 +87,7 @@ class PLY:  # pylint: disable=too-few-public-methods
         unordered = "unordered"
 
         @staticmethod
-        def valid_values():
+        def valid_values() -> list:
             """Get valid values for layout.
 
             Returns:
@@ -103,10 +105,10 @@ class PLY:  # pylint: disable=too-few-public-methods
 
     def __init__(
         self,
-        file_name,
-        layout=Layout.ordered,
-        color_space=ColorSpace.srgb,
-        include_normals=IncludeNormals.no,
+        file_name: str,
+        layout: str = Layout.ordered,
+        color_space: str = ColorSpace.srgb,
+        include_normals: str = IncludeNormals.no,
     ):
         """Create a PLY file format specification with file name.
 
@@ -148,7 +150,7 @@ class XYZ:  # pylint: disable=too-few-public-methods
     ASCII characters are used to store cartesian coordinates of XYZ points and RGB color values.
     """
 
-    def __init__(self, file_name, color_space=ColorSpace.srgb):
+    def __init__(self, file_name: str, color_space: str = ColorSpace.srgb):
         """Create a XYZ file format specification with file name.
 
         Sets color space to linear RGB.
@@ -187,7 +189,7 @@ class PCD:  # pylint: disable=too-few-public-methods
         unorganized = "unorganized"
 
         @staticmethod
-        def valid_values():
+        def valid_values() -> list:
             """Get valid values for layout.
 
             Returns:
@@ -204,7 +206,11 @@ class PCD:  # pylint: disable=too-few-public-methods
             raise ValueError("Invalid layout '{}'. Valid layouts are: {}".format(value, cls.valid_values()))
 
     def __init__(
-        self, file_name, color_space=ColorSpace.srgb, include_normals=IncludeNormals.no, layout=Layout.organized
+        self,
+        file_name: str,
+        color_space: str = ColorSpace.srgb,
+        include_normals: str = IncludeNormals.no,
+        layout: str = Layout.organized,
     ):
         """Create a PCD file format specification with file name.
 

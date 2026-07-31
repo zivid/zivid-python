@@ -1,9 +1,11 @@
 """Contains the Preset and Category classes."""
 
+from __future__ import annotations
+
 import _zivid
 from zivid.camera_info import CameraInfo, _to_internal_camera_info
-from zivid.settings import _to_settings
-from zivid.settings2d import _to_settings2d
+from zivid.settings import Settings, _to_settings
+from zivid.settings2d import Settings2D, _to_settings2d
 
 
 class Preset:
@@ -47,7 +49,7 @@ class Preset:
         self.__impl = impl
 
     @property
-    def name(self):
+    def name(self) -> str:
         """Get the name of the preset.
 
         Returns:
@@ -56,7 +58,7 @@ class Preset:
         return self.__impl.name()
 
     @property
-    def settings(self):
+    def settings(self) -> Settings | Settings2D:
         """Get the settings of the preset.
 
         The settings might change between different releases of the SDK. New presets might be added
@@ -116,7 +118,7 @@ class Category:
         self.__impl = impl
 
     @property
-    def name(self):
+    def name(self) -> str:
         """Get the name of the category.
 
         Returns:
@@ -125,7 +127,7 @@ class Category:
         return self.__impl.name()
 
     @property
-    def presets(self):
+    def presets(self) -> list[Preset]:
         """Get the presets available in the category.
 
         The settings might change between different releases of the SDK. New presets might be added
@@ -141,7 +143,7 @@ class Category:
         return str(self.__impl)
 
 
-def categories(model):
+def categories(model) -> list[Category]:
     """Get available preset categories for the specified camera model.
 
     A preset category contains a collection of presets optimized for one scenario or use case.
@@ -160,7 +162,7 @@ def categories(model):
     return [Category(c) for c in _zivid.presets.categories(_to_internal_camera_info(CameraInfo(model=model)).model)]
 
 
-def categories2d(model):
+def categories2d(model) -> list[Category]:
     """Get available 2D preset categories for the specified camera model.
 
     See `categories` for more information.

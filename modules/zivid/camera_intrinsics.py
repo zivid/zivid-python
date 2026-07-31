@@ -1,5 +1,7 @@
 """Auto generated, do not edit."""
 
+from __future__ import annotations
+
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
 import _zivid
 
@@ -10,10 +12,10 @@ class CameraIntrinsics:
 
         def __init__(
             self,
-            cx=_zivid.CameraIntrinsics.CameraMatrix.CX().value,
-            cy=_zivid.CameraIntrinsics.CameraMatrix.CY().value,
-            fx=_zivid.CameraIntrinsics.CameraMatrix.FX().value,
-            fy=_zivid.CameraIntrinsics.CameraMatrix.FY().value,
+            cx: float | int = _zivid.CameraIntrinsics.CameraMatrix.CX().value,
+            cy: float | int = _zivid.CameraIntrinsics.CameraMatrix.CY().value,
+            fx: float | int = _zivid.CameraIntrinsics.CameraMatrix.FX().value,
+            fy: float | int = _zivid.CameraIntrinsics.CameraMatrix.FY().value,
         ):
 
             if isinstance(
@@ -156,11 +158,11 @@ class CameraIntrinsics:
 
         def __init__(
             self,
-            k1=_zivid.CameraIntrinsics.Distortion.K1().value,
-            k2=_zivid.CameraIntrinsics.Distortion.K2().value,
-            k3=_zivid.CameraIntrinsics.Distortion.K3().value,
-            p1=_zivid.CameraIntrinsics.Distortion.P1().value,
-            p2=_zivid.CameraIntrinsics.Distortion.P2().value,
+            k1: float | int = _zivid.CameraIntrinsics.Distortion.K1().value,
+            k2: float | int = _zivid.CameraIntrinsics.Distortion.K2().value,
+            k3: float | int = _zivid.CameraIntrinsics.Distortion.K3().value,
+            p1: float | int = _zivid.CameraIntrinsics.Distortion.P1().value,
+            p2: float | int = _zivid.CameraIntrinsics.Distortion.P2().value,
         ):
 
             if isinstance(
@@ -339,8 +341,8 @@ class CameraIntrinsics:
 
     def __init__(
         self,
-        camera_matrix=None,
-        distortion=None,
+        camera_matrix: CameraIntrinsics.CameraMatrix | None = None,
+        distortion: CameraIntrinsics.Distortion | None = None,
     ):
 
         if camera_matrix is None:

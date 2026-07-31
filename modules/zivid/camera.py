@@ -1,9 +1,11 @@
 """Contains Camera class."""
 
+from __future__ import annotations
+
 import _zivid
-from zivid.camera_health import _to_camera_health
-from zivid.camera_info import _to_camera_info
-from zivid.camera_state import _to_camera_state
+from zivid.camera_health import CameraHealth, _to_camera_health
+from zivid.camera_info import CameraInfo, _to_camera_info
+from zivid.camera_state import CameraState, _to_camera_state
 from zivid.frame import Frame
 from zivid.frame_2d import Frame2D
 from zivid.network_configuration import (
@@ -11,7 +13,7 @@ from zivid.network_configuration import (
     _to_internal_network_configuration,
     _to_network_configuration,
 )
-from zivid.scene_conditions import _to_scene_conditions
+from zivid.scene_conditions import SceneConditions, _to_scene_conditions
 from zivid.settings import Settings, _to_internal_settings
 from zivid.settings2d import Settings2D, _to_internal_settings2d
 
@@ -45,7 +47,7 @@ class Camera:
     def __eq__(self, other):
         return self.__impl == other._Camera__impl
 
-    def capture_2d_3d(self, settings):
+    def capture_2d_3d(self, settings: Settings) -> Frame:
         """Capture a 2D+3D frame.
 
         This method captures both a 3D point cloud and a 2D color image. Use this method when you want to capture
@@ -97,7 +99,7 @@ class Camera:
             )
         return Frame(self.__impl.capture_2d_3d(_to_internal_settings(settings)))
 
-    def capture_3d(self, settings):
+    def capture_3d(self, settings: Settings) -> Frame:
         """Capture a single 3D frame.
 
         This method is used to capture a 3D frame without a 2D color image. It ignores all color settings in the input
@@ -122,7 +124,7 @@ class Camera:
             )
         return Frame(self.__impl.capture_3d(_to_internal_settings(settings)))
 
-    def capture_2d(self, settings):
+    def capture_2d(self, settings: Settings | Settings2D) -> Frame2D:
         """Capture a single 2D frame.
 
         This method returns right after the acquisition of the images is complete, and the camera has stopped projecting
@@ -151,7 +153,7 @@ class Camera:
             )
         )
 
-    def capture(self, settings):
+    def capture(self, settings: Settings | Settings2D) -> Frame | Frame2D:
         """Capture a single frame or a single 2D frame.
 
         This method is deprecated as of SDK 2.14, and will be removed in the next SDK major version (3.0). Use
@@ -181,7 +183,7 @@ class Camera:
         )
 
     @property
-    def info(self):
+    def info(self) -> CameraInfo:
         """Get information about camera model, serial number etc.
 
         Returns:
@@ -189,7 +191,7 @@ class Camera:
         """
         return _to_camera_info(self.__impl.info)
 
-    def check_health(self):
+    def check_health(self) -> CameraHealth:
         """Run health checks on the camera and return a severity report.
 
         The returned CameraHealth contains an aggregated overall severity, along with the severity of each
@@ -206,7 +208,7 @@ class Camera:
         return _to_camera_health(self.__impl.check_health())
 
     @property
-    def state(self):
+    def state(self) -> CameraState:
         """Get the current camera state.
 
         Returns:
@@ -214,7 +216,7 @@ class Camera:
         """
         return _to_camera_state(self.__impl.state)
 
-    def connect(self):
+    def connect(self) -> Camera:
         """Connect to the camera.
 
         Returns:
@@ -223,12 +225,12 @@ class Camera:
         self.__impl.connect()
         return self
 
-    def disconnect(self):
+    def disconnect(self) -> None:
         """Disconnect from the camera and free all resources associated with it."""
         self.__impl.disconnect()
 
     @property
-    def network_configuration(self):
+    def network_configuration(self) -> NetworkConfiguration:
         """Get the network configuration of the camera.
 
         Returns:
@@ -236,7 +238,7 @@ class Camera:
         """
         return _to_network_configuration(self.__impl.network_configuration)
 
-    def apply_network_configuration(self, network_configuration):
+    def apply_network_configuration(self, network_configuration: NetworkConfiguration) -> None:
         """Apply the network configuration to the camera.
 
         Args:
@@ -270,7 +272,7 @@ class Camera:
             )
         self.__impl.apply_network_configuration(_to_internal_network_configuration(network_configuration))
 
-    def write_user_data(self, user_data):
+    def write_user_data(self, user_data: bytes) -> None:
         """Write user data to camera. The total number of writes supported depends on camera model and size of data.
 
         Args:
@@ -286,7 +288,7 @@ class Camera:
         self.__impl.write_user_data(list(user_data))
 
     @property
-    def user_data(self):
+    def user_data(self) -> bytes:
         """Read user data from camera.
 
         Returns:
@@ -294,7 +296,7 @@ class Camera:
         """
         return bytes(self.__impl.user_data)
 
-    def release(self):
+    def release(self) -> None:
         """Release the underlying resources."""
         try:
             impl = self.__impl
@@ -303,7 +305,7 @@ class Camera:
         else:
             impl.release()
 
-    def measure_scene_conditions(self):
+    def measure_scene_conditions(self) -> SceneConditions:
         """Measure and analyze the conditions of the scene.
 
         The returned value will report if noticeable ambient light flicker indicative of a 50 Hz or 60 Hz power grid

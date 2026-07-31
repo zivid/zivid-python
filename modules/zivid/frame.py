@@ -1,15 +1,18 @@
 """Contains the Frame class."""
 
+from __future__ import annotations
+
 from pathlib import Path
 
 import _zivid
-from zivid.camera_info import _to_camera_info
-from zivid.camera_state import _to_camera_state
+import numpy
+from zivid.camera_info import CameraInfo, _to_camera_info
+from zivid.camera_state import CameraState, _to_camera_state
 from zivid.frame_2d import Frame2D
-from zivid.frame_info import _to_frame_info
+from zivid.frame_info import FrameInfo, _to_frame_info
 from zivid.mask import Mask, _to_internal_mask
 from zivid.point_cloud import PointCloud
-from zivid.settings import _to_settings
+from zivid.settings import Settings, _to_settings
 
 
 class Frame:
@@ -43,7 +46,7 @@ class Frame:
     def __str__(self):
         return str(self.__impl)
 
-    def point_cloud(self):
+    def point_cloud(self) -> PointCloud:
         """Get the point cloud.
 
         See documentation/functions of zivid.PointCloud for instructions on how to
@@ -54,7 +57,7 @@ class Frame:
         """
         return PointCloud(self.__impl.point_cloud())
 
-    def frame_2d(self):
+    def frame_2d(self) -> Frame2D | None:
         """Get 2D frame from 2D+3D frame.
 
         If the frame is the result of a 2D+3D capture, this method returns the 2D frame contained in the 2D+3D frame. In
@@ -80,7 +83,7 @@ class Frame:
         """
         return Frame2D(self.__impl.frame_2d()) if self.__impl.frame_2d() is not None else None
 
-    def save(self, file_path):
+    def save(self, file_path: str | Path) -> None:
         """Save the frame to file.
 
            The file type is determined from the file extension. Supported extensions are .zdf, .ply
@@ -114,7 +117,7 @@ class Frame:
         """
         self.__impl.save(str(file_path))
 
-    def load(self, file_path):
+    def load(self, file_path: str | Path) -> None:
         """Load a frame from a Zivid data file.
 
         Args:
@@ -123,7 +126,7 @@ class Frame:
         self.__impl.load(str(file_path))
 
     @property
-    def settings(self):
+    def settings(self) -> Settings:
         """Get the settings used to capture this frame.
 
         Returns:
@@ -132,7 +135,7 @@ class Frame:
         return _to_settings(self.__impl.settings)
 
     @property
-    def state(self):
+    def state(self) -> CameraState:
         """Get the camera state data at the time of the frame capture.
 
         Returns:
@@ -141,7 +144,7 @@ class Frame:
         return _to_camera_state(self.__impl.state)
 
     @property
-    def info(self):
+    def info(self) -> FrameInfo:
         """Get information collected at the time of the frame capture.
 
         Returns:
@@ -150,7 +153,7 @@ class Frame:
         return _to_frame_info(self.__impl.info)
 
     @property
-    def camera_info(self):
+    def camera_info(self) -> CameraInfo:
         """Get information about the camera used to capture the frame.
 
         Returns:
@@ -158,7 +161,7 @@ class Frame:
         """
         return _to_camera_info(self.__impl.camera_info)
 
-    def release(self):
+    def release(self) -> None:
         """Release the underlying resources."""
         try:
             impl = self.__impl
@@ -167,7 +170,7 @@ class Frame:
         else:
             impl.release()
 
-    def clone(self):
+    def clone(self) -> Frame:
         """Get a clone of the frame.
 
         The clone will include a copy of all the point cloud data on the compute device memory. This means that the
@@ -184,7 +187,7 @@ class Frame:
         """
         return Frame(self.__impl.clone())
 
-    def mask(self, mask):
+    def mask(self, mask: numpy.ndarray | Mask) -> Frame:
         """Apply a binary mask to the frame's point cloud in-place.
 
         The mask indicates which points in the point cloud should be considered invalid (NaN).
@@ -208,7 +211,7 @@ class Frame:
             self.__impl.mask(_to_internal_mask(mask_obj))
         return self
 
-    def masked(self, mask):
+    def masked(self, mask: numpy.ndarray | Mask) -> Frame:
         """Get a copy of the frame with a binary mask applied to its point cloud.
 
         This method is identical to "mask", except the masked frame is

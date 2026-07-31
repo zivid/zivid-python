@@ -4,7 +4,10 @@ This module should not be imported directly by end-user, but rather accessed thr
 the zivid.calibration module.
 """
 
+from __future__ import annotations
+
 import _zivid
+import numpy
 from zivid._calibration.detector import DetectionResult, DetectionResultFiducialMarkers
 from zivid._calibration.pose import Pose
 
@@ -12,7 +15,7 @@ from zivid._calibration.pose import Pose
 class HandEyeInput:
     """Class binding together a robot pose and the corresponding detection result."""
 
-    def __init__(self, robot_pose, detection_result):
+    def __init__(self, robot_pose: Pose, detection_result: DetectionResult | DetectionResultFiducialMarkers) -> None:
         """Construct a HandEyeInput.
 
         Args:
@@ -47,7 +50,7 @@ class HandEyeInput:
                 ).format(type(detection_result))
             )
 
-    def robot_pose(self):
+    def robot_pose(self) -> Pose:
         """Get the contained robot pose.
 
         Returns:
@@ -55,7 +58,7 @@ class HandEyeInput:
         """
         return Pose(self.__impl.robot_pose())
 
-    def detection_result(self):
+    def detection_result(self) -> DetectionResult:
         """Get the contained detection result.
 
         Returns:
@@ -89,7 +92,7 @@ class HandEyeResidual:
             )
         self.__impl = impl
 
-    def rotation(self):
+    def rotation(self) -> float:
         """Get the rotation residual.
 
         Returns:
@@ -97,7 +100,7 @@ class HandEyeResidual:
         """
         return self.__impl.rotation()
 
-    def translation(self):
+    def translation(self) -> float:
         """Get the translation residual.
 
         Returns:
@@ -147,7 +150,7 @@ class HandEyeOutput:
             )
         self.__impl = impl
 
-    def valid(self):
+    def valid(self) -> bool:
         """Check validity of HandEyeOutput.
 
         Returns:
@@ -158,7 +161,7 @@ class HandEyeOutput:
     def __bool__(self):
         return bool(self.__impl)
 
-    def transform(self):
+    def transform(self) -> numpy.ndarray:
         """Get hand-eye transform.
 
         Returns:
@@ -168,7 +171,7 @@ class HandEyeOutput:
         """
         return self.__impl.transform()
 
-    def residuals(self):
+    def residuals(self) -> list[HandEyeResidual]:
         """Get hand-eye calibration residuals.
 
         Returns:
@@ -176,7 +179,7 @@ class HandEyeOutput:
         """
         return [HandEyeResidual(internal_residual) for internal_residual in self.__impl.residuals()]
 
-    def status(self):
+    def status(self) -> str:
         """Get the status of the calibration.
 
         Returns:
@@ -188,7 +191,7 @@ class HandEyeOutput:
         return str(self.__impl)
 
 
-def calibrate_eye_in_hand(calibration_inputs):
+def calibrate_eye_in_hand(calibration_inputs: list[HandEyeInput]) -> HandEyeOutput:
     """Perform eye-in-hand calibration.
 
     Args:
@@ -207,7 +210,7 @@ def calibrate_eye_in_hand(calibration_inputs):
     )
 
 
-def calibrate_eye_to_hand(calibration_inputs):
+def calibrate_eye_to_hand(calibration_inputs: list[HandEyeInput]) -> HandEyeOutput:
     """Perform eye-to-hand calibration.
 
     Args:

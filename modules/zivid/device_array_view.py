@@ -1,5 +1,7 @@
 """Contains the DeviceArrayView class and the create_device_array_view factory."""
 
+from __future__ import annotations
+
 import _zivid
 import numpy
 from zivid.device_array import _require_stream_or_queue
@@ -51,22 +53,22 @@ class DeviceArrayView:
         return self.__impl
 
     @property
-    def shape(self):
+    def shape(self) -> tuple:
         """Tuple of view dimensions."""
         return self.__impl.shape
 
     @property
-    def strides(self):
+    def strides(self) -> tuple:
         """Tuple of view strides in element count."""
         return self.__impl.strides
 
     @property
-    def strides_in_bytes(self):
+    def strides_in_bytes(self) -> tuple:
         """Tuple of view strides in bytes."""
         return self.__impl.strides_in_bytes
 
     @property
-    def size_bytes(self):
+    def size_bytes(self) -> int:
         """Size of the view in bytes."""
         return self.__impl.size_bytes
 
@@ -76,16 +78,16 @@ class DeviceArrayView:
         return self.__impl.backend
 
     @property
-    def is_valid(self):
+    def is_valid(self) -> bool:
         """True if the view is valid (not empty)."""
         return self.__impl.is_valid
 
     @property
-    def is_empty(self):
+    def is_empty(self) -> bool:
         """True if the view is empty."""
         return self.__impl.is_empty
 
-    def device_pointer(self):
+    def device_pointer(self) -> int:
         """Get the raw device pointer to the viewed memory.
 
         Returns:
@@ -94,7 +96,7 @@ class DeviceArrayView:
         """
         return self.__impl.device_pointer()
 
-    def copy_to_host_organized_array(self, stream_or_queue):
+    def copy_to_host_organized_array(self, stream_or_queue) -> numpy.ndarray:
         """Enqueue a device-to-host copy and return a numpy array WITHOUT synchronizing.
 
         Only available for color views. The D2H copy is enqueued on ``stream_or_queue`` and this
@@ -144,7 +146,7 @@ def _device_array_view_fill_target(destination_buffer, supported):
     return suffix, impl
 
 
-def create_device_array_view(cuda_array, user_stream, color_format):
+def create_device_array_view(cuda_array, user_stream, color_format: PixelFormat) -> DeviceArrayView:
     """Wrap a caller-owned CUDA array as a non-owning Zivid DeviceArrayView.
 
     ``cuda_array`` is any object exposing the CUDA Array Interface (``__cuda_array_interface__``) —
