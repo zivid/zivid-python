@@ -24,6 +24,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 include(ReadZividVersion)
 include(CompilerWarningOptions)
+include(RestoreStrippedIncludeDirs)
 include(TargetUtilities)
 
 if(NOT ZIVID_PYTHON_SDK_BUILD)
@@ -76,6 +77,7 @@ find_package(pybind11 2.12.0 CONFIG REQUIRED)
 
 if(NOT ZIVID_PYTHON_SDK_BUILD)
     find_package(Zivid ${ZIVID_SDK_VERSION} EXACT COMPONENTS Core REQUIRED)
+    zivid_python_restore_stripped_include_dirs(Zivid::Core Zivid::Visualization)
 endif()
 
 add_subdirectory(src)
