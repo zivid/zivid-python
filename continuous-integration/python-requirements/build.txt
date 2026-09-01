@@ -9,11 +9,11 @@ certifi==2024.8.30
 charset-normalizer==3.3.2
     # via requests
 cmake==3.30.3
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 colorama==0.4.6
     # via conan
 conan==2.7.0
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 distro==1.8.0
     # via
     #   conan
@@ -22,40 +22,40 @@ fasteners==0.19
     # via conan
 idna==3.8
     # via requests
-jinja2==3.1.4
+jinja2==3.1.6
     # via conan
 markupsafe==2.1.5
     # via jinja2
 ninja==1.11.1.1
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 packaging==24.0
     # via
-    #   -r continuous-integration/python-requirements/build.in
+    #   -r build.in
     #   scikit-build
 patch-ng==1.18.0
     # via conan
 pkginfo==1.10.0
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 python-dateutil==2.9.0.post0
     # via conan
 pyyaml==6.0.1
     # via conan
 requests==2.31.0
     # via
-    #   -r continuous-integration/python-requirements/build.in
+    #   -r build.in
     #   conan
 scikit-build==0.18.1
-    # via -r continuous-integration/python-requirements/build.in
+    # via -r build.in
 six==1.16.0
     # via python-dateutil
 urllib3==1.26.20
     # via
-    #   -r continuous-integration/python-requirements/build.in
+    #   -r build.in
     #   conan
     #   requests
 wheel==0.42.0
     # via
-    #   -r continuous-integration/python-requirements/build.in
+    #   -r build.in
     #   scikit-build
 
 # The following packages are considered to be unsafe in a requirements file:
