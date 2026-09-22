@@ -9,8 +9,10 @@ import _zivid
 
 
 class SuggestSettingsParameters:
+    """Used to specify a constraint on the total capture time for the settings suggested by the Capture Assistant, and optionally specify the ambient light frequency."""
 
     class AmbientLightFrequency:
+        """Adapt suggested settings to the ambient light frequency. This can be used to avoid artifacts in the point cloud due to AC powered ambient light being mixed in with the camera's projector light. Select your power grid frequency. 60 Hz is typically used in Japan, Americas, Taiwan, South Korea, and the Philippines. 50 Hz is the normal in rest of the world. If ambient light is unproblematic, turn off for optimal performance."""
 
         hz50 = "hz50"
         hz60 = "hz60"
@@ -58,6 +60,7 @@ class SuggestSettingsParameters:
 
     @property
     def ambient_light_frequency(self):
+        """Adapt suggested settings to the ambient light frequency. This can be used to avoid artifacts in the point cloud due to AC powered ambient light being mixed in with the camera's projector light. Select your power grid frequency. 60 Hz is typically used in Japan, Americas, Taiwan, South Korea, and the Philippines. 50 Hz is the normal in rest of the world. If ambient light is unproblematic, turn off for optimal performance."""
         if self._ambient_light_frequency.value is None:
             return None
         for key, internal_value in self.AmbientLightFrequency._valid_values.items():
@@ -67,6 +70,7 @@ class SuggestSettingsParameters:
 
     @property
     def max_capture_time(self):
+        """Capture time budget. This budget assumes a high-end computer meeting Zivid's recommendations. The actual capture time may differ, based on your computer's performance and (for Zivid 2 and 2+) your network connection speed."""
         return self._max_capture_time.value
 
     @ambient_light_frequency.setter

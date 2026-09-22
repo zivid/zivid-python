@@ -12,8 +12,10 @@ import zivid.settings2d
 
 
 class Settings:
+    """Settings used when capturing a 3D capture or 2D+3D capture with a Zivid camera."""
 
     class Acquisition:
+        """Settings for a single acquisition."""
 
         def __init__(
             self,
@@ -86,18 +88,22 @@ class Settings:
 
         @property
         def aperture(self):
+            """Aperture setting for the camera. Specified as an f-number (the ratio of lens focal length to the effective aperture diameter)."""
             return self._aperture.value
 
         @property
         def brightness(self):
+            """Brightness controls the light output from the projector. Brightness above 1.0 may be needed when the distance between the camera and the scene is large, or in case of high levels of ambient lighting. When brightness is above 1.0 the duty cycle of the camera (the percentage of time the camera can capture) will be reduced. The duty cycle in boost mode is 50%. The duty cycle is calculated over a 10 second period. This limitation is enforced automatically by the camera. Calling capture when the duty cycle limit has been reached will cause the camera to first wait (sleep) for a duration of time to cool down, before capture will start."""
             return self._brightness.value
 
         @property
         def exposure_time(self):
+            """Exposure time for each single image in the measurement. Affects frame rate."""
             return self._exposure_time.value
 
         @property
         def gain(self):
+            """Analog gain in the camera."""
             return self._gain.value
 
         @aperture.setter
@@ -179,6 +185,7 @@ class Settings:
             return str(_to_internal_settings_acquisition(self))
 
     class Diagnostics:
+        """When Diagnostics is enabled, additional diagnostic data is recorded during capture and included when saving the frame to a .zdf file. This enables Zivid's Customer Success team to provide better assistance and more thorough troubleshooting. Enabling Diagnostics increases the capture time and the RAM usage. It will also increase the size of the .zdf file. It is recommended to enable Diagnostics only when reporting issues to Zivid's support team."""
 
         def __init__(
             self,
@@ -194,6 +201,7 @@ class Settings:
 
         @property
         def enabled(self):
+            """Enable or disable diagnostics."""
             return self._enabled.value
 
         @enabled.setter
@@ -214,10 +222,13 @@ class Settings:
             return str(_to_internal_settings_diagnostics(self))
 
     class Processing:
+        """Settings related to processing of a capture, including filters and color balance."""
 
         class Color:
+            """Color settings. These settings are deprecated as of SDK 2.14. These settings will be removed in the next SDK major version (SDK 3.0). The recommended way to do a 2D+3D capture is to set a `Settings2D` object in the `Settings/Color` node. Tip: If you want to convert an existing settings.yml file to use the `Settings/Color` node, you can import the .yml file into Zivid Studio and then re-export it to .yml."""
 
             class Balance:
+                """Color balance settings."""
 
                 def __init__(
                     self,
@@ -282,14 +293,17 @@ class Settings:
 
                 @property
                 def blue(self):
+                    """Digital gain applied to blue channel. This setting is deprecated as of SDK 2.14. This setting will be removed in the next SDK major version (SDK 3.0). The recommended way to do a 2D+3D capture is to set a `Settings2D` object in the `Settings/Color` node. Tip: If you want to convert an existing settings.yml file to use the `Settings/Color` node, you can import the .yml file into Zivid Studio and then re-export it to .yml."""
                     return self._blue.value
 
                 @property
                 def green(self):
+                    """Digital gain applied to green channel. This setting is deprecated as of SDK 2.14. This setting will be removed in the next SDK major version (SDK 3.0). The recommended way to do a 2D+3D capture is to set a `Settings2D` object in the `Settings/Color` node. Tip: If you want to convert an existing settings.yml file to use the `Settings/Color` node, you can import the .yml file into Zivid Studio and then re-export it to .yml."""
                     return self._green.value
 
                 @property
                 def red(self):
+                    """Digital gain applied to red channel. This setting is deprecated as of SDK 2.14. This setting will be removed in the next SDK major version (SDK 3.0). The recommended way to do a 2D+3D capture is to set a `Settings2D` object in the `Settings/Color` node. Tip: If you want to convert an existing settings.yml file to use the `Settings/Color` node, you can import the .yml file into Zivid Studio and then re-export it to .yml."""
                     return self._red.value
 
                 @blue.setter
@@ -361,8 +375,10 @@ class Settings:
                     return str(_to_internal_settings_processing_color_balance(self))
 
             class Experimental:
+                """Experimental color settings. These may be renamed, moved or deleted in the future."""
 
                 class Mode:
+                    """This setting controls how the color image is computed. `automatic` is the default option. `automatic` is identical to `useFirstAcquisition` for single-acquisition captures and multi-acquisition captures when all the acquisitions have identical (duplicated) acquisition settings. `automatic` is identical to `toneMapping` for multi-acquisition HDR captures with differing acquisition settings. `useFirstAcquisition` uses the color data acquired from the first acquisition provided. If the capture consists of more than one acquisition, then the remaining acquisitions are not used for the color image. No tone mapping is performed. This option provides the most control of the color image, and the color values will be consistent over repeated captures with the same settings. `toneMapping` uses all the acquisitions to create one merged and normalized color image. For HDR captures the dynamic range of the captured images is usually higher than the 8-bit color image range. `toneMapping` will map the HDR color data to the 8-bit color output range by applying a scaling factor. `toneMapping` can also be used for single-acquisition captures to normalize the captured color image to the full 8-bit output. Note that when using `toneMapping` mode the color values can be inconsistent over repeated captures if you move, add or remove objects in the scene. For the most control over the colors, select the `useFirstAcquisition` mode. This setting is deprecated as of SDK 2.14. This setting will be removed in the next SDK major version (SDK 3.0). The recommended way to do a 2D+3D capture is to set a `Settings2D` object in the `Settings/Color` node. Tip: If you want to convert an existing settings.yml file to use the `Settings/Color` node, you can import the .yml file into Zivid Studio and then re-export it to .yml."""
 
                     automatic = "automatic"
                     toneMapping = "toneMapping"
@@ -394,6 +410,7 @@ class Settings:
 
                 @property
                 def mode(self):
+                    """This setting controls how the color image is computed. `automatic` is the default option. `automatic` is identical to `useFirstAcquisition` for single-acquisition captures and multi-acquisition captures when all the acquisitions have identical (duplicated) acquisition settings. `automatic` is identical to `toneMapping` for multi-acquisition HDR captures with differing acquisition settings. `useFirstAcquisition` uses the color data acquired from the first acquisition provided. If the capture consists of more than one acquisition, then the remaining acquisitions are not used for the color image. No tone mapping is performed. This option provides the most control of the color image, and the color values will be consistent over repeated captures with the same settings. `toneMapping` uses all the acquisitions to create one merged and normalized color image. For HDR captures the dynamic range of the captured images is usually higher than the 8-bit color image range. `toneMapping` will map the HDR color data to the 8-bit color output range by applying a scaling factor. `toneMapping` can also be used for single-acquisition captures to normalize the captured color image to the full 8-bit output. Note that when using `toneMapping` mode the color values can be inconsistent over repeated captures if you move, add or remove objects in the scene. For the most control over the colors, select the `useFirstAcquisition` mode. This setting is deprecated as of SDK 2.14. This setting will be removed in the next SDK major version (SDK 3.0). The recommended way to do a 2D+3D capture is to set a `Settings2D` object in the `Settings/Color` node. Tip: If you want to convert an existing settings.yml file to use the `Settings/Color` node, you can import the .yml file into Zivid Studio and then re-export it to .yml."""
                     if self._mode.value is None:
                         return None
                     for key, internal_value in self.Mode._valid_values.items():
@@ -459,14 +476,17 @@ class Settings:
 
             @property
             def gamma(self):
+                """Gamma applied to the color values. Gamma less than 1 makes the colors brighter, while gamma greater than 1 makes the colors darker. This setting is deprecated as of SDK 2.14. This setting will be removed in the next SDK major version (SDK 3.0). The recommended way to do a 2D+3D capture is to set a `Settings2D` object in the `Settings/Color` node. Tip: If you want to convert an existing settings.yml file to use the `Settings/Color` node, you can import the .yml file into Zivid Studio and then re-export it to .yml."""
                 return self._gamma.value
 
             @property
             def balance(self):
+                """Color balance settings."""
                 return self._balance
 
             @property
             def experimental(self):
+                """Experimental color settings. These may be renamed, moved or deleted in the future."""
                 return self._experimental
 
             @gamma.setter
@@ -514,10 +534,13 @@ class Settings:
                 return str(_to_internal_settings_processing_color(self))
 
         class Filters:
+            """Filter settings."""
 
             class Cluster:
+                """Removes floating points and isolated clusters from the point cloud."""
 
                 class Removal:
+                    """Cluster removal filter."""
 
                     def __init__(
                         self,
@@ -581,14 +604,17 @@ class Settings:
 
                     @property
                     def enabled(self):
+                        """Enable or disable cluster removal."""
                         return self._enabled.value
 
                     @property
                     def max_neighbor_distance(self):
+                        """Maximum normalized distance between neighboring points that are still classified as belonging to the same cluster. The default value is optimal for most scenes. On messy scenes turning this setting down helps removing more bad points."""
                         return self._max_neighbor_distance.value
 
                     @property
                     def min_area(self):
+                        """Clusters with area below this threshold are removed by the filter. The area is given in mm^2."""
                         return self._min_area.value
 
                     @enabled.setter
@@ -669,6 +695,7 @@ class Settings:
 
                 @property
                 def removal(self):
+                    """Cluster removal filter."""
                     return self._removal
 
                 @removal.setter
@@ -686,10 +713,13 @@ class Settings:
                     return str(_to_internal_settings_processing_filters_cluster(self))
 
             class Experimental:
+                """Experimental filters. These may be renamed, moved or deleted in the future."""
 
                 class ContrastDistortion:
+                    """Corrects artifacts that appear when imaging scenes with large texture gradients or high contrast. These artifacts are caused by blurring in the lens. The filter works best when aperture values are chosen such that the camera has quite good focus. The filter also supports removing the points that experience a large correction."""
 
                     class Correction:
+                        """Contrast distortion correction filter."""
 
                         def __init__(
                             self,
@@ -734,10 +764,12 @@ class Settings:
 
                         @property
                         def enabled(self):
+                            """Enable or disable contrast distortion correction."""
                             return self._enabled.value
 
                         @property
                         def strength(self):
+                            """Strength of correction. Higher values give more correction."""
                             return self._strength.value
 
                         @enabled.setter
@@ -788,6 +820,7 @@ class Settings:
                             )
 
                     class Removal:
+                        """Contrast distortion removal filter."""
 
                         def __init__(
                             self,
@@ -834,10 +867,12 @@ class Settings:
 
                         @property
                         def enabled(self):
+                            """Enable or disable contrast distortion removal."""
                             return self._enabled.value
 
                         @property
                         def threshold(self):
+                            """Threshold for removal. Higher values remove more points."""
                             return self._threshold.value
 
                         @enabled.setter
@@ -909,10 +944,12 @@ class Settings:
 
                     @property
                     def correction(self):
+                        """Contrast distortion correction filter."""
                         return self._correction
 
                     @property
                     def removal(self):
+                        """Contrast distortion removal filter."""
                         return self._removal
 
                     @correction.setter
@@ -948,6 +985,7 @@ class Settings:
 
                 @property
                 def contrast_distortion(self):
+                    """Corrects artifacts that appear when imaging scenes with large texture gradients or high contrast. These artifacts are caused by blurring in the lens. The filter works best when aperture values are chosen such that the camera has quite good focus. The filter also supports removing the points that experience a large correction."""
                     return self._contrast_distortion
 
                 @contrast_distortion.setter
@@ -965,8 +1003,10 @@ class Settings:
                     return str(_to_internal_settings_processing_filters_experimental(self))
 
             class Hole:
+                """Contains filters that can be used to deal with holes in the point cloud."""
 
                 class Repair:
+                    """Fills in point cloud holes by interpolating remaining surrounding points."""
 
                     def __init__(
                         self,
@@ -1013,14 +1053,17 @@ class Settings:
 
                     @property
                     def enabled(self):
+                        """Enable or disable hole repair."""
                         return self._enabled.value
 
                     @property
                     def hole_size(self):
+                        """Relative diameter of holes to fill. Increasing this will fill more points, but require more computation time. The maximum allowed hole size scales with distance, so that we allow filling larger holes at greater distances, measured in mm."""
                         return self._hole_size.value
 
                     @property
                     def strictness(self):
+                        """Level of strictness when considering if a point should be filled. A higher level of strictness requires a missing point to be surrounded by valid points on more sides in order to be filled. Increasing this will fill fewer points, but it will be less likely to fill gaps that are not circular, for example between two edges."""
                         return self._strictness.value
 
                     @enabled.setter
@@ -1090,6 +1133,7 @@ class Settings:
 
                 @property
                 def repair(self):
+                    """Fills in point cloud holes by interpolating remaining surrounding points."""
                     return self._repair
 
                 @repair.setter
@@ -1107,8 +1151,10 @@ class Settings:
                     return str(_to_internal_settings_processing_filters_hole(self))
 
             class Noise:
+                """Contains filters that can be used to clean up a noisy point cloud."""
 
                 class Removal:
+                    """Discard points with signal-to-noise ratio (SNR) values below a threshold."""
 
                     def __init__(
                         self,
@@ -1147,10 +1193,12 @@ class Settings:
 
                     @property
                     def enabled(self):
+                        """Enable or disable the SNR filter."""
                         return self._enabled.value
 
                     @property
                     def threshold(self):
+                        """Discard points with signal-to-noise ratio (SNR) below the given value."""
                         return self._threshold.value
 
                     @enabled.setter
@@ -1193,6 +1241,7 @@ class Settings:
                         return str(_to_internal_settings_processing_filters_noise_removal(self))
 
                 class Repair:
+                    """Get better surface coverage by repairing regions of missing data due to noisy points. Consider disabling this filter if you require all points in your point cloud to be of high confidence."""
 
                     def __init__(
                         self,
@@ -1210,6 +1259,7 @@ class Settings:
 
                     @property
                     def enabled(self):
+                        """Enable or disable noise repair."""
                         return self._enabled.value
 
                     @enabled.setter
@@ -1232,6 +1282,7 @@ class Settings:
                         return str(_to_internal_settings_processing_filters_noise_repair(self))
 
                 class Suppression:
+                    """Reduce noise and outliers in the point cloud. This filter can also be used to reduce ripple effects caused by interreflections. Consider disabling this filter if you need to distinguish very fine details and thus need to avoid any smoothing effects."""
 
                     def __init__(
                         self,
@@ -1249,6 +1300,7 @@ class Settings:
 
                     @property
                     def enabled(self):
+                        """Enable or disable noise suppression."""
                         return self._enabled.value
 
                     @enabled.setter
@@ -1297,14 +1349,17 @@ class Settings:
 
                 @property
                 def removal(self):
+                    """Discard points with signal-to-noise ratio (SNR) values below a threshold."""
                     return self._removal
 
                 @property
                 def repair(self):
+                    """Get better surface coverage by repairing regions of missing data due to noisy points. Consider disabling this filter if you require all points in your point cloud to be of high confidence."""
                     return self._repair
 
                 @property
                 def suppression(self):
+                    """Reduce noise and outliers in the point cloud. This filter can also be used to reduce ripple effects caused by interreflections. Consider disabling this filter if you need to distinguish very fine details and thus need to avoid any smoothing effects."""
                     return self._suppression
 
                 @removal.setter
@@ -1338,8 +1393,10 @@ class Settings:
                     return str(_to_internal_settings_processing_filters_noise(self))
 
             class Outlier:
+                """Contains a filter that removes points with large Euclidean distance to neighboring points."""
 
                 class Removal:
+                    """Discard point if Euclidean distance to neighboring points is above a threshold."""
 
                     def __init__(
                         self,
@@ -1378,10 +1435,12 @@ class Settings:
 
                     @property
                     def enabled(self):
+                        """Enable or disable the outlier filter."""
                         return self._enabled.value
 
                     @property
                     def threshold(self):
+                        """Discard point if Euclidean distance to neighboring points is above the given value."""
                         return self._threshold.value
 
                     @enabled.setter
@@ -1436,6 +1495,7 @@ class Settings:
 
                 @property
                 def removal(self):
+                    """Discard point if Euclidean distance to neighboring points is above a threshold."""
                     return self._removal
 
                 @removal.setter
@@ -1453,10 +1513,13 @@ class Settings:
                     return str(_to_internal_settings_processing_filters_outlier(self))
 
             class Reflection:
+                """Contains a filter that removes points likely introduced by reflections (useful for shiny materials)."""
 
                 class Removal:
+                    """Discard points likely introduced by reflections (useful for shiny materials)."""
 
                     class Mode:
+                        """The reflection filter has two modes: Local and Global. Global mode is generally better at removing outlier points in the point cloud, whereas Local mode preserves more 3D data on thin objects far from the background. Additionally, Local mode behaves slightly differently depending on the Engine used. With Phase engine or Stripe engine, Local mode will process faster than Global mode and remove more reflection artifacts. Also with Stripe engine, Local mode might reduce the number of points resolved on shiny and reflective objects. With Omni engine, Local mode will reduce the amount of artifacts in low projector signal regions, but might also reduce coverage on surfaces with low projector signal. It is advised to use the Cluster filter together with Local mode."""
 
                         global_ = "global"
                         local = "local"
@@ -1503,10 +1566,12 @@ class Settings:
 
                     @property
                     def enabled(self):
+                        """Enable or disable the reflection filter. Note that this filter is computationally intensive and may affect the frame rate."""
                         return self._enabled.value
 
                     @property
                     def mode(self):
+                        """The reflection filter has two modes: Local and Global. Global mode is generally better at removing outlier points in the point cloud, whereas Local mode preserves more 3D data on thin objects far from the background. Additionally, Local mode behaves slightly differently depending on the Engine used. With Phase engine or Stripe engine, Local mode will process faster than Global mode and remove more reflection artifacts. Also with Stripe engine, Local mode might reduce the number of points resolved on shiny and reflective objects. With Omni engine, Local mode will reduce the amount of artifacts in low projector signal regions, but might also reduce coverage on surfaces with low projector signal. It is advised to use the Cluster filter together with Local mode."""
                         if self._mode.value is None:
                             return None
                         for key, internal_value in self.Mode._valid_values.items():
@@ -1564,6 +1629,7 @@ class Settings:
 
                 @property
                 def removal(self):
+                    """Discard points likely introduced by reflections (useful for shiny materials)."""
                     return self._removal
 
                 @removal.setter
@@ -1581,8 +1647,10 @@ class Settings:
                     return str(_to_internal_settings_processing_filters_reflection(self))
 
             class Smoothing:
+                """Smoothing filters."""
 
                 class Gaussian:
+                    """Gaussian smoothing of the point cloud."""
 
                     def __init__(
                         self,
@@ -1619,10 +1687,12 @@ class Settings:
 
                     @property
                     def enabled(self):
+                        """Enable or disable the smoothing filter."""
                         return self._enabled.value
 
                     @property
                     def sigma(self):
+                        """Higher values result in smoother point clouds (Standard deviation of the filter coefficients)."""
                         return self._sigma.value
 
                     @enabled.setter
@@ -1677,6 +1747,7 @@ class Settings:
 
                 @property
                 def gaussian(self):
+                    """Gaussian smoothing of the point cloud."""
                     return self._gaussian
 
                 @gaussian.setter
@@ -1748,30 +1819,37 @@ class Settings:
 
             @property
             def cluster(self):
+                """Removes floating points and isolated clusters from the point cloud."""
                 return self._cluster
 
             @property
             def experimental(self):
+                """Experimental filters. These may be renamed, moved or deleted in the future."""
                 return self._experimental
 
             @property
             def hole(self):
+                """Contains filters that can be used to deal with holes in the point cloud."""
                 return self._hole
 
             @property
             def noise(self):
+                """Contains filters that can be used to clean up a noisy point cloud."""
                 return self._noise
 
             @property
             def outlier(self):
+                """Contains a filter that removes points with large Euclidean distance to neighboring points."""
                 return self._outlier
 
             @property
             def reflection(self):
+                """Contains a filter that removes points likely introduced by reflections (useful for shiny materials)."""
                 return self._reflection
 
             @property
             def smoothing(self):
+                """Smoothing filters."""
                 return self._smoothing
 
             @cluster.setter
@@ -1833,8 +1911,10 @@ class Settings:
                 return str(_to_internal_settings_processing_filters(self))
 
         class Resampling:
+            """Settings for changing the output resolution of the point cloud."""
 
             class Mode:
+                """Setting for upsampling or downsampling the point cloud data by some factor. This operation is performed after all other processing has been completed. Downsampling is used to reduce the number of points in the point cloud. This is done by combining each 2x2 or 4x4 group of pixels in the original point cloud into one pixel in a new point cloud. This downsample functionality is identical to the downsample method on the PointCloud class. The averaging process reduces noise in the point cloud, but it will not improve capture speed. To improve capture speed, consider using the subsampling modes found in Settings/Sampling/Pixel. Upsampling is used to increase the number of points in the point cloud. It is not possible to upsample beyond the full resolution of the camera, so upsampling may only be used in combination with the subsampling modes found in Settings/Sampling/Pixel. For example, one may combine blueSubsample2x2 with upsample2x2 to obtain a point cloud that matches a full resolution 2D capture, while retaining the speed benefits of capturing the point cloud with blueSubsample2x2. Upsampling is achieved by expanding pixels in the original point cloud into groups of 2x2 or 4x4 pixels in a new point cloud. Where possible, values are filled at the new points based on an interpolation of the surrounding original points. The points in the new point cloud that correspond to points in the original point cloud are left unchanged. Note that upsampling will lead to four (upsample2x2) or sixteen (upsample4x4) times as many pixels in the point cloud compared to no upsampling, so users should be aware of increased computational cost related to copying and analyzing this data."""
 
                 disabled = "disabled"
                 downsample2x2 = "downsample2x2"
@@ -1870,6 +1950,7 @@ class Settings:
 
             @property
             def mode(self):
+                """Setting for upsampling or downsampling the point cloud data by some factor. This operation is performed after all other processing has been completed. Downsampling is used to reduce the number of points in the point cloud. This is done by combining each 2x2 or 4x4 group of pixels in the original point cloud into one pixel in a new point cloud. This downsample functionality is identical to the downsample method on the PointCloud class. The averaging process reduces noise in the point cloud, but it will not improve capture speed. To improve capture speed, consider using the subsampling modes found in Settings/Sampling/Pixel. Upsampling is used to increase the number of points in the point cloud. It is not possible to upsample beyond the full resolution of the camera, so upsampling may only be used in combination with the subsampling modes found in Settings/Sampling/Pixel. For example, one may combine blueSubsample2x2 with upsample2x2 to obtain a point cloud that matches a full resolution 2D capture, while retaining the speed benefits of capturing the point cloud with blueSubsample2x2. Upsampling is achieved by expanding pixels in the original point cloud into groups of 2x2 or 4x4 pixels in a new point cloud. Where possible, values are filled at the new points based on an interpolation of the surrounding original points. The points in the new point cloud that correspond to points in the original point cloud are left unchanged. Note that upsampling will lead to four (upsample2x2) or sixteen (upsample4x4) times as many pixels in the point cloud compared to no upsampling, so users should be aware of increased computational cost related to copying and analyzing this data."""
                 if self._mode.value is None:
                     return None
                 for key, internal_value in self.Mode._valid_values.items():
@@ -1923,14 +2004,17 @@ class Settings:
 
         @property
         def color(self):
+            """Color settings. These settings are deprecated as of SDK 2.14. These settings will be removed in the next SDK major version (SDK 3.0). The recommended way to do a 2D+3D capture is to set a `Settings2D` object in the `Settings/Color` node. Tip: If you want to convert an existing settings.yml file to use the `Settings/Color` node, you can import the .yml file into Zivid Studio and then re-export it to .yml."""
             return self._color
 
         @property
         def filters(self):
+            """Filter settings."""
             return self._filters
 
         @property
         def resampling(self):
+            """Settings for changing the output resolution of the point cloud."""
             return self._resampling
 
         @color.setter
@@ -1964,8 +2048,10 @@ class Settings:
             return str(_to_internal_settings_processing(self))
 
     class RegionOfInterest:
+        """Removes points outside the region of interest."""
 
         class Box:
+            """Removes points outside the given three-dimensional box. Using this feature may significantly speed up acquisition and processing time, because one can avoid acquiring and processing data that is guaranteed to fall outside of the region of interest. The degree of speed-up depends on the size and shape of the box. Generally, a smaller box yields a greater speed-up. The box is defined by three points: O, A and B. These points define two vectors, OA that goes from PointO to PointA, and OB that goes from PointO to PointB. This gives 4 points O, A, B and (O + OA + OB), that together form a parallelogram in 3D. Two extents can be provided, to extrude the parallelogram along the surface normal vector of the parallelogram plane. This creates a 3D volume (parallelepiped). The surface normal vector is defined by the cross product OA x OB."""
 
             def __init__(
                 self,
@@ -2021,28 +2107,33 @@ class Settings:
 
             @property
             def enabled(self):
+                """Enable or disable box filter."""
                 return self._enabled.value
 
             @property
             def extents(self):
+                """Two points on the normal describing the direction and distance from the plane from which the normal is derived."""
                 if self._extents.value is None:
                     return None
                 return self._extents.value.to_array()
 
             @property
             def point_a(self):
+                """A point such that the vector from PointO to PointA describes the first edge of the parallelogram."""
                 if self._point_a.value is None:
                     return None
                 return self._point_a.value.to_array()
 
             @property
             def point_b(self):
+                """A point such that the vector from PointO to PointB describes the second edge of the parallelogram."""
                 if self._point_b.value is None:
                     return None
                 return self._point_b.value.to_array()
 
             @property
             def point_o(self):
+                """The point at the intersection of two adjacent edges defining a parallelogram."""
                 if self._point_o.value is None:
                     return None
                 return self._point_o.value.to_array()
@@ -2115,6 +2206,7 @@ class Settings:
                 return str(_to_internal_settings_region_of_interest_box(self))
 
         class Depth:
+            """Removes points that reside outside of a depth range, meaning that their Z coordinate falls above a given maximum or below a given minimum."""
 
             def __init__(
                 self,
@@ -2140,10 +2232,12 @@ class Settings:
 
             @property
             def enabled(self):
+                """Enable or disable depth filter."""
                 return self._enabled.value
 
             @property
             def range(self):
+                """Specify the minimum and maximum Z value that will be included."""
                 if self._range.value is None:
                     return None
                 return self._range.value.to_array()
@@ -2196,10 +2290,12 @@ class Settings:
 
         @property
         def box(self):
+            """Removes points outside the given three-dimensional box. Using this feature may significantly speed up acquisition and processing time, because one can avoid acquiring and processing data that is guaranteed to fall outside of the region of interest. The degree of speed-up depends on the size and shape of the box. Generally, a smaller box yields a greater speed-up. The box is defined by three points: O, A and B. These points define two vectors, OA that goes from PointO to PointA, and OB that goes from PointO to PointB. This gives 4 points O, A, B and (O + OA + OB), that together form a parallelogram in 3D. Two extents can be provided, to extrude the parallelogram along the surface normal vector of the parallelogram plane. This creates a 3D volume (parallelepiped). The surface normal vector is defined by the cross product OA x OB."""
             return self._box
 
         @property
         def depth(self):
+            """Removes points that reside outside of a depth range, meaning that their Z coordinate falls above a given maximum or below a given minimum."""
             return self._depth
 
         @box.setter
@@ -2223,8 +2319,10 @@ class Settings:
             return str(_to_internal_settings_region_of_interest(self))
 
     class Sampling:
+        """Sampling settings."""
 
         class Color:
+            """Choose how to sample colors for the point cloud. - `rgb` option gives an image with full colors. - `grayscale` option gives a grayscale (r=g=b) image, which can be acquired faster than full colors. - `rgbStrongAmbientLight` option gives an image with full colors and reduced color noise. This option should be chosen only for applications which suffer from high color noise and with high amounts of ambient light in the scene. - `rgbAmbientSuppression` option gives an image with full colors while suppressing the ambient light. The Zivid 2+R and Zivid 3 cameras suppress ambient light by default, and therefore do not need the additional option `rgbAmbientSuppression`. The `grayscale`, `rgbStrongAmbientLight` and `rgbAmbientSuppression` options are not available on all camera models. This setting is deprecated as of SDK 2.14. This setting will be removed in the next SDK major version (SDK 3.0). The recommended way to do a 2D+3D capture is to set a `Settings2D` object in the `Settings/Color` field. Tip: If you want to convert an existing settings.yml file to the recommended API, you can import the .yml file into Zivid Studio and then re-export it to .yml."""
 
             disabled = "disabled"
             grayscale = "grayscale"
@@ -2245,6 +2343,7 @@ class Settings:
                 return list(cls._valid_values.keys())
 
         class Pixel:
+            """For Zivid 2 and Zivid 2+, this setting controls whether to read out the full image sensor and use white projector light or to subsample pixels for specific color channels with corresponding projector light. Picking a specific color channel can help reduce noise and effects of ambient light - projecting blue light is recommended. For Zivid 2+R and Zivid 3, the user does not have to set the projection color and should only consider whether to scale the resolution `by2x2` or `by4x4`. Both of these modes will boost the signal strength by about 4x compared to `all`, so the user should consider a corresponding reduction in exposure time. Sampling at a decreased resolution decreases capture time, as less data will be captured and processed."""
 
             all = "all"
             blueSubsample2x2 = "blueSubsample2x2"
@@ -2294,6 +2393,7 @@ class Settings:
 
         @property
         def color(self):
+            """Choose how to sample colors for the point cloud. - `rgb` option gives an image with full colors. - `grayscale` option gives a grayscale (r=g=b) image, which can be acquired faster than full colors. - `rgbStrongAmbientLight` option gives an image with full colors and reduced color noise. This option should be chosen only for applications which suffer from high color noise and with high amounts of ambient light in the scene. - `rgbAmbientSuppression` option gives an image with full colors while suppressing the ambient light. The Zivid 2+R and Zivid 3 cameras suppress ambient light by default, and therefore do not need the additional option `rgbAmbientSuppression`. The `grayscale`, `rgbStrongAmbientLight` and `rgbAmbientSuppression` options are not available on all camera models. This setting is deprecated as of SDK 2.14. This setting will be removed in the next SDK major version (SDK 3.0). The recommended way to do a 2D+3D capture is to set a `Settings2D` object in the `Settings/Color` field. Tip: If you want to convert an existing settings.yml file to the recommended API, you can import the .yml file into Zivid Studio and then re-export it to .yml."""
             if self._color.value is None:
                 return None
             for key, internal_value in self.Color._valid_values.items():
@@ -2303,6 +2403,7 @@ class Settings:
 
         @property
         def pixel(self):
+            """For Zivid 2 and Zivid 2+, this setting controls whether to read out the full image sensor and use white projector light or to subsample pixels for specific color channels with corresponding projector light. Picking a specific color channel can help reduce noise and effects of ambient light - projecting blue light is recommended. For Zivid 2+R and Zivid 3, the user does not have to set the projection color and should only consider whether to scale the resolution `by2x2` or `by4x4`. Both of these modes will boost the signal strength by about 4x compared to `all`, so the user should consider a corresponding reduction in exposure time. Sampling at a decreased resolution decreases capture time, as less data will be captured and processed."""
             if self._pixel.value is None:
                 return None
             for key, internal_value in self.Pixel._valid_values.items():
@@ -2341,6 +2442,7 @@ class Settings:
             return str(_to_internal_settings_sampling(self))
 
     class Engine:
+        """Set the Zivid Vision Engine to use. The Phase Engine is the fastest choice in terms of both acquisition time and total capture time, and is a good compromise between quality and speed. The Phase Engine is recommended for objects that are diffuse, opaque, and slightly specular, and is suitable for applications in logistics such as parcel induction. The Stripe Engine is built for exceptional point cloud quality in scenes with highly specular reflective objects. This makes the engine suitable for applications such as factory automation, manufacturing, and bin picking. Additional acquisition and processing time are required for the Stripe Engine. The Omni Engine is built for exceptional point cloud quality on all scenes, including scenes with extremely specular reflective objects, as well as transparent objects. This makes the Omni Engine suitable for applications such as piece picking. Same as for the Stripe Engine, it trades off speed for quality. The Omni Engine is only available for Zivid 2+ and Zivid 2+R. The Sage engine is built for use cases that require all points to be correct/accurate with particularly high confidence. This can be very suitable for eliminating problems such as reflection artifacts. This validation comes at the cost of speed, and sometimes reduced number of valid points due to the removal of low-confidence data. The Sage Engine is only available for Zivid 2+R."""
 
         omni = "omni"
         phase = "phase"
@@ -2427,14 +2529,17 @@ class Settings:
 
     @property
     def acquisitions(self):
+        """List of Acquisition objects."""
         return self._acquisitions
 
     @property
     def color(self):
+        """Specify the settings used for the 2D color image when doing a 2D+3D capture. The value type of this node is a `Zivid::Settings2D` object. This setting was introduced in SDK 2.14, as the recommended way to define the acquisition and processing settings for the 2D color image when doing 2D+3D captures. When this setting is set, it controls how the 2D color image of the 2D+3D capture is acquired and processed. This setting can be used to specify custom acquisition and processing settings that apply only to the 2D color image. These provided settings does not affect the 3D acquisition or processing. When this setting is not set, then the 2D color image is acquired based on `Settings/Acquisitions` and `Settings/Sampling/Color`, and processed based on `Settings/Processing/Color`. If `Settings/Sampling/Color` is set to `disabled`, then no 2D color image is acquired. This behavior is to be consistent with SDK 2.13 and earlier. In the next SDK major version, SDK 3.0, only this `Color` setting will control the 2D color image settings. The `Settings/Sampling/Color` and `Settings/Processing/Color` settings are deprecated as of 2.14, and will be removed from the API in SDK 3.0. Zivid recommends all users to use `Settings/Color` to define the 2D color image settings. Tip: If you want to convert an existing settings.yml file to use `Settings/Color`, you can import the .yml file into Zivid Studio and then re-export it to .yml."""
         return self._color
 
     @property
     def engine(self):
+        """Set the Zivid Vision Engine to use. The Phase Engine is the fastest choice in terms of both acquisition time and total capture time, and is a good compromise between quality and speed. The Phase Engine is recommended for objects that are diffuse, opaque, and slightly specular, and is suitable for applications in logistics such as parcel induction. The Stripe Engine is built for exceptional point cloud quality in scenes with highly specular reflective objects. This makes the engine suitable for applications such as factory automation, manufacturing, and bin picking. Additional acquisition and processing time are required for the Stripe Engine. The Omni Engine is built for exceptional point cloud quality on all scenes, including scenes with extremely specular reflective objects, as well as transparent objects. This makes the Omni Engine suitable for applications such as piece picking. Same as for the Stripe Engine, it trades off speed for quality. The Omni Engine is only available for Zivid 2+ and Zivid 2+R. The Sage engine is built for use cases that require all points to be correct/accurate with particularly high confidence. This can be very suitable for eliminating problems such as reflection artifacts. This validation comes at the cost of speed, and sometimes reduced number of valid points due to the removal of low-confidence data. The Sage Engine is only available for Zivid 2+R."""
         if self._engine.value is None:
             return None
         for key, internal_value in self.Engine._valid_values.items():
@@ -2444,18 +2549,22 @@ class Settings:
 
     @property
     def diagnostics(self):
+        """When Diagnostics is enabled, additional diagnostic data is recorded during capture and included when saving the frame to a .zdf file. This enables Zivid's Customer Success team to provide better assistance and more thorough troubleshooting. Enabling Diagnostics increases the capture time and the RAM usage. It will also increase the size of the .zdf file. It is recommended to enable Diagnostics only when reporting issues to Zivid's support team."""
         return self._diagnostics
 
     @property
     def processing(self):
+        """Settings related to processing of a capture, including filters and color balance."""
         return self._processing
 
     @property
     def region_of_interest(self):
+        """Removes points outside the region of interest."""
         return self._region_of_interest
 
     @property
     def sampling(self):
+        """Sampling settings."""
         return self._sampling
 
     @acquisitions.setter

@@ -7,10 +7,13 @@ import _zivid
 
 
 class NetworkConfiguration:
+    """Network configuration of a camera"""
 
     class IPV4:
+        """IPv4 network configuration"""
 
         class Mode:
+            """DHCP or manual configuration"""
 
             dhcp = "dhcp"
             manual = "manual"
@@ -52,10 +55,12 @@ class NetworkConfiguration:
 
         @property
         def address(self):
+            """The camera's IPv4 address. Only used in manual mode. To be able to connect to the camera, the camera's IP address must be in the same subnet as the IP address of the computer's local network interface."""
             return self._address.value
 
         @property
         def mode(self):
+            """DHCP or manual configuration"""
             if self._mode.value is None:
                 return None
             for key, internal_value in self.Mode._valid_values.items():
@@ -65,6 +70,7 @@ class NetworkConfiguration:
 
         @property
         def subnet_mask(self):
+            """The camera's subnet mask (for example 255.255.255.0). Only used in manual mode. To be able to connect to the camera, the camera's subnet mask must be the same as the subnet mask of the computer's local network interface."""
             return self._subnet_mask.value
 
         @address.setter
@@ -115,6 +121,7 @@ class NetworkConfiguration:
 
     @property
     def ipv4(self):
+        """IPv4 network configuration"""
         return self._ipv4
 
     @ipv4.setter
