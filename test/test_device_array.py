@@ -233,7 +233,34 @@ def test_point_cloud_device_image_rgbaf(point_cloud, sdk_stream_or_queue):
     assert device_array.is_valid
 
 
-def test_unorganized_device_colors_rejects_rgbaf(point_cloud, sdk_stream_or_queue):
+def test_unorganized_device_colors_rgbaf(point_cloud, sdk_stream_or_queue):
+    upc = point_cloud.to_unorganized_point_cloud()
+    device_array = upc.device_colors(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+    assert isinstance(device_array, zivid.device_array.DeviceArray)
+    assert device_array.shape[-1] == 4
+    assert device_array.is_valid
+
+
+def test_unorganized_device_colors_rejects_rgb(point_cloud, sdk_stream_or_queue):
     upc = point_cloud.to_unorganized_point_cloud()
     with pytest.raises(ValueError):
-        upc.device_colors(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+        upc.device_colors(sdk_stream_or_queue, zivid.PixelFormat.RGB)
+
+
+def test_unorganized_device_colors_rgbaf_is_unquantized_rgba(
+    point_cloud, cuda_compute_device, sdk_stream_or_queue, torch_cuda
+):
+    _ = cuda_compute_device
+    upc = point_cloud.to_unorganized_point_cloud()
+    rgba_host = upc.device_colors(sdk_stream_or_queue, zivid.PixelFormat.RGBA).copy_to_host_unorganized_array(
+        sdk_stream_or_queue
+    )
+    rgbaf = upc.device_colors(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+    zivid.synchronize_stream(sdk_stream_or_queue)
+    rgbaf_host = torch_cuda.as_tensor(rgbaf, device="cuda").cpu().numpy()
+
+    scaled = np.squeeze(rgbaf_host) * 255.0
+    quantized = np.squeeze(rgba_host).astype(np.float32)
+    assert np.all(scaled >= -1e-3)
+    assert np.all(scaled <= 255.0 + 1e-3)
+    np.testing.assert_allclose(scaled, quantized, atol=0.5 + 1e-3)

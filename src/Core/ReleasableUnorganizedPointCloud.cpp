@@ -137,6 +137,10 @@ namespace ZividPython
                 "device_array_bgra_srgb",
                 &ReleasableUnorganizedPointCloud::deviceArrayColorBGRA_SRGB,
                 py::arg("stream_or_queue"))
+            .def(
+                "device_array_rgbaf",
+                &ReleasableUnorganizedPointCloud::deviceArrayColorRGBAf,
+                py::arg("stream_or_queue"))
             .def("device_array_snr", &ReleasableUnorganizedPointCloud::deviceArraySNR, py::arg("stream_or_queue"));
     }
 } // namespace ZividPython

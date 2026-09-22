@@ -77,6 +77,12 @@ namespace ZividPython
                 impl().deviceColors<Zivid::ColorBGRA_SRGB>(streamOrQueue)) };
         }
 
+        ReleasableImageDeviceArrayRGBAf deviceArrayColorRGBAf(const Zivid::StreamOrQueue &streamOrQueue) const
+        {
+            return ReleasableImageDeviceArrayRGBAf{ WITH_GIL_UNLOCKED(
+                impl().deviceColors<Zivid::ColorRGBAf>(streamOrQueue)) };
+        }
+
         ReleasableDeviceArraySNR deviceArraySNR(const Zivid::StreamOrQueue &streamOrQueue) const
         {
             return ReleasableDeviceArraySNR{ WITH_GIL_UNLOCKED(impl().deviceSNRs(streamOrQueue)) };
