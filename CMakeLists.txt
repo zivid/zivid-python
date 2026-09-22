@@ -72,6 +72,7 @@ if(WIN32)
     )
 endif()
 
+find_package(dlpack 1.2 CONFIG REQUIRED)
 find_package(Eigen3 3.4.0 CONFIG REQUIRED)
 find_package(pybind11 2.12.0 CONFIG REQUIRED)
 

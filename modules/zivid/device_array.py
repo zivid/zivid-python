@@ -165,6 +165,13 @@ class DeviceArray:
         """
         return self.__impl.device_pointer()
 
+    def __require_cuda_backend(self, protocol_member: str) -> None:
+        if self.__impl.backend != _zivid.ComputeBackend.cuda:
+            raise AttributeError(
+                "{} is only available on the CUDA backend (this DeviceArray uses the {} backend); use "
+                "device_pointer(), which is a cl_mem handle on OpenCL.".format(protocol_member, self.__impl.backend)
+            )
+
     @property
     def __cuda_array_interface__(self):
         """Expose the GPU buffer to CUDA array libraries (CuPy, PyTorch, Numba) zero-copy.
@@ -183,11 +190,7 @@ class DeviceArray:
         Raises:
             AttributeError: If the backend is not CUDA, or the format does not expose a typed GPU buffer.
         """
-        if self.__impl.backend != _zivid.ComputeBackend.cuda:
-            raise AttributeError(
-                "__cuda_array_interface__ is only available on the CUDA backend (this DeviceArray uses "
-                "the {} backend); use device_pointer(), which is a cl_mem handle on OpenCL.".format(self.__impl.backend)
-            )
+        self.__require_cuda_backend("__cuda_array_interface__")
         try:
             typestr = _CUDA_ARRAY_INTERFACE_TYPESTR[type(self.__impl)]
         except KeyError:
@@ -199,6 +202,52 @@ class DeviceArray:
             "strides": tuple(self.__impl.strides_in_bytes),
             "version": 3,
         }
+
+    def __dlpack_device__(self) -> tuple:
+        """Report which DLPack device this array's buffer lives on.
+
+        Returns:
+            A ``(device_type, device_id)`` tuple, where ``device_type`` is kDLCUDA (2) and ``device_id``
+            is the CUDA device ordinal the buffer was allocated on.
+
+        Raises:
+            AttributeError: If the backend is not CUDA.
+        """
+        self.__require_cuda_backend("__dlpack_device__")
+        return self.__impl.__dlpack_device__()
+
+    def __dlpack__(self, stream=None, max_version=None, dl_device=None, copy=None):  # pylint: disable=unused-argument
+        """Expose the GPU buffer to DLPack consumers (PyTorch, CuPy, JAX, cupoch) zero-copy.
+
+        Wraps the device array in a PyCapsule that references its device memory, so that
+        ``torch.from_dlpack(device_array)`` and ``cupy.from_dlpack(device_array)`` work directly. The
+        DeviceArray is kept alive by the tensor's manager context, so the GPU memory stays valid for
+        as long as the consumer holds the imported tensor.
+
+        Args:
+            stream: The consumer's CUDA stream, accepted for protocol compatibility and ignored. The
+                buffer was already ordered against the stream or queue passed to the acquisition method
+                (for example ``Frame2D.image_device_array(stream_or_queue, color_format)``), so no
+                further synchronization is performed here.
+            max_version: The highest DLPack version the consumer supports, as a ``(major, minor)``
+                tuple. Omitting it, or passing ``None``, selects the legacy unversioned exchange.
+            dl_device: The ``(device_type, device_id)`` the consumer wants the buffer on. Only the
+                CUDA device the buffer already lives on can be produced, so any other device raises
+                ``BufferError``.
+            copy: Whether the consumer requires its own copy. ``True`` raises ``BufferError``, since
+                this hands out a view of memory other Zivid objects still read and the wrapper has no
+                GPU copy primitive. ``False`` and ``None`` are honoured, as no copy is ever made.
+
+        Returns:
+            A PyCapsule named ``"dltensor_versioned"`` when the consumer accepts DLPack 1.0 or newer,
+            otherwise one named ``"dltensor"``.
+
+        Raises:
+            AttributeError: If the backend is not CUDA.
+            BufferError: If ``dl_device`` names another device, or ``copy`` is True.
+        """
+        self.__require_cuda_backend("__dlpack__")
+        return self.__impl.__dlpack__(max_version=max_version, dl_device=dl_device, copy=copy)
 
     def copy_to_host_organized_array(self, stream_or_queue) -> numpy.ndarray:
         """Enqueue a device-to-host copy and return a numpy array WITHOUT synchronizing.

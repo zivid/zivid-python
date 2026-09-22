@@ -15,6 +15,7 @@ set(SOURCES
     Calibration/Pose.cpp
     CaptureAssistant.cpp
     DataModel.cpp
+    DLPack.cpp
     Firmware.cpp
     InfieldCorrection/InfieldCorrection.cpp
     NodeType.cpp
@@ -55,4 +56,5 @@ zivid_python_shared_library(
     LINK_LIBRARIES
     Zivid::Core
     Eigen3::Eigen
+    dlpack::dlpack
 )
