@@ -1,6 +1,12 @@
 import winreg  # pylint: disable=import-error
 from os import environ
+from pathlib import Path
 from common import repo_root, run_process, install_pip_dependencies
+
+# The pytest process dies with a fail-fast exit code that Windows Error Reporting does not
+# capture, leaving no stack to work from. Run it under procdump so the next occurrence
+# yields one. See ZIVID-14349.
+DUMP_DIR = Path(r"C:\dumps")
 
 
 def _read_sys_env(environement_variable_name):
@@ -16,8 +22,15 @@ def _test(root):
     sys_path_key = "PATH"
     sys_path_value = _read_sys_env(sys_path_key)
     environment[sys_path_key] = sys_path_value
+    DUMP_DIR.mkdir(parents=True, exist_ok=True)
     run_process(
         (
+            "procdump",
+            "-accepteula",
+            "-ma",
+            "-e",
+            "-x",
+            str(DUMP_DIR),
             "python",
             "-m",
             "pytest",
