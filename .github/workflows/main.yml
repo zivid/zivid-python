@@ -165,8 +165,23 @@ jobs:
         run: python continuous-integration\windows\setup.py
       - name: Install from binary distribution
         run: python continuous-integration\windows\install_binary_distribution.py
+      - name: Enable crash dumps
+        shell: pwsh
+        run: |
+          $key = "HKLM:\SOFTWARE\Microsoft\Windows\Windows Error Reporting\LocalDumps\python.exe"
+          New-Item -Path $key -Force | Out-Null
+          New-ItemProperty -Path $key -Name DumpFolder -Value "C:\dumps" -PropertyType ExpandString -Force | Out-Null
+          New-ItemProperty -Path $key -Name DumpType -Value 1 -PropertyType DWord -Force | Out-Null
+          New-ItemProperty -Path $key -Name DumpCount -Value 5 -PropertyType DWord -Force | Out-Null
       - name: Test
         run: python continuous-integration\windows\test.py
+      - name: Upload crash dumps
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: crash-dumps-python${{matrix.python-version}}
+          path: C:\dumps
+          if-no-files-found: ignore
       - name: Notify Teams
         if: ${{ failure() && github.ref == 'refs/heads/master' }}
         env:
