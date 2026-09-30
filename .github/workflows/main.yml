@@ -103,6 +103,7 @@ jobs:
   test-linux-source-distribution:
     needs: create-source-distribution
     runs-on: ubuntu-latest
+    if: false # TODO(ZIVID-14349): Remove this line when the Windows crash hunt is done.
     # Build & test job should be run on:
     # - All Ubuntu versions officially supported by Zivid SDK
     # - All (not end-of-life) Ubuntu versions newer than the latest LTS
