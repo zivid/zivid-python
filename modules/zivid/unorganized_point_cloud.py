@@ -12,6 +12,7 @@ _COLOR_FORMAT_ACCESSOR_SUFFIX = {
     PixelFormat.RGBA_SRGB: "rgba_srgb",
     PixelFormat.BGRA: "bgra",
     PixelFormat.BGRA_SRGB: "bgra_srgb",
+    PixelFormat.RGBAF: "rgbaf",
 }
 
 
@@ -223,7 +224,8 @@ class UnorganizedPointCloud:
             stream_or_queue: A CUDAStreamPtr or OpenCLCommandQueuePtr the SDK records a readiness
                 event on before handing off the buffer.
             color_format: A zivid.PixelFormat color format. Supported: RGBA, BGRA, RGBA_SRGB,
-                BGRA_SRGB.
+                BGRA_SRGB, RGBAF. RGBAF is 4-channel linear float32 with values from 0 to 1,
+                i.e. the RGBA values divided by 255.
 
         Returns:
             A DeviceArray object containing the color data.

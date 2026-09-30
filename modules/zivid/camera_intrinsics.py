@@ -7,8 +7,10 @@ import _zivid
 
 
 class CameraIntrinsics:
+    """Information about the intrinsic parameters of the camera (OpenCV model)"""
 
     class CameraMatrix:
+        """The camera matrix K (=[fx,0,cx;0,fy,cy;0,0,1])"""
 
         def __init__(
             self,
@@ -72,18 +74,22 @@ class CameraIntrinsics:
 
         @property
         def cx(self):
+            """x coordinate of the principal point"""
             return self._cx.value
 
         @property
         def cy(self):
+            """y coordinate of the principal point"""
             return self._cy.value
 
         @property
         def fx(self):
+            """Focal length in x"""
             return self._fx.value
 
         @property
         def fy(self):
+            """Focal length in y"""
             return self._fy.value
 
         @cx.setter
@@ -155,6 +161,7 @@ class CameraIntrinsics:
             return str(_to_internal_camera_intrinsics_camera_matrix(self))
 
     class Distortion:
+        """The radial and tangential distortion parameters"""
 
         def __init__(
             self,
@@ -232,22 +239,27 @@ class CameraIntrinsics:
 
         @property
         def k1(self):
+            """First radial distortion term"""
             return self._k1.value
 
         @property
         def k2(self):
+            """Second radial distortion term"""
             return self._k2.value
 
         @property
         def k3(self):
+            """Third radial distortion term"""
             return self._k3.value
 
         @property
         def p1(self):
+            """First tangential distortion term"""
             return self._p1.value
 
         @property
         def p2(self):
+            """Second tangential distortion term"""
             return self._p2.value
 
         @k1.setter
@@ -359,10 +371,12 @@ class CameraIntrinsics:
 
     @property
     def camera_matrix(self):
+        """The camera matrix K (=[fx,0,cx;0,fy,cy;0,0,1])"""
         return self._camera_matrix
 
     @property
     def distortion(self):
+        """The radial and tangential distortion parameters"""
         return self._distortion
 
     @camera_matrix.setter

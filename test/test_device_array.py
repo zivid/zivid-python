@@ -1,3 +1,5 @@
+import ctypes
+import gc
 import logging
 
 import numpy as np
@@ -5,6 +7,31 @@ import pytest
 import zivid
 
 logger = logging.getLogger(__name__)
+
+_KDLCUDA = 2
+_KDLCPU = 1
+
+
+_PyCapsule_GetName = ctypes.pythonapi.PyCapsule_GetName
+_PyCapsule_GetName.restype = ctypes.c_char_p
+_PyCapsule_GetName.argtypes = [ctypes.py_object]
+
+
+def _capsule_name(capsule):
+    return _PyCapsule_GetName(capsule).decode()
+
+
+_PyCapsule_GetPointer = ctypes.pythonapi.PyCapsule_GetPointer
+_PyCapsule_GetPointer.restype = ctypes.c_void_p
+_PyCapsule_GetPointer.argtypes = [ctypes.py_object, ctypes.c_char_p]
+
+
+def _versioned_capsule_version(capsule):
+    """Read the (major, minor) DLPackVersion stamped at the start of a DLManagedTensorVersioned."""
+    pointer = _PyCapsule_GetPointer(capsule, b"dltensor_versioned")
+    major, minor = (ctypes.c_uint32 * 2).from_address(pointer)
+    return (major, minor)
+
 
 _FOUR_CHANNEL_BYTE_FORMATS = [
     zivid.PixelFormat.RGBA,
@@ -233,7 +260,133 @@ def test_point_cloud_device_image_rgbaf(point_cloud, sdk_stream_or_queue):
     assert device_array.is_valid
 
 
-def test_unorganized_device_colors_rejects_rgbaf(point_cloud, sdk_stream_or_queue):
+def test_unorganized_device_colors_rgbaf(point_cloud, sdk_stream_or_queue):
+    upc = point_cloud.to_unorganized_point_cloud()
+    device_array = upc.device_colors(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+    assert isinstance(device_array, zivid.device_array.DeviceArray)
+    assert device_array.shape[-1] == 4
+    assert device_array.is_valid
+
+
+def test_unorganized_device_colors_rejects_rgb(point_cloud, sdk_stream_or_queue):
     upc = point_cloud.to_unorganized_point_cloud()
     with pytest.raises(ValueError):
-        upc.device_colors(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+        upc.device_colors(sdk_stream_or_queue, zivid.PixelFormat.RGB)
+
+
+def test_unorganized_device_colors_rgbaf_is_unquantized_rgba(
+    point_cloud, cuda_compute_device, sdk_stream_or_queue, torch_cuda
+):
+    _ = cuda_compute_device
+    upc = point_cloud.to_unorganized_point_cloud()
+    rgba_host = upc.device_colors(sdk_stream_or_queue, zivid.PixelFormat.RGBA).copy_to_host_unorganized_array(
+        sdk_stream_or_queue
+    )
+    rgbaf = upc.device_colors(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+    zivid.synchronize_stream(sdk_stream_or_queue)
+    rgbaf_host = torch_cuda.as_tensor(rgbaf, device="cuda").cpu().numpy()
+
+    scaled = np.squeeze(rgbaf_host) * 255.0
+    quantized = np.squeeze(rgba_host).astype(np.float32)
+    assert np.all(scaled >= -1e-3)
+    assert np.all(scaled <= 255.0 + 1e-3)
+    np.testing.assert_allclose(scaled, quantized, atol=0.5 + 1e-3)
+
+
+def test_device_array_dlpack_protocol_without_a_consumer(frame_2d, cuda_compute_device, sdk_stream_or_queue):
+    _ = cuda_compute_device
+    device_array = frame_2d.image_device_array(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+
+    device_type, device_id = device_array.__dlpack_device__()
+    assert device_type == _KDLCUDA
+    assert device_id >= 0
+
+    legacy_capsule = device_array.__dlpack__()
+    assert type(legacy_capsule).__name__ == "PyCapsule"
+    assert _capsule_name(legacy_capsule) == "dltensor"
+
+    legacy_by_version = device_array.__dlpack__(stream=None, max_version=(0, 8), dl_device=None, copy=None)
+    assert _capsule_name(legacy_by_version) == "dltensor"
+
+    versioned_capsule = device_array.__dlpack__(max_version=(1, 0))
+    assert _capsule_name(versioned_capsule) == "dltensor_versioned"
+    assert versioned_capsule is not legacy_capsule
+
+    newer_consumer = device_array.__dlpack__(max_version=(2, 5))
+    assert _capsule_name(newer_consumer) == "dltensor_versioned"
+
+    # Per the array API producer protocol the capsule carries our own max version, also when the
+    # consumer's minor is lower than ours; only an older major falls back to the legacy tensor.
+    ours = _versioned_capsule_version(versioned_capsule)
+    for consumer_max_version in [(1, 0), (1, 1), (1, 99), (2, 5), (9, 9)]:
+        capsule = device_array.__dlpack__(max_version=consumer_max_version)
+        assert _capsule_name(capsule) == "dltensor_versioned"
+        assert _versioned_capsule_version(capsule) == ours
+
+
+def test_device_array_dlpack_honours_our_own_device(frame_2d, cuda_compute_device, sdk_stream_or_queue):
+    _ = cuda_compute_device
+    device_array = frame_2d.image_device_array(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+    assert _capsule_name(device_array.__dlpack__(dl_device=device_array.__dlpack_device__())) == "dltensor"
+
+
+def test_device_array_dlpack_rejects_another_device(frame_2d, cuda_compute_device, sdk_stream_or_queue):
+    _ = cuda_compute_device
+    device_array = frame_2d.image_device_array(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+    _, ordinal = device_array.__dlpack_device__()
+    for dl_device in [(_KDLCPU, 0), (_KDLCUDA, ordinal + 1)]:
+        with pytest.raises(BufferError):
+            device_array.__dlpack__(dl_device=dl_device)
+
+
+def test_device_array_dlpack_copy_semantics(frame_2d, cuda_compute_device, sdk_stream_or_queue):
+    _ = cuda_compute_device
+    device_array = frame_2d.image_device_array(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+
+    # copy=True would have to hand out independent memory, which we cannot produce.
+    with pytest.raises(BufferError):
+        device_array.__dlpack__(copy=True)
+
+    # copy=False must never raise, since we never copy.
+    assert _capsule_name(device_array.__dlpack__(copy=False)) == "dltensor"
+    assert _capsule_name(device_array.__dlpack__(copy=None)) == "dltensor"
+
+
+def test_device_array_dlpack_device_reports_cuda(frame_2d, cuda_compute_device, sdk_stream_or_queue, torch_cuda):
+    _ = cuda_compute_device
+    device_array = frame_2d.image_device_array(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+    device_type, device_id = device_array.__dlpack_device__()
+    assert device_type == _KDLCUDA
+    assert device_id == torch_cuda.cuda.current_device()
+
+
+def test_device_array_dlpack_roundtrip_is_zero_copy(frame_2d, cuda_compute_device, sdk_stream_or_queue, torch_cuda):
+    _ = cuda_compute_device
+    device_array = frame_2d.image_device_array(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+    tensor = torch_cuda.from_dlpack(device_array)
+    assert tensor.data_ptr() == device_array.device_pointer()
+    assert tuple(tensor.shape) == tuple(device_array.shape)
+    assert tensor.dtype == torch_cuda.float32
+
+
+def test_device_array_dlpack_keeps_buffer_alive(frame_2d, cuda_compute_device, sdk_stream_or_queue, torch_cuda):
+    _ = cuda_compute_device
+    device_array = frame_2d.image_device_array(sdk_stream_or_queue, zivid.PixelFormat.RGBAF)
+    device_pointer = device_array.device_pointer()
+    tensor = torch_cuda.from_dlpack(device_array)
+    zivid.synchronize_stream(sdk_stream_or_queue)
+    del device_array
+    gc.collect()
+    assert tensor.data_ptr() == device_pointer
+    assert bool(torch_cuda.isfinite(tensor).all())
+
+
+def test_unorganized_device_array_dlpack_roundtrip(point_cloud, cuda_compute_device, sdk_stream_or_queue, torch_cuda):
+    _ = cuda_compute_device
+    upc = point_cloud.to_unorganized_point_cloud()
+    device_array = upc.device_points_xyz(sdk_stream_or_queue)
+    tensor = torch_cuda.from_dlpack(device_array)
+    zivid.synchronize_stream(sdk_stream_or_queue)
+    assert tensor.data_ptr() == device_array.device_pointer()
+    assert tensor.dtype == torch_cuda.float32
+    assert bool(torch_cuda.isfinite(tensor).all())

@@ -66,7 +66,7 @@ def _install_intel_opencl_runtime():
     import requests  # pylint: disable=import-outside-toplevel
 
     with TemporaryDirectoryIgnoringCleanupErrors() as temp_dir:
-        intel_oneapi_opencl_installer_url = "https://registrationcenter-download.intel.com/akdlm/IRC_NAS/faf10bb4-a1b3-46cf-ae0b-986b419e1b1c-opencl/w_opencl_runtime_p_2023.2.0.49500.exe"
+        intel_oneapi_opencl_installer_url = "https://registrationcenter-download.intel.com/akdlm/IRC_NAS/f169cc87-7163-4df5-94d2-bfd07d42b204/w_opencl_runtime_p_2026.0.0.946.exe"
         print("Downloading {}".format(intel_oneapi_opencl_installer_url), flush=True)
         opencl_runtime_installer = Path(temp_dir) / "opencl_runtime_installer.exe"
         response = requests.get(intel_oneapi_opencl_installer_url, timeout=(25, 600))

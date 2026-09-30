@@ -9,8 +9,10 @@ import _zivid
 
 
 class FrameInfo:
+    """Various information for a frame"""
 
     class Diagnostics:
+        """Diagnostic information for frame"""
 
         def __init__(
             self,
@@ -26,6 +28,7 @@ class FrameInfo:
 
         @property
         def packet_loss(self):
+            """Is frame missing any data"""
             return self._packet_loss.value
 
         @packet_loss.setter
@@ -44,6 +47,7 @@ class FrameInfo:
             return str(_to_internal_frame_info_diagnostics(self))
 
     class Metrics:
+        """Metrics related to this capture."""
 
         def __init__(
             self,
@@ -101,22 +105,27 @@ class FrameInfo:
 
         @property
         def acquisition_time(self):
+            """Acquisition Time is the duration from the start of the capture to when the camera has acquired the last image. After this time, the camera has finished its acquisition and you can move the robot, or capture with another camera with overlapping field of view. Acquisition Time is equal to the time it takes for the Camera::capture(settings) API function call to return."""
             return self._acquisition_time.value
 
         @property
         def capture_time(self):
+            """Capture Time is the duration from the start of the capture to when all of the data transfer and processing has completed. After this time the 3D point cloud and/or 2D color image is ready and available on the GPU memory, and can be copied to the system memory (RAM)."""
             return self._capture_time.value
 
         @property
         def kernel_compute_time(self):
+            """Kernel Compute Time is the duration of the compute on the GPU. It is a subset of Capture Time. Kernel Compute Time depends on the capture settings and the compute power of the GPU. Note that Kernel Compute Time + Acquisition Time is not equal to Capture Time, as acquisition and processing operations can be performed in parallel."""
             return self._kernel_compute_time.value
 
         @property
         def reprocessing_time(self):
+            """Reprocessing re-runs the entire processing pipeline (including filters, color balance etc.) on a previously acquired frame. Reprocessing is available in Zivid Studio for captures with Diagnostics Mode enabled. The ReprocessingTime field is only set if this frame was reprocessed after it was initially captured, otherwise it will be unset. Reprocessing Time is the duration from the start of the reprocessing action and until all processing of the new frame has finished. After this time the 3D point cloud and/or 2D color image is ready and available on the GPU memory and can be copied to the system memory (RAM). Reprocessing Time depends on the processing settings that are enabled, which capture engine that was used, the pixel sampling setting and the number of acquisitions used. Reprocessing Time also depends on the compute power of the compute device. Note that for a frame that has been re-processed, the Acquisition Time and Capture Time refers to the originally captured frame. Only Reprocessing Time is updated in a reprocessed frame."""
             return self._reprocessing_time.value
 
         @property
         def throttling_time(self):
+            """Throttling Time is the duration that the capture was paused due to thermal or other constraints on the camera's components while it was capturing this frame. This duration is part of the overall Acquisition Time. If the camera throttled during a capture, it will result in a longer Acquisition Time. Whether or not the camera will throttle depends on the ambient temperature, the capture settings, and the how frequently the camera is capturing."""
             return self._throttling_time.value
 
         @acquisition_time.setter
@@ -181,6 +190,7 @@ class FrameInfo:
             return str(_to_internal_frame_info_metrics(self))
 
     class SoftwareVersion:
+        """The version information for installed software at the time of image capture"""
 
         def __init__(
             self,
@@ -194,6 +204,7 @@ class FrameInfo:
 
         @property
         def core(self):
+            """Core version"""
             return self._core.value
 
         @core.setter
@@ -212,8 +223,10 @@ class FrameInfo:
             return str(_to_internal_frame_info_software_version(self))
 
     class SystemInfo:
+        """Information about the system that captured this frame"""
 
         class CPU:
+            """CPU"""
 
             def __init__(
                 self,
@@ -229,6 +242,7 @@ class FrameInfo:
 
             @property
             def model(self):
+                """CPU model"""
                 return self._model.value
 
             @model.setter
@@ -247,6 +261,7 @@ class FrameInfo:
                 return str(_to_internal_frame_info_system_info_cpu(self))
 
         class ComputeDevice:
+            """Compute device"""
 
             def __init__(
                 self,
@@ -270,10 +285,12 @@ class FrameInfo:
 
             @property
             def model(self):
+                """Compute device model"""
                 return self._model.value
 
             @property
             def vendor(self):
+                """Compute device vendor"""
                 return self._vendor.value
 
             @model.setter
@@ -326,14 +343,17 @@ class FrameInfo:
 
         @property
         def operating_system(self):
+            """Operating system"""
             return self._operating_system.value
 
         @property
         def cpu(self):
+            """CPU"""
             return self._cpu
 
         @property
         def compute_device(self):
+            """Compute device"""
             return self._compute_device
 
         @operating_system.setter
@@ -409,22 +429,27 @@ class FrameInfo:
 
     @property
     def time_stamp(self):
+        """The time of frame capture"""
         return self._time_stamp.value
 
     @property
     def diagnostics(self):
+        """Diagnostic information for frame"""
         return self._diagnostics
 
     @property
     def metrics(self):
+        """Metrics related to this capture."""
         return self._metrics
 
     @property
     def software_version(self):
+        """The version information for installed software at the time of image capture"""
         return self._software_version
 
     @property
     def system_info(self):
+        """Information about the system that captured this frame"""
         return self._system_info
 
     @time_stamp.setter

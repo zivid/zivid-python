@@ -7,8 +7,10 @@ import _zivid
 
 
 class CameraInfo:
+    """Information about camera model, serial number etc."""
 
     class Revision:
+        """Major/Minor hardware revision number. This field is deprecated and may be removed in a future version of the SDK. Please use HardwareRevision instead."""
 
         def __init__(
             self,
@@ -28,10 +30,12 @@ class CameraInfo:
 
         @property
         def major(self):
+            """Major hardware revision number. This field is deprecated and may be removed in a future version of the SDK. Please use HardwareRevision instead."""
             return self._major.value
 
         @property
         def minor(self):
+            """Minor hardware revision number. This field is deprecated and may be removed in a future version of the SDK. Please use HardwareRevision instead."""
             return self._minor.value
 
         @major.setter
@@ -57,6 +61,7 @@ class CameraInfo:
             return str(_to_internal_camera_info_revision(self))
 
     class UserData:
+        """Information about user data capabilities of the camera"""
 
         def __init__(
             self,
@@ -72,6 +77,7 @@ class CameraInfo:
 
         @property
         def max_size_bytes(self):
+            """The maximum number of bytes of user data that can be stored in the camera"""
             return self._max_size_bytes.value
 
         @max_size_bytes.setter
@@ -90,6 +96,7 @@ class CameraInfo:
             return str(_to_internal_camera_info_user_data(self))
 
     class Model:
+        """The model of the camera"""
 
         zivid2PlusL110 = "zivid2PlusL110"
         zivid2PlusLR110 = "zivid2PlusLR110"
@@ -181,14 +188,17 @@ class CameraInfo:
 
     @property
     def firmware_version(self):
+        """The firmware version on the camera"""
         return self._firmware_version.value
 
     @property
     def hardware_revision(self):
+        """Hardware revision of this camera. This corresponds to the revision string that is printed on the product label."""
         return self._hardware_revision.value
 
     @property
     def model(self):
+        """The model of the camera"""
         if self._model.value is None:
             return None
         for key, internal_value in self.Model._valid_values.items():
@@ -198,18 +208,22 @@ class CameraInfo:
 
     @property
     def model_name(self):
+        """The model name of the camera. This is a user-friendly display name that may contain spaces and special characters. We recommend to use `Model` instead if you want to programmatically check for camera model."""
         return self._model_name.value
 
     @property
     def serial_number(self):
+        """The serial number of the camera"""
         return self._serial_number.value
 
     @property
     def revision(self):
+        """Major/Minor hardware revision number. This field is deprecated and may be removed in a future version of the SDK. Please use HardwareRevision instead."""
         return self._revision
 
     @property
     def user_data(self):
+        """Information about user data capabilities of the camera"""
         return self._user_data
 
     @firmware_version.setter

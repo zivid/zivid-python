@@ -9,10 +9,13 @@ import _zivid
 
 
 class CameraHealth:
+    """Result of running the camera's health checks. Each check has a `Status` (severity) and a `Value` (the underlying measurement, when available). The `Overall` field aggregates the worst severity across all populated checks. Status values: - OK: Optimal. - Suboptimal: Degraded but functional. - Error: Faulty or out of spec. - Unknown: Check was not performed, or its outcome could not be determined."""
 
     class Fan:
+        """The status of the camera's fan. - OK: Fan operating as expected. - Error: Unexpected fan stop. - Unknown: Fan status could not be determined."""
 
         class Status:
+            """Severity of the fan check."""
 
             Error = "Error"
             OK = "OK"
@@ -31,6 +34,7 @@ class CameraHealth:
                 return list(cls._valid_values.keys())
 
         class Value:
+            """Whether the fan is operating as expected, or stopped unexpectedly."""
 
             ok = "ok"
             unexpectedFanStop = "unexpectedFanStop"
@@ -68,6 +72,7 @@ class CameraHealth:
 
         @property
         def status(self):
+            """Severity of the fan check."""
             if self._status.value is None:
                 return None
             for key, internal_value in self.Status._valid_values.items():
@@ -77,6 +82,7 @@ class CameraHealth:
 
         @property
         def value(self):
+            """Whether the fan is operating as expected, or stopped unexpectedly."""
             if self._value.value is None:
                 return None
             for key, internal_value in self.Value._valid_values.items():
@@ -113,8 +119,10 @@ class CameraHealth:
             return str(_to_internal_camera_health_fan(self))
 
     class InfieldVerification:
+        """The status of the camera's most recent infield verification. - OK: Last verification performed within the past year - Suboptimal: Last verification older than one year - Unknown: Camera has never been verified in the field"""
 
         class Status:
+            """Severity of the infield verification check."""
 
             Error = "Error"
             OK = "OK"
@@ -156,6 +164,7 @@ class CameraHealth:
 
         @property
         def status(self):
+            """Severity of the infield verification check."""
             if self._status.value is None:
                 return None
             for key, internal_value in self.Status._valid_values.items():
@@ -165,6 +174,7 @@ class CameraHealth:
 
         @property
         def value(self):
+            """Time of the most recent infield verification."""
             return self._value.value
 
         @status.setter
@@ -196,8 +206,10 @@ class CameraHealth:
             return str(_to_internal_camera_health_infield_verification(self))
 
     class MaxTransferSpeed:
+        """The end-to-end link speed between the camera and the host computer, defined as the minimum of the camera's link speed and the PC's link speed. - OK: Max transfer speed > 1 Gbps - Suboptimal: Max transfer speed = 1 Gbps - Error: Max transfer speed < 1 Gbps - Unknown: Max transfer speed could not be determined"""
 
         class Status:
+            """Severity of the max transfer speed check."""
 
             Error = "Error"
             OK = "OK"
@@ -237,6 +249,7 @@ class CameraHealth:
 
         @property
         def status(self):
+            """Severity of the max transfer speed check."""
             if self._status.value is None:
                 return None
             for key, internal_value in self.Status._valid_values.items():
@@ -246,6 +259,7 @@ class CameraHealth:
 
         @property
         def value(self):
+            """Max transfer speed in megabits per second (Mbps)."""
             return self._value.value
 
         @status.setter
@@ -275,8 +289,10 @@ class CameraHealth:
             return str(_to_internal_camera_health_max_transfer_speed(self))
 
     class Memory:
+        """The status of the camera's memory test. - OK: Memory was tested and reported zero errors - Error: Memory was tested and an error was located - Unknown: Memory test was not performed"""
 
         class Status:
+            """Severity of the memory check."""
 
             Error = "Error"
             OK = "OK"
@@ -316,6 +332,7 @@ class CameraHealth:
 
         @property
         def status(self):
+            """Severity of the memory check."""
             if self._status.value is None:
                 return None
             for key, internal_value in self.Status._valid_values.items():
@@ -325,6 +342,7 @@ class CameraHealth:
 
         @property
         def value(self):
+            """Number of memory errors detected by the memory test."""
             return self._value.value
 
         @status.setter
@@ -354,10 +372,13 @@ class CameraHealth:
             return str(_to_internal_camera_health_memory(self))
 
     class Temperature:
+        """The status of the camera's temperatures. Each sub-status reflects the temperature of a specific component."""
 
         class DMD:
+            """The status of the DMD (Digital Micromirror Device) temperature, in degrees Celsius. - OK: Temperature in (0, 50) - Suboptimal: Temperature in [50, 60] - Error: Temperature < 0 or > 60"""
 
             class Status:
+                """Severity of the DMD temperature check."""
 
                 Error = "Error"
                 OK = "OK"
@@ -408,6 +429,7 @@ class CameraHealth:
 
             @property
             def status(self):
+                """Severity of the DMD temperature check."""
                 if self._status.value is None:
                     return None
                 for key, internal_value in self.Status._valid_values.items():
@@ -417,6 +439,7 @@ class CameraHealth:
 
             @property
             def value(self):
+                """DMD temperature in degrees Celsius."""
                 return self._value.value
 
             @status.setter
@@ -457,8 +480,10 @@ class CameraHealth:
                 return str(_to_internal_camera_health_temperature_dmd(self))
 
         class LED:
+            """The status of the LED temperature, in degrees Celsius. - OK: Temperature in (0, 60) - Suboptimal: Temperature in [60, 70] - Error: Temperature < 0 or > 70"""
 
             class Status:
+                """Severity of the LED temperature check."""
 
                 Error = "Error"
                 OK = "OK"
@@ -509,6 +534,7 @@ class CameraHealth:
 
             @property
             def status(self):
+                """Severity of the LED temperature check."""
                 if self._status.value is None:
                     return None
                 for key, internal_value in self.Status._valid_values.items():
@@ -518,6 +544,7 @@ class CameraHealth:
 
             @property
             def value(self):
+                """LED temperature in degrees Celsius."""
                 return self._value.value
 
             @status.setter
@@ -558,8 +585,10 @@ class CameraHealth:
                 return str(_to_internal_camera_health_temperature_led(self))
 
         class Lens:
+            """The status of the lens temperature, in degrees Celsius. - OK: Temperature in (0, 50) - Suboptimal: Temperature in [50, 60] - Error: Temperature < 0 or > 60"""
 
             class Status:
+                """Severity of the lens temperature check."""
 
                 Error = "Error"
                 OK = "OK"
@@ -610,6 +639,7 @@ class CameraHealth:
 
             @property
             def status(self):
+                """Severity of the lens temperature check."""
                 if self._status.value is None:
                     return None
                 for key, internal_value in self.Status._valid_values.items():
@@ -619,6 +649,7 @@ class CameraHealth:
 
             @property
             def value(self):
+                """Lens temperature in degrees Celsius."""
                 return self._value.value
 
             @status.setter
@@ -685,14 +716,17 @@ class CameraHealth:
 
         @property
         def dmd(self):
+            """The status of the DMD (Digital Micromirror Device) temperature, in degrees Celsius. - OK: Temperature in (0, 50) - Suboptimal: Temperature in [50, 60] - Error: Temperature < 0 or > 60"""
             return self._dmd
 
         @property
         def led(self):
+            """The status of the LED temperature, in degrees Celsius. - OK: Temperature in (0, 60) - Suboptimal: Temperature in [60, 70] - Error: Temperature < 0 or > 70"""
             return self._led
 
         @property
         def lens(self):
+            """The status of the lens temperature, in degrees Celsius. - OK: Temperature in (0, 50) - Suboptimal: Temperature in [50, 60] - Error: Temperature < 0 or > 60"""
             return self._lens
 
         @dmd.setter
@@ -722,6 +756,7 @@ class CameraHealth:
             return str(_to_internal_camera_health_temperature(self))
 
     class Overall:
+        """The aggregated severity across all checks, taking the highest-precedence severity among them. Precedence from highest to lowest is Error, Unknown, Suboptimal, OK: a failing check is the most important to surface, and a check whose outcome could not be determined (Unknown) takes precedence over a Suboptimal one."""
 
         Error = "Error"
         OK = "OK"
@@ -788,6 +823,7 @@ class CameraHealth:
 
     @property
     def overall(self):
+        """The aggregated severity across all checks, taking the highest-precedence severity among them. Precedence from highest to lowest is Error, Unknown, Suboptimal, OK: a failing check is the most important to surface, and a check whose outcome could not be determined (Unknown) takes precedence over a Suboptimal one."""
         if self._overall.value is None:
             return None
         for key, internal_value in self.Overall._valid_values.items():
@@ -797,22 +833,27 @@ class CameraHealth:
 
     @property
     def fan(self):
+        """The status of the camera's fan. - OK: Fan operating as expected. - Error: Unexpected fan stop. - Unknown: Fan status could not be determined."""
         return self._fan
 
     @property
     def infield_verification(self):
+        """The status of the camera's most recent infield verification. - OK: Last verification performed within the past year - Suboptimal: Last verification older than one year - Unknown: Camera has never been verified in the field"""
         return self._infield_verification
 
     @property
     def max_transfer_speed(self):
+        """The end-to-end link speed between the camera and the host computer, defined as the minimum of the camera's link speed and the PC's link speed. - OK: Max transfer speed > 1 Gbps - Suboptimal: Max transfer speed = 1 Gbps - Error: Max transfer speed < 1 Gbps - Unknown: Max transfer speed could not be determined"""
         return self._max_transfer_speed
 
     @property
     def memory(self):
+        """The status of the camera's memory test. - OK: Memory was tested and reported zero errors - Error: Memory was tested and an error was located - Unknown: Memory test was not performed"""
         return self._memory
 
     @property
     def temperature(self):
+        """The status of the camera's temperatures. Each sub-status reflects the temperature of a specific component."""
         return self._temperature
 
     @overall.setter

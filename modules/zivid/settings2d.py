@@ -11,8 +11,10 @@ import _zivid
 
 
 class Settings2D:
+    """Settings used when capturing 2D images with a Zivid camera."""
 
     class Acquisition:
+        """Settings for one 2D acquisition. When capturing 2D HDR, all 2D acquisitions must have the same Aperture setting. Use Exposure Time or Gain to control the exposure instead."""
 
         def __init__(
             self,
@@ -85,18 +87,22 @@ class Settings2D:
 
         @property
         def aperture(self):
+            """Aperture setting for the camera. Specified as an f-number (the ratio of lens focal length to the effective aperture diameter). When capturing 2D HDR, all 2D acquisitions must have the same Aperture setting. Use Exposure Time or Gain to control the exposure instead."""
             return self._aperture.value
 
         @property
         def brightness(self):
+            """Brightness controls the light output from the projector. Brightness above 1.0 may be needed when the distance between the camera and the scene is large, or in case of high levels of ambient lighting. When brightness is above 1.0 the duty cycle of the camera (the percentage of time the camera can capture) will be reduced. The duty cycle in boost mode is 50%. The duty cycle is calculated over a 10 second period. This limitation is enforced automatically by the camera. Calling capture when the duty cycle limit has been reached will cause the camera to first wait (sleep) for a duration of time to cool down, before capture will start."""
             return self._brightness.value
 
         @property
         def exposure_time(self):
+            """Exposure time for the image."""
             return self._exposure_time.value
 
         @property
         def gain(self):
+            """Analog gain in the camera."""
             return self._gain.value
 
         @aperture.setter
@@ -178,6 +184,7 @@ class Settings2D:
             return str(_to_internal_settings2d_acquisition(self))
 
     class Diagnostics:
+        """When Diagnostics is enabled, additional diagnostic data is recorded during capture and included when saving the frame to a .zdf file. This enables Zivid's Customer Success team to provide better assistance and more thorough troubleshooting. Enabling Diagnostics increases the capture time and the RAM usage. It will also increase the size of the .zdf file. It is recommended to enable Diagnostics only when reporting issues to Zivid's support team."""
 
         def __init__(
             self,
@@ -193,6 +200,7 @@ class Settings2D:
 
         @property
         def enabled(self):
+            """Enable or disable diagnostics."""
             return self._enabled.value
 
         @enabled.setter
@@ -213,10 +221,13 @@ class Settings2D:
             return str(_to_internal_settings2d_diagnostics(self))
 
     class Processing:
+        """2D processing settings."""
 
         class Color:
+            """Color settings."""
 
             class Balance:
+                """Color balance settings."""
 
                 def __init__(
                     self,
@@ -281,14 +292,17 @@ class Settings2D:
 
                 @property
                 def blue(self):
+                    """Digital gain applied to blue channel."""
                     return self._blue.value
 
                 @property
                 def green(self):
+                    """Digital gain applied to green channel."""
                     return self._green.value
 
                 @property
                 def red(self):
+                    """Digital gain applied to red channel."""
                     return self._red.value
 
                 @blue.setter
@@ -360,8 +374,10 @@ class Settings2D:
                     return str(_to_internal_settings2d_processing_color_balance(self))
 
             class Experimental:
+                """Experimental color settings. These may be renamed, moved or deleted in the future."""
 
                 class Mode:
+                    """This setting controls how the color image is computed. `automatic` is the default option. It performs tone mapping for HDR captures, but not for single-acquisition captures. Use this mode with a single acquisition if you want to have the most control over the colors in the image. `toneMapping` uses all the acquisitions to create one merged and normalized color image. For HDR captures the dynamic range of the captured images is usually higher than the 8-bit color image range. `toneMapping` will map the HDR color data to the 8-bit color output range by applying a scaling factor. `toneMapping` can also be used for single-acquisition captures to normalize the captured color image to the full 8-bit output. Note that when using `toneMapping` mode the color values can be inconsistent over repeated captures if you move, add or remove objects in the scene. For the most control over the colors in the single-acquisition case, select the `automatic` mode."""
 
                     automatic = "automatic"
                     toneMapping = "toneMapping"
@@ -391,6 +407,7 @@ class Settings2D:
 
                 @property
                 def mode(self):
+                    """This setting controls how the color image is computed. `automatic` is the default option. It performs tone mapping for HDR captures, but not for single-acquisition captures. Use this mode with a single acquisition if you want to have the most control over the colors in the image. `toneMapping` uses all the acquisitions to create one merged and normalized color image. For HDR captures the dynamic range of the captured images is usually higher than the 8-bit color image range. `toneMapping` will map the HDR color data to the 8-bit color output range by applying a scaling factor. `toneMapping` can also be used for single-acquisition captures to normalize the captured color image to the full 8-bit output. Note that when using `toneMapping` mode the color values can be inconsistent over repeated captures if you move, add or remove objects in the scene. For the most control over the colors in the single-acquisition case, select the `automatic` mode."""
                     if self._mode.value is None:
                         return None
                     for key, internal_value in self.Mode._valid_values.items():
@@ -458,14 +475,17 @@ class Settings2D:
 
             @property
             def gamma(self):
+                """Gamma applied to the color values. Gamma less than 1 makes the colors brighter, while gamma greater than 1 makes the colors darker."""
                 return self._gamma.value
 
             @property
             def balance(self):
+                """Color balance settings."""
                 return self._balance
 
             @property
             def experimental(self):
+                """Experimental color settings. These may be renamed, moved or deleted in the future."""
                 return self._experimental
 
             @gamma.setter
@@ -525,6 +545,7 @@ class Settings2D:
 
         @property
         def color(self):
+            """Color settings."""
             return self._color
 
         @color.setter
@@ -542,8 +563,10 @@ class Settings2D:
             return str(_to_internal_settings2d_processing(self))
 
     class Sampling:
+        """Sampling settings."""
 
         class Interval:
+            """Sampling interval controls the interval between successive sensor operations (e.g., structured light pattern projection and image exposure), aligned to external frequencies (e.g., 50 Hz, 60 Hz grid) or to other devices (e.g., barcode scanners at 100 Hz). The requested interval is a target: the sensor operations will happen at this rate if the it can fit the chosen exposure time plus some processing overhead. Otherwise, the sampling interval is rounded up to the nearest suitable integer multiple (e.g., n * 10 ms for 100 Hz and n * 8.33 ms for 120 Hz)."""
 
             def __init__(
                 self,
@@ -569,10 +592,12 @@ class Settings2D:
 
             @property
             def duration(self):
+                """Duration between successive sensor operations, in microseconds. The effective interval might be rounded up to the nearest suitable integer multiple and will never be shorter than exposure time plus some processing overhead."""
                 return self._duration.value
 
             @property
             def enabled(self):
+                """Enable or disable sampling interval."""
                 return self._enabled.value
 
             @duration.setter
@@ -604,6 +629,7 @@ class Settings2D:
                 return str(_to_internal_settings2d_sampling_interval(self))
 
         class Color:
+            """Choose how to sample colors for the 2D image. - `rgb` option gives an image with full colors. - `grayscale` option gives a grayscale (r=g=b) image, which can be acquired faster than full colors. - `rgbStrongAmbientLight` option gives an image with full colors and reduced color noise. This option should be chosen only for applications which suffer from high color noise and with high amounts of ambient light in the scene. - `rgbAmbientSuppression` option gives an image with full colors while suppressing the ambient light. The Zivid 2+R and Zivid 3 cameras suppress ambient light by default, and therefore do not need the additional option `rgbAmbientSuppression`. The `grayscale`, `rgbStrongAmbientLight` and `rgbAmbientSuppression` options are not available on all camera models."""
 
             grayscale = "grayscale"
             rgb = "rgb"
@@ -622,6 +648,7 @@ class Settings2D:
                 return list(cls._valid_values.keys())
 
         class Pixel:
+            """Set the pixel sampling to use for the 2D capture. This setting defines how the camera sensor is sampled. When doing 2D+3D capture, picking the same value that is used for 3D is generally recommended."""
 
             all = "all"
             blueSubsample2x2 = "blueSubsample2x2"
@@ -678,6 +705,7 @@ class Settings2D:
 
         @property
         def color(self):
+            """Choose how to sample colors for the 2D image. - `rgb` option gives an image with full colors. - `grayscale` option gives a grayscale (r=g=b) image, which can be acquired faster than full colors. - `rgbStrongAmbientLight` option gives an image with full colors and reduced color noise. This option should be chosen only for applications which suffer from high color noise and with high amounts of ambient light in the scene. - `rgbAmbientSuppression` option gives an image with full colors while suppressing the ambient light. The Zivid 2+R and Zivid 3 cameras suppress ambient light by default, and therefore do not need the additional option `rgbAmbientSuppression`. The `grayscale`, `rgbStrongAmbientLight` and `rgbAmbientSuppression` options are not available on all camera models."""
             if self._color.value is None:
                 return None
             for key, internal_value in self.Color._valid_values.items():
@@ -687,6 +715,7 @@ class Settings2D:
 
         @property
         def pixel(self):
+            """Set the pixel sampling to use for the 2D capture. This setting defines how the camera sensor is sampled. When doing 2D+3D capture, picking the same value that is used for 3D is generally recommended."""
             if self._pixel.value is None:
                 return None
             for key, internal_value in self.Pixel._valid_values.items():
@@ -696,6 +725,7 @@ class Settings2D:
 
         @property
         def interval(self):
+            """Sampling interval controls the interval between successive sensor operations (e.g., structured light pattern projection and image exposure), aligned to external frequencies (e.g., 50 Hz, 60 Hz grid) or to other devices (e.g., barcode scanners at 100 Hz). The requested interval is a target: the sensor operations will happen at this rate if the it can fit the chosen exposure time plus some processing overhead. Otherwise, the sampling interval is rounded up to the nearest suitable integer multiple (e.g., n * 10 ms for 100 Hz and n * 8.33 ms for 120 Hz)."""
             return self._interval
 
         @color.setter
@@ -778,18 +808,22 @@ class Settings2D:
 
     @property
     def acquisitions(self):
+        """List of acquisitions used for 2D capture."""
         return self._acquisitions
 
     @property
     def diagnostics(self):
+        """When Diagnostics is enabled, additional diagnostic data is recorded during capture and included when saving the frame to a .zdf file. This enables Zivid's Customer Success team to provide better assistance and more thorough troubleshooting. Enabling Diagnostics increases the capture time and the RAM usage. It will also increase the size of the .zdf file. It is recommended to enable Diagnostics only when reporting issues to Zivid's support team."""
         return self._diagnostics
 
     @property
     def processing(self):
+        """2D processing settings."""
         return self._processing
 
     @property
     def sampling(self):
+        """Sampling settings."""
         return self._sampling
 
     @acquisitions.setter

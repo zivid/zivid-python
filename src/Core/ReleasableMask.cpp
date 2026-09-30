@@ -13,7 +13,7 @@ namespace ZividPython
         pyClass.def(py::init<>(), "Create an empty mask")
             .def(
                 py::init<const Zivid::Resolution &>(),
-                "Create a zero-filled mask with the specified resolution",
+                "Create a nonzero-filled mask with the specified resolution",
                 py::arg("resolution"))
             .def(
                 py::init<const Zivid::Resolution &, const uint8_t *, const uint8_t *>(),

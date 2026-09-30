@@ -1,4 +1,5 @@
 [requires]
+dlpack/1.2
 eigen/3.4.0
 pybind11/2.12.0
 

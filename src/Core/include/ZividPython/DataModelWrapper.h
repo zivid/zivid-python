@@ -195,7 +195,8 @@ namespace ZividPython
                 .def(py::self != py::self) // NOLINT
                 .def_readonly_static("node_type", &Target::nodeType)
                 .def_readonly_static("name", &Target::name)
-                .def_readonly_static("path", &Target::path);
+                .def_readonly_static("path", &Target::path)
+                .def_readonly_static("description", &Target::description);
 
             pyClass.attr("uninstantiated_node") = uninstantiatedNode;
 

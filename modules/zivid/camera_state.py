@@ -9,14 +9,19 @@ import _zivid
 
 
 class CameraState:
+    """Information about camera connection state, temperatures, etc."""
 
     class Network:
+        """Current network state"""
 
         class LocalInterface:
+            """Current state of the computer's local network interface."""
 
             class Ethernet:
+                """Current Ethernet state"""
 
                 class LinkSpeed:
+                    """The link speed that the computer's Ethernet interface is operating at."""
 
                     link100Mbps = "link100Mbps"
                     link10Gbps = "link10Gbps"
@@ -58,6 +63,7 @@ class CameraState:
 
                 @property
                 def link_speed(self):
+                    """The link speed that the computer's Ethernet interface is operating at."""
                     if self._link_speed.value is None:
                         return None
                     for key, internal_value in self.LinkSpeed._valid_values.items():
@@ -87,8 +93,10 @@ class CameraState:
                     return str(_to_internal_camera_state_network_local_interface_ethernet(self))
 
             class IPV4:
+                """Current IPv4 protocol state of the computer's local network interface."""
 
                 class Subnet:
+                    """An IPv4 subnet that the local network interface is connected to."""
 
                     def __init__(
                         self,
@@ -112,10 +120,12 @@ class CameraState:
 
                     @property
                     def address(self):
+                        """IP address of the computer's local network interface."""
                         return self._address.value
 
                     @property
                     def mask(self):
+                        """Subnet mask of the computer's local network interface."""
                         return self._mask.value
 
                     @address.setter
@@ -167,6 +177,7 @@ class CameraState:
 
                 @property
                 def subnets(self):
+                    """List of IPv4 addresses and subnet masks that the interface is configured with. This list can contain multiple entries if the local network interface is configured with multiple IPv4 addresses."""
                     return self._subnets
 
                 @subnets.setter
@@ -216,14 +227,17 @@ class CameraState:
 
             @property
             def interface_name(self):
+                """Name of the computer's local network interface."""
                 return self._interface_name.value
 
             @property
             def ethernet(self):
+                """Current Ethernet state"""
                 return self._ethernet
 
             @property
             def ipv4(self):
+                """Current IPv4 protocol state of the computer's local network interface."""
                 return self._ipv4
 
             @interface_name.setter
@@ -258,8 +272,10 @@ class CameraState:
                 return str(_to_internal_camera_state_network_local_interface(self))
 
         class Ethernet:
+            """Current Ethernet state"""
 
             class LinkSpeed:
+                """The link speed that the camera's Ethernet interface is operating at."""
 
                 link100Mbps = "link100Mbps"
                 link10Gbps = "link10Gbps"
@@ -301,6 +317,7 @@ class CameraState:
 
             @property
             def link_speed(self):
+                """The link speed that the camera's Ethernet interface is operating at."""
                 if self._link_speed.value is None:
                     return None
                 for key, internal_value in self.LinkSpeed._valid_values.items():
@@ -328,6 +345,7 @@ class CameraState:
                 return str(_to_internal_camera_state_network_ethernet(self))
 
         class IPV4:
+            """Current IPv4 protocol state"""
 
             def __init__(
                 self,
@@ -343,6 +361,7 @@ class CameraState:
 
             @property
             def address(self):
+                """Current IPv4 address"""
                 return self._address.value
 
             @address.setter
@@ -397,14 +416,17 @@ class CameraState:
 
         @property
         def local_interfaces(self):
+            """List of the computer's local network interfaces that discovered the camera. In the most common scenario with the camera connected to the computer with an Ethernet cable, this list will contain only the network interface for that Ethernet port. In more complex network scenarios it can be the case that the camera is discovered by multiple interfaces, and in that case this list will contain multiple network interfaces. However, when `CameraState::Status` is `connected`, only the one network interface that has the active TCP/IP connection to the camera will be listed."""
             return self._local_interfaces
 
         @property
         def ethernet(self):
+            """Current Ethernet state"""
             return self._ethernet
 
         @property
         def ipv4(self):
+            """Current IPv4 protocol state"""
             return self._ipv4
 
         @local_interfaces.setter
@@ -443,6 +465,7 @@ class CameraState:
             return str(_to_internal_camera_state_network(self))
 
     class Temperature:
+        """Current temperature(s)"""
 
         def __init__(
             self,
@@ -520,22 +543,27 @@ class CameraState:
 
         @property
         def dmd(self):
+            """DMD temperature"""
             return self._dmd.value
 
         @property
         def general(self):
+            """General temperature"""
             return self._general.value
 
         @property
         def led(self):
+            """LED temperature"""
             return self._led.value
 
         @property
         def lens(self):
+            """Lens temperature"""
             return self._lens.value
 
         @property
         def pcb(self):
+            """PCB temperature"""
             return self._pcb.value
 
         @dmd.setter
@@ -628,6 +656,7 @@ class CameraState:
             return str(_to_internal_camera_state_temperature(self))
 
     class InaccessibleReason:
+        """If the camera status is `inaccessible`, then this enum value will give you the reason."""
 
         ipConflictWithAnotherCamera = "ipConflictWithAnotherCamera"
         ipConflictWithLocalNetworkAdapter = "ipConflictWithLocalNetworkAdapter"
@@ -646,6 +675,7 @@ class CameraState:
             return list(cls._valid_values.keys())
 
     class Status:
+        """This enum describes the current status of this camera. The enum can have the following values: * `inaccessible`: The camera was discovered, but the SDK is not able to connect to this camera. This can be because the IP settings of the camera and the PC are not compatible, or because there are several cameras with the same IP connected to your PC. The `InaccessibleReason` enum will give you more details about why this camera is not accessible. The network configuration of the camera can be changed using the ZividNetworkCameraConfigurator CLI tool. See the knowledge base for more information. * `busy`: The camera is currently in use by another process. This can be a different process on the same PC, or on a different PC if the camera is shared on a network. * `applyingNetworkConfiguration`: The camera network configuration is being changed by the current process. * `firmwareUpdateRequired`: The camera is accessible, but requires a firmware update before you can connect to it. * `updatingFirmware`: The camera firmware is currently being updated in the current process. * `available`: The camera is available for use by the current process. This means that you can invoke camera.connect() on this camera. * `connecting`: The camera is currently connecting in the current process. * `connected`: The camera is connected in the current process. This means camera.connect() has successfully completed and you can capture using this camera. * `disconnecting`: The camera is currently disconnecting in the current process. When disconnection has completed, the camera will normally go back to the `available` state. * `disappeared`: The camera was found earlier, but it can no longer be found. The connection between the PC and the camera may be disrupted, or the camera may have lost power. When in `disappeared` state, the camera will not be returned from `Application::cameras()`. The camera will go back to one of the other states if the camera is later found again."""
 
         applyingNetworkConfiguration = "applyingNetworkConfiguration"
         available = "available"
@@ -727,14 +757,17 @@ class CameraState:
 
     @property
     def available(self):
+        """Flag if camera is physically connected to the computer and is available for use, but not connected in software. This corresponds to the Status enums `available` or `firmwareUpdateRequired`. Zivid recommends to use the Status enum instead of this bool."""
         return self._available.value
 
     @property
     def connected(self):
+        """Flag if camera is connected in software. This bool is true when the Status value is `connected`. Zivid recommends to use the Status enum instead of this bool."""
         return self._connected.value
 
     @property
     def inaccessible_reason(self):
+        """If the camera status is `inaccessible`, then this enum value will give you the reason."""
         if self._inaccessible_reason.value is None:
             return None
         for key, internal_value in self.InaccessibleReason._valid_values.items():
@@ -744,6 +777,7 @@ class CameraState:
 
     @property
     def status(self):
+        """This enum describes the current status of this camera. The enum can have the following values: * `inaccessible`: The camera was discovered, but the SDK is not able to connect to this camera. This can be because the IP settings of the camera and the PC are not compatible, or because there are several cameras with the same IP connected to your PC. The `InaccessibleReason` enum will give you more details about why this camera is not accessible. The network configuration of the camera can be changed using the ZividNetworkCameraConfigurator CLI tool. See the knowledge base for more information. * `busy`: The camera is currently in use by another process. This can be a different process on the same PC, or on a different PC if the camera is shared on a network. * `applyingNetworkConfiguration`: The camera network configuration is being changed by the current process. * `firmwareUpdateRequired`: The camera is accessible, but requires a firmware update before you can connect to it. * `updatingFirmware`: The camera firmware is currently being updated in the current process. * `available`: The camera is available for use by the current process. This means that you can invoke camera.connect() on this camera. * `connecting`: The camera is currently connecting in the current process. * `connected`: The camera is connected in the current process. This means camera.connect() has successfully completed and you can capture using this camera. * `disconnecting`: The camera is currently disconnecting in the current process. When disconnection has completed, the camera will normally go back to the `available` state. * `disappeared`: The camera was found earlier, but it can no longer be found. The connection between the PC and the camera may be disrupted, or the camera may have lost power. When in `disappeared` state, the camera will not be returned from `Application::cameras()`. The camera will go back to one of the other states if the camera is later found again."""
         if self._status.value is None:
             return None
         for key, internal_value in self.Status._valid_values.items():
@@ -753,10 +787,12 @@ class CameraState:
 
     @property
     def network(self):
+        """Current network state"""
         return self._network
 
     @property
     def temperature(self):
+        """Current temperature(s)"""
         return self._temperature
 
     @available.setter

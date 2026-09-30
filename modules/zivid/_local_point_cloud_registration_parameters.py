@@ -7,8 +7,10 @@ import _zivid
 
 
 class LocalPointCloudRegistrationParameters:
+    """Input parameters for controlling the local point cloud registration process."""
 
     class ConvergenceCriteria:
+        """Criteria for ending iteration early. Iteration will end when all criteria are satisfied."""
 
         def __init__(
             self,
@@ -58,10 +60,12 @@ class LocalPointCloudRegistrationParameters:
 
         @property
         def rmse_diff_threshold(self):
+            """Stop iteration when the absolute change in root mean square error (RMSE) from previous iteration is less than this threshold. RMSE is defined as the square root of the average squared distance between corresponding points in the source and target point clouds."""
             return self._rmse_diff_threshold.value
 
         @property
         def source_coverage_diff_threshold(self):
+            """Stop iteration when the absolute change in coverage from previous iteration is less than this threshold. Coverage is defined as the fraction of points in the source point cloud that found a correspondence in the target point cloud."""
             return self._source_coverage_diff_threshold.value
 
         @rmse_diff_threshold.setter
@@ -154,14 +158,17 @@ class LocalPointCloudRegistrationParameters:
 
     @property
     def max_correspondence_distance(self):
+        """The radius around each source point in which the algorithm will look for neighbors in the target point cloud. Should be larger than the typical distance between points in the point clouds. This parameter may have a significant performance impact."""
         return self._max_correspondence_distance.value
 
     @property
     def max_iteration_count(self):
+        """End iteration when reaching this number, even if convergence criteria are not yet satisfied."""
         return self._max_iteration_count.value
 
     @property
     def convergence_criteria(self):
+        """Criteria for ending iteration early. Iteration will end when all criteria are satisfied."""
         return self._convergence_criteria
 
     @max_correspondence_distance.setter

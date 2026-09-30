@@ -7,10 +7,13 @@ import _zivid
 
 
 class SceneConditions:
+    """A description of the ambient conditions detected by the camera."""
 
     class AmbientLight:
+        """The ambient light detected by the camera."""
 
         class FlickerClassification:
+            """A classification of the detected ambient light flicker, if any. The values `grid50hz` and `grid60hz` indicate that ambient light matching a 50 Hz or 60 Hz power grid was detected in the scene. In those cases it is recommended to use Ambient Light Adaptation for better point cloud quality. The value `unknownFlicker` indicates that some significant time-varying ambient light was detected, but it was not possible to determine the frequency. `otherFlicker` indicates that ambient light of a particular frequency was detected but it did not match the characteristics of a standard power grid."""
 
             grid50hz = "grid50hz"
             grid60hz = "grid60hz"
@@ -69,6 +72,7 @@ class SceneConditions:
 
         @property
         def flicker_classification(self):
+            """A classification of the detected ambient light flicker, if any. The values `grid50hz` and `grid60hz` indicate that ambient light matching a 50 Hz or 60 Hz power grid was detected in the scene. In those cases it is recommended to use Ambient Light Adaptation for better point cloud quality. The value `unknownFlicker` indicates that some significant time-varying ambient light was detected, but it was not possible to determine the frequency. `otherFlicker` indicates that ambient light of a particular frequency was detected but it did not match the characteristics of a standard power grid."""
             if self._flicker_classification.value is None:
                 return None
             for key, internal_value in self.FlickerClassification._valid_values.items():
@@ -78,6 +82,7 @@ class SceneConditions:
 
         @property
         def flicker_frequency(self):
+            """This field contains the actual frequency unless the classification is `noFlicker` or `unknownFlicker`."""
             return self._flicker_frequency.value
 
         @flicker_classification.setter
@@ -133,6 +138,7 @@ class SceneConditions:
 
     @property
     def ambient_light(self):
+        """The ambient light detected by the camera."""
         return self._ambient_light
 
     @ambient_light.setter

@@ -1,3 +1,4 @@
+#include <ZividPython/DLPack.h>
 #include <ZividPython/ReleasablePointCloudDeviceArray.h>
 
 #include <pybind11/pybind11.h>
@@ -22,6 +23,7 @@ namespace ZividPython
                 .def("device_pointer", [](const ReleasableType &self) {
                     return reinterpret_cast<std::uintptr_t>(self.devicePointer());
                 });
+            addDLPackMethods(pyClass);
         }
     } // namespace
 

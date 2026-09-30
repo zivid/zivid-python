@@ -11,8 +11,8 @@ class Mask:
     """Binary mask for filtering point cloud data.
 
     The Mask class represents a 2D binary mask that can be used to filter point cloud data.
-    Non-zero values in the mask indicate that the corresponding point should be preserved,
-    while zero values indicate that the point should be masked out (set to NaN).
+    Non-zero values in the mask indicate that the corresponding point should be masked out
+    (set to NaN), while zero values indicate that the point should be preserved.
     """
 
     def __init__(self, mask_data):
@@ -21,7 +21,7 @@ class Mask:
         Args:
             mask_data: Can be one of:
                 - A 2D numpy array of booleans or uint8 values
-                - A zivid.Resolution object to create an empty mask
+                - A zivid.Resolution object to create a mask that masks out every point
                 - An internal _zivid.Mask instance
 
         Raises:
