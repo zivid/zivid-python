@@ -18,10 +18,10 @@ class Settings2D:
 
         def __init__(
             self,
-            aperture: float | int | None = _zivid.Settings2D.Acquisition.Aperture().value,
-            brightness: float | int | None = _zivid.Settings2D.Acquisition.Brightness().value,
-            exposure_time: datetime.timedelta | None = _zivid.Settings2D.Acquisition.ExposureTime().value,
-            gain: float | int | None = _zivid.Settings2D.Acquisition.Gain().value,
+            aperture: float | int | None = None,
+            brightness: float | int | None = None,
+            exposure_time: datetime.timedelta | None = None,
+            gain: float | int | None = None,
         ):
 
             if (
@@ -188,7 +188,7 @@ class Settings2D:
 
         def __init__(
             self,
-            enabled: bool | None = _zivid.Settings2D.Diagnostics.Enabled().value,
+            enabled: bool | None = None,
         ):
 
             if isinstance(enabled, (bool,)) or enabled is None:
@@ -231,9 +231,9 @@ class Settings2D:
 
                 def __init__(
                     self,
-                    blue: float | int | None = _zivid.Settings2D.Processing.Color.Balance.Blue().value,
-                    green: float | int | None = _zivid.Settings2D.Processing.Color.Balance.Green().value,
-                    red: float | int | None = _zivid.Settings2D.Processing.Color.Balance.Red().value,
+                    blue: float | int | None = None,
+                    green: float | int | None = None,
+                    red: float | int | None = None,
                 ):
 
                     if (
@@ -389,11 +389,12 @@ class Settings2D:
 
                     @classmethod
                     def valid_values(cls):
+                        """All valid values of Mode"""
                         return list(cls._valid_values.keys())
 
                 def __init__(
                     self,
-                    mode: str | None = _zivid.Settings2D.Processing.Color.Experimental.Mode().value,
+                    mode: str | None = None,
                 ):
 
                     if isinstance(mode, _zivid.Settings2D.Processing.Color.Experimental.Mode.enum) or mode is None:
@@ -438,7 +439,7 @@ class Settings2D:
 
             def __init__(
                 self,
-                gamma: float | int | None = _zivid.Settings2D.Processing.Color.Gamma().value,
+                gamma: float | int | None = None,
                 balance: Settings2D.Processing.Color.Balance | None = None,
                 experimental: Settings2D.Processing.Color.Experimental | None = None,
             ):
@@ -570,8 +571,8 @@ class Settings2D:
 
             def __init__(
                 self,
-                duration: datetime.timedelta | None = _zivid.Settings2D.Sampling.Interval.Duration().value,
-                enabled: bool | None = _zivid.Settings2D.Sampling.Interval.Enabled().value,
+                duration: datetime.timedelta | None = None,
+                enabled: bool | None = None,
             ):
 
                 if isinstance(duration, (datetime.timedelta,)) or duration is None:
@@ -645,6 +646,7 @@ class Settings2D:
 
             @classmethod
             def valid_values(cls):
+                """All valid values of Color"""
                 return list(cls._valid_values.keys())
 
         class Pixel:
@@ -670,12 +672,13 @@ class Settings2D:
 
             @classmethod
             def valid_values(cls):
+                """All valid values of Pixel"""
                 return list(cls._valid_values.keys())
 
         def __init__(
             self,
-            color: str | None = _zivid.Settings2D.Sampling.Color().value,
-            pixel: str | None = _zivid.Settings2D.Sampling.Pixel().value,
+            color: str | None = None,
+            pixel: str | None = None,
             interval: Settings2D.Sampling.Interval | None = None,
         ):
 
@@ -857,16 +860,27 @@ class Settings2D:
 
     @classmethod
     def load(cls, file_name):
+        """Construct Settings2D by loading from file"""
         return _to_settings2d(_zivid.Settings2D(str(file_name)))
 
     def save(self, file_name):
+        """Save to the given file"""
         _to_internal_settings2d(self).save(str(file_name))
 
     @classmethod
     def from_serialized(cls, value):
+        """Construct a new Settings2D instance from a previously serialized string
+
+        See also serialize.
+        """
         return _to_settings2d(_zivid.Settings2D.from_serialized(str(value)))
 
     def serialize(self):
+        """Serialize to a string
+
+        See also from_serialized. The returned string is formatted in YAML, and is compatible with
+        the contents of files saved using save.
+        """
         return _to_internal_settings2d(self).serialize()
 
     def __eq__(self, other):

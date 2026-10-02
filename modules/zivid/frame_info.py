@@ -16,7 +16,7 @@ class FrameInfo:
 
         def __init__(
             self,
-            packet_loss: bool = _zivid.FrameInfo.Diagnostics.PacketLoss().value,
+            packet_loss: bool = False,
         ):
 
             if isinstance(packet_loss, (bool,)):
@@ -51,11 +51,11 @@ class FrameInfo:
 
         def __init__(
             self,
-            acquisition_time: datetime.timedelta = _zivid.FrameInfo.Metrics.AcquisitionTime().value,
-            capture_time: datetime.timedelta = _zivid.FrameInfo.Metrics.CaptureTime().value,
-            kernel_compute_time: datetime.timedelta = _zivid.FrameInfo.Metrics.KernelComputeTime().value,
-            reprocessing_time: datetime.timedelta | None = _zivid.FrameInfo.Metrics.ReprocessingTime().value,
-            throttling_time: datetime.timedelta = _zivid.FrameInfo.Metrics.ThrottlingTime().value,
+            acquisition_time: datetime.timedelta = datetime.timedelta(microseconds=-1),
+            capture_time: datetime.timedelta = datetime.timedelta(microseconds=-1),
+            kernel_compute_time: datetime.timedelta = datetime.timedelta(microseconds=-1),
+            reprocessing_time: datetime.timedelta | None = None,
+            throttling_time: datetime.timedelta = datetime.timedelta(microseconds=-1),
         ):
 
             if isinstance(acquisition_time, (datetime.timedelta,)):
@@ -194,7 +194,7 @@ class FrameInfo:
 
         def __init__(
             self,
-            core: str = _zivid.FrameInfo.SoftwareVersion.Core().value,
+            core: str = "No-version",
         ):
 
             if isinstance(core, (str,)):
@@ -230,7 +230,7 @@ class FrameInfo:
 
             def __init__(
                 self,
-                model: str = _zivid.FrameInfo.SystemInfo.CPU.Model().value,
+                model: str = "",
             ):
 
                 if isinstance(model, (str,)):
@@ -265,8 +265,8 @@ class FrameInfo:
 
             def __init__(
                 self,
-                model: str = _zivid.FrameInfo.SystemInfo.ComputeDevice.Model().value,
-                vendor: str = _zivid.FrameInfo.SystemInfo.ComputeDevice.Vendor().value,
+                model: str = "",
+                vendor: str = "",
             ):
 
                 if isinstance(model, (str,)):
@@ -317,7 +317,7 @@ class FrameInfo:
 
         def __init__(
             self,
-            operating_system: str = _zivid.FrameInfo.SystemInfo.OperatingSystem().value,
+            operating_system: str = "",
             cpu: FrameInfo.SystemInfo.CPU | None = None,
             compute_device: FrameInfo.SystemInfo.ComputeDevice | None = None,
         ):
@@ -389,7 +389,7 @@ class FrameInfo:
 
     def __init__(
         self,
-        time_stamp: datetime.datetime = _zivid.FrameInfo.TimeStamp().value,
+        time_stamp: datetime.datetime = datetime.datetime.fromtimestamp(0),
         diagnostics: FrameInfo.Diagnostics | None = None,
         metrics: FrameInfo.Metrics | None = None,
         software_version: FrameInfo.SoftwareVersion | None = None,
@@ -487,16 +487,27 @@ class FrameInfo:
 
     @classmethod
     def load(cls, file_name):
+        """Construct FrameInfo by loading from file"""
         return _to_frame_info(_zivid.FrameInfo(str(file_name)))
 
     def save(self, file_name):
+        """Save to the given file"""
         _to_internal_frame_info(self).save(str(file_name))
 
     @classmethod
     def from_serialized(cls, value):
+        """Construct a new FrameInfo instance from a previously serialized string
+
+        See also serialize.
+        """
         return _to_frame_info(_zivid.FrameInfo.from_serialized(str(value)))
 
     def serialize(self):
+        """Serialize to a string
+
+        See also from_serialized. The returned string is formatted in YAML, and is compatible with
+        the contents of files saved using save.
+        """
         return _to_internal_frame_info(self).serialize()
 
     def __eq__(self, other):

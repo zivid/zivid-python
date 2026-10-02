@@ -43,11 +43,12 @@ class CameraState:
 
                     @classmethod
                     def valid_values(cls):
+                        """All valid values of LinkSpeed"""
                         return list(cls._valid_values.keys())
 
                 def __init__(
                     self,
-                    link_speed: str = _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed().value,
+                    link_speed: str = "unknown",
                 ):
 
                     if isinstance(link_speed, _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.enum):
@@ -100,8 +101,8 @@ class CameraState:
 
                     def __init__(
                         self,
-                        address: str = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Address().value,
-                        mask: str = _zivid.CameraState.Network.LocalInterface.IPV4.Subnet.Mask().value,
+                        address: str = "",
+                        mask: str = "",
                     ):
 
                         if isinstance(address, (str,)):
@@ -201,7 +202,7 @@ class CameraState:
 
             def __init__(
                 self,
-                interface_name: str = _zivid.CameraState.Network.LocalInterface.InterfaceName().value,
+                interface_name: str = "",
                 ethernet: CameraState.Network.LocalInterface.Ethernet | None = None,
                 ipv4: CameraState.Network.LocalInterface.IPV4 | None = None,
             ):
@@ -297,11 +298,12 @@ class CameraState:
 
                 @classmethod
                 def valid_values(cls):
+                    """All valid values of LinkSpeed"""
                     return list(cls._valid_values.keys())
 
             def __init__(
                 self,
-                link_speed: str = _zivid.CameraState.Network.Ethernet.LinkSpeed().value,
+                link_speed: str = "unknown",
             ):
 
                 if isinstance(link_speed, _zivid.CameraState.Network.Ethernet.LinkSpeed.enum):
@@ -349,7 +351,7 @@ class CameraState:
 
             def __init__(
                 self,
-                address: str = _zivid.CameraState.Network.IPV4.Address().value,
+                address: str = "",
             ):
 
                 if isinstance(address, (str,)):
@@ -469,11 +471,11 @@ class CameraState:
 
         def __init__(
             self,
-            dmd: float | int = _zivid.CameraState.Temperature.DMD().value,
-            general: float | int = _zivid.CameraState.Temperature.General().value,
-            led: float | int = _zivid.CameraState.Temperature.LED().value,
-            lens: float | int = _zivid.CameraState.Temperature.Lens().value,
-            pcb: float | int = _zivid.CameraState.Temperature.PCB().value,
+            dmd: float | int = 0.0,
+            general: float | int = 0.0,
+            led: float | int = 0.0,
+            lens: float | int = 0.0,
+            pcb: float | int = 0.0,
         ):
 
             if isinstance(
@@ -672,6 +674,7 @@ class CameraState:
 
         @classmethod
         def valid_values(cls):
+            """All valid values of InaccessibleReason"""
             return list(cls._valid_values.keys())
 
     class Status:
@@ -703,14 +706,15 @@ class CameraState:
 
         @classmethod
         def valid_values(cls):
+            """All valid values of Status"""
             return list(cls._valid_values.keys())
 
     def __init__(
         self,
-        available: bool = _zivid.CameraState.Available().value,
-        connected: bool = _zivid.CameraState.Connected().value,
-        inaccessible_reason: str | None = _zivid.CameraState.InaccessibleReason().value,
-        status: str = _zivid.CameraState.Status().value,
+        available: bool = False,
+        connected: bool = False,
+        inaccessible_reason: str | None = None,
+        status: str = "inaccessible",
         network: CameraState.Network | None = None,
         temperature: CameraState.Temperature | None = None,
     ):
@@ -843,16 +847,27 @@ class CameraState:
 
     @classmethod
     def load(cls, file_name):
+        """Construct CameraState by loading from file"""
         return _to_camera_state(_zivid.CameraState(str(file_name)))
 
     def save(self, file_name):
+        """Save to the given file"""
         _to_internal_camera_state(self).save(str(file_name))
 
     @classmethod
     def from_serialized(cls, value):
+        """Construct a new CameraState instance from a previously serialized string
+
+        See also serialize.
+        """
         return _to_camera_state(_zivid.CameraState.from_serialized(str(value)))
 
     def serialize(self):
+        """Serialize to a string
+
+        See also from_serialized. The returned string is formatted in YAML, and is compatible with
+        the contents of files saved using save.
+        """
         return _to_internal_camera_state(self).serialize()
 
     def __eq__(self, other):

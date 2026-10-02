@@ -14,12 +14,8 @@ class LocalPointCloudRegistrationParameters:
 
         def __init__(
             self,
-            rmse_diff_threshold: (
-                float | int
-            ) = _zivid.toolbox.LocalPointCloudRegistrationParameters.ConvergenceCriteria.RMSEDiffThreshold().value,
-            source_coverage_diff_threshold: (
-                float | int
-            ) = _zivid.toolbox.LocalPointCloudRegistrationParameters.ConvergenceCriteria.SourceCoverageDiffThreshold().value,
+            rmse_diff_threshold: float | int = 0.0001,
+            source_coverage_diff_threshold: float | int = 0.0001,
         ):
 
             if isinstance(
@@ -115,10 +111,8 @@ class LocalPointCloudRegistrationParameters:
 
     def __init__(
         self,
-        max_correspondence_distance: (
-            float | int
-        ) = _zivid.toolbox.LocalPointCloudRegistrationParameters.MaxCorrespondenceDistance().value,
-        max_iteration_count: int = _zivid.toolbox.LocalPointCloudRegistrationParameters.MaxIterationCount().value,
+        max_correspondence_distance: float | int = 10.0,
+        max_iteration_count: int = 200,
         convergence_criteria: LocalPointCloudRegistrationParameters.ConvergenceCriteria | None = None,
     ):
 
@@ -203,20 +197,31 @@ class LocalPointCloudRegistrationParameters:
 
     @classmethod
     def load(cls, file_name):
+        """Construct LocalPointCloudRegistrationParameters by loading from file"""
         return _to_toolbox_local_point_cloud_registration_parameters(
             _zivid.toolbox.LocalPointCloudRegistrationParameters(str(file_name))
         )
 
     def save(self, file_name):
+        """Save to the given file"""
         _to_internal_toolbox_local_point_cloud_registration_parameters(self).save(str(file_name))
 
     @classmethod
     def from_serialized(cls, value):
+        """Construct a new LocalPointCloudRegistrationParameters instance from a previously serialized string
+
+        See also serialize.
+        """
         return _to_toolbox_local_point_cloud_registration_parameters(
             _zivid.toolbox.LocalPointCloudRegistrationParameters.from_serialized(str(value))
         )
 
     def serialize(self):
+        """Serialize to a string
+
+        See also from_serialized. The returned string is formatted in YAML, and is compatible with
+        the contents of files saved using save.
+        """
         return _to_internal_toolbox_local_point_cloud_registration_parameters(self).serialize()
 
     def __eq__(self, other):

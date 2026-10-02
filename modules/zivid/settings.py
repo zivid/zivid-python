@@ -5,6 +5,7 @@ from __future__ import annotations
 import collections.abc
 
 # pylint: disable=too-many-lines,protected-access,too-few-public-methods,too-many-arguments,too-many-positional-arguments,line-too-long,missing-function-docstring,missing-class-docstring,redefined-builtin,too-many-branches,too-many-boolean-expressions
+import copy
 import datetime
 
 import _zivid
@@ -19,10 +20,10 @@ class Settings:
 
         def __init__(
             self,
-            aperture: float | int | None = _zivid.Settings.Acquisition.Aperture().value,
-            brightness: float | int | None = _zivid.Settings.Acquisition.Brightness().value,
-            exposure_time: datetime.timedelta | None = _zivid.Settings.Acquisition.ExposureTime().value,
-            gain: float | int | None = _zivid.Settings.Acquisition.Gain().value,
+            aperture: float | int | None = None,
+            brightness: float | int | None = None,
+            exposure_time: datetime.timedelta | None = None,
+            gain: float | int | None = None,
         ):
 
             if (
@@ -189,7 +190,7 @@ class Settings:
 
         def __init__(
             self,
-            enabled: bool | None = _zivid.Settings.Diagnostics.Enabled().value,
+            enabled: bool | None = None,
         ):
 
             if isinstance(enabled, (bool,)) or enabled is None:
@@ -232,9 +233,9 @@ class Settings:
 
                 def __init__(
                     self,
-                    blue: float | int | None = _zivid.Settings.Processing.Color.Balance.Blue().value,
-                    green: float | int | None = _zivid.Settings.Processing.Color.Balance.Green().value,
-                    red: float | int | None = _zivid.Settings.Processing.Color.Balance.Red().value,
+                    blue: float | int | None = None,
+                    green: float | int | None = None,
+                    red: float | int | None = None,
                 ):
 
                     if (
@@ -392,11 +393,12 @@ class Settings:
 
                     @classmethod
                     def valid_values(cls):
+                        """All valid values of Mode"""
                         return list(cls._valid_values.keys())
 
                 def __init__(
                     self,
-                    mode: str | None = _zivid.Settings.Processing.Color.Experimental.Mode().value,
+                    mode: str | None = None,
                 ):
 
                     if isinstance(mode, _zivid.Settings.Processing.Color.Experimental.Mode.enum) or mode is None:
@@ -439,7 +441,7 @@ class Settings:
 
             def __init__(
                 self,
-                gamma: float | int | None = _zivid.Settings.Processing.Color.Gamma().value,
+                gamma: float | int | None = None,
                 balance: Settings.Processing.Color.Balance | None = None,
                 experimental: Settings.Processing.Color.Experimental | None = None,
             ):
@@ -544,13 +546,9 @@ class Settings:
 
                     def __init__(
                         self,
-                        enabled: bool | None = _zivid.Settings.Processing.Filters.Cluster.Removal.Enabled().value,
-                        max_neighbor_distance: (
-                            float | int | None
-                        ) = _zivid.Settings.Processing.Filters.Cluster.Removal.MaxNeighborDistance().value,
-                        min_area: (
-                            float | int | None
-                        ) = _zivid.Settings.Processing.Filters.Cluster.Removal.MinArea().value,
+                        enabled: bool | None = None,
+                        max_neighbor_distance: float | int | None = None,
+                        min_area: float | int | None = None,
                     ):
 
                         if isinstance(enabled, (bool,)) or enabled is None:
@@ -723,12 +721,8 @@ class Settings:
 
                         def __init__(
                             self,
-                            enabled: (
-                                bool | None
-                            ) = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Enabled().value,
-                            strength: (
-                                float | int | None
-                            ) = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Strength().value,
+                            enabled: bool | None = None,
+                            strength: float | int | None = None,
                         ):
 
                             if isinstance(enabled, (bool,)) or enabled is None:
@@ -824,12 +818,8 @@ class Settings:
 
                         def __init__(
                             self,
-                            enabled: (
-                                bool | None
-                            ) = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Enabled().value,
-                            threshold: (
-                                float | int | None
-                            ) = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Threshold().value,
+                            enabled: bool | None = None,
+                            threshold: float | int | None = None,
                         ):
 
                             if isinstance(enabled, (bool,)) or enabled is None:
@@ -1010,9 +1000,9 @@ class Settings:
 
                     def __init__(
                         self,
-                        enabled: bool | None = _zivid.Settings.Processing.Filters.Hole.Repair.Enabled().value,
-                        hole_size: float | int | None = _zivid.Settings.Processing.Filters.Hole.Repair.HoleSize().value,
-                        strictness: int | None = _zivid.Settings.Processing.Filters.Hole.Repair.Strictness().value,
+                        enabled: bool | None = None,
+                        hole_size: float | int | None = None,
+                        strictness: int | None = None,
                     ):
 
                         if isinstance(enabled, (bool,)) or enabled is None:
@@ -1158,10 +1148,8 @@ class Settings:
 
                     def __init__(
                         self,
-                        enabled: bool | None = _zivid.Settings.Processing.Filters.Noise.Removal.Enabled().value,
-                        threshold: (
-                            float | int | None
-                        ) = _zivid.Settings.Processing.Filters.Noise.Removal.Threshold().value,
+                        enabled: bool | None = None,
+                        threshold: float | int | None = None,
                     ):
 
                         if isinstance(enabled, (bool,)) or enabled is None:
@@ -1245,7 +1233,7 @@ class Settings:
 
                     def __init__(
                         self,
-                        enabled: bool | None = _zivid.Settings.Processing.Filters.Noise.Repair.Enabled().value,
+                        enabled: bool | None = None,
                     ):
 
                         if isinstance(enabled, (bool,)) or enabled is None:
@@ -1286,7 +1274,7 @@ class Settings:
 
                     def __init__(
                         self,
-                        enabled: bool | None = _zivid.Settings.Processing.Filters.Noise.Suppression.Enabled().value,
+                        enabled: bool | None = None,
                     ):
 
                         if isinstance(enabled, (bool,)) or enabled is None:
@@ -1400,10 +1388,8 @@ class Settings:
 
                     def __init__(
                         self,
-                        enabled: bool | None = _zivid.Settings.Processing.Filters.Outlier.Removal.Enabled().value,
-                        threshold: (
-                            float | int | None
-                        ) = _zivid.Settings.Processing.Filters.Outlier.Removal.Threshold().value,
+                        enabled: bool | None = None,
+                        threshold: float | int | None = None,
                     ):
 
                         if isinstance(enabled, (bool,)) or enabled is None:
@@ -1531,12 +1517,13 @@ class Settings:
 
                         @classmethod
                         def valid_values(cls):
+                            """All valid values of Mode"""
                             return list(cls._valid_values.keys())
 
                     def __init__(
                         self,
-                        enabled: bool | None = _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled().value,
-                        mode: str | None = _zivid.Settings.Processing.Filters.Reflection.Removal.Mode().value,
+                        enabled: bool | None = None,
+                        mode: str | None = None,
                     ):
 
                         if isinstance(enabled, (bool,)) or enabled is None:
@@ -1654,8 +1641,8 @@ class Settings:
 
                     def __init__(
                         self,
-                        enabled: bool | None = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Enabled().value,
-                        sigma: float | int | None = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Sigma().value,
+                        enabled: bool | None = None,
+                        sigma: float | int | None = None,
                     ):
 
                         if isinstance(enabled, (bool,)) or enabled is None:
@@ -1932,11 +1919,12 @@ class Settings:
 
                 @classmethod
                 def valid_values(cls):
+                    """All valid values of Mode"""
                     return list(cls._valid_values.keys())
 
             def __init__(
                 self,
-                mode: str | None = _zivid.Settings.Processing.Resampling.Mode().value,
+                mode: str | None = None,
             ):
 
                 if isinstance(mode, _zivid.Settings.Processing.Resampling.Mode.enum) or mode is None:
@@ -2055,11 +2043,11 @@ class Settings:
 
             def __init__(
                 self,
-                enabled: bool | None = _zivid.Settings.RegionOfInterest.Box.Enabled().value,
-                extents=_zivid.Settings.RegionOfInterest.Box.Extents().value,
-                point_a=_zivid.Settings.RegionOfInterest.Box.PointA().value,
-                point_b=_zivid.Settings.RegionOfInterest.Box.PointB().value,
-                point_o=_zivid.Settings.RegionOfInterest.Box.PointO().value,
+                enabled: bool | None = None,
+                extents=None,
+                point_a=None,
+                point_b=None,
+                point_o=None,
             ):
 
                 if isinstance(enabled, (bool,)) or enabled is None:
@@ -2210,8 +2198,8 @@ class Settings:
 
             def __init__(
                 self,
-                enabled: bool | None = _zivid.Settings.RegionOfInterest.Depth.Enabled().value,
-                range=_zivid.Settings.RegionOfInterest.Depth.Range().value,
+                enabled: bool | None = None,
+                range=None,
             ):
 
                 if isinstance(enabled, (bool,)) or enabled is None:
@@ -2340,6 +2328,7 @@ class Settings:
 
             @classmethod
             def valid_values(cls):
+                """All valid values of Color"""
                 return list(cls._valid_values.keys())
 
         class Pixel:
@@ -2365,12 +2354,13 @@ class Settings:
 
             @classmethod
             def valid_values(cls):
+                """All valid values of Pixel"""
                 return list(cls._valid_values.keys())
 
         def __init__(
             self,
-            color: str | None = _zivid.Settings.Sampling.Color().value,
-            pixel: str | None = _zivid.Settings.Sampling.Pixel().value,
+            color: str | None = None,
+            pixel: str | None = None,
         ):
 
             if isinstance(color, _zivid.Settings.Sampling.Color.enum) or color is None:
@@ -2458,13 +2448,14 @@ class Settings:
 
         @classmethod
         def valid_values(cls):
+            """All valid values of Engine"""
             return list(cls._valid_values.keys())
 
     def __init__(
         self,
         acquisitions=None,
         color: zivid.settings2d.Settings2D | None = None,
-        engine: str | None = _zivid.Settings.Engine().value,
+        engine: str | None = None,
         diagnostics: Settings.Diagnostics | None = None,
         processing: Settings.Processing | None = None,
         region_of_interest: Settings.RegionOfInterest | None = None,
@@ -2488,7 +2479,7 @@ class Settings:
             )
 
         if isinstance(color, zivid.settings2d.Settings2D) or color is None:
-            self._color = color
+            self._color = copy.deepcopy(color)
         else:
             raise TypeError(
                 "Unsupported type, expected: zivid.settings2d.Settings2D or None, got {value_type}".format(
@@ -2624,16 +2615,27 @@ class Settings:
 
     @classmethod
     def load(cls, file_name):
+        """Construct Settings by loading from file"""
         return _to_settings(_zivid.Settings(str(file_name)))
 
     def save(self, file_name):
+        """Save to the given file"""
         _to_internal_settings(self).save(str(file_name))
 
     @classmethod
     def from_serialized(cls, value):
+        """Construct a new Settings instance from a previously serialized string
+
+        See also serialize.
+        """
         return _to_settings(_zivid.Settings.from_serialized(str(value)))
 
     def serialize(self):
+        """Serialize to a string
+
+        See also from_serialized. The returned string is formatted in YAML, and is compatible with
+        the contents of files saved using save.
+        """
         return _to_internal_settings(self).serialize()
 
     def __eq__(self, other):
