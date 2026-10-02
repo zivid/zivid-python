@@ -4,6 +4,8 @@
 #
 #    pip-compile continuous-integration/python-requirements/build.in
 #
+build==1.1.1
+    # via -r continuous-integration/python-requirements/build.in
 certifi==2024.8.30
     # via requests
 charset-normalizer==3.3.2
@@ -31,11 +33,16 @@ ninja==1.11.1.1
 packaging==24.0
     # via
     #   -r continuous-integration/python-requirements/build.in
+    #   build
     #   scikit-build
 patch-ng==1.18.0
     # via conan
 pkginfo==1.10.0
     # via -r continuous-integration/python-requirements/build.in
+pyproject-hooks==1.2.0
+    # via
+    #   -r continuous-integration/python-requirements/build.in
+    #   build
 python-dateutil==2.9.0.post0
     # via conan
 pyyaml==6.0.1
