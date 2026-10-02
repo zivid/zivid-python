@@ -207,8 +207,9 @@ def synchronize_stream(stream_or_queue) -> None:
 
     Equivalent to cudaStreamSynchronize with the CUDA backend and clFinish with the OpenCL backend.
 
-    The host accessors of DeviceArray and DeviceArrayView, such as copy_to_host_organized_array,
-    enqueue the device-to-host copy on the given stream or queue and return without waiting for it.
+    The host accessors of DeviceArray and DeviceArrayView, such as copy_to_host_organized_array and
+    to_image, enqueue the device-to-host copy on the given stream or queue and return without waiting
+    for it.
     Call this function on the same stream or queue before reading their results.
 
     Args:

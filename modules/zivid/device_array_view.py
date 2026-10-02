@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import _zivid
 import numpy
+import zivid.image
 from zivid.compute_device import ComputeBackend, _to_compute_backend
 from zivid.device_array import _require_stream_or_queue
 from zivid.pixel_format import PixelFormat, _resolve_color_format
@@ -96,6 +97,31 @@ class DeviceArrayView:
             for OpenCL builds).
         """
         return self.__impl.device_pointer()
+
+    def to_image(self, stream_or_queue) -> zivid.image.Image:
+        """Enqueue a device-to-host copy and return it as an Image, WITHOUT synchronizing.
+
+        Only valid for the 8-bit color formats. The device-to-host copy is enqueued on
+        ``stream_or_queue`` and this function returns immediately. The caller must synchronize
+        ``stream_or_queue`` (e.g. via ``zivid.synchronize_stream``) before reading the returned Image.
+
+        Args:
+            stream_or_queue: The CUDA stream or OpenCL command queue used when the view was filled.
+
+        Returns:
+            An Image whose host memory is NOT safe to read until ``stream_or_queue`` is synchronized.
+
+        Raises:
+            TypeError: If the view is not in an 8-bit color format.
+        """
+        _require_stream_or_queue(stream_or_queue)
+        if not hasattr(self.__impl, "to_image"):
+            raise TypeError(
+                "to_image() is only supported for the 8-bit color formats, not for {}".format(
+                    type(self.__impl).__name__
+                )
+            )
+        return zivid.image.Image(self.__impl.to_image(stream_or_queue))
 
     def copy_to_host_organized_array(self, stream_or_queue) -> numpy.ndarray:
         """Enqueue a device-to-host copy and return a numpy array WITHOUT synchronizing.
