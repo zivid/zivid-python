@@ -22,7 +22,6 @@ class Mask:
             mask_data: Can be one of:
                 - A 2D numpy array of booleans or uint8 values
                 - A zivid.Resolution object to create a mask that masks out every point
-                - An internal _zivid.Mask instance
 
         Raises:
             TypeError: If argument type is not supported
