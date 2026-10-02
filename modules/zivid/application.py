@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import _zivid
+import zivid.compute_device
 from zivid.camera import Camera
 from zivid.camera_address import CameraAddress, _to_internal_camera_address
 
@@ -129,13 +130,13 @@ class Application:
         """
         return [Camera(internal_camera) for internal_camera in self.__impl.cameras()]
 
-    def compute_device(self):
+    def compute_device(self) -> zivid.compute_device.ComputeDevice:
         """Get the GPU compute device used by the Application.
 
         Returns:
             ComputeDevice instance with information about the GPU being used
         """
-        return self.__impl.compute_device()
+        return zivid.compute_device.ComputeDevice(self.__impl.compute_device())
 
     def release(self):
         """Release the underlying resources."""

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import _zivid
 import numpy
+from zivid.compute_device import ComputeBackend, _to_compute_backend
 
 
 def _require_stream_or_queue(stream_or_queue):
@@ -125,13 +126,13 @@ class DeviceArray:
         return self.__impl.size_bytes
 
     @property
-    def backend(self):
-        """Get the backend of the device array.
+    def backend(self) -> ComputeBackend:
+        """Get the compute backend of the device array.
 
         Returns:
-            A string representing the backend of the array.
+            The compute backend of the array.
         """
-        return self.__impl.backend
+        return _to_compute_backend(self.__impl.backend)
 
     @property
     def is_valid(self) -> bool:
@@ -166,10 +167,10 @@ class DeviceArray:
         return self.__impl.device_pointer()
 
     def __require_cuda_backend(self, protocol_member: str) -> None:
-        if self.__impl.backend != _zivid.ComputeBackend.cuda:
+        if self.backend != ComputeBackend.cuda:
             raise AttributeError(
                 "{} is only available on the CUDA backend (this DeviceArray uses the {} backend); use "
-                "device_pointer(), which is a cl_mem handle on OpenCL.".format(protocol_member, self.__impl.backend)
+                "device_pointer(), which is a cl_mem handle on OpenCL.".format(protocol_member, self.backend.name)
             )
 
     @property
