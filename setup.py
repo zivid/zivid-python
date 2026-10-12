@@ -10,7 +10,7 @@ from skbuild import setup, constants
 
 # To be replaced by: from setuptools_scm import get_version
 def get_version():
-    return "2.11.1"
+    return "2.11.2"
 
 
 def _zivid_sdk_version():
@@ -115,7 +115,7 @@ def _main():
     # pyproject.toml
     # Keep the two lists in sync
     _check_dependency("cmake")
-    _check_dependency("conans", "conan")
+    _check_dependency("conan")
     _check_dependency("ninja")
     _check_dependency("skbuild", "scikit-build")
 

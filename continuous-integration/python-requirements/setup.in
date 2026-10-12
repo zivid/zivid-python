@@ -1,1 +1,4 @@
-requests
+requests==2.31.0  # TODO: unfreeze when Python 3.7 compatibility is dropped
+urllib3==2.0.7  # TODO: remove pinned transitive dependency when Python 3.7 compatibility is dropped
+
+

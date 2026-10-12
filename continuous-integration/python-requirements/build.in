@@ -1,4 +1,11 @@
 scikit-build
 cmake
 ninja
-conan==1.62
+conan>=2,<3
+pkginfo==1.10.0  # TODO: remove pinned dependency when Python 3.7 compatibility is dropped
+packaging==24.0  # TODO: remove pinned transitive dependency when Python 3.7 compatibility is dropped
+wheel==0.42.0  # TODO: remove pinned transitive dependency when Python 3.7 compatibility is dropped
+requests~=2.31.0  # TODO: remove pinned transitive dependency when Python 3.7 compatibility is dropped
+urllib3<1.27  # TODO: remove pinned transitive dependency when Python 3.7 compatibility is dropped
+build==1.1.1  # TODO: remove pinned dependency when Python 3.7 compatibility is dropped
+pyproject-hooks<1.3  # TODO: remove pinned transitive dependency when Python 3.7 compatibility is dropped

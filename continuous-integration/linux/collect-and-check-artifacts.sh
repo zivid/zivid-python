@@ -18,7 +18,10 @@ mkdir "$ROOT_DIR/distribution" || exit $?
 cp "$ROOT_DIR/artifacts"/*/* "$ROOT_DIR/distribution" || exit $?
 
 # Check against artifact list
-python3 "$CI_DIR/deployment/check_expected_artifacts.py" || exit $?
+python3 "$CI_DIR/deployment/check_expected_artifacts.py" \
+  --repository $GITHUB_REPOSITORY \
+  --commit-hash $GITHUB_SHA \
+  --ref $GITHUB_REF || exit $?
 
 # Check contents of artifacts
 twine check "$ROOT_DIR/distribution"/* || exit $?

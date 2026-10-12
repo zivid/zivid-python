@@ -1,5 +1,8 @@
-pytest
+pytest~=7.4.4  # TODO: unfreeze when Python 3.7 support is dropped.
 pytest-helpers-namespace
 pytest-randomly==3.12  # TODO: unfreeze when Python 3.7 support is dropped.
 pytest-timeout
-requests
+requests~=2.31.0  # TODO: unfreeze when Python 3.7 support is dropped.
+urllib3==2.0.7  # TODO: remove pinned transitive dependency when Python 3.7 compatibility is dropped
+pluggy==1.2.0  # TODO: remove pinned transitive dependency when Python 3.7 support is dropped.
+packaging==24.0  # TODO: this transitive dependency pin can be removed once Python 3.7 support is dropped.
