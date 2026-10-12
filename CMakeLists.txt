@@ -22,7 +22,7 @@ endif()
 
 find_package(Python3 "${PYTHON_INTERPRETER_VERSION}" EXACT REQUIRED COMPONENTS Interpreter Development)
 find_package(Eigen3 3.4.0 CONFIG REQUIRED)
-find_package(pybind11 2.12.0 CONFIG REQUIRED)
+find_package(pybind11 3.0.0 CONFIG REQUIRED)
 find_package(Zivid ${ZIVID_SDK_VERSION} EXACT COMPONENTS Core REQUIRED)
 
 add_subdirectory(src)
