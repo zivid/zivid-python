@@ -166,15 +166,8 @@ Please visit [Zivid Knowledge Base][zivid-knowledge-base-url] for general inform
 
 ## Test matrix
 
-| Operating System | Python version                  |
-|:-----------------|:--------------------------------|
-| Ubuntu 23.10     | 3.11                            |
-| Ubuntu 23.04     | 3.11                            |
-| Ubuntu 22.04     | 3.10                            |
-| Ubuntu 20.04     | 3.8                             |
-| Fedora 38        | 3.11                            |
-| Fedora 37        | 3.11                            |
-| Windows 10       | 3.8, 3.9, 3.10, 3.11, 3.12       |
+The test matrix shows which Python versions and operating systems are tested in CI.
+Check [text matrix here](continuous-integration/TestMatrix.md) to go to the test matrix.
 
 [header-image]: https://www.zivid.com/hubfs/softwarefiles/images/zivid-generic-github-header.png
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/zivid/zivid-python/main.yml?branch=master

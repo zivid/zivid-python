@@ -113,10 +113,9 @@ jobs:
           - ubuntu:20.04
           - ubuntu:22.04
           - ubuntu:24.04
-          - ubuntu:25.04
-          - ubuntu:25.10
-          - fedora:42
+          - ubuntu:26.04
           - fedora:43
+          - fedora:44
     steps:
       - name: Check out code
         uses: actions/checkout@v4
