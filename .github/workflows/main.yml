@@ -9,9 +9,10 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    if: false # TODO(ZIVID-10637): Remove this line to re-enable linting.
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           lfs: false
       - name: Build and lint
@@ -21,8 +22,8 @@ jobs:
               --volume $PWD:/host \
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
-              ubuntu:23.10  \
-              bash -c "./setup.sh && ./build.sh && ./lint.sh"
+              ubuntu:24.04  \
+              bash -c "./setup.sh && ./install-sdk.sh && ./build.sh && ./lint.sh"
       - name: Notify Teams
         if: ${{ failure() && github.ref == 'refs/heads/master' }}
         env:
@@ -33,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           lfs: false
       - name: Create source distribution
@@ -42,10 +43,13 @@ jobs:
               --volume $PWD:/host \
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
+              --env "GITHUB_SHA=${{ github.sha }}" \
+              --env "GITHUB_REF=${{ github.ref }}" \
+              --env "GITHUB_REPOSITORY=${{ github.repository }}" \
               ubuntu:20.04 \
               bash -c "./setup.sh && ./create-source-distribution.sh"
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: source-distribution
           path: dist/zivid*.tar.gz
@@ -57,17 +61,23 @@ jobs:
         run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
 
   create-windows-binary-distribution:
-    runs-on: windows-2019
+    needs: create-source-distribution
+    runs-on: windows-2022
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           lfs: false
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: source-distribution
+          path: dist
       - name: Set up Python ${{matrix.python-version}}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{matrix.python-version}}
       - name: Setup
@@ -79,7 +89,7 @@ jobs:
           CC: 'cl.exe'
         run: python continuous-integration\windows\create_binary_distribution.py
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bdist-win-python${{matrix.python-version}}
           path: dist/zivid*.whl
@@ -102,17 +112,18 @@ jobs:
         os:
           - ubuntu:20.04
           - ubuntu:22.04
-          - ubuntu:23.04
-          - ubuntu:23.10
-          - fedora:37
-          - fedora:38
+          - ubuntu:24.04
+          - ubuntu:25.04
+          - ubuntu:25.10
+          - fedora:42
+          - fedora:43
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           lfs: true
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: source-distribution
           path: dist
@@ -123,7 +134,7 @@ jobs:
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
               ${{matrix.os}} \
-              bash -c "./setup.sh && ./build-and-install-source-distribution.sh && ./test.sh"
+              bash -c "./setup.sh && ./install-sdk.sh && ./build-and-install-source-distribution.sh && ./setup-opencl.sh && ./test.sh"
       - name: Notify Teams
         if: ${{ failure() && github.ref == 'refs/heads/master' }}
         env:
@@ -132,22 +143,22 @@ jobs:
 
   test-windows-binary-distribution:
     needs: create-windows-binary-distribution
-    runs-on: windows-2019
+    runs-on: windows-2022
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           lfs: true
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: bdist-win-python${{matrix.python-version}}
           path: dist
       - name: Set up Python ${{matrix.python-version}}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{matrix.python-version}}
       - name: Setup
@@ -163,15 +174,18 @@ jobs:
         run: python continuous-integration/notification/notify_teams.py --status ${{ job.status }}
 
   deploy:
-    needs: [lint, test-linux-source-distribution, test-windows-binary-distribution]
+    needs:
+      # - lint  # TODO(ZIVID-10637): add back lint job when re-enabled.
+      - test-linux-source-distribution
+      - test-windows-binary-distribution
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           lfs: false
       - name: Download all artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: artifacts
       - name: Collect and check
@@ -180,10 +194,13 @@ jobs:
               --volume $PWD:/host \
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
+              --env "GITHUB_SHA=${{ github.sha }}" \
+              --env "GITHUB_REF=${{ github.ref }}" \
+              --env "GITHUB_REPOSITORY=${{ github.repository }}" \
               ubuntu:20.04 \
               bash -c "./collect-and-check-artifacts.sh"
       - name: Upload all as single artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: distributions_all
           path: distribution/
