@@ -209,7 +209,7 @@ class CameraHealth:
             return str(_to_internal_camera_health_infield_verification(self))
 
     class MaxTransferSpeed:
-        """The end-to-end link speed between the camera and the host computer, defined as the minimum of the camera's link speed and the PC's link speed. - OK: Max transfer speed > 1 Gbps - Suboptimal: Max transfer speed = 1 Gbps - Error: Max transfer speed < 1 Gbps - Unknown: Max transfer speed could not be determined"""
+        """The end-to-end link speed between the camera and the host computer, defined as the minimum of the camera's link speed and the PC's link speed. The possible link speeds are 10 Mbps, 100 Mbps, 1 Gbps, 2.5 Gbps, 5 Gbps, 10 Gbps, 14 Gbps, 20 Gbps, 25 Gbps, 40 Gbps, 50 Gbps, 56 Gbps, 80 Gbps, 100 Gbps, 200 Gbps, 400 Gbps, 800 Gbps and 1.6 Tbps. - OK: Max transfer speed > 1 Gbps - Suboptimal: Max transfer speed = 1 Gbps - Error: Max transfer speed < 1 Gbps - Unknown: Max transfer speed could not be determined"""
 
         class Status:
             """Severity of the max transfer speed check."""
@@ -852,7 +852,7 @@ class CameraHealth:
 
     @property
     def max_transfer_speed(self):
-        """The end-to-end link speed between the camera and the host computer, defined as the minimum of the camera's link speed and the PC's link speed. - OK: Max transfer speed > 1 Gbps - Suboptimal: Max transfer speed = 1 Gbps - Error: Max transfer speed < 1 Gbps - Unknown: Max transfer speed could not be determined"""
+        """The end-to-end link speed between the camera and the host computer, defined as the minimum of the camera's link speed and the PC's link speed. The possible link speeds are 10 Mbps, 100 Mbps, 1 Gbps, 2.5 Gbps, 5 Gbps, 10 Gbps, 14 Gbps, 20 Gbps, 25 Gbps, 40 Gbps, 50 Gbps, 56 Gbps, 80 Gbps, 100 Gbps, 200 Gbps, 400 Gbps, 800 Gbps and 1.6 Tbps. - OK: Max transfer speed > 1 Gbps - Suboptimal: Max transfer speed = 1 Gbps - Error: Max transfer speed < 1 Gbps - Unknown: Max transfer speed could not be determined"""
         return self._max_transfer_speed
 
     @property

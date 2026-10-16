@@ -23,21 +23,45 @@ class CameraState:
                 class LinkSpeed:
                     """The link speed that the computer's Ethernet interface is operating at."""
 
+                    link100Gbps = "link100Gbps"
                     link100Mbps = "link100Mbps"
                     link10Gbps = "link10Gbps"
                     link10Mbps = "link10Mbps"
+                    link14Gbps = "link14Gbps"
+                    link1600Gbps = "link1600Gbps"
                     link1Gbps = "link1Gbps"
+                    link200Gbps = "link200Gbps"
+                    link20Gbps = "link20Gbps"
+                    link25Gbps = "link25Gbps"
                     link2_5Gbps = "link2_5Gbps"
+                    link400Gbps = "link400Gbps"
+                    link40Gbps = "link40Gbps"
+                    link50Gbps = "link50Gbps"
+                    link56Gbps = "link56Gbps"
                     link5Gbps = "link5Gbps"
+                    link800Gbps = "link800Gbps"
+                    link80Gbps = "link80Gbps"
                     unknown = "unknown"
 
                     _valid_values = {
+                        "link100Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link100Gbps,
                         "link100Mbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link100Mbps,
                         "link10Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link10Gbps,
                         "link10Mbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link10Mbps,
+                        "link14Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link14Gbps,
+                        "link1600Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link1600Gbps,
                         "link1Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link1Gbps,
+                        "link200Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link200Gbps,
+                        "link20Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link20Gbps,
+                        "link25Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link25Gbps,
                         "link2_5Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link2_5Gbps,
+                        "link400Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link400Gbps,
+                        "link40Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link40Gbps,
+                        "link50Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link50Gbps,
+                        "link56Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link56Gbps,
                         "link5Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link5Gbps,
+                        "link800Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link800Gbps,
+                        "link80Gbps": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.link80Gbps,
                         "unknown": _zivid.CameraState.Network.LocalInterface.Ethernet.LinkSpeed.unknown,
                     }
 
@@ -278,21 +302,45 @@ class CameraState:
             class LinkSpeed:
                 """The link speed that the camera's Ethernet interface is operating at."""
 
+                link100Gbps = "link100Gbps"
                 link100Mbps = "link100Mbps"
                 link10Gbps = "link10Gbps"
                 link10Mbps = "link10Mbps"
+                link14Gbps = "link14Gbps"
+                link1600Gbps = "link1600Gbps"
                 link1Gbps = "link1Gbps"
+                link200Gbps = "link200Gbps"
+                link20Gbps = "link20Gbps"
+                link25Gbps = "link25Gbps"
                 link2_5Gbps = "link2_5Gbps"
+                link400Gbps = "link400Gbps"
+                link40Gbps = "link40Gbps"
+                link50Gbps = "link50Gbps"
+                link56Gbps = "link56Gbps"
                 link5Gbps = "link5Gbps"
+                link800Gbps = "link800Gbps"
+                link80Gbps = "link80Gbps"
                 unknown = "unknown"
 
                 _valid_values = {
+                    "link100Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link100Gbps,
                     "link100Mbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link100Mbps,
                     "link10Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link10Gbps,
                     "link10Mbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link10Mbps,
+                    "link14Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link14Gbps,
+                    "link1600Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link1600Gbps,
                     "link1Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link1Gbps,
+                    "link200Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link200Gbps,
+                    "link20Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link20Gbps,
+                    "link25Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link25Gbps,
                     "link2_5Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link2_5Gbps,
+                    "link400Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link400Gbps,
+                    "link40Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link40Gbps,
+                    "link50Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link50Gbps,
+                    "link56Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link56Gbps,
                     "link5Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link5Gbps,
+                    "link800Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link800Gbps,
+                    "link80Gbps": _zivid.CameraState.Network.Ethernet.LinkSpeed.link80Gbps,
                     "unknown": _zivid.CameraState.Network.Ethernet.LinkSpeed.unknown,
                 }
 
