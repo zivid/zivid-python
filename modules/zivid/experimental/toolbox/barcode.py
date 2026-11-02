@@ -7,6 +7,7 @@ from zivid.bounding_box import BoundingBox
 from zivid.camera import Camera
 from zivid.frame_2d import Frame2D
 from zivid.settings2d import Settings2D, _to_settings2d
+from zivid.vector_xy import VectorXY
 
 
 class LinearBarcodeFormat:
@@ -136,6 +137,23 @@ class BarcodeDecodingResult:
         """Get the bounding box of the barcode in the 2D image."""
         bb_impl = self.__impl.bounding_box()
         return BoundingBox(x=bb_impl.x, y=bb_impl.y, width=bb_impl.width, height=bb_impl.height)
+
+    def orientation(self) -> VectorXY:
+        """Get the orientation of the barcode in the 2D image.
+
+        For a linear barcode, the orientation is its read direction, from its first bar to its last. For a
+        matrix barcode, it is the direction from the symbol's left edge to its right edge, as seen with the
+        symbol upright. Either way, an upright barcode points along the positive x-axis, and the same barcode
+        upside down points along the negative x-axis.
+
+        Image pixel coordinates have x pointing right and y pointing down. So angle_in_degrees() on the result
+        is 0 for an upright barcode, and increases clockwise as the image is displayed.
+
+        Returns:
+            A unit VectorXY in image pixel coordinates giving the orientation of the barcode
+        """
+        orientation_impl = self.__impl.orientation()
+        return VectorXY(x=orientation_impl.x, y=orientation_impl.y)
 
     def __str__(self):
         return str(self.__impl)

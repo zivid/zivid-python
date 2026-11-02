@@ -32,6 +32,7 @@
 #include <ZividPython/Toolbox/Barcode.h>
 #include <ZividPython/Toolbox/PointCloudRegistration.h>
 #include <ZividPython/Toolbox/Toolbox.h>
+#include <ZividPython/VectorXY.h>
 #include <ZividPython/Version.h>
 
 #include <Zivid/Experimental/PointCloudExport.h>
@@ -195,6 +196,7 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_CLASS(module, CameraAddress);
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, Mask);
     ZIVID_PYTHON_WRAP_CLASS(module, Resolution);
+    ZIVID_PYTHON_WRAP_CLASS(module, VectorXY);
     ZIVID_PYTHON_WRAP_CLASS_BUFFER(module, Matrix4x4);
 
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, ImageRGBA);

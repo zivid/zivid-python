@@ -44,3 +44,4 @@ from zivid.sdk_version import SDKVersion
 from zivid.settings import Settings
 from zivid.settings2d import Settings2D
 from zivid.unorganized_point_cloud import UnorganizedPointCloud
+from zivid.vector_xy import VectorXY
