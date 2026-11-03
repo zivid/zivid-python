@@ -8,6 +8,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 
 namespace ZividPython
 {
@@ -21,6 +22,7 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS(model, const)
         ZIVID_PYTHON_FORWARD_0_ARGS(vendor, const)
         ZIVID_PYTHON_FORWARD_0_ARGS(backend, const)
+        ZIVID_PYTHON_FORWARD_0_ARGS(memoryInfo, const)
         ZIVID_PYTHON_FORWARD_0_ARGS(nativeContext, const)
         ZIVID_PYTHON_FORWARD_0_ARGS(nativeStreamHandle, const)
         ZIVID_PYTHON_FORWARD_0_ARGS(sdkStreamOrQueue, const)

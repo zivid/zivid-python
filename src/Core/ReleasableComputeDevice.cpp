@@ -1,6 +1,11 @@
 #include <ZividPython/ReleasableComputeDevice.h>
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+
+#include <cstdint>
+#include <optional>
+#include <utility>
 
 namespace py = pybind11;
 
@@ -74,6 +79,16 @@ namespace ZividPython
         pyClass.def_property_readonly("model", &ReleasableComputeDevice::model)
             .def_property_readonly("vendor", &ReleasableComputeDevice::vendor)
             .def_property_readonly("backend", &ReleasableComputeDevice::backend)
+            .def_property_readonly(
+                "memory_info",
+                [](const ReleasableComputeDevice &self) -> std::optional<std::pair<std::uint64_t, std::uint64_t>> {
+                    const auto info = self.memoryInfo();
+                    if(!info)
+                    {
+                        return std::nullopt;
+                    }
+                    return std::make_pair(info->freeBytes, info->totalBytes);
+                })
             .def(
                 "native_context",
                 [](const ReleasableComputeDevice &self) {

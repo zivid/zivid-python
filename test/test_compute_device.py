@@ -13,6 +13,17 @@ def test_compute_device(application):
     assert str(compute_device)
 
 
+def test_compute_device_memory_info(application):
+    compute_device = application.compute_device()
+    memory_info = compute_device.memory_info
+    if compute_device.backend == zivid.ComputeBackend.cuda:
+        assert isinstance(memory_info, zivid.ComputeDevice.MemoryInfo)
+        assert memory_info.total_bytes > 0
+        assert 0 <= memory_info.free_bytes <= memory_info.total_bytes
+    else:
+        assert memory_info is None
+
+
 def test_compute_device_illegal_init():
     with pytest.raises(TypeError):
         zivid.ComputeDevice("this should fail")

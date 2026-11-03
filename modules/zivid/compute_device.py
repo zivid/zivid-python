@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, NamedTuple, Optional
 
 import _zivid
 
@@ -224,6 +224,12 @@ class ComputeDevice:
     Get it with ``zivid.Application.compute_device``.
     """
 
+    class MemoryInfo(NamedTuple):
+        """Free and total device memory, in bytes."""
+
+        free_bytes: int
+        total_bytes: int
+
     def __init__(self, impl):
         """Initialize ComputeDevice wrapper.
 
@@ -270,6 +276,20 @@ class ComputeDevice:
             The compute backend
         """
         return _to_compute_backend(self.__impl.backend)
+
+    @property
+    def memory_info(self) -> Optional["ComputeDevice.MemoryInfo"]:
+        """Get the free and total device memory, in bytes.
+
+        Returns:
+            A MemoryInfo with free_bytes and total_bytes when the backend can report it (CUDA),
+            or None otherwise (e.g. OpenCL, which does not expose free memory)
+        """
+        info = self.__impl.memory_info
+        if info is None:
+            return None
+        free_bytes, total_bytes = info
+        return ComputeDevice.MemoryInfo(free_bytes=free_bytes, total_bytes=total_bytes)
 
     @property
     def cuda_runtime_library_name(self) -> str:
