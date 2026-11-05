@@ -56,6 +56,7 @@ class FrameInfo:
             kernel_compute_time: datetime.timedelta = datetime.timedelta(microseconds=-1),
             reprocessing_time: datetime.timedelta | None = None,
             throttling_time: datetime.timedelta = datetime.timedelta(microseconds=-1),
+            transfer_time: datetime.timedelta | None = None,
         ):
 
             if isinstance(acquisition_time, (datetime.timedelta,)):
@@ -103,6 +104,15 @@ class FrameInfo:
                     )
                 )
 
+            if isinstance(transfer_time, (datetime.timedelta,)) or transfer_time is None:
+                self._transfer_time = _zivid.FrameInfo.Metrics.TransferTime(transfer_time)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (datetime.timedelta,) or None, got {value_type}".format(
+                        value_type=type(transfer_time)
+                    )
+                )
+
         @property
         def acquisition_time(self):
             """Acquisition Time is the duration from the start of the capture to when the camera has acquired the last image. After this time, the camera has finished its acquisition and you can move the robot, or capture with another camera with overlapping field of view. Acquisition Time is equal to the time it takes for the Camera::capture(settings) API function call to return."""
@@ -127,6 +137,11 @@ class FrameInfo:
         def throttling_time(self):
             """Throttling Time is the duration that the capture was paused due to thermal or other constraints on the camera's components while it was capturing this frame. This duration is part of the overall Acquisition Time. If the camera throttled during a capture, it will result in a longer Acquisition Time. Whether or not the camera will throttle depends on the ambient temperature, the capture settings, and the how frequently the camera is capturing."""
             return self._throttling_time.value
+
+        @property
+        def transfer_time(self):
+            """Transfer Time is the duration from when the capture is sent to the camera to when the last of the frame's data has arrived on the host. Acquisition Time ends when the camera has acquired the last image; Transfer Time ends when that image has reached the host. Both are part of Capture Time, which also includes the processing of the data. Transfer Time is unset for a frame that did not cross a network, such as one from a file camera or one loaded from a file saved by an SDK older than 2.19.0, and for a camera whose transport does not time the transfer."""
+            return self._transfer_time.value
 
         @acquisition_time.setter
         def acquisition_time(self, value):
@@ -175,6 +190,17 @@ class FrameInfo:
                     "Unsupported type, expected: datetime.timedelta, got {value_type}".format(value_type=type(value))
                 )
 
+        @transfer_time.setter
+        def transfer_time(self, value):
+            if isinstance(value, (datetime.timedelta,)) or value is None:
+                self._transfer_time = _zivid.FrameInfo.Metrics.TransferTime(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: datetime.timedelta or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
+
         def __eq__(self, other):
             if (
                 self._acquisition_time == other._acquisition_time
@@ -182,6 +208,7 @@ class FrameInfo:
                 and self._kernel_compute_time == other._kernel_compute_time
                 and self._reprocessing_time == other._reprocessing_time
                 and self._throttling_time == other._throttling_time
+                and self._transfer_time == other._transfer_time
             ):
                 return True
             return False
@@ -543,6 +570,7 @@ def _to_frame_info_metrics(internal_metrics):
         kernel_compute_time=internal_metrics.kernel_compute_time.value,
         reprocessing_time=internal_metrics.reprocessing_time.value,
         throttling_time=internal_metrics.throttling_time.value,
+        transfer_time=internal_metrics.transfer_time.value,
     )
 
 
@@ -599,6 +627,7 @@ def _to_internal_frame_info_metrics(metrics):
     internal_metrics.kernel_compute_time = _zivid.FrameInfo.Metrics.KernelComputeTime(metrics.kernel_compute_time)
     internal_metrics.reprocessing_time = _zivid.FrameInfo.Metrics.ReprocessingTime(metrics.reprocessing_time)
     internal_metrics.throttling_time = _zivid.FrameInfo.Metrics.ThrottlingTime(metrics.throttling_time)
+    internal_metrics.transfer_time = _zivid.FrameInfo.Metrics.TransferTime(metrics.transfer_time)
 
     return internal_metrics
 
