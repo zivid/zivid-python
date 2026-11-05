@@ -108,6 +108,22 @@ class HandEyeResidual:
         """
         return self.__impl.translation()
 
+    def spatial_extent(self) -> float:
+        """Get the spatial extent of the feature points.
+
+        Returns:
+            Spatial extent of the feature points in millimeters, or NaN when the pose has fewer than two usable features
+        """
+        return self.__impl.spatial_extent()
+
+    def point_rmse(self) -> float:
+        """Get the per-feature root-mean-square distance.
+
+        Returns:
+            Root-mean-square of the per-feature distances in millimeters, or NaN when the pose has no shared features
+        """
+        return self.__impl.point_rmse()
+
     def __str__(self):
         return str(self.__impl)
 
