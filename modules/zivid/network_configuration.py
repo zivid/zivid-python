@@ -130,7 +130,7 @@ class NetworkConfiguration:
 
     @property
     def hostname(self):
-        """Configure the camera's hostname. If unset, the camera will use the default hostname based on the serial number: `zivid-<serial>`. Note that `fetchNetworkConfig` will not return the default hostname in this field. If the camera is using the default hostname, then this field will be unset. Use `CameraState/Network/Hostname` instead, which returns the camera's current hostname. Must contain a minimum of one character, and cannot be longer than 15 characters."""
+        """Configure the camera's hostname. If unset, the camera will use the default hostname based on the serial number: `zivid-<serial>`. Note that `fetchNetworkConfig` will not return the default hostname in this field. If the camera is using the default hostname, then this field will be unset. Use `CameraState/Network/Hostname` instead, which returns the camera's current hostname. Must be 1 to 15 characters long, can only consist of a-z, A-Z, 0-9 and hyphen (-), and cannot start with hyphen (-)."""
         return self._hostname.value
 
     @property
