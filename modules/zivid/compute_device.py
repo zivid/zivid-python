@@ -130,7 +130,6 @@ class StreamOrQueue(_zivid.StreamOrQueue):
     def __init__(
         self,
         stream_or_queue: CUDAStreamPtr | OpenCLCommandQueuePtr | None = None,
-        /,
         *,
         stream: CUDAStreamPtr | None = None,
         command_queue: OpenCLCommandQueuePtr | None = None,
