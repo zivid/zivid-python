@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import _zivid
 import numpy
+import zivid.image
+from zivid.compute_device import ComputeBackend, _to_compute_backend
 from zivid.device_array import _require_stream_or_queue
 from zivid.pixel_format import PixelFormat, _resolve_color_format
 
@@ -73,9 +75,9 @@ class DeviceArrayView:
         return self.__impl.size_bytes
 
     @property
-    def backend(self):
-        """Backend of the view (CUDA or OpenCL)."""
-        return self.__impl.backend
+    def backend(self) -> ComputeBackend:
+        """Compute backend of the view (CUDA or OpenCL)."""
+        return _to_compute_backend(self.__impl.backend)
 
     @property
     def is_valid(self) -> bool:
@@ -95,6 +97,31 @@ class DeviceArrayView:
             for OpenCL builds).
         """
         return self.__impl.device_pointer()
+
+    def to_image(self, stream_or_queue) -> zivid.image.Image:
+        """Enqueue a device-to-host copy and return it as an Image, WITHOUT synchronizing.
+
+        Only valid for the 8-bit color formats. The device-to-host copy is enqueued on
+        ``stream_or_queue`` and this function returns immediately. The caller must synchronize
+        ``stream_or_queue`` (e.g. via ``zivid.synchronize_stream``) before reading the returned Image.
+
+        Args:
+            stream_or_queue: The CUDA stream or OpenCL command queue used when the view was filled.
+
+        Returns:
+            An Image whose host memory is NOT safe to read until ``stream_or_queue`` is synchronized.
+
+        Raises:
+            TypeError: If the view is not in an 8-bit color format.
+        """
+        _require_stream_or_queue(stream_or_queue)
+        if not hasattr(self.__impl, "to_image"):
+            raise TypeError(
+                "to_image() is only supported for the 8-bit color formats, not for {}".format(
+                    type(self.__impl).__name__
+                )
+            )
+        return zivid.image.Image(self.__impl.to_image(stream_or_queue))
 
     def copy_to_host_organized_array(self, stream_or_queue) -> numpy.ndarray:
         """Enqueue a device-to-host copy and return a numpy array WITHOUT synchronizing.
@@ -180,5 +207,5 @@ def create_device_array_view(cuda_array, user_stream, color_format: PixelFormat)
     height = int(shape[0])
     width = int(shape[1])
     compute_device = Application().compute_device()
-    factory = getattr(compute_device, factory_method)
+    factory = getattr(compute_device._ComputeDevice__impl, factory_method)  # pylint: disable=protected-access
     return DeviceArrayView(factory(ptr, width, height, user_stream))

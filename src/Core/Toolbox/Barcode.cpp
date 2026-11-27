@@ -117,7 +117,8 @@ namespace ZividPython
                 [](LinearBarcodeDecodingResult &result) {
                     return std::array<float, 2>{ result.centerPosition().x, result.centerPosition().y };
                 })
-            .def("bounding_box", &LinearBarcodeDecodingResult::boundingBox);
+            .def("bounding_box", &LinearBarcodeDecodingResult::boundingBox)
+            .def("orientation", &LinearBarcodeDecodingResult::orientation);
     }
 
     void wrapClass(pybind11::class_<MatrixBarcodeDecodingResult> pyClass)
@@ -129,6 +130,7 @@ namespace ZividPython
                 [](MatrixBarcodeDecodingResult &result) {
                     return std::array<float, 2>{ result.centerPosition().x, result.centerPosition().y };
                 })
-            .def("bounding_box", &MatrixBarcodeDecodingResult::boundingBox);
+            .def("bounding_box", &MatrixBarcodeDecodingResult::boundingBox)
+            .def("orientation", &MatrixBarcodeDecodingResult::orientation);
     }
 } // namespace ZividPython

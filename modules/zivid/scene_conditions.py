@@ -31,12 +31,13 @@ class SceneConditions:
 
             @classmethod
             def valid_values(cls):
+                """All valid values of FlickerClassification"""
                 return list(cls._valid_values.keys())
 
         def __init__(
             self,
-            flicker_classification: str = _zivid.SceneConditions.AmbientLight.FlickerClassification().value,
-            flicker_frequency: float | int | None = _zivid.SceneConditions.AmbientLight.FlickerFrequency().value,
+            flicker_classification: str = "unknownFlicker",
+            flicker_frequency: float | int | None = None,
         ):
 
             if isinstance(flicker_classification, _zivid.SceneConditions.AmbientLight.FlickerClassification.enum):
@@ -149,16 +150,27 @@ class SceneConditions:
 
     @classmethod
     def load(cls, file_name):
+        """Construct SceneConditions by loading from file"""
         return _to_scene_conditions(_zivid.SceneConditions(str(file_name)))
 
     def save(self, file_name):
+        """Save to the given file"""
         _to_internal_scene_conditions(self).save(str(file_name))
 
     @classmethod
     def from_serialized(cls, value):
+        """Construct a new SceneConditions instance from a previously serialized string
+
+        See also serialize.
+        """
         return _to_scene_conditions(_zivid.SceneConditions.from_serialized(str(value)))
 
     def serialize(self):
+        """Serialize to a string
+
+        See also from_serialized. The returned string is formatted in YAML, and is compatible with
+        the contents of files saved using save.
+        """
         return _to_internal_scene_conditions(self).serialize()
 
     def __eq__(self, other):

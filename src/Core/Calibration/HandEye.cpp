@@ -21,7 +21,9 @@ namespace ZividPython
     void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeResidual> pyClass)
     {
         pyClass.def("rotation", &Zivid::Calibration::HandEyeResidual::rotation)
-            .def("translation", &Zivid::Calibration::HandEyeResidual::translation);
+            .def("translation", &Zivid::Calibration::HandEyeResidual::translation)
+            .def("spatial_extent", &Zivid::Calibration::HandEyeResidual::spatialExtent)
+            .def("point_rmse", &Zivid::Calibration::HandEyeResidual::pointRMSE);
     }
 
     void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeOutput> pyClass)

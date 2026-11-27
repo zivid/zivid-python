@@ -325,6 +325,10 @@ def check_handeye_output(inputs, handeye_output, expected_transform):
         assert residual.translation() >= 0.0
         assert isinstance(residual.rotation(), float)
         assert residual.rotation() >= 0.0
+        assert isinstance(residual.spatial_extent(), float)
+        assert residual.spatial_extent() >= 0.0 or np.isnan(residual.spatial_extent())
+        assert isinstance(residual.point_rmse(), float)
+        assert residual.point_rmse() >= 0.0 or np.isnan(residual.point_rmse())
 
 
 class Cd:

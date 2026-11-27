@@ -41,6 +41,14 @@ def _check_barcode_decoding_result(result):
     assert isinstance(result.center_position()[0], float)
     assert isinstance(result.center_position()[1], float)
     _check_bounding_box(result.bounding_box(), result.center_position())
+    orientation = result.orientation()
+    assert isinstance(orientation, zivid.VectorXY)
+    assert isinstance(orientation.x, float)
+    assert isinstance(orientation.y, float)
+    magnitude = (orientation.x**2 + orientation.y**2) ** 0.5
+    assert 0.99 < magnitude < 1.01
+    assert isinstance(orientation.angle_in_degrees(), float)
+    assert 0.0 <= orientation.angle_in_degrees() < 360.0
 
 
 @pytest.mark.barcode_license

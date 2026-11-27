@@ -26,12 +26,13 @@ class SuggestSettingsParameters:
 
         @classmethod
         def valid_values(cls):
+            """All valid values of AmbientLightFrequency"""
             return list(cls._valid_values.keys())
 
     def __init__(
         self,
-        ambient_light_frequency: str = _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency().value,
-        max_capture_time: datetime.timedelta = _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime().value,
+        ambient_light_frequency: str = "none",
+        max_capture_time: datetime.timedelta = datetime.timedelta(milliseconds=1200),
     ):
 
         if isinstance(
@@ -97,20 +98,31 @@ class SuggestSettingsParameters:
 
     @classmethod
     def load(cls, file_name):
+        """Construct SuggestSettingsParameters by loading from file"""
         return _to_capture_assistant_suggest_settings_parameters(
             _zivid.capture_assistant.SuggestSettingsParameters(str(file_name))
         )
 
     def save(self, file_name):
+        """Save to the given file"""
         _to_internal_capture_assistant_suggest_settings_parameters(self).save(str(file_name))
 
     @classmethod
     def from_serialized(cls, value):
+        """Construct a new SuggestSettingsParameters instance from a previously serialized string
+
+        See also serialize.
+        """
         return _to_capture_assistant_suggest_settings_parameters(
             _zivid.capture_assistant.SuggestSettingsParameters.from_serialized(str(value))
         )
 
     def serialize(self):
+        """Serialize to a string
+
+        See also from_serialized. The returned string is formatted in YAML, and is compatible with
+        the contents of files saved using save.
+        """
         return _to_internal_capture_assistant_suggest_settings_parameters(self).serialize()
 
     def __eq__(self, other):

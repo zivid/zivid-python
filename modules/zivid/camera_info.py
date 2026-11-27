@@ -14,8 +14,8 @@ class CameraInfo:
 
         def __init__(
             self,
-            major: int = _zivid.CameraInfo.Revision.Major().value,
-            minor: int = _zivid.CameraInfo.Revision.Minor().value,
+            major: int = 0,
+            minor: int = 0,
         ):
 
             if isinstance(major, (int,)):
@@ -65,7 +65,7 @@ class CameraInfo:
 
         def __init__(
             self,
-            max_size_bytes: int = _zivid.CameraInfo.UserData.MaxSizeBytes().value,
+            max_size_bytes: int = 0,
         ):
 
             if isinstance(max_size_bytes, (int,)):
@@ -128,15 +128,16 @@ class CameraInfo:
 
         @classmethod
         def valid_values(cls):
+            """All valid values of Model"""
             return list(cls._valid_values.keys())
 
     def __init__(
         self,
-        firmware_version: str = _zivid.CameraInfo.FirmwareVersion().value,
-        hardware_revision: str = _zivid.CameraInfo.HardwareRevision().value,
-        model: str = _zivid.CameraInfo.Model().value,
-        model_name: str = _zivid.CameraInfo.ModelName().value,
-        serial_number: str = _zivid.CameraInfo.SerialNumber().value,
+        firmware_version: str = "",
+        hardware_revision: str = "",
+        model: str = "zividOnePlusSmall",
+        model_name: str = "",
+        serial_number: str = "",
         revision: CameraInfo.Revision | None = None,
         user_data: CameraInfo.UserData | None = None,
     ):
@@ -277,16 +278,27 @@ class CameraInfo:
 
     @classmethod
     def load(cls, file_name):
+        """Construct CameraInfo by loading from file"""
         return _to_camera_info(_zivid.CameraInfo(str(file_name)))
 
     def save(self, file_name):
+        """Save to the given file"""
         _to_internal_camera_info(self).save(str(file_name))
 
     @classmethod
     def from_serialized(cls, value):
+        """Construct a new CameraInfo instance from a previously serialized string
+
+        See also serialize.
+        """
         return _to_camera_info(_zivid.CameraInfo.from_serialized(str(value)))
 
     def serialize(self):
+        """Serialize to a string
+
+        See also from_serialized. The returned string is formatted in YAML, and is compatible with
+        the contents of files saved using save.
+        """
         return _to_internal_camera_info(self).serialize()
 
     def __eq__(self, other):

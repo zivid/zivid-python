@@ -18,10 +18,10 @@ class Settings2D:
 
         def __init__(
             self,
-            aperture: float | int | None = _zivid.Settings2D.Acquisition.Aperture().value,
-            brightness: float | int | None = _zivid.Settings2D.Acquisition.Brightness().value,
-            exposure_time: datetime.timedelta | None = _zivid.Settings2D.Acquisition.ExposureTime().value,
-            gain: float | int | None = _zivid.Settings2D.Acquisition.Gain().value,
+            aperture: float | int | None = None,
+            brightness: float | int | None = None,
+            exposure_time: datetime.timedelta | None = None,
+            gain: float | int | None = None,
         ):
 
             if (
@@ -188,7 +188,7 @@ class Settings2D:
 
         def __init__(
             self,
-            enabled: bool | None = _zivid.Settings2D.Diagnostics.Enabled().value,
+            enabled: bool | None = None,
         ):
 
             if isinstance(enabled, (bool,)) or enabled is None:
@@ -231,9 +231,9 @@ class Settings2D:
 
                 def __init__(
                     self,
-                    blue: float | int | None = _zivid.Settings2D.Processing.Color.Balance.Blue().value,
-                    green: float | int | None = _zivid.Settings2D.Processing.Color.Balance.Green().value,
-                    red: float | int | None = _zivid.Settings2D.Processing.Color.Balance.Red().value,
+                    blue: float | int | None = None,
+                    green: float | int | None = None,
+                    red: float | int | None = None,
                 ):
 
                     if (
@@ -376,6 +376,51 @@ class Settings2D:
             class Experimental:
                 """Experimental color settings. These may be renamed, moved or deleted in the future."""
 
+                class HighlightSuppression:
+                    """Suppress highlights caused by the projector. Suppressed areas will appear with structure and detail restored, but with reduced color information relative to the rest of the image. This feature is available for Zivid 2+R and Zivid 3 cameras."""
+
+                    def __init__(
+                        self,
+                        enabled: bool | None = None,
+                    ):
+
+                        if isinstance(enabled, (bool,)) or enabled is None:
+                            self._enabled = (
+                                _zivid.Settings2D.Processing.Color.Experimental.HighlightSuppression.Enabled(enabled)
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                                    value_type=type(enabled)
+                                )
+                            )
+
+                    @property
+                    def enabled(self):
+                        """Enable or disable the highlight suppression."""
+                        return self._enabled.value
+
+                    @enabled.setter
+                    def enabled(self, value):
+                        if isinstance(value, (bool,)) or value is None:
+                            self._enabled = (
+                                _zivid.Settings2D.Processing.Color.Experimental.HighlightSuppression.Enabled(value)
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: bool or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
+
+                    def __eq__(self, other):
+                        if self._enabled == other._enabled:
+                            return True
+                        return False
+
+                    def __str__(self):
+                        return str(_to_internal_settings2d_processing_color_experimental_highlight_suppression(self))
+
                 class Mode:
                     """This setting controls how the color image is computed. `automatic` is the default option. It performs tone mapping for HDR captures, but not for single-acquisition captures. Use this mode with a single acquisition if you want to have the most control over the colors in the image. `toneMapping` uses all the acquisitions to create one merged and normalized color image. For HDR captures the dynamic range of the captured images is usually higher than the 8-bit color image range. `toneMapping` will map the HDR color data to the 8-bit color output range by applying a scaling factor. `toneMapping` can also be used for single-acquisition captures to normalize the captured color image to the full 8-bit output. Note that when using `toneMapping` mode the color values can be inconsistent over repeated captures if you move, add or remove objects in the scene. For the most control over the colors in the single-acquisition case, select the `automatic` mode."""
 
@@ -389,11 +434,13 @@ class Settings2D:
 
                     @classmethod
                     def valid_values(cls):
+                        """All valid values of Mode"""
                         return list(cls._valid_values.keys())
 
                 def __init__(
                     self,
-                    mode: str | None = _zivid.Settings2D.Processing.Color.Experimental.Mode().value,
+                    mode: str | None = None,
+                    highlight_suppression: Settings2D.Processing.Color.Experimental.HighlightSuppression | None = None,
                 ):
 
                     if isinstance(mode, _zivid.Settings2D.Processing.Color.Experimental.Mode.enum) or mode is None:
@@ -405,6 +452,12 @@ class Settings2D:
                             "Unsupported type, expected: str or None, got {value_type}".format(value_type=type(mode))
                         )
 
+                    if highlight_suppression is None:
+                        highlight_suppression = self.HighlightSuppression()
+                    if not isinstance(highlight_suppression, self.HighlightSuppression):
+                        raise TypeError("Unsupported type: {value}".format(value=type(highlight_suppression)))
+                    self._highlight_suppression = highlight_suppression
+
                 @property
                 def mode(self):
                     """This setting controls how the color image is computed. `automatic` is the default option. It performs tone mapping for HDR captures, but not for single-acquisition captures. Use this mode with a single acquisition if you want to have the most control over the colors in the image. `toneMapping` uses all the acquisitions to create one merged and normalized color image. For HDR captures the dynamic range of the captured images is usually higher than the 8-bit color image range. `toneMapping` will map the HDR color data to the 8-bit color output range by applying a scaling factor. `toneMapping` can also be used for single-acquisition captures to normalize the captured color image to the full 8-bit output. Note that when using `toneMapping` mode the color values can be inconsistent over repeated captures if you move, add or remove objects in the scene. For the most control over the colors in the single-acquisition case, select the `automatic` mode."""
@@ -414,6 +467,11 @@ class Settings2D:
                         if internal_value == self._mode.value:
                             return key
                     raise ValueError("Unsupported value {value}".format(value=self._mode))
+
+                @property
+                def highlight_suppression(self):
+                    """Suppress highlights caused by the projector. Suppressed areas will appear with structure and detail restored, but with reduced color information relative to the rest of the image. This feature is available for Zivid 2+R and Zivid 3 cameras."""
+                    return self._highlight_suppression
 
                 @mode.setter
                 def mode(self, value):
@@ -428,8 +486,14 @@ class Settings2D:
                             "Unsupported type, expected: str or None, got {value_type}".format(value_type=type(value))
                         )
 
+                @highlight_suppression.setter
+                def highlight_suppression(self, value):
+                    if not isinstance(value, self.HighlightSuppression):
+                        raise TypeError("Unsupported type {value}".format(value=type(value)))
+                    self._highlight_suppression = value
+
                 def __eq__(self, other):
-                    if self._mode == other._mode:
+                    if self._mode == other._mode and self._highlight_suppression == other._highlight_suppression:
                         return True
                     return False
 
@@ -438,7 +502,7 @@ class Settings2D:
 
             def __init__(
                 self,
-                gamma: float | int | None = _zivid.Settings2D.Processing.Color.Gamma().value,
+                gamma: float | int | None = None,
                 balance: Settings2D.Processing.Color.Balance | None = None,
                 experimental: Settings2D.Processing.Color.Experimental | None = None,
             ):
@@ -570,8 +634,8 @@ class Settings2D:
 
             def __init__(
                 self,
-                duration: datetime.timedelta | None = _zivid.Settings2D.Sampling.Interval.Duration().value,
-                enabled: bool | None = _zivid.Settings2D.Sampling.Interval.Enabled().value,
+                duration: datetime.timedelta | None = None,
+                enabled: bool | None = None,
             ):
 
                 if isinstance(duration, (datetime.timedelta,)) or duration is None:
@@ -645,6 +709,7 @@ class Settings2D:
 
             @classmethod
             def valid_values(cls):
+                """All valid values of Color"""
                 return list(cls._valid_values.keys())
 
         class Pixel:
@@ -670,12 +735,13 @@ class Settings2D:
 
             @classmethod
             def valid_values(cls):
+                """All valid values of Pixel"""
                 return list(cls._valid_values.keys())
 
         def __init__(
             self,
-            color: str | None = _zivid.Settings2D.Sampling.Color().value,
-            pixel: str | None = _zivid.Settings2D.Sampling.Pixel().value,
+            color: str | None = None,
+            pixel: str | None = None,
             interval: Settings2D.Sampling.Interval | None = None,
         ):
 
@@ -857,16 +923,27 @@ class Settings2D:
 
     @classmethod
     def load(cls, file_name):
+        """Construct Settings2D by loading from file"""
         return _to_settings2d(_zivid.Settings2D(str(file_name)))
 
     def save(self, file_name):
+        """Save to the given file"""
         _to_internal_settings2d(self).save(str(file_name))
 
     @classmethod
     def from_serialized(cls, value):
+        """Construct a new Settings2D instance from a previously serialized string
+
+        See also serialize.
+        """
         return _to_settings2d(_zivid.Settings2D.from_serialized(str(value)))
 
     def serialize(self):
+        """Serialize to a string
+
+        See also from_serialized. The returned string is formatted in YAML, and is compatible with
+        the contents of files saved using save.
+        """
         return _to_internal_settings2d(self).serialize()
 
     def __eq__(self, other):
@@ -911,8 +988,17 @@ def _to_settings2d_processing_color_balance(internal_balance):
     )
 
 
+def _to_settings2d_processing_color_experimental_highlight_suppression(internal_highlight_suppression):
+    return Settings2D.Processing.Color.Experimental.HighlightSuppression(
+        enabled=internal_highlight_suppression.enabled.value,
+    )
+
+
 def _to_settings2d_processing_color_experimental(internal_experimental):
     return Settings2D.Processing.Color.Experimental(
+        highlight_suppression=_to_settings2d_processing_color_experimental_highlight_suppression(
+            internal_experimental.highlight_suppression
+        ),
         mode=internal_experimental.mode.value,
     )
 
@@ -984,11 +1070,24 @@ def _to_internal_settings2d_processing_color_balance(balance):
     return internal_balance
 
 
+def _to_internal_settings2d_processing_color_experimental_highlight_suppression(highlight_suppression):
+    internal_highlight_suppression = _zivid.Settings2D.Processing.Color.Experimental.HighlightSuppression()
+
+    internal_highlight_suppression.enabled = (
+        _zivid.Settings2D.Processing.Color.Experimental.HighlightSuppression.Enabled(highlight_suppression.enabled)
+    )
+
+    return internal_highlight_suppression
+
+
 def _to_internal_settings2d_processing_color_experimental(experimental):
     internal_experimental = _zivid.Settings2D.Processing.Color.Experimental()
 
     internal_experimental.mode = _zivid.Settings2D.Processing.Color.Experimental.Mode(experimental._mode.value)
 
+    internal_experimental.highlight_suppression = (
+        _to_internal_settings2d_processing_color_experimental_highlight_suppression(experimental.highlight_suppression)
+    )
     return internal_experimental
 
 

@@ -31,6 +31,7 @@ class CameraHealth:
 
             @classmethod
             def valid_values(cls):
+                """All valid values of Status"""
                 return list(cls._valid_values.keys())
 
         class Value:
@@ -46,12 +47,13 @@ class CameraHealth:
 
             @classmethod
             def valid_values(cls):
+                """All valid values of Value"""
                 return list(cls._valid_values.keys())
 
         def __init__(
             self,
-            status: str = _zivid.CameraHealth.Fan.Status().value,
-            value: str | None = _zivid.CameraHealth.Fan.Value().value,
+            status: str = "Unknown",
+            value: str | None = None,
         ):
 
             if isinstance(status, _zivid.CameraHealth.Fan.Status.enum):
@@ -138,12 +140,13 @@ class CameraHealth:
 
             @classmethod
             def valid_values(cls):
+                """All valid values of Status"""
                 return list(cls._valid_values.keys())
 
         def __init__(
             self,
-            status: str = _zivid.CameraHealth.InfieldVerification.Status().value,
-            value: datetime.datetime | None = _zivid.CameraHealth.InfieldVerification.Value().value,
+            status: str = "Unknown",
+            value: datetime.datetime | None = None,
         ):
 
             if isinstance(status, _zivid.CameraHealth.InfieldVerification.Status.enum):
@@ -206,7 +209,7 @@ class CameraHealth:
             return str(_to_internal_camera_health_infield_verification(self))
 
     class MaxTransferSpeed:
-        """The end-to-end link speed between the camera and the host computer, defined as the minimum of the camera's link speed and the PC's link speed. - OK: Max transfer speed > 1 Gbps - Suboptimal: Max transfer speed = 1 Gbps - Error: Max transfer speed < 1 Gbps - Unknown: Max transfer speed could not be determined"""
+        """The end-to-end link speed between the camera and the host computer, defined as the minimum of the camera's link speed and the PC's link speed. The possible link speeds are 10 Mbps, 100 Mbps, 1 Gbps, 2.5 Gbps, 5 Gbps, 10 Gbps, 14 Gbps, 20 Gbps, 25 Gbps, 40 Gbps, 50 Gbps, 56 Gbps, 80 Gbps, 100 Gbps, 200 Gbps, 400 Gbps, 800 Gbps and 1.6 Tbps. - OK: Max transfer speed > 1 Gbps - Suboptimal: Max transfer speed = 1 Gbps - Error: Max transfer speed < 1 Gbps - Unknown: Max transfer speed could not be determined"""
 
         class Status:
             """Severity of the max transfer speed check."""
@@ -225,12 +228,13 @@ class CameraHealth:
 
             @classmethod
             def valid_values(cls):
+                """All valid values of Status"""
                 return list(cls._valid_values.keys())
 
         def __init__(
             self,
-            status: str = _zivid.CameraHealth.MaxTransferSpeed.Status().value,
-            value: int | None = _zivid.CameraHealth.MaxTransferSpeed.Value().value,
+            status: str = "Unknown",
+            value: int | None = None,
         ):
 
             if isinstance(status, _zivid.CameraHealth.MaxTransferSpeed.Status.enum):
@@ -308,12 +312,13 @@ class CameraHealth:
 
             @classmethod
             def valid_values(cls):
+                """All valid values of Status"""
                 return list(cls._valid_values.keys())
 
         def __init__(
             self,
-            status: str = _zivid.CameraHealth.Memory.Status().value,
-            value: int | None = _zivid.CameraHealth.Memory.Value().value,
+            status: str = "Unknown",
+            value: int | None = None,
         ):
 
             if isinstance(status, _zivid.CameraHealth.Memory.Status.enum):
@@ -394,12 +399,13 @@ class CameraHealth:
 
                 @classmethod
                 def valid_values(cls):
+                    """All valid values of Status"""
                     return list(cls._valid_values.keys())
 
             def __init__(
                 self,
-                status: str = _zivid.CameraHealth.Temperature.DMD.Status().value,
-                value: float | int | None = _zivid.CameraHealth.Temperature.DMD.Value().value,
+                status: str = "Unknown",
+                value: float | int | None = None,
             ):
 
                 if isinstance(status, _zivid.CameraHealth.Temperature.DMD.Status.enum):
@@ -499,12 +505,13 @@ class CameraHealth:
 
                 @classmethod
                 def valid_values(cls):
+                    """All valid values of Status"""
                     return list(cls._valid_values.keys())
 
             def __init__(
                 self,
-                status: str = _zivid.CameraHealth.Temperature.LED.Status().value,
-                value: float | int | None = _zivid.CameraHealth.Temperature.LED.Value().value,
+                status: str = "Unknown",
+                value: float | int | None = None,
             ):
 
                 if isinstance(status, _zivid.CameraHealth.Temperature.LED.Status.enum):
@@ -604,12 +611,13 @@ class CameraHealth:
 
                 @classmethod
                 def valid_values(cls):
+                    """All valid values of Status"""
                     return list(cls._valid_values.keys())
 
             def __init__(
                 self,
-                status: str = _zivid.CameraHealth.Temperature.Lens.Status().value,
-                value: float | int | None = _zivid.CameraHealth.Temperature.Lens.Value().value,
+                status: str = "Unknown",
+                value: float | int | None = None,
             ):
 
                 if isinstance(status, _zivid.CameraHealth.Temperature.Lens.Status.enum):
@@ -772,11 +780,12 @@ class CameraHealth:
 
         @classmethod
         def valid_values(cls):
+            """All valid values of Overall"""
             return list(cls._valid_values.keys())
 
     def __init__(
         self,
-        overall: str = _zivid.CameraHealth.Overall().value,
+        overall: str = "Unknown",
         fan: CameraHealth.Fan | None = None,
         infield_verification: CameraHealth.InfieldVerification | None = None,
         max_transfer_speed: CameraHealth.MaxTransferSpeed | None = None,
@@ -843,7 +852,7 @@ class CameraHealth:
 
     @property
     def max_transfer_speed(self):
-        """The end-to-end link speed between the camera and the host computer, defined as the minimum of the camera's link speed and the PC's link speed. - OK: Max transfer speed > 1 Gbps - Suboptimal: Max transfer speed = 1 Gbps - Error: Max transfer speed < 1 Gbps - Unknown: Max transfer speed could not be determined"""
+        """The end-to-end link speed between the camera and the host computer, defined as the minimum of the camera's link speed and the PC's link speed. The possible link speeds are 10 Mbps, 100 Mbps, 1 Gbps, 2.5 Gbps, 5 Gbps, 10 Gbps, 14 Gbps, 20 Gbps, 25 Gbps, 40 Gbps, 50 Gbps, 56 Gbps, 80 Gbps, 100 Gbps, 200 Gbps, 400 Gbps, 800 Gbps and 1.6 Tbps. - OK: Max transfer speed > 1 Gbps - Suboptimal: Max transfer speed = 1 Gbps - Error: Max transfer speed < 1 Gbps - Unknown: Max transfer speed could not be determined"""
         return self._max_transfer_speed
 
     @property
@@ -897,16 +906,27 @@ class CameraHealth:
 
     @classmethod
     def load(cls, file_name):
+        """Construct CameraHealth by loading from file"""
         return _to_camera_health(_zivid.CameraHealth(str(file_name)))
 
     def save(self, file_name):
+        """Save to the given file"""
         _to_internal_camera_health(self).save(str(file_name))
 
     @classmethod
     def from_serialized(cls, value):
+        """Construct a new CameraHealth instance from a previously serialized string
+
+        See also serialize.
+        """
         return _to_camera_health(_zivid.CameraHealth.from_serialized(str(value)))
 
     def serialize(self):
+        """Serialize to a string
+
+        See also from_serialized. The returned string is formatted in YAML, and is compatible with
+        the contents of files saved using save.
+        """
         return _to_internal_camera_health(self).serialize()
 
     def __eq__(self, other):

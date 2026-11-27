@@ -44,6 +44,7 @@ set(SOURCES
     Toolbox/Barcode.cpp
     Toolbox/Toolbox.cpp
     Version.cpp
+    VectorXY.cpp
     Wrapper.cpp
     Matrix4x4.cpp
 )

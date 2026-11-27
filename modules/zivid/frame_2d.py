@@ -49,11 +49,10 @@ class Frame2D:
     """
 
     def __init__(self, impl):
-        """Initialize Frame2D wrapper.
+        """Create a 2D frame by loading data from a file.
 
         Args:
-            impl:   A pathlib.Path or str path to a .zdf file, or a reference to an internal
-                    _zivid.Frame2D instance.
+            impl:   A pathlib.Path instance or a string specifying a Zivid Data File (ZDF)
 
         Raises:
             TypeError: If argument does not match the expected types.

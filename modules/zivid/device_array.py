@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import _zivid
 import numpy
+import zivid.image
+from zivid.compute_device import ComputeBackend, _to_compute_backend
 
 
 def _require_stream_or_queue(stream_or_queue):
@@ -125,13 +127,13 @@ class DeviceArray:
         return self.__impl.size_bytes
 
     @property
-    def backend(self):
-        """Get the backend of the device array.
+    def backend(self) -> ComputeBackend:
+        """Get the compute backend of the device array.
 
         Returns:
-            A string representing the backend of the array.
+            The compute backend of the array.
         """
-        return self.__impl.backend
+        return _to_compute_backend(self.__impl.backend)
 
     @property
     def is_valid(self) -> bool:
@@ -166,10 +168,10 @@ class DeviceArray:
         return self.__impl.device_pointer()
 
     def __require_cuda_backend(self, protocol_member: str) -> None:
-        if self.__impl.backend != _zivid.ComputeBackend.cuda:
+        if self.backend != ComputeBackend.cuda:
             raise AttributeError(
                 "{} is only available on the CUDA backend (this DeviceArray uses the {} backend); use "
-                "device_pointer(), which is a cl_mem handle on OpenCL.".format(protocol_member, self.__impl.backend)
+                "device_pointer(), which is a cl_mem handle on OpenCL.".format(protocol_member, self.backend.name)
             )
 
     @property
@@ -329,3 +331,28 @@ class DeviceArray:
             raise RuntimeError(
                 "copy_to_host_unorganized_array() is only supported for device arrays from unorganized point clouds."
             ) from e
+
+    def to_image(self, stream_or_queue) -> zivid.image.Image:
+        """Enqueue a device-to-host copy and return it as an Image, WITHOUT synchronizing.
+
+        Only valid for the 8-bit color formats. The device-to-host copy is enqueued on
+        ``stream_or_queue`` and this function returns immediately. The caller must synchronize
+        ``stream_or_queue`` (e.g. via ``zivid.synchronize_stream``) before reading the returned Image.
+
+        Args:
+            stream_or_queue: The CUDA stream or OpenCL command queue to enqueue the copy on.
+
+        Returns:
+            An Image whose host memory is NOT safe to read until ``stream_or_queue`` is synchronized.
+
+        Raises:
+            TypeError: If the device array is not in an 8-bit color format.
+        """
+        _require_stream_or_queue(stream_or_queue)
+        if not hasattr(self.__impl, "to_image"):
+            raise TypeError(
+                "to_image() is only supported for the 8-bit color formats, not for {}".format(
+                    type(self.__impl).__name__
+                )
+            )
+        return zivid.image.Image(self.__impl.to_image(stream_or_queue))

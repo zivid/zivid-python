@@ -151,6 +151,7 @@ try:
         Settings2D,
         StreamOrQueue,
         UnorganizedPointCloud,
+        VectorXY,
         __version__,
         calibration,
         capture_assistant,

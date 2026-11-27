@@ -14,10 +14,10 @@ class CameraIntrinsics:
 
         def __init__(
             self,
-            cx: float | int = _zivid.CameraIntrinsics.CameraMatrix.CX().value,
-            cy: float | int = _zivid.CameraIntrinsics.CameraMatrix.CY().value,
-            fx: float | int = _zivid.CameraIntrinsics.CameraMatrix.FX().value,
-            fy: float | int = _zivid.CameraIntrinsics.CameraMatrix.FY().value,
+            cx: float | int = 0.0,
+            cy: float | int = 0.0,
+            fx: float | int = 0.0,
+            fy: float | int = 0.0,
         ):
 
             if isinstance(
@@ -165,11 +165,11 @@ class CameraIntrinsics:
 
         def __init__(
             self,
-            k1: float | int = _zivid.CameraIntrinsics.Distortion.K1().value,
-            k2: float | int = _zivid.CameraIntrinsics.Distortion.K2().value,
-            k3: float | int = _zivid.CameraIntrinsics.Distortion.K3().value,
-            p1: float | int = _zivid.CameraIntrinsics.Distortion.P1().value,
-            p2: float | int = _zivid.CameraIntrinsics.Distortion.P2().value,
+            k1: float | int = 0.0,
+            k2: float | int = 0.0,
+            k3: float | int = 0.0,
+            p1: float | int = 0.0,
+            p2: float | int = 0.0,
         ):
 
             if isinstance(
@@ -393,16 +393,27 @@ class CameraIntrinsics:
 
     @classmethod
     def load(cls, file_name):
+        """Construct CameraIntrinsics by loading from file"""
         return _to_camera_intrinsics(_zivid.CameraIntrinsics(str(file_name)))
 
     def save(self, file_name):
+        """Save to the given file"""
         _to_internal_camera_intrinsics(self).save(str(file_name))
 
     @classmethod
     def from_serialized(cls, value):
+        """Construct a new CameraIntrinsics instance from a previously serialized string
+
+        See also serialize.
+        """
         return _to_camera_intrinsics(_zivid.CameraIntrinsics.from_serialized(str(value)))
 
     def serialize(self):
+        """Serialize to a string
+
+        See also from_serialized. The returned string is formatted in YAML, and is compatible with
+        the contents of files saved using save.
+        """
         return _to_internal_camera_intrinsics(self).serialize()
 
     def __eq__(self, other):
